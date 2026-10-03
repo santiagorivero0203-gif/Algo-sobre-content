@@ -108,6 +108,13 @@ El generador incluye un selector de formato en tiempo real para adaptar el dise�
 
 ## 📝 Registro de Cambios
 
+### v3.5 (2026-10-03)
+- **Soporte Nativo de Exportación y Guardado en iPhone (iOS Safari & Chrome)**:
+  - **Superación de Restricciones de Apple WebKit**: iOS Safari bloquea silenciosamente las descargas automáticas `<a download>` cuando se usan `data:image/png;base64` pesadas o cuando expira el contexto de gesto táctil.
+  - **Integración con Web Share API (`navigator.share`)**: Exporta el PNG como un objeto `File` nativo mediante Blobs binarios, activando directamente la hoja de compartir nativa de iOS para tocar **"Guardar imagen"** directo a la app **Fotos (Carrete)**.
+  - **Modal Táctil de Guardado Directo**: Si el navegador no abre el menú nativo automáticamente, despliega un modal con la imagen generada en alta resolución habilitada para mantener presionada la pantalla (`.ios-save-image` con `-webkit-touch-callout: default`) y seleccionar *"Guardar en Fotos"*.
+  - **Exportación de Carrusel Completo en Móvil**: Al presionar *"Todo"*, genera la galería completa de diapositivas con miniaturas y botones individuales de guardado instantáneo para el carrete.
+
 ### v3.4 (2026-10-03)
 - **Optimización Integral para Teléfonos Móviles (Mobile-First)**:
   - **Lienzo Adaptativo y Auto-escalado**: Implementación de contenedor elástico (`slide-scaler-outer` y `slide-scaler-inner`) que calcula dinámicamente el factor de escala según el ancho exacto del smartphone (iPhone SE, iPhone 14/15/16, Galaxy S22-S24, Pixel), manteniendo 24px de margen seguro sin desbordamiento horizontal.

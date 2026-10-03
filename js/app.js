@@ -9,6 +9,12 @@
  *       * Drawer / Bottom sheet para seleccionar entre los 8 carruseles.
  *       * Selector de slides en barra horizontal táctil por números.
  *       * Botonera fija inferior optimizada para pulgares (Descargar HD y Descargar Todo).
+ *   - Soporte nativo para iPhone / iOS (Safari & Chrome):
+ *       * Integración con Web Share API (navigator.share) para guardar
+ *         directamente en la app de Fotos (Carrete) del iPhone.
+ *       * Modal de guardado directo con previsualización para 'Guardar en Fotos'
+ *         manteniendo presionado, compartir nativo o descarga de archivo.
+ *       * Generación de Blobs PNG en lugar de DataURLs pesadas bloqueadas por Safari.
  *   - Modo Escritorio (MD+):
  *       * Ajuste vertical automático (Fit to Viewport) para que la diapositiva completa
  *         quepa en pantallas de laptops (ej: 1366x768 / 1080p con barras) sin cortes.
@@ -50,6 +56,13 @@ const initialFormat = (() => {
 
 const SOLO = URL_PARAMS.get('solo') === '1';
 
+// Detección precisa de dispositivos móviles e iOS (iPhone / iPad / iPod / Android)
+const isMobileDevice = (() => {
+    if (typeof window === 'undefined') return false;
+    const ua = navigator.userAgent || '';
+    return /iPhone|iPad|iPod|Android/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+})();
+
 const App = () => {
     // Estado de selección de video y slide activa
     const [vIdx, setVIdx] = React.useState(initialVideo);
@@ -60,6 +73,9 @@ const App = () => {
 
     // Estado del drawer/menú móvil de selección de carruseles (?drawer=1 para test o apertura directa)
     const [drawerOpen, setDrawerOpen] = React.useState(URL_PARAMS.get('drawer') === '1');
+
+    // Estado del modal de guardado para iPhone y dispositivos móviles
+    const [exportModal, setExportModal] = React.useState(null);
 
     // Modo de ajuste en escritorio: 'fit' (ajuste automático a la altura de la pantalla) o '100%'
     const [fitView, setFitView] = React.useState(true);
@@ -78,7 +94,7 @@ const App = () => {
     const fmt = window.FORMATS[format] || window.FORMATS.tiktok;
     const isFileProtocol = window.location.protocol === 'file:';
 
-    // Detección de dispositivo móvil (< 768px)
+    // Detección de ancho móvil (< 768px)
     const isMobile = viewportW < 768;
 
     // Escucha el redimensionamiento de pantalla para recalcular el factor de escala
@@ -101,7 +117,7 @@ const App = () => {
         return () => window.removeEventListener('keydown', onKey);
     }, [video]);
 
-    // Soporte para gestos táctiles (Swipe swipe izquierda / derecha) en teléfonos
+    // Soporte para gestos táctiles (Swipe izquierda / derecha) en teléfonos
     const touchStartX = React.useRef(null);
     const touchStartY = React.useRef(null);
 
@@ -136,7 +152,7 @@ const App = () => {
     const baseW = 405;
     const baseH = format === 'instagram' ? 506.25 : 720;
 
-    // Cálculo del factor de escala adaptativo:
+    // Factor de escala adaptativo:
     // - En móvil: escala al ancho del teléfono (con 24px de margen de seguridad)
     // - En escritorio: si fitView está activo, calcula la escala para que la slide
     //   completa quepa en la altura de la ventana (evita que la tarjeta quede cortada)
@@ -145,7 +161,6 @@ const App = () => {
             return Math.min(1, Math.max(0.6, (viewportW - 24) / baseW));
         }
         if (fitView) {
-            // Reserva 135px para cabecera superior, metadatos y padding vertical
             const availH = viewportH - 135;
             return Math.min(1, Math.max(0.55, availH / baseH));
         }
@@ -156,12 +171,19 @@ const App = () => {
     const scaledH = Math.round(baseH * currentScale);
 
     /**
-     * Exporta la slide actual a alta resolución (1080x1920 TikTok o 1080x1350 Instagram).
-     * Restaura temporalmente el transform y overflow a sus dimensiones naturales (405x720 o 405x506.25)
-     * para que html2canvas genere píxeles 100% nítidos sin recorte por ancestros.
+     * Renderiza la slide actual a un Blob binario PNG de alta resolución (1080x1920 o 1080x1350).
+     * Desactiva temporalmente el escalado para renderizado nítido y libre de recortes.
      */
-    const capture = async (filename) => {
-        await document.fonts.ready;
+    const renderSlideToBlob = async () => {
+        try {
+            await Promise.race([
+                document.fonts.ready,
+                new Promise((resolve) => setTimeout(resolve, 800)),
+            ]);
+        } catch (e) {
+            console.warn('Font loading check skipped:', e);
+        }
+
         const el = document.getElementById('capture-slide');
         const outer = document.getElementById('slide-scaler-outer');
         const inner = document.getElementById('slide-scaler-inner');
@@ -178,7 +200,6 @@ const App = () => {
         const elH = isIg ? 506.25 : 720;
         const scale = targetW / elW;
 
-        // Desactiva el escalado y desbordamiento durante la captura para evitar recortes o distorsión
         if (inner) inner.style.transform = 'none';
         if (outer) {
             outer.style.overflow = 'visible';
@@ -193,16 +214,18 @@ const App = () => {
                 height: elH,
                 backgroundColor: '#0c0c0c',
                 useCORS: true,
+                allowTaint: false,
                 logging: false,
-                imageTimeout: 0,
+                imageTimeout: 5000,
             });
 
-            const a = document.createElement('a');
-            a.download = filename;
-            a.href = canvas.toDataURL('image/png', 1.0);
-            a.click();
+            return await new Promise((resolve, reject) => {
+                canvas.toBlob((b) => {
+                    if (b) resolve(b);
+                    else reject(new Error('Canvas toBlob failed'));
+                }, 'image/png', 1.0);
+            });
         } finally {
-            // Restaura el escalado y dimensiones para la visualización en la pantalla
             if (inner) inner.style.transform = prevInnerTransform;
             if (outer) {
                 outer.style.overflow = prevOuterOverflow;
@@ -212,14 +235,65 @@ const App = () => {
         }
     };
 
+    /**
+     * Exporta la diapositiva activa con compatibilidad total para iPhone / iOS Safari:
+     * 1. Intenta abrir el Web Share Sheet nativo de iOS para 'Guardar imagen' en Fotos.
+     * 2. Si falla o se cancela, abre el modal de guardado directo con previsualización
+     *    y botón directo libre de bloqueo de popups.
+     * 3. En escritorio, descarga automáticamente el archivo vía Blob URL.
+     */
     const downloadOne = async () => {
         setBusy(true);
-        setProgressText('Exportando...');
+        setProgressText('Generando slide HD...');
         try {
-            await capture(`${video.slug}_${format}_${window.pad(sIdx + 1)}.png`);
+            const filename = `${video.slug}_${format}_${window.pad(sIdx + 1)}.png`;
+            const blob = await renderSlideToBlob();
+            const file = new File([blob], filename, { type: 'image/png' });
+            const url = URL.createObjectURL(blob);
+
+            // Intentar guardado nativo en iPhone mediante Web Share API
+            if (isMobileDevice && navigator.canShare && navigator.canShare({ files: [file] })) {
+                try {
+                    await navigator.share({
+                        files: [file],
+                        title: filename,
+                        text: 'Slide guardada con Santi.Dev Creator',
+                    });
+                    // Éxito con el Share Sheet de iOS (el usuario guardó o envió a Instagram/WhatsApp)
+                    return;
+                } catch (shareErr) {
+                    if (shareErr.name === 'AbortError') {
+                        // El usuario cerró el menú deliberadamente
+                        return;
+                    }
+                    console.warn('navigator.share falló, abriendo modal de guardado:', shareErr);
+                }
+            }
+
+            // En dispositivos móviles (iPhone / Android) o si no se compartió directamente,
+            // abrimos el modal de guardado táctil optimizado
+            if (isMobileDevice) {
+                setExportModal({
+                    filename,
+                    blob,
+                    file,
+                    url,
+                    isMultiple: false,
+                });
+                return;
+            }
+
+            // En escritorio: descarga directa vía <a download> con Blob URL (100% compatible)
+            const a = document.createElement('a');
+            a.download = filename;
+            a.href = url;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(() => URL.revokeObjectURL(url), 5000);
         } catch (err) {
             console.error(err);
-            alert('No se pudo exportar. Asegúrate de ejecutar con servidor local (ej: npx serve .).');
+            alert('No se pudo exportar la diapositiva. Asegúrate de ejecutar en servidor local.');
         } finally {
             setBusy(false);
             setProgressText('');
@@ -230,11 +304,36 @@ const App = () => {
     const downloadAll = async () => {
         setBusy(true);
         try {
+            const items = [];
             for (let i = 0; i < video.slides.length; i++) {
                 setSIdx(i);
-                setProgressText(`Exportando ${i + 1}/${video.slides.length}...`);
-                await window.sleep(450);
-                await capture(`${video.slug}_${format}_${window.pad(i + 1)}.png`);
+                setProgressText(`Renderizando ${i + 1}/${video.slides.length}...`);
+                await window.sleep(400);
+                const filename = `${video.slug}_${format}_${window.pad(i + 1)}.png`;
+                const blob = await renderSlideToBlob();
+                const file = new File([blob], filename, { type: 'image/png' });
+                const url = URL.createObjectURL(blob);
+                items.push({ index: i, filename, blob, file, url });
+
+                // En escritorio se descarga secuencialmente al disco
+                if (!isMobileDevice) {
+                    const a = document.createElement('a');
+                    a.download = filename;
+                    a.href = url;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    await window.sleep(250);
+                }
+            }
+
+            // En iPhone / Móvil, abrimos el panel de carrusel completo para guardar cada foto en la galería
+            if (isMobileDevice && items.length > 0) {
+                setExportModal({
+                    filename: `${video.slug}_${format}_carrusel`,
+                    isMultiple: true,
+                    items,
+                });
             }
         } catch (err) {
             console.error(err);
@@ -582,6 +681,140 @@ const App = () => {
                     <span>Todo</span>
                 </button>
             </div>
+
+            {/* ============================================================== */}
+            {/* MODAL DE GUARDADO PARA IPHONE / DISPOSITIVOS MÓVILES           */}
+            {/* ============================================================== */}
+            {exportModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/85 backdrop-blur-md">
+                    <div className="bg-neutral-900 border border-neutral-700 rounded-2xl max-w-sm w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+                        {/* Cabecera del modal */}
+                        <div className="p-3.5 border-b border-neutral-800 flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                                <i className="fa-solid fa-circle-check text-emerald-400 text-sm"></i>
+                                <div>
+                                    <h3 className="text-xs font-black text-white">
+                                        {exportModal.isMultiple ? 'Carrusel Listo para Guardar' : 'Slide Lista para Guardar'}
+                                    </h3>
+                                    <p className="text-[10px] text-neutral-400 font-mono">
+                                        {exportModal.isMultiple ? `${exportModal.items.length} imágenes HD` : exportModal.filename}
+                                    </p>
+                                </div>
+                            </div>
+                            <button
+                                onClick={() => {
+                                    if (exportModal.url) URL.revokeObjectURL(exportModal.url);
+                                    if (exportModal.items) exportModal.items.forEach(it => URL.revokeObjectURL(it.url));
+                                    setExportModal(null);
+                                }}
+                                className="w-7 h-7 rounded-full bg-neutral-800 text-neutral-400 hover:text-white flex items-center justify-center text-xs">
+                                <i className="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+
+                        {/* Contenido con scroll */}
+                        <div className="p-3.5 overflow-y-auto hide-scrollbar flex flex-col gap-3">
+                            {/* Instrucción visual para iPhone */}
+                            <div className="bg-gradient-to-r from-blue-950/60 to-cyan-950/60 border border-cyan-800/60 rounded-xl p-2.5 text-xs text-cyan-200 flex items-start gap-2">
+                                <i className="fa-brands fa-apple text-base text-cyan-300 shrink-0 mt-0.5"></i>
+                                <div className="text-[11px] leading-tight text-neutral-300">
+                                    <b className="text-white">Para guardar en tu iPhone:</b>
+                                    <p className="mt-0.5 text-cyan-200/90">
+                                        Toca <b>"Guardar en Fotos"</b> abajo o mantén presionada la imagen para seleccionar <i>"Guardar en Fotos"</i>.
+                                    </p>
+                                </div>
+                            </div>
+
+                            {!exportModal.isMultiple ? (
+                                <div className="flex flex-col gap-3 items-center">
+                                    {/* Previsualización de la imagen con soporte de toque prolongado */}
+                                    <div className="relative rounded-xl overflow-hidden border border-neutral-700 shadow-xl bg-black max-h-[44vh] flex items-center justify-center">
+                                        <img
+                                            src={exportModal.url}
+                                            alt="Slide generada"
+                                            className="ios-save-image max-h-[44vh] w-auto object-contain"
+                                        />
+                                    </div>
+
+                                    {/* Botones táctiles genuinos */}
+                                    <div className="flex flex-col gap-1.5 w-full">
+                                        {navigator.share && (
+                                            <button
+                                                onClick={async () => {
+                                                    try {
+                                                        const f = exportModal.file || new File([exportModal.blob], exportModal.filename, { type: 'image/png' });
+                                                        await navigator.share({
+                                                            files: [f],
+                                                            title: exportModal.filename,
+                                                            text: 'Guardar slide en Fotos',
+                                                        });
+                                                    } catch (e) {
+                                                        if (e.name !== 'AbortError') console.error(e);
+                                                    }
+                                                }}
+                                                className="w-full py-2.5 px-3 rounded-xl font-black text-xs bg-white text-black hover:bg-neutral-200 flex items-center justify-center gap-2 shadow-lg active:scale-[0.98]">
+                                                <i className="fa-solid fa-arrow-up-from-bracket text-sm"></i>
+                                                <span>Guardar en Fotos / Compartir</span>
+                                            </button>
+                                        )}
+
+                                        <a
+                                            href={exportModal.url}
+                                            download={exportModal.filename}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="w-full py-2 px-3 rounded-xl font-bold text-xs bg-neutral-800 text-neutral-200 hover:bg-neutral-700 flex items-center justify-center gap-2 border border-neutral-700 active:scale-[0.98]">
+                                            <i className="fa-solid fa-download"></i>
+                                            <span>Descargar Archivo PNG</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="flex flex-col gap-2.5">
+                                    <p className="text-xs text-neutral-400">Toca guardar en cada diapositiva para tu carrete:</p>
+                                    <div className="flex flex-col gap-2">
+                                        {exportModal.items.map((item, idx) => (
+                                            <div key={idx} className="flex items-center gap-2.5 p-2 bg-neutral-800/80 border border-neutral-700/60 rounded-xl">
+                                                <img
+                                                    src={item.url}
+                                                    alt={`Slide ${idx + 1}`}
+                                                    className="ios-save-image w-10 h-14 object-cover rounded-lg border border-neutral-700 shrink-0"
+                                                />
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="font-bold text-xs text-white truncate">Slide {idx + 1} de {exportModal.items.length}</div>
+                                                    <div className="text-[10px] text-neutral-400 font-mono truncate">{item.filename}</div>
+                                                </div>
+                                                <button
+                                                    onClick={async () => {
+                                                        try {
+                                                            if (navigator.share) {
+                                                                await navigator.share({
+                                                                    files: [item.file],
+                                                                    title: item.filename,
+                                                                });
+                                                            } else {
+                                                                const a = document.createElement('a');
+                                                                a.download = item.filename;
+                                                                a.href = item.url;
+                                                                a.click();
+                                                            }
+                                                        } catch (e) {
+                                                            if (e.name !== 'AbortError') console.error(e);
+                                                        }
+                                                    }}
+                                                    className="px-2.5 py-1.5 rounded-lg bg-white text-black font-black text-xs flex items-center gap-1 shrink-0 active:scale-95 shadow">
+                                                    <i className="fa-solid fa-arrow-down-to-bracket text-[10px]"></i>
+                                                    <span>Guardar</span>
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* ============================================================== */}
             {/* DRAWER / BOTTOM SHEET MÓVIL: SELECCIÓN DE LOS 8 CARRUSELES     */}

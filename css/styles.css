@@ -160,3 +160,11 @@ button {
 .animate-slideUp {
     animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* Habilitar menú nativo 'Guardar en Fotos' al mantener presionado en iPhone / iOS Safari */
+.ios-save-image {
+    -webkit-touch-callout: default !important;
+    -webkit-user-select: auto !important;
+    user-select: auto !important;
+    pointer-events: auto !important;
+}
