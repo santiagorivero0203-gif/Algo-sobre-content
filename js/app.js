@@ -10,13 +10,16 @@
  *       * Selector de slides en barra horizontal táctil por números.
  *       * Botonera fija inferior optimizada para pulgares (Descargar HD y Descargar Todo).
  *   - Modo Escritorio (MD+):
- *       * Barra lateral completa con agrupación por series y contadores.
+ *       * Ajuste vertical automático (Fit to Viewport) para que la diapositiva completa
+ *         quepa en pantallas de laptops (ej: 1366x768 / 1080p con barras) sin cortes.
+ *       * Botonera de exportación fijada en el pie de la barra lateral (sticky bottom).
+ *       * Píldoras de diapositivas horizontales también en la barra superior del lienzo.
  *       * Navegación por teclado (← / →).
  *   - Motor de exportación dual:
  *       * TikTok / Reels / Shorts: 1080x1920 (9:16).
  *       * Instagram Feed: 1080x1350 (4:5).
  *       * Desactiva temporalmente el escalado CSS para renderizado 100% nítido
- *         en html2canvas sin aberraciones de subpíxel.
+ *         en html2canvas sin aberraciones de subpíxel ni recortes por ancestros.
  * =====================================================================
  */
 
@@ -58,9 +61,15 @@ const App = () => {
     // Estado del drawer/menú móvil de selección de carruseles (?drawer=1 para test o apertura directa)
     const [drawerOpen, setDrawerOpen] = React.useState(URL_PARAMS.get('drawer') === '1');
 
-    // Estado de dimensiones de viewport para escalado dinámico en pantallas de smartphones
+    // Modo de ajuste en escritorio: 'fit' (ajuste automático a la altura de la pantalla) o '100%'
+    const [fitView, setFitView] = React.useState(true);
+
+    // Dimensiones de ventana para escalado reactivo en móvil y escritorio
     const [viewportW, setViewportW] = React.useState(
         typeof window !== 'undefined' ? window.innerWidth : 1024
+    );
+    const [viewportH, setViewportH] = React.useState(
+        typeof window !== 'undefined' ? window.innerHeight : 768
     );
 
     const video = window.VIDEOS[vIdx];
@@ -74,7 +83,10 @@ const App = () => {
 
     // Escucha el redimensionamiento de pantalla para recalcular el factor de escala
     React.useEffect(() => {
-        const onResize = () => setViewportW(window.innerWidth);
+        const onResize = () => {
+            setViewportW(window.innerWidth);
+            setViewportH(window.innerHeight);
+        };
         window.addEventListener('resize', onResize);
         return () => window.removeEventListener('resize', onResize);
     }, []);
@@ -124,13 +136,24 @@ const App = () => {
     const baseW = 405;
     const baseH = format === 'instagram' ? 506.25 : 720;
 
-    // Cálculo del factor de escala para que la diapositiva encaje con 24px de margen en móvil
-    const mobileScale = isMobile
-        ? Math.min(1, Math.max(0.6, (viewportW - 24) / baseW))
-        : 1;
+    // Cálculo del factor de escala adaptativo:
+    // - En móvil: escala al ancho del teléfono (con 24px de margen de seguridad)
+    // - En escritorio: si fitView está activo, calcula la escala para que la slide
+    //   completa quepa en la altura de la ventana (evita que la tarjeta quede cortada)
+    const currentScale = (() => {
+        if (isMobile) {
+            return Math.min(1, Math.max(0.6, (viewportW - 24) / baseW));
+        }
+        if (fitView) {
+            // Reserva 135px para cabecera superior, metadatos y padding vertical
+            const availH = viewportH - 135;
+            return Math.min(1, Math.max(0.55, availH / baseH));
+        }
+        return 1;
+    })();
 
-    const scaledW = Math.round(baseW * mobileScale);
-    const scaledH = Math.round(baseH * mobileScale);
+    const scaledW = Math.round(baseW * currentScale);
+    const scaledH = Math.round(baseH * currentScale);
 
     /**
      * Exporta la slide actual a alta resolución (1080x1920 TikTok o 1080x1350 Instagram).
@@ -179,7 +202,7 @@ const App = () => {
             a.href = canvas.toDataURL('image/png', 1.0);
             a.click();
         } finally {
-            // Restaura el escalado y dimensiones para la visualización en el teléfono
+            // Restaura el escalado y dimensiones para la visualización en la pantalla
             if (inner) inner.style.transform = prevInnerTransform;
             if (outer) {
                 outer.style.overflow = prevOuterOverflow;
@@ -303,89 +326,106 @@ const App = () => {
             {/* ============================================================== */}
             {/* BARRA LATERAL ESCRITORIO (>= 768px)                            */}
             {/* ============================================================== */}
-            <aside className="hidden md:flex w-[325px] bg-neutral-900 p-5 flex-col border-r border-neutral-800 h-full overflow-y-auto hide-scrollbar shrink-0">
-                <div className="flex items-center justify-between mb-1">
-                    <h1 className="text-base font-black text-white flex items-center gap-2">
-                        <i className="fa-solid fa-layer-group" style={{ color: theme.accent }}></i> Santi.Dev Creator
-                    </h1>
-                    <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-neutral-800 text-neutral-300 font-bold border border-neutral-700">v3.4</span>
-                </div>
-                <p className="text-[11px] text-neutral-500 font-mono mb-4">Generador de carruseles de alta calidad</p>
-
-                {/* Selector de formato para escritorio */}
-                <div className="mb-5">
-                    <label className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-2 flex items-center justify-between">
-                        <span>Formato de salida</span>
-                        <span className="font-mono text-neutral-400 text-[10px]">{format === 'instagram' ? '1080 × 1350' : '1080 × 1920'}</span>
-                    </label>
-                    <div className="grid grid-cols-2 gap-1.5 p-1 bg-neutral-950 rounded-xl border border-neutral-800">
-                        <button
-                            id="fmt-btn-tiktok"
-                            onClick={() => setFormat('tiktok')}
-                            className={`flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold transition-all ${format === 'tiktok' ? 'bg-white text-black shadow' : 'text-neutral-400 hover:text-white'}`}>
-                            <i className="fa-brands fa-tiktok"></i>
-                            <span>TikTok 9:16</span>
-                        </button>
-                        <button
-                            id="fmt-btn-instagram"
-                            onClick={() => setFormat('instagram')}
-                            className={`flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold transition-all ${format === 'instagram' ? 'bg-gradient-to-r from-amber-500 via-rose-500 to-purple-600 text-white shadow' : 'text-neutral-400 hover:text-white'}`}>
-                            <i className="fa-brands fa-instagram"></i>
-                            <span>Instagram 4:5</span>
-                        </button>
+            <aside className="hidden md:flex w-[335px] bg-neutral-900 flex-col border-r border-neutral-800 h-full shrink-0 relative">
+                {/* Zona superior con scroll independiente */}
+                <div className="flex-1 p-5 overflow-y-auto hide-scrollbar flex flex-col">
+                    <div className="flex items-center justify-between mb-1">
+                        <h1 className="text-base font-black text-white flex items-center gap-2">
+                            <i className="fa-solid fa-layer-group" style={{ color: theme.accent }}></i> Santi.Dev Creator
+                        </h1>
+                        <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-neutral-800 text-neutral-300 font-bold border border-neutral-700">v3.4</span>
                     </div>
-                </div>
+                    <p className="text-[11px] text-neutral-500 font-mono mb-4">Generador de carruseles de alta calidad</p>
 
-                {isFileProtocol && (
-                    <div className="mb-4 rounded-lg p-3 text-[11px] leading-snug bg-amber-950/40 text-amber-200 border border-amber-800/60">
-                        <b className="text-white">Aviso:</b> estás en <span className="font-mono">file://</span>. Para exportar sin bloqueo CORS ejecuta: <span className="font-mono text-white">npx serve .</span>
-                    </div>
-                )}
-
-                {/* Agrupación por series en escritorio */}
-                {[...new Set(window.VIDEOS.map((v) => v.group))].map((grpName) => {
-                    const list = window.VIDEOS.map((v, i) => ({ v, i })).filter((item) => item.v.group === grpName);
-                    return (
-                        <div key={grpName} className="mb-4">
-                            <div className="flex items-center justify-between text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-2">
-                                <span>{grpName}</span>
-                                <span className="font-mono text-[9px] bg-neutral-800 px-1.5 py-0.5 rounded text-neutral-400">{list.length} videos</span>
-                            </div>
-                            {list.map(({ v, i }) => (
-                                <button key={v.id} id={`video-btn-${v.id}`}
-                                    onClick={() => { setVIdx(i); setSIdx(0); }}
-                                    className={`w-full text-left p-2.5 rounded-lg mb-1.5 transition-all ${vIdx === i ? 'bg-white text-black font-semibold' : 'bg-neutral-800/80 text-neutral-300 hover:bg-neutral-700'}`}>
-                                    <div className="flex items-center gap-2 text-xs font-bold truncate">
-                                        <span style={{ width: 8, height: 8, borderRadius: 2, background: window.THEMES[v.theme].accent, flexShrink: 0 }} />
-                                        <span className="truncate">{v.title}</span>
-                                    </div>
-                                    <div className={`text-[10.5px] mt-0.5 truncate ${vIdx === i ? 'text-neutral-600' : 'text-neutral-400'}`}>{v.subtitle}</div>
-                                </button>
-                            ))}
+                    {/* Selector de formato para escritorio */}
+                    <div className="mb-4">
+                        <label className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-2 flex items-center justify-between">
+                            <span>Formato de salida</span>
+                            <span className="font-mono text-neutral-400 text-[10px]">{format === 'instagram' ? '1080 × 1350' : '1080 × 1920'}</span>
+                        </label>
+                        <div className="grid grid-cols-2 gap-1.5 p-1 bg-neutral-950 rounded-xl border border-neutral-800">
+                            <button
+                                id="fmt-btn-tiktok"
+                                onClick={() => setFormat('tiktok')}
+                                className={`flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold transition-all ${format === 'tiktok' ? 'bg-white text-black shadow' : 'text-neutral-400 hover:text-white'}`}>
+                                <i className="fa-brands fa-tiktok"></i>
+                                <span>TikTok 9:16</span>
+                            </button>
+                            <button
+                                id="fmt-btn-instagram"
+                                onClick={() => setFormat('instagram')}
+                                className={`flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold transition-all ${format === 'instagram' ? 'bg-gradient-to-r from-amber-500 via-rose-500 to-purple-600 text-white shadow' : 'text-neutral-400 hover:text-white'}`}>
+                                <i className="fa-brands fa-instagram"></i>
+                                <span>Instagram 4:5</span>
+                            </button>
                         </div>
-                    );
-                })}
+                    </div>
 
-                <label className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider mb-2 mt-2 block">Slides</label>
-                <div className="flex flex-col gap-1.5 mb-5">
-                    {video.slides.map((s, idx) => (
-                        <button key={idx} id={`slide-btn-${idx + 1}`} onClick={() => setSIdx(idx)}
-                            className={`w-full text-left px-3 py-2 rounded-lg text-[12.5px] font-semibold transition-all flex items-center gap-2.5 ${sIdx === idx ? 'bg-white text-black' : 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700'}`}>
-                            <span className="w-5 h-5 rounded-md flex items-center justify-center text-[11px] font-mono shrink-0"
-                                style={{ background: sIdx === idx ? theme.accent : '#333', color: sIdx === idx ? theme.ink : '#bbb' }}>{idx + 1}</span>
-                            <span className="truncate flex-1">{(s.title || s.quote || s.number || '').replace(/\*/g, '')}</span>
-                            <span className="text-[9px] font-mono opacity-60">{s.type}</span>
-                        </button>
-                    ))}
+                    {isFileProtocol && (
+                        <div className="mb-4 rounded-lg p-3 text-[11px] leading-snug bg-amber-950/40 text-amber-200 border border-amber-800/60">
+                            <b className="text-white">Aviso:</b> estás en <span className="font-mono">file://</span>. Para exportar sin bloqueo CORS ejecuta: <span className="font-mono text-white">npx serve .</span>
+                        </div>
+                    )}
+
+                    {/* Agrupación por series en escritorio */}
+                    {[...new Set(window.VIDEOS.map((v) => v.group))].map((grpName) => {
+                        const list = window.VIDEOS.map((v, i) => ({ v, i })).filter((item) => item.v.group === grpName);
+                        return (
+                            <div key={grpName} className="mb-3">
+                                <div className="flex items-center justify-between text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1.5">
+                                    <span>{grpName}</span>
+                                    <span className="font-mono text-[9px] bg-neutral-800 px-1.5 py-0.5 rounded text-neutral-400">{list.length} videos</span>
+                                </div>
+                                {list.map(({ v, i }) => (
+                                    <div key={v.id} className="mb-1.5">
+                                        <button
+                                            id={`video-btn-${v.id}`}
+                                            onClick={() => { setVIdx(i); setSIdx(0); }}
+                                            className={`w-full text-left p-2.5 rounded-lg transition-all ${vIdx === i ? 'bg-white text-black font-semibold shadow' : 'bg-neutral-800/80 text-neutral-300 hover:bg-neutral-700'}`}>
+                                            <div className="flex items-center gap-2 text-xs font-bold truncate">
+                                                <span style={{ width: 8, height: 8, borderRadius: 2, background: window.THEMES[v.theme].accent, flexShrink: 0 }} />
+                                                <span className="truncate">{v.title}</span>
+                                            </div>
+                                            <div className={`text-[10.5px] mt-0.5 truncate ${vIdx === i ? 'text-neutral-600' : 'text-neutral-400'}`}>{v.subtitle}</div>
+                                        </button>
+
+                                        {/* Diapositivas expandidas directamente bajo el video activo */}
+                                        {vIdx === i && (
+                                            <div className="mt-1.5 mb-2 pl-3 border-l-2 flex flex-col gap-1" style={{ borderColor: window.THEMES[v.theme].accent }}>
+                                                {v.slides.map((s, idx) => (
+                                                    <button
+                                                        key={idx}
+                                                        id={`slide-btn-${idx + 1}`}
+                                                        onClick={() => setSIdx(idx)}
+                                                        className={`w-full text-left px-2.5 py-1.5 rounded-md text-[11.5px] font-semibold transition-all flex items-center gap-2 ${sIdx === idx ? 'bg-neutral-800 text-white font-bold ring-1 ring-neutral-600' : 'text-neutral-400 hover:text-white hover:bg-neutral-800/50'}`}>
+                                                        <span className="w-4 h-4 rounded flex items-center justify-center text-[10px] font-mono shrink-0"
+                                                            style={{ background: sIdx === idx ? theme.accent : '#333', color: sIdx === idx ? theme.ink : '#bbb' }}>{idx + 1}</span>
+                                                        <span className="truncate flex-1">{(s.title || s.quote || s.number || '').replace(/\*/g, '')}</span>
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        );
+                    })}
                 </div>
 
-                <div className="mt-auto flex flex-col gap-2 pt-2 border-t border-neutral-800">
-                    <button id="download-one" onClick={downloadOne} disabled={busy}
+                {/* Botonera fija inferior en la barra lateral (sticky bottom) */}
+                <div className="p-4 bg-neutral-900 border-t border-neutral-800 flex flex-col gap-2 shrink-0 shadow-2xl">
+                    <button
+                        id="download-one"
+                        onClick={downloadOne}
+                        disabled={busy}
                         className={`w-full py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all ${busy ? 'bg-neutral-600 cursor-not-allowed text-neutral-300' : 'bg-white text-black hover:bg-neutral-200 shadow'}`}>
                         <i className={`fa-solid ${busy ? 'fa-spinner fa-spin' : 'fa-download'}`}></i>
                         <span>{busy ? progressText : `Descargar slide (${format === 'instagram' ? '1080×1350' : '1080×1920'})`}</span>
                     </button>
-                    <button id="download-all" onClick={downloadAll} disabled={busy}
+                    <button
+                        id="download-all"
+                        onClick={downloadAll}
+                        disabled={busy}
                         className="w-full py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all border border-neutral-700 text-neutral-200 hover:bg-neutral-800">
                         <i className={`fa-solid ${busy ? 'fa-spinner fa-spin' : 'fa-images'}`}></i>
                         <span>{busy ? progressText : `Descargar todo el carrusel (${format.toUpperCase()})`}</span>
@@ -397,29 +437,61 @@ const App = () => {
             {/* ÁREA PRINCIPAL: LIENZO RESPONSIVO + DETALLES                   */}
             {/* ============================================================== */}
             <main
-                className="flex-1 bg-[#0a0a0a] flex flex-col items-center p-3 md:p-6 overflow-y-auto overflow-x-hidden hide-scrollbar gap-3 w-full max-w-[100vw]"
+                className="flex-1 bg-[#0a0a0a] flex flex-col items-center p-3 md:p-5 overflow-y-auto overflow-x-hidden hide-scrollbar gap-2.5 w-full max-w-[100vw]"
                 style={{ justifyContent: 'safe center' }}
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}>
 
-                {/* Barra de estado superior de la slide */}
+                {/* Barra de control superior de la diapositiva (formato + navegación + zoom) */}
                 <div
-                    className="flex items-center justify-between text-neutral-400 text-xs px-1 w-full"
-                    style={{ maxWidth: scaledW }}>
+                    className="flex items-center justify-between text-neutral-400 text-xs px-1 w-full shrink-0"
+                    style={{ maxWidth: Math.max(scaledW, 360) }}>
                     <div className="flex items-center gap-2 font-mono text-[11px]">
                         <span className={`w-2 h-2 rounded-full ${format === 'instagram' ? 'bg-rose-500' : 'bg-cyan-400'}`}></span>
                         <span className="font-bold text-white uppercase">{format}</span>
                         <span className="text-neutral-500">· {format === 'instagram' ? '1080×1350' : '1080×1920'}</span>
                     </div>
-                    <div className="flex items-center gap-1 font-mono text-[11px] text-neutral-400">
-                        <span className="bg-neutral-800/80 px-2 py-0.5 rounded text-neutral-300">Slide {sIdx + 1}/{video.slides.length}</span>
+
+                    {/* Controles de vista y slides en escritorio */}
+                    <div className="flex items-center gap-2">
+                        {/* Selector rápido de slides en escritorio */}
+                        <div className="hidden md:flex items-center gap-1 bg-neutral-900 border border-neutral-800 rounded-lg p-0.5">
+                            {video.slides.map((_, idx) => (
+                                <button
+                                    key={idx}
+                                    onClick={() => setSIdx(idx)}
+                                    className={`w-5 h-5 rounded text-[10px] font-mono font-bold flex items-center justify-center transition-all ${sIdx === idx ? 'bg-white text-black' : 'text-neutral-400 hover:text-white'}`}>
+                                    {idx + 1}
+                                </button>
+                            ))}
+                        </div>
+
+                        {/* Toggle de ajuste a pantalla (Fit) vs 100% */}
+                        <div className="hidden md:flex bg-neutral-900 border border-neutral-800 rounded-lg p-0.5 text-[10px] font-mono">
+                            <button
+                                onClick={() => setFitView(true)}
+                                className={`px-2 py-0.5 rounded font-bold transition-all ${fitView ? 'bg-neutral-700 text-white' : 'text-neutral-400 hover:text-white'}`}
+                                title="Ajusta la diapositiva completa a la altura visible de la pantalla">
+                                Ajustar
+                            </button>
+                            <button
+                                onClick={() => setFitView(false)}
+                                className={`px-2 py-0.5 rounded font-bold transition-all ${!fitView ? 'bg-neutral-700 text-white' : 'text-neutral-400 hover:text-white'}`}
+                                title="Tamaño natural 100%">
+                                100%
+                            </button>
+                        </div>
+
+                        <span className="md:hidden bg-neutral-800/80 px-2 py-0.5 rounded text-neutral-300 font-mono text-[11px]">
+                            {sIdx + 1}/{video.slides.length}
+                        </span>
                     </div>
                 </div>
 
-                {/* Contenedor con escalado responsivo proporcional para teléfonos (transformOrigin: top left) */}
+                {/* Contenedor con escalado responsivo proporcional (shrink-0 garantiza que flexbox jamás recorte la diapositiva) */}
                 <div
                     id="slide-scaler-outer"
-                    className="slide-scaler-outer mx-auto"
+                    className="slide-scaler-outer mx-auto shrink-0"
                     style={{
                         width: scaledW,
                         height: scaledH,
@@ -428,7 +500,7 @@ const App = () => {
                         id="slide-scaler-inner"
                         className="slide-scaler-inner"
                         style={{
-                            transform: `scale(${mobileScale})`,
+                            transform: `scale(${currentScale})`,
                             transformOrigin: 'top left',
                             width: baseW,
                             height: baseH,
@@ -439,7 +511,7 @@ const App = () => {
 
                 {/* Controles de navegación táctil para móvil (< 768px) */}
                 <div
-                    className="md:hidden flex items-center justify-between gap-2 w-full mt-1"
+                    className="md:hidden flex items-center justify-between gap-2 w-full mt-1 shrink-0"
                     style={{ maxWidth: scaledW }}>
                     <button
                         id="mobile-nav-prev"
@@ -464,8 +536,8 @@ const App = () => {
 
                 {/* Metadatos y notas de producción */}
                 <div
-                    className="text-[11px] font-mono text-neutral-500 flex justify-between px-1 w-full"
-                    style={{ maxWidth: scaledW }}>
+                    className="text-[11px] font-mono text-neutral-500 flex justify-between px-1 w-full shrink-0"
+                    style={{ maxWidth: Math.max(scaledW, 360) }}>
                     <span>{slide.type} · {slide.layout} · {slide.tone || 'white'}</span>
                     <span className="hidden md:inline">← → para navegar</span>
                     <span className="md:hidden text-neutral-600">Desliza el dedo ↔</span>
@@ -473,8 +545,8 @@ const App = () => {
 
                 {slide.prod && (
                     <div
-                        className="rounded-xl p-3 text-[11.5px] leading-snug bg-neutral-900/90 border border-neutral-800/80 text-neutral-300 w-full"
-                        style={{ maxWidth: scaledW }}>
+                        className="rounded-xl p-3 text-[11.5px] leading-snug bg-neutral-900/90 border border-neutral-800/80 text-neutral-300 w-full shrink-0"
+                        style={{ maxWidth: Math.max(scaledW, 360) }}>
                         <div className="flex items-center gap-1.5 text-neutral-400 font-bold mb-1 text-[11px] uppercase tracking-wider">
                             <i className="fa-solid fa-wand-magic-sparkles text-[10px]" style={{ color: theme.accent }}></i>
                             <span>Nota creativa:</span>
@@ -484,7 +556,7 @@ const App = () => {
                 )}
 
                 {/* Espacio de reserva para que el contenido no quede tapado por la botonera fija inferior en móvil */}
-                <div className="md:hidden h-24 w-full"></div>
+                <div className="md:hidden h-24 w-full shrink-0"></div>
             </main>
 
             {/* ============================================================== */}

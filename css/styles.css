@@ -78,6 +78,7 @@ html, body {
     overflow: hidden;
     border-radius: 14px;
     touch-action: pan-y;
+    flex-shrink: 0;
     box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
