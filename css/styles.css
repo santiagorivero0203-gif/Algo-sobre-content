@@ -1,0 +1,81 @@
+/**
+ * =====================================================================
+ * SANTI.DEV · SISTEMA DE DISEÑO Y ESTILOS GLOBALES
+ * =====================================================================
+ * Estructura de estilos desacoplada del HTML para máxima modularidad,
+ * rendimiento y escalabilidad.
+ *
+ * Incluye:
+ *   1. Tokens de variables CSS (colores base, fuentes, dimensiones).
+ *   2. Reset y tipografía global (Inter + JetBrains Mono).
+ *   3. Fondo base .bg-grid (patrón milimétrico mate sin brillos).
+ *   4. Contenedor de slide .slide-container (proporción 9:16 vertical).
+ *   5. Utilidades para ocultar barras de scroll nativas.
+ *   6. Estados de interacción y accesibilidad visual.
+ * =====================================================================
+ */
+
+:root {
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+    --bg-dark: #0f0f0f;
+    --bg-canvas: #0c0c0c;
+    --grid-line: #1b1b1b;
+    --color-text-light: #ffffff;
+    --color-text-muted: #8a8a8a;
+    --slide-w: 405px;
+    --slide-h: 720px;
+}
+
+/* Reset básico del cuerpo del documento */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background-color: var(--bg-dark);
+    color: var(--color-text-light);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Fondo de cuadrícula técnica (grid discreto estilo editor) */
+.bg-grid {
+    background-color: var(--bg-canvas);
+    background-image:
+        linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+    background-size: 27px 27px;
+}
+
+/* Lienzo vertical 9:16 para TikTok y Reels (405x720 escala a 1080x1920) */
+.slide-container {
+    width: var(--slide-w);
+    height: var(--slide-h);
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+    user-select: none;
+}
+
+/* Ocultar barras de scroll sin romper la capacidad de desplazamiento */
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Efectos de transición suaves para interacción en el editor */
+button {
+    transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Animaciones sutiles para badges y estados activos */
+.badge-active {
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+}

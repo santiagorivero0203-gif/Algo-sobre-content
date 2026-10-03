@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Santi.Dev · Generador de Carruseles TikTok (Dev + Gaming)</title>
+    <meta name="description" content="Generador modular de carruseles 1080x1920 para TikTok: diseño minimalista de alto contraste, tarjetas limpias, fondo de código y gaming, e iconografía SVG propia.">
+
+    <!--
+    =====================================================================
+      SANTI.DEV · GENERADOR MODULAR DE CARRUSELES
+      -----------------------------------------------------------------
+      Arquitectura desacoplada y escalable:
+        - css/styles.css   -> Estilos globales, grid, lienzo 9:16 y reset.
+        - js/icons.js      -> Iconos SVG propios, pixel art y landmarks.
+        - js/themes.js     -> Paletas temáticas, fondos deterministas y HUD.
+        - js/videos.js     -> Datos de los 6 videos (Trilogías 1 y 2).
+        - js/components.js -> Componentes de slides, tarjetas y layouts.
+        - js/app.js        -> App React, sidebar agrupado y exportador PNG.
+    =====================================================================
+    -->
+
+    <!-- Google Fonts: Inter (titulares limpios) + JetBrains Mono (código) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS (CDN) para utilidades de disposición rápida -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace']
+                    }
+                }
+            }
+        };
+    </script>
+
+    <!-- FontAwesome: Iconografía auxiliar para la barra de herramientas del editor -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Hoja de estilos desacoplada del HTML -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- html2canvas: exportador PNG de alta resolución (1080x1920) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <!-- React 18 + ReactDOM + Babel Standalone para renderizado modular -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <!-- Contenedor raíz donde React monta la aplicación -->
+    <div id="root" class="w-full h-full"></div>
+
+    <!-- Módulos JavaScript ordenados lógicamente -->
+    <script type="text/babel" src="js/icons.js"></script>
+    <script type="text/babel" src="js/themes.js"></script>
+    <script type="text/babel" src="js/videos.js"></script>
+    <script type="text/babel" src="js/components.js"></script>
+    <script type="text/babel" src="js/app.js"></script>
+</body>
+</html>
