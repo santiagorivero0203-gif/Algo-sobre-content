@@ -108,6 +108,17 @@ El generador incluye un selector de formato en tiempo real para adaptar el dise�
 
 ## 📝 Registro de Cambios
 
+### v3.6 (2026-10-03)
+- **Kit de Publicación para Redes Sociales (Post Kit)**:
+  - **Captions y Ganchos Completos para los 8 Carruseles**: Cada carrusel cuenta con su gancho de marketing conversacional (Hook), descripción estructurada paso a paso con viñetas limpias (Caption), llamada a la acción hacia la comunidad y hashtags estratégicos.
+  - **Hashtags Estratégicos Segmentados**: Entre 10 y 12 etiquetas por carrusel combinando nicho específico (`#antigravity`, `#opencode`, `#mediapipe`, `#stitchmcp`) y categorías de alto alcance (`#programacion`, `#desarrolloweb`, `#gamedev`).
+  - **Recomendaciones de Publicación**: Horarios pico de engagement recomendados según la temática (e.g., `18:00 - 21:00` o `12:00 - 15:00`) y pistas de audio/sonido sugeridas (e.g., *Synthwave instrumental*, *Chillhop cyber lo-fi*, etc.) para potenciar el algoritmo de TikTok e Instagram.
+  - **Modal Interactivo "Kit de Publicación" en la App**:
+    - Acceso rápido en 1 toque desde la barra móvil (`Kit Post`), barra lateral de escritorio (`Kit de Publicación`), cabecera del lienzo y directamente tras guardar en el modal de exportación.
+    - Botones de copiado al portapapeles con confirmación visual instantánea (`✓ ¡Copiado!`): **Copiar Caption Completo + Hashtags**, **Copiar sólo Hashtags**, **Copiar Hook** y píldoras interactivas individuales por cada hashtag.
+    - Selector horizontal de los 8 carruseles para copiar textos de cualquiera sin cerrar el modal.
+  - **Documento Maestro de Referencia**: Creación de [`posts_kit.md`](file:///c:/Users/user/Desktop/video%20proyectos/algo/posts_kit.md) con los 8 kits de publicación organizados en Markdown listos para consulta o copiado rápido offline.
+
 ### v3.5 (2026-10-03)
 - **Soporte Nativo de Exportación y Guardado en iPhone (iOS Safari & Chrome)**:
   - **Superación de Restricciones de Apple WebKit**: iOS Safari bloquea silenciosamente las descargas automáticas `<a download>` cuando se usan `data:image/png;base64` pesadas o cuando expira el contexto de gesto táctil.

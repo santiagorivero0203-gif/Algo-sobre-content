@@ -18,6 +18,22 @@ window.VIDEOS = [
     {
         id: 'stack1', slug: 'stack_visual_y_logico', theme: 'stack1', caseNo: 1, group: 'Trilogía: De la Idea al Código',
         title: 'Parte 1: Stack Secreto', subtitle: 'Juegos y webs sin saber programar',
+        post: {
+            hook: '¿Juegos y webs sin saber programar? Te enseño mi stack secreto 👇',
+            caption: `¿Te imaginas crear tus propios videojuegos y aplicaciones web sin pasar meses atascado en la sintaxis?
+
+En este carrusel te revelo el stack técnico exacto que uso para pasar de una idea en la cabeza a un prototipo funcionando:
+
+1️⃣ Inspiración: Roba como un artista. Analiza las mecánicas de juegos y webs que amas y combínalas con tu toque personal.
+2️⃣ Lógica: Google Antigravity para levantar el 85% de la arquitectura base + Opencode para pulir detalles finos y ahorrar miles de tokens.
+3️⃣ Arte: Nano Banana para generar sprites increíbles con IA y Remove BG para dejarlos transparentes en 1 clic.
+
+💾 Guarda este post para tu próximo proyecto.
+👉 Sígueme para la Parte 2: Automatización de bases de datos y GitHub.`,
+            hashtags: ['#programacion', '#desarrolloweb', '#gamedev', '#antigravity', '#opencode', '#ia', '#tecnologia', '#indiedev', '#codingtips', '#devlife', '#creadores'],
+            bestTime: '18:00 - 21:00',
+            sound: 'Synthwave / Lo-Fi Beats instrumental',
+        },
         slides: [
             {
                 type: 'hero', layout: 'low', header: 'none',
@@ -71,6 +87,22 @@ window.VIDEOS = [
     {
         id: 'stack2', slug: 'automatizacion_y_mcp', theme: 'stack2', caseNo: 2, group: 'Trilogía: De la Idea al Código',
         title: 'Parte 2: Automatización', subtitle: 'El trabajo sucio resuelto con MCP',
+        post: {
+            hook: 'Deja de subir archivos a mano. Así automatizo todo con MCP 👇',
+            caption: `Programar en 2026 no se trata de hacer tareas repetitivas a mano. Se trata de conectar herramientas inteligentes.
+
+En la parte 2 de este stack técnico te muestro el poder de las herramientas MCP (Model Context Protocol):
+
+⚙️ Stitch MCP: Conecta tu editor de código con servicios en la nube, APIs y diseño en Figma sin cambiar de ventana.
+🗄️ Supabase MCP: Pide tus tablas de base de datos en lenguaje natural y ten un backend SQL funcionando en vivo en segundos.
+🐙 Git MCP: Sincronización automática con GitHub para respaldar tus avances sin miedo a romper ramas ni lidiar con comandos oscuros.
+
+💾 Guarda este post y compártelo con tu compa dev.
+👉 Sígueme para la Parte 3: Por qué tu código con IA colapsa y cómo evitarlo.`,
+            hashtags: ['#mcp', '#antigravity', '#automatizacion', '#supabase', '#stitchmcp', '#developer', '#programacion', '#ia', '#backend', '#frontend', '#github', '#techtrends'],
+            bestTime: '12:00 - 15:00 o 19:00 - 22:00',
+            sound: 'Rhythm coding beat / Electronic minimal',
+        },
         slides: [
             {
                 type: 'hero', layout: 'high', header: 'mini',
@@ -128,6 +160,26 @@ window.VIDEOS = [
     {
         id: 'stack3', slug: 'el_secreto_del_prompting', theme: 'stack3', caseNo: 3, group: 'Trilogía: De la Idea al Código',
         title: 'Parte 3: El Arte del Prompt', subtitle: 'Planificación inteligente > Ejecución',
+        post: {
+            hook: 'La razón real por la que tus proyectos con IA colapsan a mitad de camino 👇',
+            caption: `El error de novato #1 al programar con Inteligencia Artificial es pedirle la aplicación o el juego completo en un solo prompt.
+
+Cuando no planificas la arquitectura antes de escribir código:
+❌ La IA pierde el contexto del proyecto.
+❌ Se generan bucles de errores difíciles de corregir.
+❌ Desperdicias miles de tokens innecesariamente.
+
+Mi fórmula probada para proyectos que sí terminan:
+1️⃣ Gemini como Arquitecto Maestro: definimos reglas del sistema, límites y modelo de datos antes de programar nada.
+2️⃣ Divide y Vencerás: pide bloque por bloque (Diseño UI ➔ Lógica central ➔ Base de datos y despliegue).
+3️⃣ Verifica y avanza: prueba cada función antes de pedir la siguiente.
+
+💾 Guarda este carrusel para tu próxima sesión de desarrollo.
+👉 ¿Quieres seguir aprendiendo? Entra a mi perfil para más contenido sobre desarrollo y gaming.`,
+            hashtags: ['#promptengineering', '#gemini', '#ia', '#programacion', '#softwarearchitecture', '#cleancode', '#devcommunity', '#antigravity', '#techtips', '#coding'],
+            bestTime: '17:00 - 21:00',
+            sound: 'Chillhop / Cyber Lo-Fi atmosférico',
+        },
         slides: [
             {
                 type: 'hero', layout: 'low', header: 'none',
@@ -183,6 +235,23 @@ window.VIDEOS = [
     {
         id: 'endo', slug: 'the_last_endo', theme: 'endo', caseNo: 4, group: 'Casos Reales & Pitch',
         title: 'The Last Endo', subtitle: '¿Cómo destacar y ganar un torneo?',
+        post: {
+            hook: '¿Sabes cómo destacar y ganar un torneo de videojuegos o desarrollo? 👇',
+            caption: `Al jurado y al público no les importa cuántas líneas de código escribiste: quieren sentir tensión, misterio y adrenalina.
+
+Siguiendo estos 4 principios gané el torneo nacional con "The Last Endo":
+
+1️⃣ Menos botones, más impacto: Mecánica adictiva de sigilo + point-and-click. Se entiende en 3 segundos sin tutoriales pesados.
+2️⃣ Identidad visual propia: Pixel art distintivo. Cero plantillas genéricas vistas mil veces.
+3️⃣ Pitch inolvidable: Engancha en 10 segundos, pon el juego en sus manos de inmediato y vende la sensación, no las librerías técnicas.
+4️⃣ Visión clara: Los jueces no premian código, premian creadores que saben hacia dónde va a crecer su proyecto.
+
+💾 Guarda este post si estás preparando tu primer juego o pitch.
+👉 ¿Quieres seguir aprendiendo? Entra a mi perfil para ver más contenido sobre desarrollo y gaming.`,
+            hashtags: ['#gamedev', '#indiedev', '#videojuegos', '#pixelart', '#thelastendo', '#pitchdeck', '#gaming', '#desarrolloweb', '#programacion', '#indiegame', '#creadores'],
+            bestTime: '19:00 - 22:00',
+            sound: 'Suspense gamer / Retro dark synth instrumental',
+        },
         slides: [
             {
                 type: 'hero', layout: 'low', header: 'none',
@@ -246,6 +315,23 @@ window.VIDEOS = [
     {
         id: 'mova', slug: 'mova', theme: 'mova', caseNo: 5, group: 'Casos Reales & Pitch',
         title: 'Mova App', subtitle: 'Lógica compleja, experiencia pacífica',
+        post: {
+            hook: '¿Quieres saber cómo formar una idea verdaderamente innovadora? 👇',
+            caption: `La verdadera innovación tecnológica no nace de usar la herramienta más compleja, sino de resolver un problema humano real de forma pacífica.
+
+Así construí Mova (traducción de lenguaje de señas en tiempo real):
+
+1️⃣ La regla del iceberg: El 90% de la matemática pesada (MediaPipe rastreando 21 puntos por mano en cada frame) se queda invisible.
+2️⃣ Paz visual: El usuario solo ve palabras grandes, gestos fluidos y máxima claridad.
+3️⃣ Valida un solo gesto primero: No intentes traducir todo el diccionario el día uno.
+4️⃣ Prueba en teléfonos reales: React + CapacitorJS optimizado para cuidar batería, temperatura y fluidez en cualquier móvil.
+
+💾 Guarda este carrusel para inspirar tu próximo proyecto de impacto.
+👉 ¿Quieres seguir aprendiendo? Entra a mi perfil para ver más contenido sobre desarrollo y gaming.`,
+            hashtags: ['#innovacion', '#lenguajedeseñas', '#inclusión', '#mediapipe', '#reactjs', '#capacitorjs', '#ia', '#mobiledev', '#programacion', '#tecnologia', '#creadores'],
+            bestTime: '13:00 - 15:00 o 20:00 - 22:00',
+            sound: 'Piano emotivo ambiental / Lo-fi suave inspirador',
+        },
         slides: [
             {
                 type: 'hero', layout: 'high', header: 'mini',
@@ -309,6 +395,23 @@ window.VIDEOS = [
     {
         id: 'gira', slug: 'girastock', theme: 'gira', caseNo: 6, group: 'Casos Reales & Pitch',
         title: 'GiraStock', subtitle: 'Clona el éxito, adáptalo a tu cliente',
+        post: {
+            hook: 'Inspírate en las mejores apps del mundo y crea sistemas a medida para clientes 👇',
+            caption: `El error de muchos programadores al trabajar con clientes es intentar reinventar la rueda desde cero.
+
+El secreto para cerrar proyectos y cobrar bien:
+
+1️⃣ Familiaridad: Dale a tu cliente la fluidez de interacción que ya conoce y ama (pantallas limpias, directas y sin botones raros).
+2️⃣ Resuelve su dolor específico: Diseña reglas de negocio y reportes rápidos que le ahorren horas de trabajo cada semana.
+3️⃣ No vendas código, vende tiempo: El cliente no compra sintaxis ni frameworks, compra horas de vida y control de su negocio.
+4️⃣ Flujo express: Antigravity + Supabase MCP + GitHub + Vercel = Prototipos funcionales en días con cero servidores que mantener.
+
+💾 Guarda este post si haces freelance o desarrollo web para clientes.
+👉 ¿Quieres seguir aprendiendo? Entra a mi perfil para ver más contenido sobre desarrollo y gaming.`,
+            hashtags: ['#freelance', '#desarrolloweb', '#clientes', '#vercel', '#supabase', '#antigravity', '#saas', '#programacion', '#fullstack', '#negociosdigitales', '#coding'],
+            bestTime: '11:00 - 14:00 o 18:00 - 21:00',
+            sound: 'Corporate tech modern / Upbeat motivation beat',
+        },
         slides: [
             {
                 type: 'hero', layout: 'float', header: 'full',
@@ -374,6 +477,22 @@ window.VIDEOS = [
     {
         id: 'agy', slug: 'guia_antigravity', theme: 'agy', caseNo: 7, group: 'Guías de Herramientas',
         title: 'Guía: Antigravity', subtitle: 'Qué es, instalación, planes y ahorro de tokens',
+        post: {
+            hook: '¿Qué es Google Antigravity y cómo sacarle el 100% sin gastar tu cuota? 👇',
+            caption: `Guía rápida para entender y dominar la plataforma de agentes de IA de Google:
+
+1️⃣ No es un autocompletado: Es un equipo completo donde agentes autónomos planean, programan en múltiples archivos y prueban tu app en el navegador.
+2️⃣ Instálalo en 3 pasos: Descárgalo gratis en antigravity.google, inicia con tu cuenta de Google y abre tu carpeta de trabajo.
+3️⃣ Precios y planes: Modo Gratis para probar, Google AI Pro ($19.99/mes con cuota renovada cada 5h) y Ultra para máxima prioridad.
+4️⃣ El truco del ahorro de tokens: Cada IA en su rol. Gemini planea la arquitectura, Antigravity hace el trabajo pesado y Opencode pule detalles finos con tu API key oficial.
+5️⃣ MCP nativo: Conecta Stitch para diseñar interfaces con palabras, Supabase para bases de datos SQL y GitHub para sincronizar sin fricción.
+
+💾 Guarda esta guía para no perderla cuando configures tu entorno.
+👉 ¿Quieres seguir aprendiendo? Entra a mi perfil para más contenido sobre dev y gaming.`,
+            hashtags: ['#antigravity', '#googleai', '#gemini', '#opencode', '#stitchmcp', '#programacion', '#ia', '#desarrolloweb', '#softwareengineer', '#tutorial', '#aiagents'],
+            bestTime: '17:00 - 21:00',
+            sound: 'Cyberpunk chill / Synth ambient tech',
+        },
         slides: [
             {
                 type: 'hero', layout: 'low', header: 'none',
@@ -490,6 +609,21 @@ window.VIDEOS = [
     {
         id: 'agy_power', slug: 'ventajas_antigravity_vs_code', theme: 'agy_power', caseNo: 8, group: 'Guías de Herramientas',
         title: 'Ventajas: Antigravity', subtitle: 'Base VS Code, navegador y agentes autónomos',
+        post: {
+            hook: '¿Por qué Antigravity NO es otro editor más? Te muestro sus superpoderes 👇',
+            caption: `Muchos piensan que es otro Copilot, pero la diferencia entre sugerir y resolver es total:
+
+1️⃣ Base Visual Studio Code: Núcleo Code OSS. Tus atajos de teclado, temas y extensiones de siempre funcionan al instante. Cero curva de adaptación.
+2️⃣ Copilot sugiere, Antigravity resuelve: No te da pedazos de código sueltos. Entiende toda tu arquitectura y edita múltiples archivos de forma coordinada.
+3️⃣ Ciclo autónomo completo: Diseña el plan ➔ Escribe código ➔ Corre scripts en terminal ➔ Abre su navegador integrado y valida que la interfaz responda.
+4️⃣ Subagentes en segundo plano y MCP: Ejecuta tareas pesadas de fondo mientras sigues programando, y conecta APIs o diseño con Stitch nativamente.
+
+💾 Guarda este post para tu próxima comparativa técnica.
+👉 ¿Quieres seguir aprendiendo? Entra a mi perfil para ver más contenido sobre desarrollo y gaming.`,
+            hashtags: ['#antigravity', '#vscode', '#developer', '#programacion', '#aiagents', '#githubcopilot', '#softwaredevelopment', '#productivity', '#codinglife', '#tecnologia'],
+            bestTime: '12:00 - 14:00 o 19:00 - 22:00',
+            sound: 'Futuristic electronic / Bass groove tech',
+        },
         slides: [
             {
                 type: 'hero', layout: 'low', header: 'none',

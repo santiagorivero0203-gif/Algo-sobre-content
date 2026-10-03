@@ -63,6 +63,38 @@ const isMobileDevice = (() => {
     return /iPhone|iPad|iPod|Android/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 })();
 
+/**
+ * Función utilitaria para copiar texto al portapapeles con retrocompatibilidad
+ * y soporte en contextos web y móviles (iPhone / Android / Desktop).
+ */
+const copyTextToClipboard = async (text) => {
+    if (!text) return false;
+    try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(text);
+            return true;
+        }
+    } catch (e) {
+        console.warn('Clipboard writeText falló, intentando fallback execCommand:', e);
+    }
+    try {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        ta.style.top = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        const success = document.execCommand('copy');
+        document.body.removeChild(ta);
+        return success;
+    } catch (err) {
+        console.error('Fallback copy falló:', err);
+        return false;
+    }
+};
+
 const App = () => {
     // Estado de selección de video y slide activa
     const [vIdx, setVIdx] = React.useState(initialVideo);
@@ -76,6 +108,19 @@ const App = () => {
 
     // Estado del modal de guardado para iPhone y dispositivos móviles
     const [exportModal, setExportModal] = React.useState(null);
+
+    // Estado del modal del Kit de Publicación (descripciones, hooks y hashtags) (?postkit=1 para test)
+    const [postKitOpen, setPostKitOpen] = React.useState(URL_PARAMS.get('postkit') === '1');
+    const [copiedKey, setCopiedKey] = React.useState(null);
+
+    /** Maneja la copia al portapapeles con feedback temporal (2.2 segundos) */
+    const handleCopy = async (key, text) => {
+        const ok = await copyTextToClipboard(text);
+        if (ok) {
+            setCopiedKey(key);
+            setTimeout(() => setCopiedKey(null), 2200);
+        }
+    };
 
     // Modo de ajuste en escritorio: 'fit' (ajuste automático a la altura de la pantalla) o '100%'
     const [fitView, setFitView] = React.useState(true);
@@ -391,18 +436,27 @@ const App = () => {
                 </div>
             </header>
 
-            {/* Sub-barra móvil: Selector de carrusel activo y píldoras horizontales de slides */}
+            {/* Sub-barra móvil: Selector de carrusel activo, Kit de Post y píldoras de slides */}
             <div className="md:hidden bg-neutral-900/80 border-b border-neutral-800/80 px-3 py-2 flex flex-col gap-2 w-full max-w-[100vw]">
-                <div
-                    onClick={() => setDrawerOpen(true)}
-                    className="flex items-center justify-between cursor-pointer active:opacity-80 transition-opacity">
-                    <div className="flex items-center gap-2 truncate">
+                <div className="flex items-center justify-between">
+                    <div
+                        onClick={() => setDrawerOpen(true)}
+                        className="flex items-center gap-2 truncate cursor-pointer active:opacity-80 transition-opacity">
                         <span style={{ width: 7, height: 7, borderRadius: 2, background: theme.accent, flexShrink: 0 }} />
                         <span className="text-xs font-bold text-neutral-100 truncate">{video.title}</span>
+                        <span className="text-[10px] font-mono text-neutral-400 flex items-center gap-1 shrink-0 ml-1">
+                            <i className="fa-solid fa-chevron-down text-[8px]"></i>
+                        </span>
                     </div>
-                    <span className="text-[10px] font-mono text-neutral-400 flex items-center gap-1 shrink-0 ml-2">
-                        Cambiar <i className="fa-solid fa-chevron-down text-[8px]"></i>
-                    </span>
+
+                    {/* Botón rápido móvil para abrir el Kit de Publicación */}
+                    <button
+                        id="mobile-btn-postkit"
+                        onClick={() => setPostKitOpen(true)}
+                        className="px-2.5 py-1 rounded-lg bg-gradient-to-r from-purple-900/90 to-indigo-900/90 border border-purple-500/50 text-purple-200 hover:text-white text-[11px] font-bold flex items-center gap-1.5 shrink-0 active:scale-95 shadow">
+                        <i className="fa-solid fa-clipboard-list text-purple-300 text-[10px]"></i>
+                        <span>Kit Post</span>
+                    </button>
                 </div>
 
                 {/* Lista horizontal desplazable de diapositivas con toque suave */}
@@ -432,9 +486,23 @@ const App = () => {
                         <h1 className="text-base font-black text-white flex items-center gap-2">
                             <i className="fa-solid fa-layer-group" style={{ color: theme.accent }}></i> Santi.Dev Creator
                         </h1>
-                        <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-neutral-800 text-neutral-300 font-bold border border-neutral-700">v3.4</span>
+                        <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-neutral-800 text-neutral-300 font-bold border border-neutral-700">v3.6</span>
                     </div>
-                    <p className="text-[11px] text-neutral-500 font-mono mb-4">Generador de carruseles de alta calidad</p>
+                    <p className="text-[11px] text-neutral-500 font-mono mb-3">Generador de carruseles de alta calidad</p>
+
+                    {/* Botón de acceso al Kit de Publicación (Captions, Hooks & Hashtags) */}
+                    <button
+                        id="btn-open-postkit"
+                        onClick={() => setPostKitOpen(true)}
+                        className="w-full mb-4 py-2.5 px-3 rounded-xl font-bold text-xs bg-gradient-to-r from-purple-950/80 via-neutral-900 to-indigo-950/80 hover:from-purple-900/90 hover:to-indigo-900/90 border border-purple-500/40 text-purple-200 flex items-center justify-between shadow-lg transition-all active:scale-[0.98] group">
+                        <div className="flex items-center gap-2">
+                            <i className="fa-solid fa-clipboard-list text-purple-400 group-hover:scale-110 transition-transform"></i>
+                            <span className="text-white font-black">Kit de Publicación</span>
+                        </div>
+                        <span className="text-[10px] font-mono bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-md border border-purple-400/30">
+                            Copy & Tags
+                        </span>
+                    </button>
 
                     {/* Selector de formato para escritorio */}
                     <div className="mb-4">
@@ -580,6 +648,15 @@ const App = () => {
                                 100%
                             </button>
                         </div>
+
+                        {/* Botón Kit de Publicación en el encabezado del lienzo */}
+                        <button
+                            id="header-btn-postkit"
+                            onClick={() => setPostKitOpen(true)}
+                            className="hidden md:flex bg-neutral-900 hover:bg-neutral-800 border border-purple-500/40 text-purple-300 hover:text-white px-2.5 py-1 rounded-lg text-xs font-bold items-center gap-1.5 transition-all shadow-sm">
+                            <i className="fa-solid fa-hashtag text-purple-400 text-[10px]"></i>
+                            <span>Kit de Post</span>
+                        </button>
 
                         <span className="md:hidden bg-neutral-800/80 px-2 py-0.5 rounded text-neutral-300 font-mono text-[11px]">
                             {sIdx + 1}/{video.slides.length}
@@ -767,6 +844,17 @@ const App = () => {
                                             <i className="fa-solid fa-download"></i>
                                             <span>Descargar Archivo PNG</span>
                                         </a>
+
+                                        <button
+                                            id="btn-modal-open-postkit"
+                                            onClick={() => {
+                                                setExportModal(null);
+                                                setPostKitOpen(true);
+                                            }}
+                                            className="w-full py-2 px-3 rounded-xl font-bold text-xs bg-purple-950/70 text-purple-200 hover:bg-purple-900 flex items-center justify-center gap-2 border border-purple-700/50 active:scale-[0.98] transition-all">
+                                            <i className="fa-solid fa-clipboard-list text-purple-300"></i>
+                                            <span>Copiar Caption y Hashtags para Publicar</span>
+                                        </button>
                                     </div>
                                 </div>
                             ) : (
@@ -880,6 +968,161 @@ const App = () => {
                                     </div>
                                 );
                             })}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* ============================================================== */}
+            {/* MODAL: KIT DE PUBLICACIÓN (CAPTIONS, HOOKS Y HASHTAGS)         */}
+            {/* ============================================================== */}
+            {postKitOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/85 backdrop-blur-md animate-fadeIn">
+                    <div className="bg-neutral-900 border border-neutral-700 rounded-2xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+                        {/* Cabecera del modal */}
+                        <div className="p-4 border-b border-neutral-800 flex items-center justify-between bg-neutral-950/70 shrink-0">
+                            <div className="flex items-center gap-2.5 min-w-0">
+                                <div className="w-8 h-8 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-400 shrink-0">
+                                    <i className="fa-solid fa-clipboard-list text-sm"></i>
+                                </div>
+                                <div className="min-w-0">
+                                    <h3 className="text-sm font-black text-white truncate flex items-center gap-2">
+                                        <span>Kit de Publicación para Redes</span>
+                                        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-900/50 text-purple-300 border border-purple-700/50">
+                                            {format.toUpperCase()}
+                                        </span>
+                                    </h3>
+                                    <p className="text-[11px] text-neutral-400 font-mono truncate">
+                                        {video.title} · {video.subtitle}
+                                    </p>
+                                </div>
+                            </div>
+                            <button
+                                onClick={() => setPostKitOpen(false)}
+                                className="w-8 h-8 rounded-full bg-neutral-800 text-neutral-400 hover:text-white flex items-center justify-center text-sm shrink-0 active:scale-95 transition-all">
+                                <i className="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+
+                        {/* Barra horizontal de selección de los 8 carruseles */}
+                        <div className="flex items-center gap-1.5 overflow-x-auto hide-scrollbar px-3 py-2 bg-neutral-950/90 border-b border-neutral-800/80 shrink-0">
+                            {window.VIDEOS.map((v, i) => (
+                                <button
+                                    key={v.id}
+                                    onClick={() => { setVIdx(i); setSIdx(0); }}
+                                    className={`px-2.5 py-1 rounded-lg text-[11px] font-bold shrink-0 transition-all flex items-center gap-1.5 ${vIdx === i ? 'bg-white text-black shadow' : 'bg-neutral-800/80 text-neutral-400 hover:text-white'}`}>
+                                    <span style={{ width: 6, height: 6, borderRadius: 2, background: window.THEMES[v.theme].accent, flexShrink: 0 }} />
+                                    <span>{v.title}</span>
+                                </button>
+                            ))}
+                        </div>
+
+                        {/* Contenido con scroll */}
+                        <div className="p-4 overflow-y-auto hide-scrollbar flex flex-col gap-3.5">
+                            {video.post ? (
+                                <>
+                                    {/* Botones de acción rápida: Copiar Todo vs Copiar Hashtags */}
+                                    <div className="flex flex-col sm:flex-row gap-2">
+                                        <button
+                                            id="btn-copy-full-post"
+                                            onClick={() => handleCopy('all', `${video.post.caption}\n\n${video.post.hashtags.join(' ')}`)}
+                                            className={`flex-1 py-3 px-4 rounded-xl font-black text-xs flex items-center justify-center gap-2 transition-all shadow-lg active:scale-[0.98] ${copiedKey === 'all' ? 'bg-emerald-500 text-black shadow-emerald-500/20' : 'bg-white text-black hover:bg-neutral-200'}`}>
+                                            <i className={`fa-solid ${copiedKey === 'all' ? 'fa-circle-check text-sm' : 'fa-copy text-sm'}`}></i>
+                                            <span>{copiedKey === 'all' ? '✓ ¡Caption Completo Copiado!' : 'Copiar Caption Completo + Hashtags'}</span>
+                                        </button>
+                                        <button
+                                            id="btn-copy-hashtags"
+                                            onClick={() => handleCopy('tags', video.post.hashtags.join(' '))}
+                                            className={`py-3 px-4 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all border active:scale-[0.98] ${copiedKey === 'tags' ? 'bg-emerald-500 text-black border-emerald-400' : 'bg-neutral-800 text-neutral-200 border-neutral-700 hover:bg-neutral-700'}`}>
+                                            <i className={`fa-solid ${copiedKey === 'tags' ? 'fa-circle-check' : 'fa-hashtag'}`}></i>
+                                            <span>{copiedKey === 'tags' ? '✓ ¡Hashtags Copiados!' : 'Copiar sólo Hashtags'}</span>
+                                        </button>
+                                    </div>
+
+                                    {/* Gancho / Hook destacado */}
+                                    <div className="bg-neutral-950/70 border border-neutral-800 rounded-xl p-3.5 flex flex-col gap-2">
+                                        <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider">
+                                            <span className="flex items-center gap-1.5 text-amber-400">
+                                                <i className="fa-solid fa-bolt text-xs"></i> Gancho de Primera Línea (Hook)
+                                            </span>
+                                            <button
+                                                onClick={() => handleCopy('hook', video.post.hook)}
+                                                className={`text-[11px] font-mono px-2 py-0.5 rounded transition-all flex items-center gap-1 active:scale-95 ${copiedKey === 'hook' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40' : 'text-neutral-400 hover:text-white bg-neutral-800/60'}`}>
+                                                <i className={`fa-solid ${copiedKey === 'hook' ? 'fa-check' : 'fa-copy'}`}></i>
+                                                <span>{copiedKey === 'hook' ? 'Copiado' : 'Copiar'}</span>
+                                            </button>
+                                        </div>
+                                        <div className="text-sm font-semibold text-white bg-neutral-900/90 p-3 rounded-lg border border-neutral-800/80 italic">
+                                            "{video.post.hook}"
+                                        </div>
+                                    </div>
+
+                                    {/* Texto completo del post (Caption) */}
+                                    <div className="bg-neutral-950/70 border border-neutral-800 rounded-xl p-3.5 flex flex-col gap-2">
+                                        <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider">
+                                            <span className="flex items-center gap-1.5 text-cyan-400">
+                                                <i className="fa-solid fa-align-left text-xs"></i> Descripción Completa (Caption)
+                                            </span>
+                                            <button
+                                                onClick={() => handleCopy('caption_only', video.post.caption)}
+                                                className={`text-[11px] font-mono px-2 py-0.5 rounded transition-all flex items-center gap-1 active:scale-95 ${copiedKey === 'caption_only' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40' : 'text-neutral-400 hover:text-white bg-neutral-800/60'}`}>
+                                                <i className={`fa-solid ${copiedKey === 'caption_only' ? 'fa-check' : 'fa-copy'}`}></i>
+                                                <span>{copiedKey === 'caption_only' ? 'Copiado' : 'Copiar Texto'}</span>
+                                            </button>
+                                        </div>
+                                        <div className="text-xs text-neutral-200 whitespace-pre-line leading-relaxed font-sans bg-neutral-900/90 p-3.5 rounded-lg border border-neutral-800/80 max-h-56 overflow-y-auto hide-scrollbar select-text">
+                                            {video.post.caption}
+                                        </div>
+                                    </div>
+
+                                    {/* Hashtags con píldoras interactivas */}
+                                    <div className="bg-neutral-950/70 border border-neutral-800 rounded-xl p-3.5 flex flex-col gap-2">
+                                        <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider">
+                                            <span className="flex items-center gap-1.5 text-purple-400">
+                                                <i className="fa-solid fa-tags text-xs"></i> Hashtags Estratégicos ({video.post.hashtags.length})
+                                            </span>
+                                            <span className="text-[10px] text-neutral-500 font-mono">Toca cualquiera para copiarlo</span>
+                                        </div>
+                                        <div className="flex flex-wrap gap-1.5">
+                                            {video.post.hashtags.map((tag) => (
+                                                <button
+                                                    key={tag}
+                                                    onClick={() => handleCopy(tag, tag)}
+                                                    className={`px-2.5 py-1 rounded-md text-xs font-mono transition-all border ${copiedKey === tag ? 'bg-emerald-500 text-black border-emerald-400 font-bold' : 'bg-neutral-900 text-neutral-300 border-neutral-800 hover:border-purple-500/60 hover:text-white active:scale-95'}`}>
+                                                    {copiedKey === tag ? `✓ ${tag}` : tag}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Estrategia de publicación: Horario, Audio y Formato */}
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                        <div className="bg-neutral-950/70 border border-neutral-800 rounded-xl p-3 flex items-start gap-2.5">
+                                            <div className="w-7 h-7 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0 text-xs">
+                                                <i className="fa-regular fa-clock"></i>
+                                            </div>
+                                            <div>
+                                                <div className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Mejor horario</div>
+                                                <div className="text-xs font-mono font-bold text-white mt-0.5">{video.post.bestTime}</div>
+                                                <div className="text-[10.5px] text-neutral-500 leading-tight mt-0.5">Mayor actividad de tu nicho</div>
+                                            </div>
+                                        </div>
+
+                                        <div className="bg-neutral-950/70 border border-neutral-800 rounded-xl p-3 flex items-start gap-2.5">
+                                            <div className="w-7 h-7 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0 text-xs">
+                                                <i className="fa-solid fa-music"></i>
+                                            </div>
+                                            <div>
+                                                <div className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Audio / Sonido sugerido</div>
+                                                <div className="text-xs font-bold text-white mt-0.5">{video.post.sound}</div>
+                                                <div className="text-[10.5px] text-neutral-500 leading-tight mt-0.5">Volumen al 15% de fondo</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                            ) : (
+                                <p className="text-sm text-neutral-400 p-4 text-center">No hay kit configurado para este carrusel.</p>
+                            )}
                         </div>
                     </div>
                 </div>
