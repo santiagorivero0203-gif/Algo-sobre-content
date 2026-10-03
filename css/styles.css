@@ -23,6 +23,7 @@
     --grid-line: #1b1b1b;
     --color-text-light: #ffffff;
     --color-text-muted: #8a8a8a;
+    /* Valores por defecto (TikTok 9:16) */
     --slide-w: 405px;
     --slide-h: 720px;
 }
@@ -50,7 +51,7 @@ html, body {
     background-size: 27px 27px;
 }
 
-/* Lienzo vertical 9:16 para TikTok y Reels (405x720 escala a 1080x1920) */
+/* Lienzo adaptable: TikTok (9:16) e Instagram Feed (4:5) */
 .slide-container {
     width: var(--slide-w);
     height: var(--slide-h);
@@ -58,6 +59,21 @@ html, body {
     overflow: hidden;
     flex-shrink: 0;
     user-select: none;
+    border-radius: 14px;
+    box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.06);
+    transition: width 0.25s ease, height 0.25s ease;
+}
+
+/* Formato TikTok / Reels / Shorts: 9:16 (405x720 -> escala x2.6667 a 1080x1920) */
+.slide-container.format-tiktok {
+    --slide-w: 405px;
+    --slide-h: 720px;
+}
+
+/* Formato Instagram Feed: 4:5 (405x506.25 -> escala x2.6667 a 1080x1350) */
+.slide-container.format-instagram {
+    --slide-w: 405px;
+    --slide-h: 506.25px;
 }
 
 /* Ocultar barras de scroll sin romper la capacidad de desplazamiento */

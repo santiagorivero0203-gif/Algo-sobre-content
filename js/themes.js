@@ -10,7 +10,39 @@
  * =====================================================================
  */
 
-window.EXPORT = { w: 405, h: 720, outW: 1080 };
+// Definición oficial de formatos: TikTok (9:16) e Instagram Feed (4:5)
+window.FORMATS = {
+    tiktok: {
+        id: 'tiktok',
+        name: 'TikTok / Reels',
+        ratioLabel: '9:16',
+        w: 405,
+        h: 720,
+        outW: 1080,
+        outH: 1920,
+        scale: 2.6666666667,
+        icon: 'fa-brands fa-tiktok',
+        tag: 'Vertical 9:16 · 1080×1920',
+        desc: 'Optimizado para video vertical, carruseles de fotos en TikTok y reels con HUD gaming extendido.',
+    },
+    instagram: {
+        id: 'instagram',
+        name: 'Instagram Feed',
+        ratioLabel: '4:5',
+        w: 405,
+        h: 506.25, // 405 * (5/4) = 506.25 -> 506.25 * (1080/405) = 1350 px exactos
+        outW: 1080,
+        outH: 1350,
+        scale: 2.6666666667,
+        icon: 'fa-brands fa-instagram',
+        tag: 'Feed Retrato 4:5 · 1080×1350',
+        desc: 'Proporción estándar de máximo impacto para el feed de Instagram, márgenes limpios y estética editorial.',
+    },
+};
+
+// Retrocompatibilidad con window.EXPORT
+window.EXPORT = window.FORMATS.tiktok;
+
 window.BG_INK = '#525252';
 window.OK_GREEN = '#2E9D63';
 window.BAD_RED = '#E0473C';
@@ -264,22 +296,27 @@ window.BgItem = ({ item, color }) => {
     }
 };
 
-/** Fondo completo con semilla reproducible por slide. */
-window.Backdrop = ({ theme, seed, layout }) => {
+/** Fondo completo con semilla reproducible por slide (adaptable a TikTok 9:16 e Instagram 4:5). */
+window.Backdrop = ({ theme, seed, layout, format = 'tiktok' }) => {
     const rand = window.rng(seed);
+    const isIg = format === 'instagram';
+    const scaleY = isIg ? (506.25 / 720) : 1;
     const blocked = layout === 'low' ? 'top' : layout === 'high' ? 'bottom' : null;
-    const slots = window.shuffle(window.SLOTS.filter((s) => s.zone !== blocked), rand).slice(0, 6);
+    const slots = window.shuffle(window.SLOTS.filter((s) => s.zone !== blocked), rand).slice(0, isIg ? 5 : 6);
     const pool = window.shuffle(theme.backdrop, rand);
     return (
         <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 1 }}>
-            {slots.map((s, i) => (
-                <div key={i} style={{
-                    position: 'absolute', left: s.x, top: s.y,
-                    transform: s.r ? `rotate(${s.r}deg)` : undefined, transformOrigin: 'left top',
-                }}>
-                    <window.BgItem item={pool[i % pool.length]} color={i === 0 ? theme.accent : window.BG_INK} />
-                </div>
-            ))}
+            {slots.map((s, i) => {
+                const targetY = isIg && (s.zone === 'bottom' || s.zone === 'side') ? Math.round(s.y * scaleY) : s.y;
+                return (
+                    <div key={i} style={{
+                        position: 'absolute', left: s.x, top: targetY,
+                        transform: s.r ? `rotate(${s.r}deg)` : undefined, transformOrigin: 'left top',
+                    }}>
+                        <window.BgItem item={pool[i % pool.length]} color={i === 0 ? theme.accent : window.BG_INK} />
+                    </div>
+                );
+            })}
         </div>
     );
 };
@@ -293,29 +330,41 @@ window.Progress = ({ meta, theme }) => (
     </div>
 );
 
-/** Banda superior con número de caso y título. */
-window.TopBand = ({ video, theme, meta }) => (
-    <div className="absolute left-0 right-0 top-0 flex flex-col justify-end" style={{ height: 138, padding: '0 24px 16px', zIndex: 5 }}>
-        <div className="flex items-center justify-between mb-2">
-            <span className="font-mono text-[10px] tracking-[.2em]" style={{ color: '#8a8a8a' }}>{theme.band || `CASO ${window.pad(video.caseNo)} · ${theme.tag}`}</span>
-            <window.Progress meta={meta} theme={theme} />
+/** Banda superior con número de caso y título (ajustada a TikTok o Instagram). */
+window.TopBand = ({ video, theme, meta, format = 'tiktok' }) => {
+    const isIg = format === 'instagram';
+    return (
+        <div className="absolute left-0 right-0 top-0 flex flex-col justify-end" style={{
+            height: isIg ? 76 : 138,
+            padding: isIg ? '0 18px 10px' : '0 24px 16px',
+            zIndex: 5,
+        }}>
+            <div className="flex items-center justify-between mb-1">
+                <span className="font-mono text-[10px] tracking-[.2em]" style={{ color: '#8a8a8a' }}>{theme.band || `CASO ${window.pad(video.caseNo)} · ${theme.tag}`}</span>
+                <window.Progress meta={meta} theme={theme} />
+            </div>
+            <div className={`font-black text-white leading-none tracking-tight truncate ${isIg ? 'text-[20px]' : 'text-[26px]'}`}>{video.title}</div>
         </div>
-        <div className="font-black text-white text-[26px] leading-none tracking-tight">{video.title}</div>
-    </div>
-);
+    );
+};
 
-/** Banda inferior con handle @santi.dev y llamada a deslizar/guardar. */
-window.BottomBand = ({ theme, meta }) => {
+/** Banda inferior con handle @santi.dev y llamada a deslizar/guardar (ajustada a TikTok o Instagram). */
+window.BottomBand = ({ theme, meta, format = 'tiktok' }) => {
+    const isIg = format === 'instagram';
     const isLast = meta.index === meta.total - 1;
     return (
-        <div className="absolute left-0 right-0 bottom-0 flex items-center justify-between" style={{ height: 122, padding: '0 24px', zIndex: 5 }}>
+        <div className="absolute left-0 right-0 bottom-0 flex items-center justify-between" style={{
+            height: isIg ? 64 : 122,
+            padding: isIg ? '0 18px 6px' : '0 24px',
+            zIndex: 5,
+        }}>
             <div className="flex items-center gap-2">
-                <span className="w-8 h-8 rounded-full flex items-center justify-center font-black text-[12px]" style={{ background: '#fff', color: '#111' }}>SR</span>
-                <span className="font-bold text-white text-[14px]">@santi.dev</span>
+                <span className="w-7 h-7 rounded-full flex items-center justify-center font-black text-[11px]" style={{ background: '#fff', color: '#111' }}>SR</span>
+                <span className="font-bold text-white text-[13px]">@santi.dev</span>
             </div>
-            <span className="flex items-center gap-2 rounded-full font-mono text-[11px]" style={{ padding: '6px 12px', border: '1px solid #3a3a3a', color: '#cfcfcf' }}>
-                {isLast ? 'guárdalo' : 'desliza'}
-                <window.Icon name={isLast ? 'bookmark' : 'arrow'} size={13} color={theme.accent} stroke={2.4} />
+            <span className="flex items-center gap-1.5 rounded-full font-mono text-[10.5px]" style={{ padding: '5px 11px', border: '1px solid #3a3a3a', color: '#cfcfcf' }}>
+                {isLast ? 'guárdalo' : isIg ? 'desliza' : 'desliza'}
+                <window.Icon name={isLast ? 'bookmark' : 'arrow'} size={12} color={theme.accent} stroke={2.4} />
             </span>
         </div>
     );

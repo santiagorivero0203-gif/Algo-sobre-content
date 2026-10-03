@@ -81,6 +81,15 @@ algo/
    - Hook: *¿Por qué Antigravity no es otro editor más?*
    - Contenido: Base sobre el núcleo de Visual Studio Code (Code OSS: atajos, temas y plugins sin reaprender nada), de autocompletado pasivo a agente autónomo, ciclo completo (Plan ➔ Multi-archivo ➔ Terminal ➔ Navegador), 3 superpoderes clave (Browser Subagent, subagentes en segundo plano y MCP nativo) y CTA honesto.
 
+## 📱 Formatos Soportados (TikTok vs Instagram)
+
+El generador incluye un selector de formato en tiempo real para adaptar el diseño según la plataforma destino:
+
+| Plataforma | Proporción | Dimensiones (Preview) | Resolución Exportada (PNG HD) | Características de Diseño |
+|---|---|---|---|---|
+| **TikTok / Reels / Shorts** | `9:16` | `405 × 720 px` | **1080 × 1920 px** | Lienzo ultra-vertical con fondo extendido, HUD gaming y directivas de código en zonas seguras (arriba y abajo). |
+| **Instagram Carrusel Feed** | `4:5` | `405 × 506.25 px` | **1080 × 1350 px** | Proporción estándar de máximo impacto en el feed. Bandas compactas, slots reescalados y márgenes optimizados para swipe continuo. |
+
 ---
 
 ## ⌨️ Atajos y Enlaces Directos
@@ -88,14 +97,26 @@ algo/
 | Acción | Método |
 |---|---|
 | Cambiar de slide | Flechas del teclado `←` `→` |
+| Alternar formato en UI | Pestañas superiores **TikTok 9:16** / **Instagram 4:5** en la barra lateral |
 | Abrir video y slide específica | `algo.html?v=agy_power&s=1` (acepta id `stack1`, `stack2`, `stack3`, `endo`, `mova`, `gira`, `agy`, `agy_power`) |
-| Modo Slide Pura (sin interfaz) | `algo.html?solo=1&v=agy_power&s=1` (ideal para grabaciones de pantalla) |
-| Descargar PNG actual (1080x1920) | Botón **Descargar slide** |
-| Descargar carrusel completo | Botón **Descargar video completo** |
+| Forzar formato por URL | `algo.html?v=agy_power&s=1&fmt=instagram` o `&fmt=tiktok` |
+| Modo Slide Pura (sin interfaz) | `algo.html?solo=1&v=agy_power&s=1&fmt=instagram` (ideal para grabaciones de pantalla) |
+| Descargar PNG actual en HD | Botón **Descargar slide** (1080×1920 en TikTok o 1080×1350 en Instagram) |
+| Descargar carrusel completo | Botón **Descargar todo el carrusel** (secuencia automatizada en alta definición) |
 
 ---
 
 ## 📝 Registro de Cambios
+
+### v3.3 (2026-10-03)
+- **Motor Dual: TikTok (9:16) + Instagram Feed (4:5)**: Selector interactivo que redimensiona el canvas en vivo, reescala las coordenadas de slots de fondo y adapta las bandas superior e inferior (`TopBand` e `BottomBand`) a la altura de cada formato.
+- **Exportación en Alta Calidad HD**: Generación de PNG cristalinos a **1080 × 1920** (TikTok) y **1080 × 1350** (Instagram) con nombres descriptivos automáticos (`slug_formato_slide.png`) y barra de progreso.
+- **Corrección integral de espaciados inferiores ("líneas de abajo")**:
+  - `window.Foot`: Rediseño del contenedor inferior con padding compacto (`9px 13px`), borde refinado de 1.5px y margen inferior seguro (`pb-0.5` / `pb-1`) para evitar colisiones con el radio curvo de 28-30px de la tarjeta.
+  - `StepsSlide`, `StatSlide` y `ChecklistSlide`: Rebalanceo simétrico de la línea discontinua inferior (`border-t border-dashed`, `pt-3 pb-1`) garantizando respiración visual.
+  - `CompareSlide` y `FlowSlide`: Reducción de conectores y cajas para permitir que el footer inferior respire holgadamente incluso en el formato 4:5 de Instagram.
+  - `CodeSlide`: Sustitución del relleno artificial de 24 líneas por cálculo adaptativo dinámico (`Math.max(0, 4/8 - lines)`).
+  - `CtaSlide`: Compactación proporcionada del titular, caja de comentarios y botones de acción ("Seguir" / "Guardar") evitando doble llamada en layouts con banda inferior.
 
 ### v3.2 (2026-10-03)
 - **Nuevo carrusel: Ventajas de Antigravity (`agy_power`)**: Análisis táctico y visual enfocado en su núcleo sobre Visual Studio Code (0 curva de aprendizaje, atajos y extensiones nativas) y sus capacidades agénticas de nueva generación (subagentes en background, browser subagent para pruebas visuales y protocolo MCP).
