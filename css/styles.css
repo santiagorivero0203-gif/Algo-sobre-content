@@ -28,18 +28,64 @@
     --slide-h: 720px;
 }
 
-/* Reset básico del cuerpo del documento */
+/* Reset adaptable para móvil y escritorio */
 html, body {
     margin: 0;
     padding: 0;
     width: 100%;
-    height: 100vh;
-    overflow: hidden;
+    max-width: 100vw;
+    min-height: 100vh;
     background-color: var(--bg-dark);
     color: var(--color-text-light);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+    width: 100%;
+    max-width: 100vw;
+    min-height: 100vh;
+}
+
+@media (min-width: 768px) {
+    html, body {
+        height: 100vh;
+        overflow: hidden;
+    }
+}
+
+@media (max-width: 767px) {
+    html, body {
+        min-height: 100%;
+        overflow-x: hidden !important;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    #root {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        overflow-x: hidden !important;
+        max-width: 100vw;
+    }
+}
+
+/* Escalador responsivo para pantallas móviles */
+.slide-scaler-outer {
+    position: relative;
+    overflow: hidden;
+    border-radius: 14px;
+    touch-action: pan-y;
+    box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.slide-scaler-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: top left;
 }
 
 /* Fondo de cuadrícula técnica (grid discreto estilo editor) */
@@ -94,4 +140,22 @@ button {
 /* Animaciones sutiles para badges y estados activos */
 .badge-active {
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slideUp {
+    animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

@@ -108,6 +108,17 @@ El generador incluye un selector de formato en tiempo real para adaptar el dise�
 
 ## 📝 Registro de Cambios
 
+### v3.4 (2026-10-03)
+- **Optimización Integral para Teléfonos Móviles (Mobile-First)**:
+  - **Lienzo Adaptativo y Auto-escalado**: Implementación de contenedor elástico (`slide-scaler-outer` y `slide-scaler-inner`) que calcula dinámicamente el factor de escala según el ancho exacto del smartphone (iPhone SE, iPhone 14/15/16, Galaxy S22-S24, Pixel), manteniendo 24px de margen seguro sin desbordamiento horizontal.
+  - **Navegación Táctil por Gestos (Swipe)**: Soporte nativo para deslizar el pulgar a la izquierda (siguiente slide) o derecha (slide anterior) directamente sobre la tarjeta con validación de dominante horizontal.
+  - **Cabecera Móvil Sticky Inteligente**: Barra superior fijada con logotipo `Santi.Dev`, selector rápido de formato (`9:16` vs `4:5`) y disparador de catálogo de videos (`1/8 ▾`).
+  - **Sub-barra con Píldoras Horizontales**: Título del carrusel activo (con chevron para cambio rápido) y carrusel de números de diapositiva (`1, 2, 3...`) con indicador de progreso `Slide X de Y`.
+  - **Bottom Sheet / Drawer Desplegable**: Panel modal inferior para explorar los 8 carruseles agrupados por sus 3 series temáticas, con badges de cantidad de slides, acento temático y selección táctil instantánea.
+  - **Botonera Inferior Fija para Pulgares**: Acceso rápido con botón principal `Descargar Slide (HD)` y secundario `Todo`, visualización de estado en vivo (`Exportando...`) y margen de reserva (`h-24`) para evitar solapamientos con el contenido.
+  - **Exportación HD Libre de Recortes**: Desactivación temporal del escalado y del `overflow: hidden` durante la captura con `html2canvas` para garantizar PNGs puros a 1080×1920 (TikTok) y 1080×1350 (Instagram) sin artefactos visuales ni recortes de contenedor.
+  - **Preservación Total del Modo Escritorio**: La barra lateral completa de 325px y los atajos de teclado (`←` `→`) se mantienen activos en pantallas medianas y grandes (`md:flex`).
+
 ### v3.3 (2026-10-03)
 - **Motor Dual: TikTok (9:16) + Instagram Feed (4:5)**: Selector interactivo que redimensiona el canvas en vivo, reescala las coordenadas de slots de fondo y adapta las bandas superior e inferior (`TopBand` e `BottomBand`) a la altura de cada formato.
 - **Exportación en Alta Calidad HD**: Generación de PNG cristalinos a **1080 × 1920** (TikTok) y **1080 × 1350** (Instagram) con nombres descriptivos automáticos (`slug_formato_slide.png`) y barra de progreso.
