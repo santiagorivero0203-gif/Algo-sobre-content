@@ -216,34 +216,93 @@ const App = () => {
     const scaledH = Math.round(baseH * currentScale);
 
     /**
-     * Renderiza la slide actual a un Blob binario PNG de alta resolución (1080x1920 o 1080x1350).
-     * Desactiva temporalmente el escalado para renderizado nítido y libre de recortes.
+     * Renderiza la slide actual a un Blob PNG de alta resolución (1080x1920 o 1080x1350).
+     *
+     * Motor principal: modern-screenshot (js/vendor). Clona la slide dentro de un
+     * SVG <foreignObject> y deja que el PROPIO navegador la pinte, así el PNG es
+     * idéntico a la vista previa. html2canvas, en cambio, "reimplementa" CSS a mano
+     * y fallaba con: repeating-conic-gradient (fondo transparente del Antes/Después),
+     * texto desplazado hacia abajo por el preflight de Tailwind, elipsis (truncate),
+     * rotaciones de tarjetas y line-height de las fuentes.
+     *
+     * Motor de respaldo: html2canvas (sólo si el principal lanza un error).
      */
     const renderSlideToBlob = async () => {
         try {
             await Promise.race([
                 document.fonts.ready,
-                new Promise((resolve) => setTimeout(resolve, 800)),
+                new Promise((resolve) => setTimeout(resolve, 1500)),
             ]);
         } catch (e) {
             console.warn('Font loading check skipped:', e);
         }
 
         const el = document.getElementById('capture-slide');
-        const outer = document.getElementById('slide-scaler-outer');
-        const inner = document.getElementById('slide-scaler-inner');
-
-        const prevInnerTransform = inner ? inner.style.transform : '';
-        const prevOuterOverflow = outer ? outer.style.overflow : '';
-        const prevOuterWidth = outer ? outer.style.width : '';
-        const prevOuterHeight = outer ? outer.style.height : '';
-
         const isIg = format === 'instagram';
         const targetW = 1080;
         const targetH = isIg ? 1350 : 1920;
         const elW = 405;
         const elH = isIg ? 506.25 : 720;
         const scale = targetW / elW;
+
+        /** Normaliza cualquier canvas al tamaño exacto de la red social y lo convierte en PNG */
+        const canvasToExactBlob = (src) => new Promise((resolve, reject) => {
+            let out = src;
+            if (src.width !== targetW || src.height !== targetH) {
+                out = document.createElement('canvas');
+                out.width = targetW;
+                out.height = targetH;
+                const ctx = out.getContext('2d');
+                ctx.fillStyle = '#0c0c0c';
+                ctx.fillRect(0, 0, targetW, targetH);
+                ctx.drawImage(src, 0, 0, targetW, targetH);
+            }
+            out.toBlob((b) => (b ? resolve(b) : reject(new Error('Canvas toBlob failed'))), 'image/png', 1.0);
+        });
+
+        // ---------- 1) Motor principal: modern-screenshot ----------
+        if (window.modernScreenshot) {
+            try {
+                const opts = {
+                    width: elW,
+                    height: elH,
+                    scale,
+                    backgroundColor: '#0c0c0c',
+                    timeout: 15000,
+                    // El PNG debe tener esquinas rectas y sin sombra exterior
+                    // (el redondeo y la sombra sólo decoran la vista previa del editor)
+                    style: {
+                        borderRadius: '0',
+                        boxShadow: 'none',
+                        transition: 'none',
+                        margin: '0',
+                        backgroundColor: '#0c0c0c',
+                        backgroundImage: 'linear-gradient(to right, rgba(255, 255, 255, 0.18) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.18) 1px, transparent 1px)',
+                        backgroundSize: '27px 27px',
+                    },
+                    fetch: { requestInit: { mode: 'cors', cache: 'force-cache' } },
+                    features: { removeControlCharacter: true },
+                };
+                // WebKit (iPhone/Safari) a veces pinta la primera pasada sin imágenes ni
+                // fuentes decodificadas: hacemos una pasada de calentamiento barata.
+                if (isMobileDevice) {
+                    await window.modernScreenshot.domToCanvas(el, { ...opts, scale: 1 });
+                }
+                const canvas = await window.modernScreenshot.domToCanvas(el, opts);
+                return await canvasToExactBlob(canvas);
+            } catch (err) {
+                console.warn('modern-screenshot falló, usando html2canvas como respaldo:', err);
+            }
+        }
+
+        // ---------- 2) Respaldo: html2canvas ----------
+        // Requiere quitar temporalmente el escalado CSS del contenedor para no recortar.
+        const outer = document.getElementById('slide-scaler-outer');
+        const inner = document.getElementById('slide-scaler-inner');
+        const prevInnerTransform = inner ? inner.style.transform : '';
+        const prevOuterOverflow = outer ? outer.style.overflow : '';
+        const prevOuterWidth = outer ? outer.style.width : '';
+        const prevOuterHeight = outer ? outer.style.height : '';
 
         if (inner) inner.style.transform = 'none';
         if (outer) {
@@ -262,14 +321,18 @@ const App = () => {
                 allowTaint: false,
                 logging: false,
                 imageTimeout: 5000,
+                onclone: (doc) => {
+                    const c = doc.getElementById('capture-slide');
+                    if (c) {
+                        c.style.borderRadius = '0';
+                        c.style.boxShadow = 'none';
+                        c.style.backgroundColor = '#0c0c0c';
+                        c.style.backgroundImage = 'linear-gradient(to right, rgba(255, 255, 255, 0.18) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.18) 1px, transparent 1px)';
+                        c.style.backgroundSize = '27px 27px';
+                    }
+                },
             });
-
-            return await new Promise((resolve, reject) => {
-                canvas.toBlob((b) => {
-                    if (b) resolve(b);
-                    else reject(new Error('Canvas toBlob failed'));
-                }, 'image/png', 1.0);
-            });
+            return await canvasToExactBlob(canvas);
         } finally {
             if (inner) inner.style.transform = prevInnerTransform;
             if (outer) {

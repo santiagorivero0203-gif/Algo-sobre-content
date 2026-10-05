@@ -43,7 +43,7 @@ window.FORMATS = {
 // Retrocompatibilidad con window.EXPORT
 window.EXPORT = window.FORMATS.tiktok;
 
-window.BG_INK = '#525252';
+window.BG_INK = '#6e6e6e';
 window.OK_GREEN = '#2E9D63';
 window.BAD_RED = '#E0473C';
 
@@ -205,19 +205,74 @@ window.THEMES = {
     },
 };
 
-/** Coordenadas estratégicas de los elementos del fondo. */
-window.SLOTS = [
-    { x: 16,  y: 14,  zone: 'top' },
-    { x: 236, y: 18,  zone: 'top' },
-    { x: 140, y: 46,  zone: 'top' },
-    { x: 292, y: 64,  zone: 'top' },
-    { x: 18,  y: 650, zone: 'bottom' },
-    { x: 232, y: 662, zone: 'bottom' },
-    { x: 120, y: 690, zone: 'bottom' },
-    { x: 28,  y: 612, zone: 'bottom' },
-    { x: 4,   y: 430, zone: 'side', r: -90 },
-    { x: 400, y: 250, zone: 'side', r: 90 },
-];
+/**
+ * Coordenadas estratégicas de los elementos de fondo adaptadas al layout activo.
+ * Garantiza que NINGÚN elemento quede tapado por una tarjeta o cortado a la mitad.
+ */
+window.SLOTS_BY_LAYOUT = {
+    low: [
+        // TopBand ocupa y=0..138 (header en y=12..28, título en y=75..128)
+        // La tarjeta ocupa y=138..694. Margen inferior limpio y=695..720 (26px)
+        { x: 215, y: 15 },
+        { x: 24,  y: 44 },
+        { x: 240, y: 44 },
+        { x: 24,  y: 701 },
+        { x: 240, y: 701 },
+        { x: 8,   y: 420, r: -90 },
+        { x: 397, y: 420, r: 90 },
+    ],
+    high: [
+        // Tarjeta ocupa y=26..594. Margen superior limpio y=0..26.
+        // BottomBand ocupa y=594..720.
+        { x: 24,  y: 8 },
+        { x: 240, y: 8 },
+        { x: 24,  y: 604 },
+        { x: 240, y: 604 },
+        { x: 8,   y: 320, r: -90 },
+        { x: 397, y: 320, r: 90 },
+    ],
+    float: [
+        // Tarjeta flotante con amplios márgenes arriba (76px), abajo (76px) y lados (28px)
+        { x: 28,  y: 22 },
+        { x: 230, y: 22 },
+        { x: 130, y: 46 },
+        { x: 28,  y: 660 },
+        { x: 230, y: 660 },
+        { x: 130, y: 686 },
+        { x: 12,  y: 360, r: -90 },
+        { x: 393, y: 360, r: 90 },
+    ],
+    tilt: [
+        // Tarjeta rotada con margen de 36px arriba y abajo
+        { x: 24,  y: 12 },
+        { x: 230, y: 12 },
+        { x: 24,  y: 692 },
+        { x: 230, y: 692 },
+        { x: 10,  y: 460, r: -90 },
+        { x: 395, y: 260, r: 90 },
+    ],
+    full: [
+        // Tarjeta ocupa y=26..694. Margen superior limpio y=0..26, inferior y=694..720
+        { x: 24,  y: 8 },
+        { x: 230, y: 8 },
+        { x: 24,  y: 701 },
+        { x: 230, y: 701 },
+        { x: 8,   y: 360, r: -90 },
+        { x: 397, y: 360, r: 90 },
+    ],
+    split: [
+        // Tarjeta partida: top card (y=22..158), bottom card (y=168..696)
+        { x: 24,  y: 6 },
+        { x: 230, y: 6 },
+        { x: 24,  y: 702 },
+        { x: 230, y: 702 },
+        { x: 8,   y: 440, r: -90 },
+        { x: 397, y: 440, r: 90 },
+    ],
+};
+
+// Retrocompatibilidad
+window.SLOTS = window.SLOTS_BY_LAYOUT.float;
 
 /** Retorna estilos de tono para la tarjeta. */
 window.toneOf = (theme, tone) => ({
@@ -282,7 +337,7 @@ window.BgItem = ({ item, color }) => {
             );
         case 'glyphs':
             return (
-                <svg width="70" height="14" viewBox="0 0 70 14" fill="none" stroke={color} strokeWidth="1.5">
+                <svg width="56" height="12" viewBox="0 0 70 14" fill="none" stroke={color} strokeWidth="1.5" style={{ display: 'block' }}>
                     <path d="M7 2l5.5 10h-11z" /><circle cx="25" cy="7" r="5" />
                     <path d="M38 2l10 10M48 2L38 12" /><rect x="57" y="2" width="10" height="10" />
                 </svg>
@@ -301,17 +356,19 @@ window.Backdrop = ({ theme, seed, layout, format = 'tiktok' }) => {
     const rand = window.rng(seed);
     const isIg = format === 'instagram';
     const scaleY = isIg ? (506.25 / 720) : 1;
-    const blocked = layout === 'low' ? 'top' : layout === 'high' ? 'bottom' : null;
-    const slots = window.shuffle(window.SLOTS.filter((s) => s.zone !== blocked), rand).slice(0, isIg ? 5 : 6);
+    const baseSlots = window.SLOTS_BY_LAYOUT[layout] || window.SLOTS_BY_LAYOUT.float;
+    if (!baseSlots.length) return null;
     const pool = window.shuffle(theme.backdrop, rand);
+    const slots = window.shuffle(baseSlots, rand).slice(0, isIg ? 5 : 6);
     return (
         <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 1 }}>
             {slots.map((s, i) => {
-                const targetY = isIg && (s.zone === 'bottom' || s.zone === 'side') ? Math.round(s.y * scaleY) : s.y;
+                const targetY = isIg ? Math.round(s.y * scaleY) : s.y;
                 return (
                     <div key={i} style={{
                         position: 'absolute', left: s.x, top: targetY,
-                        transform: s.r ? `rotate(${s.r}deg)` : undefined, transformOrigin: 'left top',
+                        transform: s.r ? `rotate(${s.r}deg)` : undefined,
+                        transformOrigin: 'center center',
                     }}>
                         <window.BgItem item={pool[i % pool.length]} color={i === 0 ? theme.accent : window.BG_INK} />
                     </div>
@@ -323,7 +380,7 @@ window.Backdrop = ({ theme, seed, layout, format = 'tiktok' }) => {
 
 /** Indicador de progreso de slide. */
 window.Progress = ({ meta, theme }) => (
-    <div className="flex gap-1">
+    <div className="flex gap-1 shrink-0">
         {Array.from({ length: meta.total }).map((_, i) => (
             <span key={i} style={{ width: 14, height: 3, borderRadius: 2, background: i === meta.index ? theme.accent : '#333' }} />
         ))}
@@ -339,8 +396,8 @@ window.TopBand = ({ video, theme, meta, format = 'tiktok' }) => {
             padding: isIg ? '0 18px 10px' : '0 24px 16px',
             zIndex: 5,
         }}>
-            <div className="flex items-center justify-between mb-1">
-                <span className="font-mono text-[10px] tracking-[.2em]" style={{ color: '#8a8a8a' }}>{theme.band || `CASO ${window.pad(video.caseNo)} · ${theme.tag}`}</span>
+            <div className="flex items-center justify-between mb-1 gap-2">
+                <span className="font-mono text-[10px] tracking-[.18em] whitespace-nowrap truncate" style={{ color: '#8a8a8a' }}>{theme.band || `CASO ${window.pad(video.caseNo)} · ${theme.tag}`}</span>
                 <window.Progress meta={meta} theme={theme} />
             </div>
             <div className={`font-black text-white leading-none tracking-tight truncate ${isIg ? 'text-[20px]' : 'text-[26px]'}`}>{video.title}</div>

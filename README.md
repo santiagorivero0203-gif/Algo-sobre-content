@@ -126,6 +126,14 @@ El generador incluye un selector de formato en tiempo real para adaptar el dise�
   - **Modal Táctil de Guardado Directo**: Si el navegador no abre el menú nativo automáticamente, despliega un modal con la imagen generada en alta resolución habilitada para mantener presionada la pantalla (`.ios-save-image` con `-webkit-touch-callout: default`) y seleccionar *"Guardar en Fotos"*.
   - **Exportación de Carrusel Completo en Móvil**: Al presionar *"Todo"*, genera la galería completa de diapositivas con miniaturas y botones individuales de guardado instantáneo para el carrete.
 
+### v3.7 (2026-10-05)
+- **Fidelidad Total de Exportación HD (Fondo y Elementos sin Recortes)**:
+  - **Cuadrícula Técnica Vectorial SVG (`window.GridPattern`)**: Implementación de un patrón SVG nativo `<pattern id="blueprint-grid">` a `27px × 27px` y trazo de alta definición (`rgba(255, 255, 255, 0.15)`). Elimina por completo la pérdida de líneas horizontales provocada por el subpixel sampling de gradientes CSS en canvas/foreignObject de Safari y Chrome.
+  - **Distribución Inteligente de Fondos por Layout (`SLOTS_BY_LAYOUT`)**: Mapeo de coordenadas seguro y balanceado para todos los layouts (`low`, `high`, `float`, `tilt`, `full`, `split`) con 6 elementos visuales HUD (comandos terminal, etiquetas dev, barras HP, glifos PlayStation y códigos).
+  - **Margen Inferior Limpio Anti-recortes**: Elevación del margen inferior en layouts `low`, `full` y `split` (24–26px) para que las etiquetas inferiores (`IDEA -> PROYECTO`, `$ npx create-app`, glifos) respiren con holgura y nunca queden seccionadas o tapadas por el borde de la tarjeta.
+  - **Badges y Etiquetas sin Saltos de Línea**: Aplicación de `whitespace-nowrap` y tamaños métricos calibrados en kickers superiores, esquinas de arte (`CONSOLE · 3D`) y pills interiores (`DEV · GAMING STACK`).
+  - **Motor `modern-screenshot` v4.7.0 Local**: Alojado en [js/vendor/modern-screenshot.min.js](file:///c:/Users/user/Desktop/video%20proyectos/algo/js/vendor/modern-screenshot.min.js) con clonación directa de DOM para máxima fidelidad visual, manteniendo `html2canvas` como respaldo automático.
+
 ### v3.4 (2026-10-03)
 - **Optimización Integral para Teléfonos Móviles (Mobile-First)**:
   - **Lienzo Adaptativo y Auto-escalado**: Implementación de contenedor elástico (`slide-scaler-outer` y `slide-scaler-inner`) que calcula dinámicamente el factor de escala según el ancho exacto del smartphone (iPhone SE, iPhone 14/15/16, Galaxy S22-S24, Pixel), manteniendo 24px de margen seguro sin desbordamiento horizontal.

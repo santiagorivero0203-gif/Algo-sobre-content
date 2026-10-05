@@ -91,17 +91,17 @@ html, body {
 
 /* Fondo de cuadrícula técnica (grid discreto estilo editor) */
 .bg-grid {
-    background-color: var(--bg-canvas);
+    background-color: #0c0c0c !important;
     background-image:
-        linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
-        linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
-    background-size: 27px 27px;
+        linear-gradient(to right, rgba(255, 255, 255, 0.18) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.18) 1px, transparent 1px) !important;
+    background-size: 27px 27px !important;
 }
 
 /* Lienzo adaptable: TikTok (9:16) e Instagram Feed (4:5) */
 .slide-container {
-    width: var(--slide-w);
-    height: var(--slide-h);
+    width: 405px;
+    height: 720px;
     position: relative;
     overflow: hidden;
     flex-shrink: 0;
@@ -113,14 +113,14 @@ html, body {
 
 /* Formato TikTok / Reels / Shorts: 9:16 (405x720 -> escala x2.6667 a 1080x1920) */
 .slide-container.format-tiktok {
-    --slide-w: 405px;
-    --slide-h: 720px;
+    width: 405px !important;
+    height: 720px !important;
 }
 
 /* Formato Instagram Feed: 4:5 (405x506.25 -> escala x2.6667 a 1080x1350) */
 .slide-container.format-instagram {
-    --slide-w: 405px;
-    --slide-h: 506.25px;
+    width: 405px !important;
+    height: 506.25px !important;
 }
 
 /* Ocultar barras de scroll sin romper la capacidad de desplazamiento */

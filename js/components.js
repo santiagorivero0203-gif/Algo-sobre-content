@@ -18,20 +18,20 @@
  */
 window.LAYOUT_SETS = {
     tiktok: {
-        full:  { top: 20,  right: 20, bottom: 20,  left: 20 },
-        low:   { top: 138, right: 18, bottom: 18,  left: 18 },
-        high:  { top: 18,  right: 18, bottom: 122, left: 18 },
-        float: { top: 80,  right: 30, bottom: 80,  left: 30 },
-        tilt:  { top: 40,  right: 26, bottom: 40,  left: 26, rotate: -1.6, back: true },
-        split: { top: 18,  right: 18, bottom: 18,  left: 18, split: true },
+        full:  { top: 26,  right: 18, bottom: 26,  left: 18 },
+        low:   { top: 138, right: 18, bottom: 26,  left: 18 },
+        high:  { top: 26,  right: 18, bottom: 126, left: 18 },
+        float: { top: 76,  right: 28, bottom: 76,  left: 28 },
+        tilt:  { top: 36,  right: 24, bottom: 36,  left: 24, rotate: -1.6, back: true },
+        split: { top: 22,  right: 18, bottom: 24,  left: 18, split: true },
     },
     instagram: {
-        full:  { top: 14,  right: 14, bottom: 14,  left: 14 },
-        low:   { top: 76,  right: 14, bottom: 14,  left: 14 }, // TopBand reducida a 76px
-        high:  { top: 14,  right: 14, bottom: 64,  left: 14 }, // BottomBand reducida a 64px
+        full:  { top: 18,  right: 14, bottom: 18,  left: 14 },
+        low:   { top: 76,  right: 14, bottom: 18,  left: 14 },
+        high:  { top: 18,  right: 14, bottom: 70,  left: 14 },
         float: { top: 28,  right: 20, bottom: 28,  left: 20 },
         tilt:  { top: 20,  right: 18, bottom: 20,  left: 18, rotate: -1.2, back: true },
-        split: { top: 12,  right: 12, bottom: 12,  left: 12, split: true },
+        split: { top: 16,  right: 14, bottom: 16,  left: 14, split: true },
     },
 };
 
@@ -117,27 +117,27 @@ window.HeroSlide = ({ d, theme, tone, meta, showTitle }) => {
     return (
         <div className="flex flex-col h-full">
             <window.Header variant={d.header} theme={theme} meta={meta} tone={tone} />
-            <span className="self-start rounded-full font-bold text-[12px] mb-3" style={{ padding: '5px 12px', background: theme.accent, color: theme.ink }}>{d.kicker}</span>
+            <span className="self-start rounded-full font-bold text-[12px] mb-3 whitespace-nowrap" style={{ padding: '5px 12px', background: theme.accent, color: theme.ink }}>{d.kicker}</span>
             {showTitle && <window.Title text={d.title} theme={theme} tone={tone} size={d.titleSize || '2.55rem'} />}
             {d.image ? (
                 <window.Photo src={d.image} theme={theme} style={d.imageStyle} className="flex-1 mt-4" />
             ) : (
-                <div className="flex-1 mt-4 rounded-[1.6rem] relative flex items-center justify-center" style={{ background: theme.accent }}>
+                <div className="flex-1 mt-4 rounded-[1.6rem] relative flex items-center justify-center overflow-hidden" style={{ background: theme.accent }}>
                     {art ? (
                         <div className="flex flex-col items-center justify-center gap-2">
                             <window.Icon name={art.icon} size={105} color={theme.ink} stroke={1.6} />
-                            {art.label && <span className="font-mono font-bold text-[11px] uppercase tracking-[.2em] px-3 py-1 rounded-full bg-black/15" style={{ color: theme.ink }}>{art.label}</span>}
+                            {art.label && <span className="font-mono font-bold text-[10.5px] uppercase tracking-[.18em] px-3 py-1 rounded-full bg-black/15 whitespace-nowrap select-none" style={{ color: theme.ink }}>{art.label}</span>}
                         </div>
                     ) : (
                         <window.PixelArt map={window.PIXEL_TROPHY} size={170} palette={{ '#': '#111', 'o': '#F5F2EB' }} />
                     )}
-                    <span className="absolute top-4 left-4 font-mono font-bold text-[11px] tracking-[.2em]" style={{ color: theme.ink }}>
+                    <span className="absolute top-4 left-4 font-mono font-bold text-[10.5px] tracking-[.18em] whitespace-nowrap select-none" style={{ color: theme.ink }}>
                         {art ? art.corner : '1ST · PLACE'}
                     </span>
                     <span className="absolute bottom-4 right-4"><window.PixelArt map={window.PIXEL_HEART} size={28} palette={{ '#': theme.ink === '#FFFFFF' ? '#fff' : '#111' }} /></span>
                 </div>
             )}
-            <p className="mt-3 mb-0 text-[13px] font-semibold" style={{ color: tone.sub }}>{d.sub}</p>
+            <p className="mt-3 mb-0 text-[13px] font-semibold leading-snug" style={{ color: tone.sub }}>{d.sub}</p>
         </div>
     );
 };
@@ -514,13 +514,26 @@ window.CardFrame = ({ d, theme, meta }) => {
     );
 };
 
+/** Patrón de cuadrícula técnica vectorial SVG: nítido y consistente en todos los motores de render */
+window.GridPattern = () => (
+    <svg className="absolute inset-0 w-full h-full pointer-events-none" xmlns="http://www.w3.org/2000/svg" style={{ zIndex: 0 }}>
+        <defs>
+            <pattern id="blueprint-grid" width="27" height="27" patternUnits="userSpaceOnUse">
+                <path d="M 27 0 L 0 0 0 27" fill="none" stroke="rgba(255, 255, 255, 0.15)" strokeWidth="1" />
+            </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#blueprint-grid)" />
+    </svg>
+);
+
 /** Slide vertical completa: Grid + Fondo dinámico + Bandas + Tarjeta */
 window.Slide = ({ video, d, index, format = 'tiktok' }) => {
     const theme = window.THEMES[video.theme];
     const meta = { index, total: video.slides.length, format };
     const seed = video.caseNo * 1000 + index * 37 + 11;
     return (
-        <div id="capture-slide" className={`bg-grid slide-container format-${format}`}>
+        <div id="capture-slide" className={`bg-[#0c0c0c] bg-grid slide-container format-${format} relative overflow-hidden`}>
+            <window.GridPattern />
             <window.Backdrop theme={theme} seed={seed} layout={d.layout} format={format} />
             {d.layout === 'low' && <window.TopBand video={video} theme={theme} meta={meta} format={format} />}
             {d.layout === 'high' && <window.BottomBand theme={theme} meta={meta} format={format} />}
