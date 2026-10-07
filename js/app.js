@@ -245,6 +245,9 @@ const App = () => {
         const elH = isIg ? 506.25 : 720;
         const scale = targetW / elW;
 
+        const isFlat = theme?.bgStyle === 'flat';
+        const canvasBg = theme?.bgCanvas || '#0c0c0c';
+
         /** Normaliza cualquier canvas al tamaño exacto de la red social y lo convierte en PNG */
         const canvasToExactBlob = (src) => new Promise((resolve, reject) => {
             let out = src;
@@ -253,7 +256,7 @@ const App = () => {
                 out.width = targetW;
                 out.height = targetH;
                 const ctx = out.getContext('2d');
-                ctx.fillStyle = '#0c0c0c';
+                ctx.fillStyle = canvasBg;
                 ctx.fillRect(0, 0, targetW, targetH);
                 ctx.drawImage(src, 0, 0, targetW, targetH);
             }
@@ -267,7 +270,7 @@ const App = () => {
                     width: elW,
                     height: elH,
                     scale,
-                    backgroundColor: '#0c0c0c',
+                    backgroundColor: canvasBg,
                     timeout: 15000,
                     // El PNG debe tener esquinas rectas y sin sombra exterior
                     // (el redondeo y la sombra sólo decoran la vista previa del editor)
@@ -276,9 +279,9 @@ const App = () => {
                         boxShadow: 'none',
                         transition: 'none',
                         margin: '0',
-                        backgroundColor: '#0c0c0c',
-                        backgroundImage: 'linear-gradient(to right, rgba(255, 255, 255, 0.18) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.18) 1px, transparent 1px)',
-                        backgroundSize: '27px 27px',
+                        backgroundColor: canvasBg,
+                        backgroundImage: isFlat ? 'none' : 'linear-gradient(to right, rgba(255, 255, 255, 0.18) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.18) 1px, transparent 1px)',
+                        backgroundSize: isFlat ? 'auto' : '27px 27px',
                     },
                     fetch: { requestInit: { mode: 'cors', cache: 'force-cache' } },
                     features: { removeControlCharacter: true },
@@ -316,7 +319,7 @@ const App = () => {
                 scale,
                 width: elW,
                 height: elH,
-                backgroundColor: '#0c0c0c',
+                backgroundColor: canvasBg,
                 useCORS: true,
                 allowTaint: false,
                 logging: false,
@@ -326,9 +329,9 @@ const App = () => {
                     if (c) {
                         c.style.borderRadius = '0';
                         c.style.boxShadow = 'none';
-                        c.style.backgroundColor = '#0c0c0c';
-                        c.style.backgroundImage = 'linear-gradient(to right, rgba(255, 255, 255, 0.18) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.18) 1px, transparent 1px)';
-                        c.style.backgroundSize = '27px 27px';
+                        c.style.backgroundColor = canvasBg;
+                        c.style.backgroundImage = isFlat ? 'none' : 'linear-gradient(to right, rgba(255, 255, 255, 0.18) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.18) 1px, transparent 1px)';
+                        c.style.backgroundSize = isFlat ? 'auto' : '27px 27px';
                     }
                 },
             });

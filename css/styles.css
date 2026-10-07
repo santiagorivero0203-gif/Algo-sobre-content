@@ -98,6 +98,38 @@ html, body {
     background-size: 27px 27px !important;
 }
 
+/* Modos de fondo y tipografías para nuevos géneros (Gaming Pixel & Dev Flat) */
+.slide-container.bg-flat {
+    background-image: none !important;
+}
+
+.font-pixel {
+    font-family: 'Silkscreen', monospace;
+    letter-spacing: 0.04em;
+}
+
+.font-arcade {
+    font-family: 'Press Start 2P', monospace;
+    letter-spacing: 0.05em;
+}
+
+.font-tech {
+    font-family: 'Space Grotesk', sans-serif;
+    letter-spacing: -0.015em;
+}
+
+/* Renderizado nítido de sprites e ilustraciones pixel art (evita blur) */
+.pixel-sprite, .pixel-art-img {
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+/* Bordes retro estilo consola/arcade */
+.pixel-box {
+    box-shadow: 3px 3px 0 #000, -2px -2px 0 rgba(255, 255, 255, 0.12);
+}
+
 /* Lienzo adaptable: TikTok (9:16) e Instagram Feed (4:5) */
 .slide-container {
     width: 405px;

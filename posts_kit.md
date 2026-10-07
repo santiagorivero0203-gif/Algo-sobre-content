@@ -290,7 +290,7 @@ Muchos piensan que es otro Copilot, pero la diferencia entre sugerir y resolver 
 
 ## Video 9: Tokens Infinitos & Multi-Cuentas
 **Título:** Tokens Infinitos: Flujo Pro · Opencode + Antigravity, Gemini y Multi-Cuentas  
-**ID:** `token_mastery` · **Diapositivas:** 8 · **Formato recomendado:** TikTok (9:16) o Instagram (4:5)
+**ID:** `token_mastery` · **Diapositivas:** 9 · **Formato recomendado:** TikTok (9:16) o Instagram (4:5)
 
 ### 🎣 Gancho (Hook)
 > ¿Te quedas sin tokens a mitad de proyecto? Así los multiplico x10 👇
@@ -304,17 +304,24 @@ Programar con agentes de IA no se trata de quemar cuota a lo loco, sino de orque
 3️⃣ Grafos con Graphify & Stitch MCP: Comprime tu base de código en grafos de relaciones para no re-enviar archivos enteros, y diseña interfaces modulares con Stitch vía MCP.
 4️⃣ Micro-commits de Git: Haz commit tras cada cambio validado. Mantienes el contexto del agente limpio y tienes rollback instantáneo si algo falla.
 5️⃣ Multi-cuentas gratis sin bloqueos: A diferencia de Cursor (que te rastrea el hardware y te bloquea al cambiar de cuenta), Antigravity te permite alternar cuentas de Google oficiales legalmente con cuota diaria regenerativa.
-6️⃣ ¿Vale la pena Gemini AI Pro?: 2 millones de tokens de contexto, modelos de razonamiento profundo y cuota prioritaria para sesiones de desarrollo intensivas.
+6️⃣ Todas las ventajas de Gemini AI Pro:
+   • 2M Tokens & Multimodal (repositorios y libros enteros en 1 prompt).
+   • Gems personalizados & Deep Research autónomo en la web.
+   • Python Sandbox interactivo en vivo para depurar scripts.
+   • Integración nativa en Google Workspace (Docs, Gmail, Sheets, Meet, Drive).
+   • 2 TB a 5 TB de almacenamiento en la nube para proyectos y datasets.
+   • Créditos mensuales ($10 USD) de Google Cloud incluidos para despliegues.
+   • Mayores cuotas de tasa (RPM/TPM) y API tier en Google AI Studio para tus agentes.
 
 💾 Guarda este post para tu próxima sesión de código.
 👉 Comenta "TOKENS" y te comparto mi setup de reglas y prompts. ¡Sígueme para más dev y gaming!
 
-#antigravity #opencode #geminiai #programacion #desarrolloweb #aiagents #tokens #cursorai #vscode #softwaredevelopment #productivity
+#antigravity #opencode #geminiai #geminipro #programacion #desarrolloweb #aiagents #tokens #cursorai #vscode #softwaredevelopment
 ```
 
 ### 🏷️ Hashtags (Listos para copiar)
 ```text
-#antigravity #opencode #geminiai #programacion #desarrolloweb #aiagents #tokens #cursorai #vscode #softwaredevelopment #productivity
+#antigravity #opencode #geminiai #geminipro #programacion #desarrolloweb #aiagents #tokens #cursorai #vscode #softwaredevelopment
 ```
 
 ### ⏰ Mejor horario de publicación: `13:00 - 15:00` o `19:00 - 22:00`

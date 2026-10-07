@@ -20,11 +20,11 @@
     =====================================================================
     -->
 
-    <!-- Google Fonts: Inter (titulares limpios) + JetBrains Mono (código) -->
+    <!-- Google Fonts: Inter (titulares) + JetBrains Mono (código) + Silkscreen & Press Start 2P (pixel gaming) + Space Grotesk (tech dev) -->
     <!-- crossorigin="anonymous" permite leer las reglas @font-face e incrustar las fuentes en el PNG exportado -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;700&family=Press+Start+2P&family=Silkscreen:wght@400;700&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet" crossorigin="anonymous">
 
     <!-- Tailwind CSS (CDN) para utilidades de disposición rápida -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -34,7 +34,10 @@
                 extend: {
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
-                        mono: ['"JetBrains Mono"', 'monospace']
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                        pixel: ['"Silkscreen"', 'monospace'],
+                        arcade: ['"Press Start 2P"', 'monospace'],
+                        tech: ['"Space Grotesk"', 'sans-serif']
                     }
                 }
             }

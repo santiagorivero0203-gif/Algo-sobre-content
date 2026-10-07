@@ -59,22 +59,40 @@ window.Header = ({ variant = 'mini', theme, meta, tone }) => {
     }
     return (
         <div className="flex justify-between items-center mb-4">
-            <div className="w-9 h-9 rounded-full flex items-center justify-center font-black text-[13px]" style={{ background: '#111', color: '#fff' }}>SR</div>
-            <div className="rounded-full font-bold text-[12px]" style={{ padding: '4px 16px', border: `1.5px solid ${tone.line}`, background: tone.bg, color: ink }}>Santi.Dev</div>
-            <div className="flex gap-2">
-                <window.Icon name="heart" size={20} color={ink} />
-                <window.Icon name="bookmark" size={20} color={ink} />
+            <div className="rounded-full font-bold text-[12px] flex items-center gap-1.5" style={{ padding: '4px 14px', border: `1.5px solid ${tone.line}`, background: tone.bg, color: ink }}>
+                <span className="w-2 h-2 rounded-full" style={{ background: theme.accent }} />
+                <span>Santi.Dev</span>
+            </div>
+            <div className="flex items-center gap-2.5">
+                <span className="font-mono font-bold text-[11px]" style={{ color: ink, opacity: 0.55 }}>{window.pad(meta.index + 1)} / {window.pad(meta.total)}</span>
+                <div className="flex gap-1.5 opacity-80">
+                    <window.Icon name="heart" size={17} color={ink} />
+                    <window.Icon name="bookmark" size={17} color={ink} />
+                </div>
             </div>
         </div>
     );
 };
 
-/** Título principal de la tarjeta. */
-window.Title = ({ text, theme, tone, size = '2.3rem' }) => !text ? null : (
-    <h2 className="font-black tracking-tight m-0" style={{ fontSize: size, lineHeight: 1.04, color: tone.text }}>
-        {window.rich(text, theme.mark)}
-    </h2>
-);
+/** Título principal de la tarjeta con soporte para géneros (pixel gaming, arcade y tech dev). */
+window.Title = ({ text, theme, tone, size = '2.3rem' }) => {
+    if (!text) return null;
+    let fontCls = 'font-black tracking-tight';
+    let computedSize = size;
+    if (theme?.fontTitle === 'pixel') {
+        fontCls = 'font-pixel tracking-wider uppercase';
+    } else if (theme?.fontTitle === 'arcade') {
+        fontCls = 'font-arcade tracking-wide uppercase';
+        computedSize = size.startsWith('2.') ? '1.5rem' : '1.25rem';
+    } else if (theme?.fontTitle === 'tech') {
+        fontCls = 'font-tech font-bold tracking-normal';
+    }
+    return (
+        <h2 className={`${fontCls} m-0`} style={{ fontSize: computedSize, lineHeight: 1.05, color: tone.text }}>
+            {window.rich(text, theme.mark)}
+        </h2>
+    );
+};
 
 /** Pie de tarjeta con nota o conclusión con espaciado seguro y contenido limpio. */
 window.Foot = ({ text, tone, className = '' }) => (
@@ -121,6 +139,14 @@ window.HeroSlide = ({ d, theme, tone, meta, showTitle }) => {
             {showTitle && <window.Title text={d.title} theme={theme} tone={tone} size={d.titleSize || '2.55rem'} />}
             {d.image ? (
                 <window.Photo src={d.image} theme={theme} style={d.imageStyle} className="flex-1 mt-4" />
+            ) : d.sprite ? (
+                <div className="flex-1 mt-4 rounded-[1.6rem] relative flex items-center justify-center overflow-hidden" style={{ background: theme.accent }}>
+                    <window.PixelSprite name={d.sprite} size={145} color={theme.ink} />
+                    <span className="absolute top-4 left-4 font-mono font-bold text-[10.5px] tracking-[.18em] whitespace-nowrap select-none" style={{ color: theme.ink }}>
+                        {d.spriteLabel || 'RETRO · SPRITE'}
+                    </span>
+                    <span className="absolute bottom-4 right-4"><window.PixelSprite name="heart" size={26} color={theme.ink} /></span>
+                </div>
             ) : (
                 <div className="flex-1 mt-4 rounded-[1.6rem] relative flex items-center justify-center overflow-hidden" style={{ background: theme.accent }}>
                     {art ? (
@@ -346,7 +372,9 @@ window.QuoteSlide = ({ d, theme, tone, meta }) => (
             <p className="font-black mt-3 mb-0 tracking-tight" style={{ fontSize: meta?.format === 'instagram' ? '1.95rem' : '2.2rem', lineHeight: 1.1, color: tone.text }}>{window.rich(d.quote, theme.mark)}</p>
         </div>
         <div className="mt-auto pt-2 pb-0.5 flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full flex items-center justify-center font-black text-[13px]" style={{ background: '#111', color: '#fff' }}>SR</div>
+            <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: theme.accent, color: theme.ink }}>
+                <window.Icon name="sparkle" size={16} stroke={2.5} />
+            </div>
             <div>
                 <div className="font-bold text-[12.5px]" style={{ color: tone.text }}>Santi.Dev</div>
                 <div className="font-mono text-[10px]" style={{ color: tone.sub }}>{d.by}</div>
@@ -440,9 +468,13 @@ window.ListSlide = ({ d, theme, tone, meta, showTitle }) => {
                     const on = i === d.highlight;
                     return (
                         <div key={i} className="rounded-xl flex items-center gap-2.5" style={{ padding: compact ? '7px 10px' : '9px 12px', border: `1.5px solid ${on ? '#111' : tone.line}`, background: on ? tone.box : 'transparent' }}>
-                            {r.icon && (
+                            {(r.sprite || r.icon) && (
                                 <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0" style={{ background: on ? theme.accent : '#111' }}>
-                                    <window.Icon name={r.icon} size={15} color={on ? theme.ink : '#fff'} />
+                                    {r.sprite ? (
+                                        <window.PixelSprite name={r.sprite} size={18} color={on ? theme.ink : '#fff'} />
+                                    ) : (
+                                        <window.Icon name={r.icon} size={15} color={on ? theme.ink : '#fff'} />
+                                    )}
                                 </div>
                             )}
                             <div className="flex-1 min-w-0">
@@ -475,9 +507,28 @@ window.CardFrame = ({ d, theme, meta }) => {
     const L = window.getLayout(d.layout, format);
     const tone = window.toneOf(theme, d.tone);
     const Body = window.SLIDE_TYPES[d.type] || window.TextSlide;
+
+    const isPixel = theme?.cardStyle === 'pixel';
+    const isTech = theme?.cardStyle === 'tech';
+
+    let cardBorderRadius = isIg ? 24 : 28;
+    let cardBoxShadow = '0 18px 40px rgba(0,0,0,.45)';
+    let cardBorder = undefined;
+
+    if (isPixel) {
+        cardBorderRadius = 4;
+        cardBoxShadow = `4px 4px 0 #000, 8px 8px 0 rgba(0,0,0,0.6), 0 0 0 2px ${theme.accent}`;
+        cardBorder = '2px solid #000';
+    } else if (isTech) {
+        cardBorderRadius = isIg ? 16 : 20;
+        cardBoxShadow = '0 20px 45px -10px rgba(0,0,0,0.7), 0 0 25px rgba(56, 189, 248, 0.08)';
+        cardBorder = `1.5px solid ${theme.mark || 'rgba(56,189,248,0.3)'}`;
+    }
+
     const base = {
         position: 'absolute', top: L.top, left: L.left, right: L.right, bottom: L.bottom,
-        borderRadius: isIg ? 24 : 28, background: tone.bg, boxShadow: '0 18px 40px rgba(0,0,0,.45)',
+        borderRadius: cardBorderRadius, background: tone.bg, boxShadow: cardBoxShadow,
+        border: cardBorder,
         zIndex: 10, overflow: 'hidden', padding: isIg ? '18px 20px 14px 20px' : '22px 22px 16px 22px',
         display: 'flex', flexDirection: 'column',
     };
@@ -491,9 +542,7 @@ window.CardFrame = ({ d, theme, meta }) => {
                         <span className="rounded-full font-bold text-[11px]" style={{ padding: '3px 10px', border: `1.5px solid ${theme.ink}`, color: theme.ink }}>Santi.Dev</span>
                         <span className="font-mono font-bold text-[11px]" style={{ color: theme.ink, opacity: 0.7 }}>{window.pad(meta.index + 1)} / {window.pad(meta.total)}</span>
                     </div>
-                    <h2 className="font-black tracking-tight m-0" style={{ fontSize: isIg ? '1.7rem' : '1.95rem', lineHeight: 1.02, color: theme.ink }}>
-                        {window.rich(d.title, 'rgba(255,255,255,.35)')}
-                    </h2>
+                    <window.Title text={d.title} theme={theme} tone={{ text: theme.ink }} size={isIg ? '1.7rem' : '1.95rem'} />
                 </div>
                 <div style={{ ...base, top: L.top + TOP_H + 10 }}>
                     <Body d={{ ...d, header: 'none' }} theme={theme} tone={tone} meta={meta} showTitle={false} />
@@ -531,9 +580,13 @@ window.Slide = ({ video, d, index, format = 'tiktok' }) => {
     const theme = window.THEMES[video.theme];
     const meta = { index, total: video.slides.length, format };
     const seed = video.caseNo * 1000 + index * 37 + 11;
+    const isFlat = theme?.bgStyle === 'flat';
+    const canvasBg = theme?.bgCanvas || '#0c0c0c';
     return (
-        <div id="capture-slide" className={`bg-[#0c0c0c] bg-grid slide-container format-${format} relative overflow-hidden`}>
-            <window.GridPattern />
+        <div id="capture-slide"
+             className={`slide-container format-${format} relative overflow-hidden ${isFlat ? 'bg-flat' : 'bg-[#0c0c0c] bg-grid'}`}
+             style={{ backgroundColor: canvasBg }}>
+            {!isFlat && <window.GridPattern />}
             <window.Backdrop theme={theme} seed={seed} layout={d.layout} format={format} />
             {d.layout === 'low' && <window.TopBand video={video} theme={theme} meta={meta} format={format} />}
             {d.layout === 'high' && <window.BottomBand theme={theme} meta={meta} format={format} />}

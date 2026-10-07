@@ -712,11 +712,17 @@ El secreto para cerrar proyectos y cobrar bien:
 3️⃣ Grafos con Graphify & Stitch MCP: Comprime tu base de código en grafos de relaciones para no re-enviar archivos enteros, y diseña interfaces modulares con Stitch vía MCP.
 4️⃣ Micro-commits de Git: Haz commit tras cada cambio validado. Mantienes el contexto del agente limpio y tienes rollback instantáneo si algo falla.
 5️⃣ Multi-cuentas gratis sin bloqueos: A diferencia de Cursor (que te rastrea el hardware y te bloquea al cambiar de cuenta), Antigravity te permite alternar cuentas de Google oficiales legalmente con cuota diaria regenerativa.
-6️⃣ ¿Vale la pena Gemini AI Pro?: 2 millones de tokens de contexto, modelos de razonamiento profundo y cuota prioritaria para sesiones de desarrollo intensivas.
+6️⃣ Todas las ventajas de Gemini AI Pro:
+   • 2M Tokens de contexto (repositorios y libros enteros en 1 prompt).
+   • Gems personalizados (asistentes y mentores de código a medida).
+   • Python Sandbox interactivo en vivo.
+   • Integración nativa en Google Workspace (Docs, Gmail, Sheets, Meet).
+   • 2 TB de almacenamiento en Google One para proyectos y backups.
+   • Mayores cuotas de tasa (RPM/TPM) y API tier en Google AI Studio para tus agentes.
 
 💾 Guarda este post para tu próxima sesión de código.
 👉 Comenta "TOKENS" y te comparto mi setup de reglas y prompts. ¡Sígueme para más dev y gaming!`,
-            hashtags: ['#antigravity', '#opencode', '#geminiai', '#programacion', '#desarrolloweb', '#aiagents', '#tokens', '#cursorai', '#vscode', '#softwaredevelopment', '#productivity'],
+            hashtags: ['#antigravity', '#opencode', '#geminiai', '#geminipro', '#programacion', '#desarrolloweb', '#aiagents', '#tokens', '#cursorai', '#vscode', '#softwaredevelopment'],
             bestTime: '13:00 - 15:00 o 19:00 - 22:00',
             sound: 'Synthwave / Cyberpunk Lo-Fi Chill',
         },
@@ -783,19 +789,31 @@ El secreto para cerrar proyectos y cobrar bien:
                 good: 'Antigravity: Soporta cambiar entre múltiples cuentas de Google oficiales sin penalizaciones ni bloqueos de dispositivo.',
                 foot: 'Puedes alternar tus cuentas gratuitas con cuota regenerativa diaria de forma 100% legal.',
             },
-            // Slide 7: Ventajas de Gemini AI Pro
+            // Slide 7: Superpoderes Dev de Gemini AI Pro
             {
                 type: 'list', layout: 'full', header: 'full',
-                title: 'La ventaja de *Gemini AI Pro*',
-                highlight: 1,
+                title: 'Superpoderes Dev: *Gemini AI Pro*',
+                highlight: 0,
                 rows: [
-                    { icon: 'zap', t: '2M Tokens de Contexto', d: 'Sube repositorios enteros, documentaciones masivas o libros en una sola consulta.', tag: '2,000,000' },
-                    { icon: 'sparkle', t: 'Google One AI Premium', d: 'Acceso prioritario a modelos de razonamiento profundo sin colas de espera.', tag: 'Top Tier' },
-                    { icon: 'chip', t: 'Velocidad & API Tier', d: 'Tiempos de respuesta ultra-rápidos que aceleran el flujo agéntico sin interrupciones.', tag: 'Fast Lane' },
+                    { icon: 'zap', t: '2M Tokens & Multimodal', d: 'Sube repos enteros, PDFs técnicos o 1 hora de video en un solo prompt.', tag: '2M Context' },
+                    { icon: 'sparkle', t: 'Gems & Deep Research', d: 'Crea agentes de código a medida con investigación técnica profunda en la web.', tag: 'Custom AI' },
+                    { icon: 'terminal', t: 'Python Sandbox en Vivo', d: 'Ejecuta, depura y visualiza código en tiempo real directamente en la interfaz.', tag: 'Code Runner' },
                 ],
-                foot: 'Si programas a diario, la suscripción se paga sola en tiempo ganado y potencia de análisis.',
+                foot: 'La ventana de 2 millones de tokens permite que el modelo entienda tu arquitectura completa de un solo golpe.',
             },
-            // Slide 8: CTA Final
+            // Slide 8: Ecosistema & Cloud de Google AI Pro
+            {
+                type: 'list', layout: 'full', header: 'full',
+                title: 'Ecosistema & Cloud: *Google AI Pro*',
+                highlight: 2,
+                rows: [
+                    { icon: 'layers', t: 'Workspace & Drive Nativo', d: 'Gemini en Docs, Sheets, Gmail y Drive leyendo tus archivos de proyecto.', tag: 'Workspace' },
+                    { icon: 'database', t: '2 TB a 5 TB + Cloud Credits', d: 'Espacio masivo en la nube y créditos mensuales ($10 USD) de Google Cloud.', tag: 'Cloud Tier' },
+                    { icon: 'chip', t: 'AI Studio & Alta Cuota', d: 'Mayor tasa (RPM/TPM) sin esperas para alimentar Antigravity y tus agentes CLI.', tag: 'High Quota' },
+                ],
+                foot: 'No es solo un chat: incluye créditos en la nube, almacenamiento masivo y alta tasa para desarrollo.',
+            },
+            // Slide 9: CTA Final
             {
                 type: 'cta', layout: 'high', tone: 'accent',
                 title: '¿Quieres exprimir *tus tokens*?',

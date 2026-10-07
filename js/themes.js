@@ -222,6 +222,65 @@ window.THEMES = {
             ...GAME_BITS, ...CODE_BITS,
         ],
     },
+    // NUEVO PRESET CÓDIGO / DEV: Fondo plano azul medianoche, sin cuadrícula repetitiva y tipografía alargada (Space Grotesk)
+    dev_blue: {
+        tag: 'CÓDIGO · ARQUITECTURA',
+        band: 'DEV BLUEPRINT · SISTEMAS',
+        accent: '#38BDF8', ink: '#081325',
+        mark: 'rgba(56,189,248,.28)', codeKw: '#60A5FA',
+        ctaIcon: 'terminal',
+        bgStyle: 'flat',
+        bgCanvas: '#080E1A',
+        fontTitle: 'tech',
+        cardStyle: 'tech',
+        backdrop: [
+            { k: 'code', text: 'const system = new Architecture()' },
+            { k: 'tag', text: 'CLEAN ARCH' },
+            { k: 'code', text: '$ agy --autonomous' },
+            { k: 'tag', text: 'TYPE SAFETY' },
+            { k: 'code', text: 'export default defineModule' },
+            { k: 'tag', text: '0 BUGS' },
+            ...CODE_BITS,
+        ],
+    },
+    // NUEVO PRESET GAMING ARCADE: Púrpura retro plano, acento neón magenta y tipografía pixel (Silkscreen)
+    pixel_arcade: {
+        tag: 'GAMING · 8-BIT QUEST',
+        band: 'ARCADE LEVEL · GAME DEV',
+        accent: '#FF007F', ink: '#FFFFFF',
+        mark: 'rgba(255,0,127,.35)', codeKw: '#FF66B2',
+        ctaIcon: 'gamepad',
+        bgStyle: 'flat',
+        bgCanvas: '#140827',
+        fontTitle: 'pixel',
+        cardStyle: 'pixel',
+        backdrop: [
+            { k: 'tag', text: '1UP READY' },
+            { k: 'code', text: 'player.combo += 100;' },
+            { k: 'tag', text: 'STAGE 01' },
+            { k: 'code', text: 'boss.defeat(true);' },
+            ...GAME_BITS,
+        ],
+    },
+    // NUEVO PRESET GAMING CYBER VERDE: Fondo plano oscuro con acento verde arcade 8-bit
+    pixel_cyber: {
+        tag: 'CYBER · GLITCH ARCADE',
+        band: '8-BIT PROTOCOL · INDIE GAME',
+        accent: '#00FF66', ink: '#04180A',
+        mark: 'rgba(0,255,102,.32)', codeKw: '#57FF9A',
+        ctaIcon: 'gamepad',
+        bgStyle: 'flat',
+        bgCanvas: '#081711',
+        fontTitle: 'pixel',
+        cardStyle: 'pixel',
+        backdrop: [
+            { k: 'tag', text: 'GAME ENGINE' },
+            { k: 'code', text: 'gl.drawElements(TRIANGLES)' },
+            { k: 'tag', text: '60 FPS LOCKED' },
+            { k: 'code', text: 'physics.tick(delta);' },
+            ...GAME_BITS,
+        ],
+    },
 };
 
 /**
@@ -435,8 +494,10 @@ window.BottomBand = ({ theme, meta, format = 'tiktok' }) => {
             zIndex: 5,
         }}>
             <div className="flex items-center gap-2">
-                <span className="w-7 h-7 rounded-full flex items-center justify-center font-black text-[11px]" style={{ background: '#fff', color: '#111' }}>SR</span>
-                <span className="font-bold text-white text-[13px]">@santi.dev</span>
+                <span className="w-6 h-6 rounded-full flex items-center justify-center" style={{ background: theme.accent, color: theme.ink }}>
+                    <window.Icon name="terminal" size={13} stroke={2.5} />
+                </span>
+                <span className="font-bold text-white text-[13px] tracking-tight">@santi.dev</span>
             </div>
             <span className="flex items-center gap-1.5 rounded-full font-mono text-[10.5px]" style={{ padding: '5px 11px', border: '1px solid #3a3a3a', color: '#cfcfcf' }}>
                 {isLast ? 'guárdalo' : isIg ? 'desliza' : 'desliza'}

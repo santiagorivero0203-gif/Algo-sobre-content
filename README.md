@@ -132,6 +132,26 @@ El generador incluye un selector de formato en tiempo real para adaptar el dise�
   - **Modal Táctil de Guardado Directo**: Si el navegador no abre el menú nativo automáticamente, despliega un modal con la imagen generada en alta resolución habilitada para mantener presionada la pantalla (`.ios-save-image` con `-webkit-touch-callout: default`) y seleccionar *"Guardar en Fotos"*.
   - **Exportación de Carrusel Completo en Móvil**: Al presionar *"Todo"*, genera la galería completa de diapositivas con miniaturas y botones individuales de guardado instantáneo para el carrete.
 
+### v3.9 (2026-10-07)
+- **Investigación e Integración de Todas las Ventajas de Gemini AI Pro (`token_mastery`)**:
+  - **Superpoderes Dev y Ventana Multimodal**: Incorporación de 2M tokens de contexto, Gems personalizados con memoria persistente, Deep Research técnico autónomo en la web y Python Sandbox en vivo dentro de la conversación.
+  - **Ecosistema, Nube y API**: Integración nativa con Google Workspace (Docs, Sheets, Gmail, Meet, Drive), almacenamiento masivo de 2 TB a 5 TB en Google One, créditos mensuales ($10 USD) de Google Cloud para despliegues, y mayor tasa de peticiones (RPM/TPM) sin esperas en Google AI Studio para agentes agénticos (Antigravity y Opencode).
+  - **Actualización de Diapositivas y Posts Kit**: Slides 7 y 8 estructuradas con máxima coherencia y síntesis escaneable en 3 segundos, y kit de publicación en [`posts_kit.md`](file:///c:/Users/user/Desktop/video%20proyectos/algo/posts_kit.md) actualizado con todas las ventajas itemizadas.
+- **Eliminación Total del Badge / Avatar "SR"**:
+  - Sustitución de todos los círculos de iniciales "SR" en `window.Header`, `window.QuoteSlide` y `window.BottomBand` por el branding oficial `Santi.Dev` con punto de acento temático y microiconos vectoriales SVG (`sparkle`, `terminal`), logrando un acabado editorial mucho más limpio.
+- **Nueva Arquitectura Estética para Próximos Videos (Gaming Pixel Art & Dev Flat Blue)**:
+  - **Fondos Planos Sin Cuadrícula Repetitiva (`bgStyle: 'flat'`, `bgCanvas`)**: Soporte en canvas y en motores de exportación (`modern-screenshot` y `html2canvas`) para fondos sólidos puros.
+  - **Tipografías Especializadas por Género**:
+    - `Space Grotesk` (`font-tech`): Tipografía técnica alargada y moderna para temas de código y arquitectura.
+    - `Silkscreen` (`font-pixel`) y `Press Start 2P` (`font-arcade`): Tipografías extravagantes retro arcade para temas de videojuegos y game dev.
+  - **Librería de Sprites Pixel Art (`window.PixelSprite`)**:
+    - Sprites vectoriales con escalado nítido (banana arcade inspirada en Nano Banana, espada 8-bit, fantasma retro, moneda de oro, consola portátil, trofeo y corazón).
+    - Soporte directo para sprites en portadas (`HeroSlide`, propiedad `d.sprite`) y filas de listas (`ListSlide`, propiedad `r.sprite`).
+  - **Nuevos Presets de Tema en `window.THEMES`**:
+    - `dev_blue`: Azul medianoche plano (`#080E1A`), acento cyan neón (`#38BDF8`), tipografía técnica y tarjetas con borde blueprint.
+    - `pixel_arcade`: Púrpura synthwave (`#140827`), acento magenta neón (`#FF007F`), tipografía pixel y tarjetas con relieve 8-bit.
+    - `pixel_cyber`: Fondo oscuro (`#081711`), acento verde arcade (`#00FF66`), tipografía pixelada y estética cyberpunk.
+
 ### v3.8 (2026-10-07)
 - **Nuevo Carrusel: Tokens Infinitos & Flujo Multi-Cuentas (`token_mastery`)**:
   - **Estrategia Integral de Rendimiento de Tokens**: Incorporación de un carrusel completo de 8 diapositivas con el flujo táctico para multiplicar tokens y no agotar la cuota de los agentes.

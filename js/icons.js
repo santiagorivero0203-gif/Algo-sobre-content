@@ -79,6 +79,94 @@ window.PIXEL_TROPHY = [
     '....######....',
 ];
 
+/** Banana pixel art inspirada en estética arcade / Nano Banana (12x12). */
+window.PIXEL_BANANA = [
+    '.......##...',
+    '......#oo#..',
+    '.....#oooo#.',
+    '.....#oooo#.',
+    '....#oooo#..',
+    '...#oooo#...',
+    '..#oooo#....',
+    '.#oooo#.....',
+    '#oooo#......',
+    '#ooo#.......',
+    '.###........',
+    '..#.........',
+];
+
+/** Espada 8-bit retro (11x11). */
+window.PIXEL_SWORD = [
+    '.........##',
+    '........#oo',
+    '.......#oo#',
+    '......#oo#.',
+    '.....#oo#..',
+    '..#.#oo#...',
+    '..##oo#....',
+    '..###o#....',
+    '.#..##.....',
+    '#..........',
+    '...........',
+];
+
+/** Fantasma retro arcade 8-bit (10x10). */
+window.PIXEL_GHOST = [
+    '...####...',
+    '..######..',
+    '.##..##..#',
+    '.#o..#o..#',
+    '.########.',
+    '.########.',
+    '.########.',
+    '.#.#.##.#.',
+    '#..#....#.',
+    '..........',
+];
+
+/** Moneda dorada retro (8x8). */
+window.PIXEL_COIN = [
+    '..####..',
+    '.######.',
+    '##.oo.##',
+    '##.oo.##',
+    '##.oo.##',
+    '##.oo.##',
+    '.######.',
+    '..####..',
+];
+
+/** Consola portátil retro 8-bit (10x12). */
+window.PIXEL_CONSOLE = [
+    '.########.',
+    '#........#',
+    '#.######.#',
+    '#.#....#.#',
+    '#.######.#',
+    '#........#',
+    '#..#...o.#',
+    '#.###...o#',
+    '#..#.....#',
+    '#...==...#',
+    '.########.',
+    '..........',
+];
+
+/** Componente de renderizado de sprites Pixel Art por nombre. */
+window.PixelSprite = ({ name = 'banana', size = 32, color, accent }) => {
+    const sprites = {
+        banana:  { map: window.PIXEL_BANANA,  palette: { '#': '#5c3905', 'o': '#FFE600' } },
+        heart:   { map: window.PIXEL_HEART,   palette: { '#': color || '#FF2E63' } },
+        trophy:  { map: window.PIXEL_TROPHY,  palette: { '#': '#111', 'o': '#FFD700' } },
+        sword:   { map: window.PIXEL_SWORD,   palette: { '#': '#111', 'o': color || '#00E5FF' } },
+        ghost:   { map: window.PIXEL_GHOST,   palette: { '#': color || '#FF007F', 'o': '#FFF' } },
+        coin:    { map: window.PIXEL_COIN,    palette: { '#': '#855800', 'o': '#FFD700', '.': '#FFF' } },
+        console: { map: window.PIXEL_CONSOLE, palette: { '#': color || '#8A2BE2', 'o': '#FF007F', '=': '#FFF', '.': '#0F091A' } },
+    };
+    const s = sprites[name] || sprites.banana;
+    return <window.PixelArt map={s.map} size={size} palette={s.palette} />;
+};
+
 /**
  * Topología real de MediaPipe Hands (21 puntos anatómicos).
  */
