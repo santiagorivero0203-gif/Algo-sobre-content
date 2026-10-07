@@ -137,14 +137,13 @@ El generador incluye un selector de formato en tiempo real para adaptar el dise�
   - **Superpoderes Dev y Ventana Multimodal**: Incorporación de 2M tokens de contexto, Gems personalizados con memoria persistente, Deep Research técnico autónomo en la web y Python Sandbox en vivo dentro de la conversación.
   - **Ecosistema, Nube y API**: Integración nativa con Google Workspace (Docs, Sheets, Gmail, Meet, Drive), almacenamiento masivo de 2 TB a 5 TB en Google One, créditos mensuales ($10 USD) de Google Cloud para despliegues, y mayor tasa de peticiones (RPM/TPM) sin esperas en Google AI Studio para agentes agénticos (Antigravity y Opencode).
   - **Actualización de Diapositivas y Posts Kit**: Slides 7 y 8 estructuradas con máxima coherencia y síntesis escaneable en 3 segundos, y kit de publicación en [`posts_kit.md`](file:///c:/Users/user/Desktop/video%20proyectos/algo/posts_kit.md) actualizado con todas las ventajas itemizadas.
-- **Rediseño y Potenciación de las Pantallas Finales (CTA / Outro) de las Guías de Herramientas**:
-  - **Eliminación de Espacios Vacíos y Adición del Toolkit Hub**: Se reconstruyó `window.CtaSlide` para sustituir el espacio vacío central por un **Showcase Central de Recursos / Dev Toolkit**, mostrando una tarjeta con nombre de archivo descargable simulado (`.zip`, `.json`, `.sh`), badge temático (`FREE PACK`, `WORKFLOW`, `DEV CHEAT SHEET`) y 3 puntos con checks de alto valor entregable.
-  - **Caja de Comentarios Interactiva de Alto Contraste**: Rediseño de la barra de interacción con icono de chat, llamada de atención clara (*"Comenta abajo en este post"*) y la palabra clave (*"AGY"*, *"VSCODE"*, *"TOKENS"*) enmarcada en una píldora oscura con relieve y borde iluminado por el acento del tema.
-  - **Contenido Específico en las 3 Guías de Herramientas**:
-    - **Guía Antigravity (`agy`)**: Entrega de `antigravity-toolkit.zip` con setup de `.agents/`, 5 atajos CLI y configuración de Stitch MCP / Browser Agent.
-    - **Ventajas Antigravity (`agy_power`)**: Entrega de `vs-antigravity-setup.json` destacando la base VS Code OSS, edición multiarchivo y browser testing.
-    - **Tokens Infinitos (`token_mastery`)**: Entrega de `tokens-mastery-pack.sh` con prompt maestro de 2M tokens para Gemini, dúo Antigravity + Opencode y plantilla de micro-commits.
-  - **Nuevos Iconos Vectoriales SVG**: Incorporación de `folder`, `download`, `gift` y `git` en [`js/icons.js`](file:///c:/Users/user/Desktop/video%20proyectos/algo/js/icons.js).
+- **Rediseño de Pantallas Finales (CTA / Outro) Limpias y de Alto Impacto (Cero Enredos)**:
+  - **Enfoque Humano y Visual**: Eliminación de nombres de archivos técnicos inventados (`.zip`, `.sh`, `.json`) y listas complejas. Ahora la tarjeta central muestra un badge destacado (`PLANTILLA GRATIS`, `GUÍA RÁPIDA`, `CHECKLIST EXCLUSIVO`), un icono protagonista en pastilla con halo temático (`gift`, `sparkle`, `zap`), una sola frase clara de beneficio directo y dos badges sencillos (`Listo para usar`, `Ahorra cuota`).
+  - **Caja de Acción Directa sin Repeticiones**: Barra de comentario con icono, llamada visual clara (*"Comenta [KEYWORD] en este post 👇"*) y promesa concisa de envío por mensaje directo sin textos redundantes.
+  - **Contenido Simplificado por Guía**:
+    - **Guía Antigravity (`agy`)**: *"¿Quieres mi setup listo?"* + *"Te paso el archivo de configuración para que solo copies y pegues en tu editor."* + `"AGY"`.
+    - **Ventajas Antigravity (`agy_power`)**: *"¿Listo para probarlo?"* + *"Los atajos y trucos que uso a diario para programar el doble de rápido."* + `"VSCODE"`.
+    - **Tokens Infinitos (`token_mastery`)**: *"¿Quieres la guía de tokens?"* + *"El paso a paso para exprimir tu cuota y no quedarte nunca sin tokens."* + `"TOKENS"`.
 - **Eliminación Total del Badge / Avatar "SR"**:
   - Sustitución de todos los círculos de iniciales "SR" en `window.Header`, `window.QuoteSlide` y `window.BottomBand` por el branding oficial `Santi.Dev` con punto de acento temático y microiconos vectoriales SVG (`sparkle`, `terminal`), logrando un acabado editorial mucho más limpio.
 - **Nueva Arquitectura Estética para Próximos Videos (Gaming Pixel Art & Dev Flat Blue)**:

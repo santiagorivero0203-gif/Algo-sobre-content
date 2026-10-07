@@ -420,68 +420,54 @@ window.ChecklistSlide = ({ d, theme, tone, meta, showTitle }) => {
     );
 };
 
-/** Cierre y llamada a la acción hacia el perfil con Showcase de Recursos / Toolkit */
+/** Cierre y llamada a la acción hacia el perfil: limpio, visual y sin enredos */
 window.CtaSlide = ({ d, theme, tone, meta }) => {
     const isIg = meta?.format === 'instagram';
     const isDark = tone.bg === '#111' || tone.bg === '#0c0c0c' || (typeof tone.bg === 'string' && tone.bg.startsWith('#0'));
-    const hasItems = Array.isArray(d.items) && d.items.length > 0;
 
     return (
         <div className="flex flex-col h-full relative">
             <window.Header variant="mini" theme={theme} meta={meta} tone={tone} />
-            <window.Title text={d.title} theme={theme} tone={tone} size={isIg ? '1.75rem' : '2.1rem'} />
 
-            {/* Centro de Valor / Showcase de Toolkit o Resumen de Entregables */}
-            <div className="rounded-2xl flex flex-col justify-center my-auto overflow-hidden" style={{
-                background: isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.04)',
+            {/* Titular directo */}
+            <window.Title text={d.title} theme={theme} tone={tone} size={isIg ? '1.85rem' : '2.15rem'} />
+
+            {/* Centro Visual Limpio: Enfocado en el beneficio real sin tecnicismos pesados */}
+            <div className="rounded-2xl flex flex-col items-center justify-center text-center my-auto overflow-hidden" style={{
+                background: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.03)',
                 border: `1.5px solid ${tone.line}`,
-                padding: isIg ? '10px 14px' : '13px 16px',
+                padding: isIg ? '14px 16px' : '18px 20px',
             }}>
-                <div className="flex items-center justify-between pb-2 mb-2 border-b" style={{ borderColor: tone.line }}>
-                    <div className="flex items-center gap-2 min-w-0">
-                        <span className="w-5 h-5 rounded-md flex items-center justify-center shrink-0" style={{ background: theme.accent, color: theme.ink }}>
-                            <window.Icon name={d.resourceIcon || 'folder'} size={12} stroke={2.6} />
-                        </span>
-                        <span className="font-mono font-bold text-[11px] tracking-tight truncate" style={{ color: tone.text }}>
-                            {d.resourceFile || 'recursos-santi.dev'}
-                        </span>
-                    </div>
-                    <span className="font-mono font-bold text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full shrink-0" style={{ background: theme.accent, color: theme.ink }}>
-                        {d.resourceTag || 'DEV KIT'}
+                {/* Badge superior */}
+                {d.kicker && (
+                    <span className="font-mono font-bold text-[9.5px] uppercase tracking-widest px-3 py-1 rounded-full mb-2.5" style={{ background: theme.accent, color: theme.ink }}>
+                        {d.kicker}
                     </span>
+                )}
+
+                {/* Icono central de regalo o valor */}
+                <div className="w-11 h-11 rounded-2xl flex items-center justify-center mb-2 shadow-sm" style={{ background: theme.accent, color: theme.ink }}>
+                    <window.Icon name={d.icon || theme.ctaIcon || 'gift'} size={23} stroke={2.4} />
                 </div>
 
-                {hasItems ? (
-                    <div className="flex flex-col gap-1.5">
-                        {d.items.map((it, idx) => (
-                            <div key={idx} className="flex items-center gap-2">
-                                <span className="w-4 h-4 rounded-full flex items-center justify-center shrink-0" style={{ background: theme.accent, color: theme.ink }}>
-                                    <window.Icon name="check" size={10} stroke={3} />
-                                </span>
-                                <span className="text-[11px] font-semibold truncate leading-tight" style={{ color: tone.text }}>
-                                    {it}
-                                </span>
-                            </div>
+                {/* Frase simple y humana de beneficio */}
+                <p className="font-bold text-[13px] leading-snug m-0 px-2 max-w-[280px]" style={{ color: tone.text }}>
+                    {d.desc || d.sub || 'Todo configurado para que solo tengas que copiar y pegar.'}
+                </p>
+
+                {/* Pastillas limpias de apoyo */}
+                {d.badges && d.badges.length > 0 && (
+                    <div className="flex flex-wrap justify-center gap-1.5 mt-2.5">
+                        {d.badges.map((b, idx) => (
+                            <span key={idx} className="font-mono font-bold text-[10px] rounded-lg px-2.5 py-0.5" style={{ background: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)', color: tone.text }}>
+                                {b}
+                            </span>
                         ))}
-                    </div>
-                ) : (
-                    <div className="flex items-center gap-2.5 py-0.5">
-                        <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0" style={{ background: theme.accent, color: theme.ink }}>
-                            <window.Icon name={theme.ctaIcon || 'sparkle'} size={18} stroke={2.4} />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                            <div className="text-[12px] font-bold leading-tight" style={{ color: tone.text }}>
-                                {d.subTitle || 'Plantilla de configuración lista'}
-                            </div>
-                            <div className="text-[10px] font-medium leading-snug mt-0.5 truncate" style={{ color: tone.sub }}>
-                                {d.sub || 'Todo probado y optimizado para tu editor.'}
-                            </div>
-                        </div>
                     </div>
                 )}
             </div>
 
-            {/* Caja interactiva de llamada de acción con Keyword destacada */}
+            {/* Caja de Comentario y Llamada a la Acción */}
             <div className="mt-auto pt-1">
                 <div className="rounded-2xl flex items-center justify-between" style={{
                     padding: isIg ? '8px 12px' : '9px 14px',
@@ -489,22 +475,21 @@ window.CtaSlide = ({ d, theme, tone, meta }) => {
                     boxShadow: '0 8px 24px rgba(0,0,0,.15)',
                     border: '1.5px solid rgba(0,0,0,0.06)'
                 }}>
-                    <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="flex items-center gap-2 min-w-0">
                         <div className="w-7 h-7 rounded-full flex items-center justify-center shrink-0" style={{ background: '#111', color: '#fff' }}>
                             <window.Icon name="comment" size={13} color="#fff" />
                         </div>
-                        <div className="flex flex-col min-w-0">
-                            <span className="font-extrabold text-[12px] leading-tight text-[#111] truncate">Comenta abajo</span>
-                            <span className="font-mono text-[9px] text-[#666]">en este post</span>
-                        </div>
+                        <span className="font-bold text-[12px] text-[#111] truncate">
+                            Comenta <span className="font-black text-[#111]">"{d.keyword}"</span>
+                        </span>
                     </div>
-                    <div className="flex items-center gap-1 px-3 py-1.5 rounded-xl font-mono font-black text-[12px] tracking-wide shrink-0" style={{ background: '#111', color: '#fff', border: `1.5px solid ${theme.accent}` }}>
-                        <span style={{ color: theme.accent }}>"</span>{d.keyword}<span style={{ color: theme.accent }}>"</span>
-                    </div>
+                    <span className="font-mono font-bold text-[10px] px-2.5 py-1 rounded-lg shrink-0" style={{ background: theme.accent, color: theme.ink }}>
+                        en este post 👇
+                    </span>
                 </div>
 
                 <p className="font-semibold text-[11px] leading-snug my-2 text-center" style={{ color: tone.text }}>
-                    {d.line}
+                    {d.line || `Comenta "${d.keyword}" y te lo mando por mensaje directo.`}
                 </p>
 
                 <div className="flex gap-2">

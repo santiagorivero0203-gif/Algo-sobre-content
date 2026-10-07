@@ -241,7 +241,7 @@ Guía rápida para entender y dominar la plataforma de agentes de IA de Google:
 5️⃣ MCP nativo: Conecta Stitch para diseñar interfaces con palabras, Supabase para bases de datos SQL y GitHub para sincronizar sin fricción.
 
 💾 Guarda esta guía para no perderla cuando configures tu entorno.
-👉 Comenta "AGY" y te paso la plantilla de configuración completa .agents/ para tu editor. ¡Sígueme para más dev y gaming!
+👉 Comenta "AGY" y te paso mi plantilla de configuración lista para tu editor. ¡Sígueme para más dev y gaming!
 
 #antigravity #googleai #gemini #opencode #stitchmcp #programacion #ia #desarrolloweb #softwareengineer #tutorial #aiagents
 ```
@@ -273,7 +273,7 @@ Muchos piensan que es otro Copilot, pero la diferencia entre sugerir y resolver 
 4️⃣ Subagentes en segundo plano y MCP: Ejecuta tareas pesadas de fondo mientras sigues programando, y conecta APIs o diseño con Stitch nativamente.
 
 💾 Guarda este post para tu próxima comparativa técnica.
-👉 Comenta "VSCODE" y te comparto mi guía de prompts, setup de extensiones y reglas agénticas. ¡Sígueme para más dev y gaming!
+👉 Comenta "VSCODE" y te comparto mi setup de atajos y prompts. ¡Sígueme para más dev y gaming!
 
 #antigravity #vscode #developer #programacion #aiagents #githubcopilot #softwaredevelopment #productivity #codinglife #tecnologia
 ```
@@ -314,7 +314,7 @@ Programar con agentes de IA no se trata de quemar cuota a lo loco, sino de orque
    • Mayores cuotas de tasa (RPM/TPM) y API tier en Google AI Studio para tus agentes.
 
 💾 Guarda este post para tu próxima sesión de código.
-👉 Comenta "TOKENS" y te comparto mi setup de reglas y prompts. ¡Sígueme para más dev y gaming!
+👉 Comenta "TOKENS" y te mando mi checklist de ahorro al instante. ¡Sígueme para más dev y gaming!
 
 #antigravity #opencode #geminiai #geminipro #programacion #desarrolloweb #aiagents #tokens #cursorai #vscode #softwaredevelopment
 ```
