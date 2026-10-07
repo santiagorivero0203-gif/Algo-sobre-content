@@ -46,7 +46,10 @@ algo/
 
 ---
 
-## 🎬 Contenido: 8 Carruseles en 3 Series Temáticas
+## 🎬 Contenido: 9 Carruseles en 3 Series Temáticas
+
+> [!TIP]
+> **Regla de Oro Editorial:** Todo el contenido de este repositorio sigue la directriz de ser **100% coherente y autoconclusivo** (cualquier espectador entiende el video completo sin haber visto los anteriores) pero **sin sobrecontextualizar**, manteniendo un ritmo ágil y escaneable en 3 segundos por slide para no destruir el enganche en TikTok/Instagram. Consulta las reglas activas en [AGENTS.md](file:///c:/Users/user/Desktop/video%20proyectos/algo/AGENTS.md) y [.agents/rules/content_rules.md](file:///c:/Users/user/Desktop/video%20proyectos/algo/.agents/rules/content_rules.md).
 
 ### Serie 1: Trilogía "De la Idea al Código"
 1. **Parte 1: Stack Secreto** (`stack1`):
