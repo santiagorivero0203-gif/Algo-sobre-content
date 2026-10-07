@@ -203,6 +203,25 @@ window.THEMES = {
             ...GAME_BITS, ...CODE_BITS,
         ],
     },
+    // Optimización de tokens, multi-cuenta y flujo Opencode + Antigravity (verde menta ciber-neón)
+    tokens_pro: {
+        tag: 'HERRAMIENTAS · OPTIMIZACIÓN',
+        band: 'TOKENS INFINITOS · WORKFLOW PRO',
+        accent: '#00DF8F', ink: '#082117',
+        mark: 'rgba(0,223,143,.32)', codeKw: '#34D399',
+        ctaIcon: 'zap',
+        backdrop: [
+            { k: 'code', text: '$ opencode --save-tokens' },
+            { k: 'tag', text: 'TOKENS x10' },
+            { k: 'code', text: 'gemini.planContext(2M)' },
+            { k: 'tag', text: 'GRAPHIFY' },
+            { k: 'code', text: 'git commit -m "checkpoint"' },
+            { k: 'tag', text: 'MULTI-CUENTA' },
+            { k: 'code', text: 'stitch.getScreen("ui")' },
+            { k: 'tag', text: 'GEMINI PRO' },
+            ...GAME_BITS, ...CODE_BITS,
+        ],
+    },
 };
 
 /**

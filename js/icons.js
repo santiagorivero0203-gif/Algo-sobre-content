@@ -39,6 +39,8 @@ window.ICONS = {
     sparkle:  (c) => <path d="M12 3l2.2 5.8L20 11l-5.8 2.2L12 19l-2.2-5.8L4 11l5.8-2.2z" />,
     layers:   (c) => <><path d="M12 2L2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5" /><path d="M2 12l10 5 10-5" /></>,
     terminal: (c) => <><polyline points="4 17 10 11 4 5" /><line x1="12" y1="19" x2="20" y2="19" /></>,
+    zap:      (c) => <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />,
+    users:    (c) => <><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></>,
 };
 
 /** Componente Icon: Renderiza el icono con trazo uniforme. */

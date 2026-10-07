@@ -80,6 +80,9 @@ algo/
 8. **Ventajas: Antigravity** (`agy_power`):
    - Hook: *¿Por qué Antigravity no es otro editor más?*
    - Contenido: Base sobre el núcleo de Visual Studio Code (Code OSS: atajos, temas y plugins sin reaprender nada), de autocompletado pasivo a agente autónomo, ciclo completo (Plan ➔ Multi-archivo ➔ Terminal ➔ Navegador), 3 superpoderes clave (Browser Subagent, subagentes en segundo plano y MCP nativo) y CTA honesto.
+9. **Tokens Infinitos: Flujo Pro** (`token_mastery`):
+   - Hook: *¿Te quedas sin tokens a mitad de proyecto? Así los multiplico x10*
+   - Contenido: Flujo táctico de rendimiento extremo. Planificación externa en Gemini (2M contexto, 0 tokens gastados en IDE), orquestación Antigravity + Opencode, grafos de Graphify, Stitch MCP para diseño desacoplado, checkpoints con micro-commits en Git, ventaja multi-cuenta sin bloqueos de hardware ID (vs Cursor) y análisis de rentabilidad de Gemini AI Pro.
 
 ## 📱 Formatos Soportados (TikTok vs Instagram)
 
@@ -125,6 +128,18 @@ El generador incluye un selector de formato en tiempo real para adaptar el dise�
   - **Integración con Web Share API (`navigator.share`)**: Exporta el PNG como un objeto `File` nativo mediante Blobs binarios, activando directamente la hoja de compartir nativa de iOS para tocar **"Guardar imagen"** directo a la app **Fotos (Carrete)**.
   - **Modal Táctil de Guardado Directo**: Si el navegador no abre el menú nativo automáticamente, despliega un modal con la imagen generada en alta resolución habilitada para mantener presionada la pantalla (`.ios-save-image` con `-webkit-touch-callout: default`) y seleccionar *"Guardar en Fotos"*.
   - **Exportación de Carrusel Completo en Móvil**: Al presionar *"Todo"*, genera la galería completa de diapositivas con miniaturas y botones individuales de guardado instantáneo para el carrete.
+
+### v3.8 (2026-10-07)
+- **Nuevo Carrusel: Tokens Infinitos & Flujo Multi-Cuentas (`token_mastery`)**:
+  - **Estrategia Integral de Rendimiento de Tokens**: Incorporación de un carrusel completo de 8 diapositivas con el flujo táctico para multiplicar tokens y no agotar la cuota de los agentes.
+  - **Planificación Externa con Gemini**: Técnica para diseñar arquitectura y planes maestros en Gemini Web/Canvas (ventana de contexto de 2M tokens) sin consumir tokens del IDE.
+  - **El Dúo Antigravity + Opencode**: Asignación de roles óptima (Antigravity para arquitectura multi-archivo pesada y Opencode para refactorizaciones, pruebas y funciones ligeras en terminal).
+  - **Compresión de Contexto con Grafos (Graphify) y Stitch MCP**: Estructuración del proyecto en grafos de dependencias para no reinyectar archivos enteros y generación de interfaces desacopladas vía MCP sin inflar el contexto con CSS manual.
+  - **Git Checkpoints & Micro-commits**: Filosofía de commits tras cada hito validado para resetear la memoria residual del agente, mantener diffs limpios y posibilitar rollbacks instantáneos.
+  - **Ventaja Multi-Cuenta Oficial vs Cursor**: Análisis comparativo demostrando cómo Antigravity permite alternar cuentas de Google oficiales sin penalizaciones ni bloqueos por hardware ID (a diferencia de Cursor que detecta y bloquea dispositivos).
+  - **Rentabilidad de Gemini AI Pro**: Análisis del tier Google One AI Premium (2M tokens de contexto masivo, modelos de razonamiento prioritarios y API dedicada).
+  - **Nuevo Tema Ciber-Neón (`tokens_pro`)**: Paleta verde menta tecnológico (`#00DF8F`), nuevos iconos vectoriales SVG (`zap`, `users`) y directivas de código en terminal.
+  - **Kit de Publicación Completo**: Hook, caption estructurada, hashtags e instrucciones integradas en [`posts_kit.md`](file:///c:/Users/user/Desktop/video%20proyectos/algo/posts_kit.md) y en el modal interactivo de la app.
 
 ### v3.7 (2026-10-05)
 - **Fidelidad Total de Exportación HD (Fondo y Elementos sin Recortes)**:

@@ -688,4 +688,120 @@ El secreto para cerrar proyectos y cobrar bien:
             },
         ],
     },
+
+    // =========================================================================
+    // GUÍA DE HERRAMIENTAS · PARTE 3: TOKENS INFINITOS & WORKFLOW MULTI-CUENTA
+    // =========================================================================
+    // Flujo táctico de ahorro extremo de cuota y rendimiento:
+    // 1. Planificación externa en Gemini (2M de contexto, 0 tokens gastados en IDE).
+    // 2. Dúo Antigravity (arquitectura/orquestación) + Opencode (refactor/terminal).
+    // 3. Compresión de contexto: Grafos de Graphify y pantallas desacopladas con Stitch MCP.
+    // 4. Git checkpoints: Micro-commits para limpiar contexto y rollback instantáneo.
+    // 5. Multi-cuentas gratis: Antigravity (sin bloqueos de máquina) vs Cursor (bloqueo por HWID).
+    // 6. Gemini AI Pro: Ventajas reales de la suscripción (2M tokens, cuotas ultra-altas).
+    // =========================================================================
+    {
+        id: 'token_mastery', slug: 'tokens_infinitos_antigravity_opencode', theme: 'tokens_pro', caseNo: 9, group: 'Guías de Herramientas',
+        title: 'Tokens Infinitos: Flujo Pro', subtitle: 'Opencode + Antigravity, Gemini y Multi-Cuentas',
+        post: {
+            hook: '¿Te quedas sin tokens a mitad de proyecto? Así los multiplico x10 👇',
+            caption: `Programar con agentes de IA no se trata de quemar cuota a lo loco, sino de orquestar el flujo inteligente:
+
+1️⃣ Planifica con Gemini fuera del IDE: No quemes tokens caros del editor en pensar. Usa la ventana de 2M de tokens de Gemini para estructurar la arquitectura y los pasos antes de tocar código.
+2️⃣ El dúo Antigravity + Opencode: Antigravity levanta la arquitectura pesada multi-archivo; Opencode pule detalles finos y scripts desde la terminal sin inflar el contexto.
+3️⃣ Grafos con Graphify & Stitch MCP: Comprime tu base de código en grafos de relaciones para no re-enviar archivos enteros, y diseña interfaces modulares con Stitch vía MCP.
+4️⃣ Micro-commits de Git: Haz commit tras cada cambio validado. Mantienes el contexto del agente limpio y tienes rollback instantáneo si algo falla.
+5️⃣ Multi-cuentas gratis sin bloqueos: A diferencia de Cursor (que te rastrea el hardware y te bloquea al cambiar de cuenta), Antigravity te permite alternar cuentas de Google oficiales legalmente con cuota diaria regenerativa.
+6️⃣ ¿Vale la pena Gemini AI Pro?: 2 millones de tokens de contexto, modelos de razonamiento profundo y cuota prioritaria para sesiones de desarrollo intensivas.
+
+💾 Guarda este post para tu próxima sesión de código.
+👉 Comenta "TOKENS" y te comparto mi setup de reglas y prompts. ¡Sígueme para más dev y gaming!`,
+            hashtags: ['#antigravity', '#opencode', '#geminiai', '#programacion', '#desarrolloweb', '#aiagents', '#tokens', '#cursorai', '#vscode', '#softwaredevelopment', '#productivity'],
+            bestTime: '13:00 - 15:00 o 19:00 - 22:00',
+            sound: 'Synthwave / Cyberpunk Lo-Fi Chill',
+        },
+        slides: [
+            // Slide 1: Portada
+            {
+                type: 'hero', layout: 'low', header: 'none',
+                kicker: 'Tokens & Cuota · Guárdalo',
+                title: '¿Cómo tener *tokens infinitos*?',
+                titleSize: '2.45rem',
+                artIcon: 'zap', artCorner: 'TOKEN HACK', artLabel: 'ANTIGRAVITY + OPENCODE',
+                sub: 'El flujo secreto: Opencode + Antigravity, Gemini para planear y el truco multi-cuenta que Cursor te bloquea.',
+                prod: 'Portada estilo ciber-neón verde menta con icono de rayo y badge de hack de tokens.',
+            },
+            // Slide 2: Planear con Gemini
+            {
+                type: 'text', layout: 'full', header: 'full',
+                title: 'Paso 1: *Planifica fuera del IDE*',
+                body: 'Nunca uses el agente del editor para pensar desde cero. Usa *Gemini con 2M de contexto* para estructurar la arquitectura primero.',
+                icons: [
+                    { name: 'sparkle', label: 'Gemini 2M' },
+                    { name: 'book', label: 'Plan Maestro' },
+                    { name: 'terminal', label: '0 Tokens IDE' },
+                ],
+                foot: 'Al editor solo le pasas prompts con tareas quirúrgicas. Ahorras hasta un 70% de tokens del agente.',
+            },
+            // Slide 3: El Dúo Antigravity + Opencode
+            {
+                type: 'flow', layout: 'low', header: 'mini',
+                title: 'El combo: *Antigravity + Opencode*',
+                nodes: [
+                    { icon: 'layers', t: '1. Antigravity orquesta', s: 'Genera el 85% de la arquitectura base y edita múltiples archivos a la vez.' },
+                    { icon: 'terminal', t: '2. Opencode pule', s: 'Ajustes finos, pruebas y funciones puntuales desde terminal con bajo consumo.' },
+                    { icon: 'zap', t: '3. Ahorro inteligente', s: 'Evitas reinyectar todo el historial del proyecto en cada modificación menor.' },
+                    { icon: 'check', t: '4. Velocidad pura', s: 'La potencia visual de VS Code combinada con la agilidad ligera de consola.' },
+                ],
+                foot: 'Usa el agente grande para levantar el sistema y la herramienta ligera para los retoques.',
+            },
+            // Slide 4: Graphify & Stitch MCP
+            {
+                type: 'list', layout: 'full', header: 'full',
+                title: 'Contexto inteligente: *Graphify & Stitch*',
+                highlight: 0,
+                rows: [
+                    { icon: 'branch', t: 'Grafos con Graphify', d: 'Convierte tu código en un mapa de relaciones: el agente lee solo los nodos relevantes.', tag: 'Knowledge' },
+                    { icon: 'layers', t: 'Stitch MCP', d: 'Prototipa pantallas modulares vía MCP sin quemar contexto describiendo CSS paso a paso.', tag: 'Design MCP' },
+                    { icon: 'database', t: 'Reglas en .agents/', d: 'Deja tus guías y stacks fijados para que el agente nunca olvide el estándar del proyecto.', tag: 'Skills' },
+                ],
+                foot: 'Menos archivos crudos en el prompt = miles de tokens ahorrados en cada consulta.',
+            },
+            // Slide 5: Guardar cada cambio (Git Checkpoints)
+            {
+                type: 'compare', layout: 'tilt', header: 'mini',
+                title: 'Guarda cada cambio: *Micro-commits*',
+                bad: 'Dejar que el agente haga 15 cambios seguidos sin guardar: si algo se rompe, gastas el triple de tokens depurando.',
+                good: 'Git commit tras cada hito validado: contexto limpio, diffs claros y rollback instantáneo sin perder el hilo.',
+                foot: 'Un commit a tiempo resetea la memoria residual del agente y evita alucinaciones.',
+            },
+            // Slide 6: Multi-cuentas gratis: Antigravity vs Cursor
+            {
+                type: 'compare', layout: 'tilt', header: 'mini',
+                title: 'Multi-cuentas: *Antigravity vs Cursor*',
+                bad: 'Cursor: Rastrea tu máquina por hardware ID. Si intentas alternar cuentas gratis, te bloquea o limita drásticamente.',
+                good: 'Antigravity: Soporta cambiar entre múltiples cuentas de Google oficiales sin penalizaciones ni bloqueos de dispositivo.',
+                foot: 'Puedes alternar tus cuentas gratuitas con cuota regenerativa diaria de forma 100% legal.',
+            },
+            // Slide 7: Ventajas de Gemini AI Pro
+            {
+                type: 'list', layout: 'full', header: 'full',
+                title: 'La ventaja de *Gemini AI Pro*',
+                highlight: 1,
+                rows: [
+                    { icon: 'zap', t: '2M Tokens de Contexto', d: 'Sube repositorios enteros, documentaciones masivas o libros en una sola consulta.', tag: '2,000,000' },
+                    { icon: 'sparkle', t: 'Google One AI Premium', d: 'Acceso prioritario a modelos de razonamiento profundo sin colas de espera.', tag: 'Top Tier' },
+                    { icon: 'chip', t: 'Velocidad & API Tier', d: 'Tiempos de respuesta ultra-rápidos que aceleran el flujo agéntico sin interrupciones.', tag: 'Fast Lane' },
+                ],
+                foot: 'Si programas a diario, la suscripción se paga sola en tiempo ganado y potencia de análisis.',
+            },
+            // Slide 8: CTA Final
+            {
+                type: 'cta', layout: 'high', tone: 'accent',
+                title: '¿Quieres exprimir *tus tokens*?',
+                keyword: 'TOKENS',
+                line: 'y te paso mi plantilla de reglas .agents/ y comandos de Opencode. ¿Quieres seguir aprendiendo? Entra a mi perfil para más dev y gaming.',
+            },
+        ],
+    },
 ];

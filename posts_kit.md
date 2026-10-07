@@ -288,6 +288,40 @@ Muchos piensan que es otro Copilot, pero la diferencia entre sugerir y resolver 
 
 ---
 
+## Video 9: Tokens Infinitos & Multi-Cuentas
+**Título:** Tokens Infinitos: Flujo Pro · Opencode + Antigravity, Gemini y Multi-Cuentas  
+**ID:** `token_mastery` · **Diapositivas:** 8 · **Formato recomendado:** TikTok (9:16) o Instagram (4:5)
+
+### 🎣 Gancho (Hook)
+> ¿Te quedas sin tokens a mitad de proyecto? Así los multiplico x10 👇
+
+### 📝 Descripción Completa (Caption)
+```text
+Programar con agentes de IA no se trata de quemar cuota a lo loco, sino de orquestar el flujo inteligente:
+
+1️⃣ Planifica con Gemini fuera del IDE: No quemes tokens caros del editor en pensar. Usa la ventana de 2M de tokens de Gemini para estructurar la arquitectura y los pasos antes de tocar código.
+2️⃣ El dúo Antigravity + Opencode: Antigravity levanta la arquitectura pesada multi-archivo; Opencode pule detalles finos y scripts desde la terminal sin inflar el contexto.
+3️⃣ Grafos con Graphify & Stitch MCP: Comprime tu base de código en grafos de relaciones para no re-enviar archivos enteros, y diseña interfaces modulares con Stitch vía MCP.
+4️⃣ Micro-commits de Git: Haz commit tras cada cambio validado. Mantienes el contexto del agente limpio y tienes rollback instantáneo si algo falla.
+5️⃣ Multi-cuentas gratis sin bloqueos: A diferencia de Cursor (que te rastrea el hardware y te bloquea al cambiar de cuenta), Antigravity te permite alternar cuentas de Google oficiales legalmente con cuota diaria regenerativa.
+6️⃣ ¿Vale la pena Gemini AI Pro?: 2 millones de tokens de contexto, modelos de razonamiento profundo y cuota prioritaria para sesiones de desarrollo intensivas.
+
+💾 Guarda este post para tu próxima sesión de código.
+👉 Comenta "TOKENS" y te comparto mi setup de reglas y prompts. ¡Sígueme para más dev y gaming!
+
+#antigravity #opencode #geminiai #programacion #desarrolloweb #aiagents #tokens #cursorai #vscode #softwaredevelopment #productivity
+```
+
+### 🏷️ Hashtags (Listos para copiar)
+```text
+#antigravity #opencode #geminiai #programacion #desarrolloweb #aiagents #tokens #cursorai #vscode #softwaredevelopment #productivity
+```
+
+### ⏰ Mejor horario de publicación: `13:00 - 15:00` o `19:00 - 22:00`
+### 🎵 Estilo de audio sugerido: `Synthwave / Cyberpunk Lo-Fi Chill`
+
+---
+
 ## Guía Rápida de Publicación & Algoritmo
 
 ### 💡 Consejos para Maximizar Alcance en Instagram y TikTok:
