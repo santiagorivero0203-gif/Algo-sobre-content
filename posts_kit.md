@@ -241,7 +241,7 @@ Guía rápida para entender y dominar la plataforma de agentes de IA de Google:
 5️⃣ MCP nativo: Conecta Stitch para diseñar interfaces con palabras, Supabase para bases de datos SQL y GitHub para sincronizar sin fricción.
 
 💾 Guarda esta guía para no perderla cuando configures tu entorno.
-👉 ¿Quieres seguir aprendiendo? Entra a mi perfil para más contenido sobre dev y gaming.
+👉 Comenta "AGY" y te paso la plantilla de configuración completa .agents/ para tu editor. ¡Sígueme para más dev y gaming!
 
 #antigravity #googleai #gemini #opencode #stitchmcp #programacion #ia #desarrolloweb #softwareengineer #tutorial #aiagents
 ```
@@ -273,7 +273,7 @@ Muchos piensan que es otro Copilot, pero la diferencia entre sugerir y resolver 
 4️⃣ Subagentes en segundo plano y MCP: Ejecuta tareas pesadas de fondo mientras sigues programando, y conecta APIs o diseño con Stitch nativamente.
 
 💾 Guarda este post para tu próxima comparativa técnica.
-👉 ¿Quieres seguir aprendiendo? Entra a mi perfil para ver más contenido sobre desarrollo y gaming.
+👉 Comenta "VSCODE" y te comparto mi guía de prompts, setup de extensiones y reglas agénticas. ¡Sígueme para más dev y gaming!
 
 #antigravity #vscode #developer #programacion #aiagents #githubcopilot #softwaredevelopment #productivity #codinglife #tecnologia
 ```

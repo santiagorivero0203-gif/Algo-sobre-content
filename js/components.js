@@ -420,30 +420,98 @@ window.ChecklistSlide = ({ d, theme, tone, meta, showTitle }) => {
     );
 };
 
-/** Cierre y llamada a la acción hacia el perfil */
+/** Cierre y llamada a la acción hacia el perfil con Showcase de Recursos / Toolkit */
 window.CtaSlide = ({ d, theme, tone, meta }) => {
     const isIg = meta?.format === 'instagram';
+    const isDark = tone.bg === '#111' || tone.bg === '#0c0c0c' || (typeof tone.bg === 'string' && tone.bg.startsWith('#0'));
+    const hasItems = Array.isArray(d.items) && d.items.length > 0;
+
     return (
         <div className="flex flex-col h-full relative">
             <window.Header variant="mini" theme={theme} meta={meta} tone={tone} />
-            <h2 className="font-black tracking-tight m-0" style={{ fontSize: isIg ? '2.15rem' : '2.45rem', lineHeight: 1.02, color: tone.text }}>
-                {window.rich(d.title, theme.ink === '#FFFFFF' ? 'rgba(255,255,255,.35)' : 'rgba(0,0,0,.18)')}
-            </h2>
-            <div className="absolute pointer-events-none" style={{ right: 0, top: '38%', opacity: 0.85 }}>
-                <window.Icon name={theme.ctaIcon || 'layers'} size={isIg ? 72 : 86} color={tone.text} stroke={1.4} />
-            </div>
-            <div className="mt-auto pt-2 pb-0.5">
-                <div className="rounded-2xl flex items-center gap-3" style={{ padding: '9px 13px', background: '#fff', boxShadow: '0 6px 16px rgba(0,0,0,.10)' }}>
-                    <span className="w-7 h-7 rounded-full flex items-center justify-center font-bold text-[10.5px] shrink-0" style={{ background: '#E9E9E9', color: '#555' }}>tú</span>
-                    <span className="font-bold text-[13.5px]" style={{ color: '#111' }}>Comenta</span>
-                    <span className="font-mono font-bold text-[12.5px] rounded-lg" style={{ padding: '3px 8px', background: '#111', color: '#fff' }}>{d.keyword}</span>
-                </div>
-                <p className="font-semibold text-[12px] leading-snug my-2" style={{ color: tone.text }}>{d.line}</p>
-                <div className="flex gap-2">
-                    <span className="flex-1 flex items-center justify-center gap-1.5 rounded-full font-bold text-[11.5px]" style={{ padding: '7px 12px', background: '#111', color: '#fff' }}>
-                        <window.Icon name="userPlus" size={13} color="#fff" /> Seguir
+            <window.Title text={d.title} theme={theme} tone={tone} size={isIg ? '1.75rem' : '2.1rem'} />
+
+            {/* Centro de Valor / Showcase de Toolkit o Resumen de Entregables */}
+            <div className="rounded-2xl flex flex-col justify-center my-auto overflow-hidden" style={{
+                background: isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.04)',
+                border: `1.5px solid ${tone.line}`,
+                padding: isIg ? '10px 14px' : '13px 16px',
+            }}>
+                <div className="flex items-center justify-between pb-2 mb-2 border-b" style={{ borderColor: tone.line }}>
+                    <div className="flex items-center gap-2 min-w-0">
+                        <span className="w-5 h-5 rounded-md flex items-center justify-center shrink-0" style={{ background: theme.accent, color: theme.ink }}>
+                            <window.Icon name={d.resourceIcon || 'folder'} size={12} stroke={2.6} />
+                        </span>
+                        <span className="font-mono font-bold text-[11px] tracking-tight truncate" style={{ color: tone.text }}>
+                            {d.resourceFile || 'recursos-santi.dev'}
+                        </span>
+                    </div>
+                    <span className="font-mono font-bold text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full shrink-0" style={{ background: theme.accent, color: theme.ink }}>
+                        {d.resourceTag || 'DEV KIT'}
                     </span>
-                    <span className="flex items-center gap-1.5 rounded-full font-bold text-[11.5px]" style={{ padding: '7px 12px', border: `1.5px solid ${tone.text}`, color: tone.text }}>
+                </div>
+
+                {hasItems ? (
+                    <div className="flex flex-col gap-1.5">
+                        {d.items.map((it, idx) => (
+                            <div key={idx} className="flex items-center gap-2">
+                                <span className="w-4 h-4 rounded-full flex items-center justify-center shrink-0" style={{ background: theme.accent, color: theme.ink }}>
+                                    <window.Icon name="check" size={10} stroke={3} />
+                                </span>
+                                <span className="text-[11px] font-semibold truncate leading-tight" style={{ color: tone.text }}>
+                                    {it}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="flex items-center gap-2.5 py-0.5">
+                        <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0" style={{ background: theme.accent, color: theme.ink }}>
+                            <window.Icon name={theme.ctaIcon || 'sparkle'} size={18} stroke={2.4} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <div className="text-[12px] font-bold leading-tight" style={{ color: tone.text }}>
+                                {d.subTitle || 'Plantilla de configuración lista'}
+                            </div>
+                            <div className="text-[10px] font-medium leading-snug mt-0.5 truncate" style={{ color: tone.sub }}>
+                                {d.sub || 'Todo probado y optimizado para tu editor.'}
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+
+            {/* Caja interactiva de llamada de acción con Keyword destacada */}
+            <div className="mt-auto pt-1">
+                <div className="rounded-2xl flex items-center justify-between" style={{
+                    padding: isIg ? '8px 12px' : '9px 14px',
+                    background: '#fff',
+                    boxShadow: '0 8px 24px rgba(0,0,0,.15)',
+                    border: '1.5px solid rgba(0,0,0,0.06)'
+                }}>
+                    <div className="flex items-center gap-2.5 min-w-0">
+                        <div className="w-7 h-7 rounded-full flex items-center justify-center shrink-0" style={{ background: '#111', color: '#fff' }}>
+                            <window.Icon name="comment" size={13} color="#fff" />
+                        </div>
+                        <div className="flex flex-col min-w-0">
+                            <span className="font-extrabold text-[12px] leading-tight text-[#111] truncate">Comenta abajo</span>
+                            <span className="font-mono text-[9px] text-[#666]">en este post</span>
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-1 px-3 py-1.5 rounded-xl font-mono font-black text-[12px] tracking-wide shrink-0" style={{ background: '#111', color: '#fff', border: `1.5px solid ${theme.accent}` }}>
+                        <span style={{ color: theme.accent }}>"</span>{d.keyword}<span style={{ color: theme.accent }}>"</span>
+                    </div>
+                </div>
+
+                <p className="font-semibold text-[11px] leading-snug my-2 text-center" style={{ color: tone.text }}>
+                    {d.line}
+                </p>
+
+                <div className="flex gap-2">
+                    <span className="flex-1 flex items-center justify-center gap-1.5 rounded-xl font-bold text-[11px]" style={{ padding: '7px 10px', background: '#111', color: '#fff' }}>
+                        <window.Icon name="userPlus" size={13} color="#fff" /> Seguir @santi.dev
+                    </span>
+                    <span className="flex items-center gap-1.5 rounded-xl font-bold text-[11px]" style={{ padding: '7px 12px', border: `1.5px solid ${tone.text}`, color: tone.text }}>
                         <window.Icon name="bookmark" size={13} color={tone.text} /> Guardar
                     </span>
                 </div>
