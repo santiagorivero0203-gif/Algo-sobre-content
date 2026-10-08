@@ -155,26 +155,28 @@ Siguiendo estos 4 principios gané el torneo nacional con "The Last Endo":
 
 ---
 
-## Mova · Carrusel 1: Manifiesto Oficial (Causa, Inspiración y Misión)
-**Título:** Mova: Manifiesto · 70 Millones de Personas Rompiendo el Silencio  
-**ID:** `mova` · **Cuenta:** `@mova.app` · **Diapositivas:** 6 · **Formato exclusivo:** Instagram Feed (4:5 · 1080×1350)
+## Mova · Carrusel 1: Manifiesto Oficial (El Dolor del Aislamiento y el Derecho a Comunicarse)
+**Título:** Mova: Manifiesto · 70 Millones Rompiendo el Silencio  
+**ID:** `mova` · **Cuenta:** `@mova.app` · **Diapositivas:** 6 · **Formato exclusivo:** Instagram Feed (4:5 · 1080×1350)  
+**Estructura Visual:** `Hero (Portada)` → `Scenarios (Calle y Hospital)` → `Stat (La Cifra del Olvido)` → `Quote (Muralla del Silencio)` → `Comparison (Aislamiento vs Autonomía)` → `CTA (Rompe el Silencio)`
 
 ### 🎣 Gancho (Hook)
-> Más de 70 millones de personas hablan con sus manos en el mundo... pero el 99% no las entiende. En Mova estamos rompiendo el silencio 👇
+> Más de 70 millones de personas hablan con sus manos en el mundo... pero casi nadie se detiene a escucharlas. En Mova decidimos derribar el silencio.
 
 ### 📝 Descripción Completa (Caption)
 ```text
-¿Te imaginas entrar a un hospital o a una tienda y que nadie entienda lo que intentas decir?
-Ese es el aislamiento diario de millones de personas sordas. La tecnología debía resolver esto hace años.
+¿Te imaginas entrar a un hospital con un dolor agudo o estar en una taquilla bancaria y que nadie sea capaz de entender lo que intentas decir?
 
-En este carrusel te compartimos nuestra causa completa en Mova (@mova.app):
+Ese aislamiento no es una exageración: es la realidad diaria de más de 70 millones de personas sordas en el mundo y más de 500.000 en Venezuela.
 
-1️⃣ Nuestra Inspiración Real: Nació en los pasillos del Colegio La Consolación en Caracas. Vimos a estudiantes sordos y oyentes queriendo ser amigos, separados por una barrera invisible. Nos negamos a que fuera un trabajo de papel: prometimos crear una solución real para la calle.
-2️⃣ La Herramienta en tus Manos: Apuntas la cámara de tu teléfono, Mova traduce los gestos a voz audible en tiempo real y devuelve las palabras en señas. 100% gratuito, sin internet obligatorio y con privacidad total.
-3️⃣ Red de Aulas Virtuales: Docentes, familias y la comunidad educativa estandarizan señas (LSV 🇻🇪, ASL 🇺🇸 y LSE 🇪🇸) para que todos aprendamos juntos.
+En Mova (@mova.app) creemos que la comunicación no es un privilegio para unos pocos: es la base indispensable de la dignidad humana.
 
-💾 Guarda este post y compártelo con tu colegio o comunidad.
-👉 Sigue a @mova.app para apoyar nuestra causa y descargar la beta gratuita.
+Por eso creamos una herramienta libre y ética que transforma la cámara de cualquier teléfono en un intérprete instantáneo de lengua de señas a voz, 100% offline y sin suscripciones.
+
+Nadie debería sentirse invisible en su propia ciudad.
+
+Guarda esta publicación y compártela para que más personas se sumen a derribar la muralla del silencio.
+Sigue a @mova.app y acompáñanos en este camino.
 
 #mova #lenguajedeseñas #inclusión #consolacion #caracas #venezuela #lsv #comunidad #impactosocial #derechoshumanos
 ```
@@ -191,26 +193,24 @@ En este carrusel te compartimos nuestra causa completa en Mova (@mova.app):
 
 ## Mova · Carrusel 2: En Qué Nos Inspiramos (Colegio La Consolación Caracas)
 **Título:** Mova: Nuestra Inspiración · Colegio La Consolación Caracas  
-**ID:** `mova_inspiracion` · **Cuenta:** `@mova.app` · **Diapositivas:** 6 · **Formato exclusivo:** Instagram Feed (4:5 · 1080×1350)
+**ID:** `mova_inspiracion` · **Cuenta:** `@mova.app` · **Diapositivas:** 6 · **Formato exclusivo:** Instagram Feed (4:5 · 1080×1350)  
+**Estructura Visual:** `Hero (De la Cartulina a la Calle)` → `School (El Patio del Recreo)` → `Timeline (Hitos de Rebeldía)` → `Comparison (20 Puntos vs App Libre)` → `Quote (Voz Estudiantil)` → `CTA (Inspira a tu Colegio)`
 
 ### 🎣 Gancho (Hook)
-> La mayoría de investigaciones escolares mueren en una cartulina. Nosotros nos negamos a que Mova fuera una más 👇
+> La mayoría de investigaciones escolares terminan engrapadas en un cajón. En el Colegio La Consolación nos negamos a que Mova fuera una más.
 
 ### 📝 Descripción Completa (Caption)
 ```text
-¿Sabes cuántas ideas con potencial de cambiar vidas se quedan guardadas en un cajón escolar?
-Mova nació en los pasillos del Colegio La Consolación en Caracas con una pregunta muy simple:
-"¿Si una persona sorda te habla con sus manos, eres capaz de entenderla?"
+¿Cuántas ideas increíbles nacen en los colegios y mueren el día que entregan la nota final?
 
-La respuesta era casi siempre un silencio incómodo.
+Mova nació en los pasillos del Colegio La Consolación en Caracas al presenciar algo muy simple pero doloroso: dos compañeros de clase querían ser amigos en el recreo, pero uno era sordo y el otro no sabía cómo hablarle.
 
-En este carrusel te contamos la historia humana detrás de nuestro proyecto:
-1️⃣ La soledad cotidiana: Más de 500.000 personas en Venezuela dependen de la lengua de señas (LSV) y enfrentan barreras para comprar pan o consultar a un médico.
-2️⃣ Romper el molde: Rechazar la maqueta de cartón que solo busca una calificación escolar para construir software real.
-3️⃣ La empatía como motor: Devolverle autonomía y dignidad a las personas.
+Ese silencio nos marcó. Nos negamos a hacer una maqueta de cartón para sacarnos 20 puntos en la feria de ciencias. Decidimos salir del aula y escribir código real para la calle.
 
-💾 Guarda esta historia si crees en los proyectos con propósito.
-👉 Sigue a @mova.app y acompaña nuestro camino.
+Un proyecto estudiantil solo tiene valor verdadero cuando transforma la vida de alguien afuera del colegio.
+
+Guarda esta historia si crees en la juventud con propósito.
+Sigue a @mova.app y acompaña nuestro camino.
 
 #mova #consolacion #caracas #venezuela #inspiracion #lsv #lenguajedeseñas #inclusión #impactosocial #historiasreales
 ```
@@ -225,27 +225,28 @@ En este carrusel te contamos la historia humana detrás de nuestro proyecto:
 
 ---
 
-## Mova · Carrusel 3: Nuestra Idea (Devolver la Voz a Quien la Necesita)
+## Mova · Carrusel 3: Nuestra Idea (La Cámara se Convierte en tu Voz)
 **Título:** Mova: Nuestra Idea · La cámara se convierte en tu voz  
-**ID:** `mova_idea` · **Cuenta:** `@mova.app` · **Diapositivas:** 6 · **Formato exclusivo:** Instagram Feed (4:5 · 1080×1350)
+**ID:** `mova_idea` · **Cuenta:** `@mova.app` · **Diapositivas:** 6 · **Formato exclusivo:** Instagram Feed (4:5 · 1080×1350)  
+**Estructura Visual:** `Hero (Tu Teléfono es tu Voz)` → `Flow (Flujo Técnico en 3 Pasos)` → `Camera (HUD en Vivo 60 FPS)` → `Comparison (Mercado de Pago vs Ética Libre)` → `Quote (Privacidad Innegociable)` → `CTA (Prueba la Beta)`
 
 ### 🎣 Gancho (Hook)
-> ¿Cómo habla una persona sorda si los demás no saben señas? Así funciona nuestra idea 👇
+> ¿Cómo habla una persona sorda si los demás no saben señas? Sin comprar aparatos caros ni pagar suscripciones, así lo resolvemos.
 
 ### 📝 Descripción Completa (Caption)
 ```text
-La mayoría de soluciones de accesibilidad fallan por dos razones: o requieren pagar intérpretes costosos, o dependen de internet ultrarrápido que no existe en la calle.
+La mayoría de herramientas de accesibilidad en el mercado cometen dos grandes injusticias: o cobran suscripciones mensuales en dólares que casi nadie en Latinoamérica puede pagar, o exigen conexión continua a internet que no existe en un autobús o un hospital público.
 
-Nuestra idea con Mova (@mova.app) fue radicalmente distinta:
-Llevar un intérprete de lengua de señas gratuito dentro de cualquier smartphone, 100% offline.
+En Mova (@mova.app) diseñamos una arquitectura radicalmente distinta:
 
-1️⃣ Sin accesorios raros: No necesitas comprar guantes ni sensores caros. Basta con la cámara que ya tienes en el móvil.
-2️⃣ De Seña a Voz Hablada: Tus manos hacen el gesto y el teléfono pronuncia la palabra en voz alta al instante.
-3️⃣ Cero consumo de datos: Todo se procesa dentro del procesador del teléfono. Tu video nunca se sube a internet.
-4️⃣ Privacidad absoluta: Tus conversaciones y tu imagen te pertenecen a ti y a nadie más.
+Convertir la cámara de cualquier teléfono en un intérprete instantáneo que corre 100% en el procesador del móvil, sin gastar megas y con privacidad total.
 
-💾 Guarda este post para apoyar la tecnología con propósito humano.
-👉 Sigue a @mova.app y prueba la beta gratuita.
+Tus manos hacen el gesto, la red neuronal lo reconoce a 60 FPS y el altavoz pronuncia la palabra en voz alta para quien te escucha.
+
+La tecnología ética no le pide tarjeta de crédito a quien necesita auxilio.
+
+Guarda este post y comparte una idea que pone a las personas en primer lugar.
+Sigue a @mova.app y prueba la beta gratuita.
 
 #mova #lenguajedeseñas #inclusión #accesibilidad #offline #tecnologiaparatodos #lsv #caracas #venezuela
 ```
@@ -262,32 +263,32 @@ Llevar un intérprete de lengua de señas gratuito dentro de cualquier smartphon
 
 ## Mova · Carrusel 4: Nuestra Misión (Inclusión Sin Barreras ni Fronteras)
 **Título:** Mova: Nuestra Misión · Inclusión sin barreras ni fronteras  
-**ID:** `mova_mision` · **Cuenta:** `@mova.app` · **Diapositivas:** 6 · **Formato exclusivo:** Instagram Feed (4:5 · 1080×1350)
+**ID:** `mova_mision` · **Cuenta:** `@mova.app` · **Diapositivas:** 6 · **Formato exclusivo:** Instagram Feed (4:5 · 1080×1350)  
+**Estructura Visual:** `Hero (El Derecho a no ser Invisible)` → `Pillars (Los 3 Principios Éticos)` → `Community (LSV · ASL · LSE)` → `School (Aulas para Familias y Madres)` → `Quote (Escuchar con los Ojos)` → `CTA (Únete al Movimiento)`
 
 ### 🎣 Gancho (Hook)
-> La verdadera inclusión no es que la persona sorda se adapte al mundo: es que la tecnología se adapte a ellos 👇
+> La inclusión no consiste en que la persona sorda se adapte a nuestro mundo: consiste en que nosotros aprendamos a escuchar.
 
 ### 📝 Descripción Completa (Caption)
 ```text
-Durante décadas, a las personas con discapacidad auditiva se les ha exigido un esfuerzo sobrehumano para encajar en un mundo diseñado exclusivamente para oyentes.
+Durante generaciones se le ha exigido a las personas con discapacidad auditiva un esfuerzo desgastante para encajar en una sociedad pensada exclusivamente para quienes oyen.
 
-En Mova (@mova.app) creemos que esa ecuación debe cambiar.
-Nuestra misión es usar la tecnología no como un lujo, sino como un puente de equidad humana.
+En Mova (@mova.app) creemos que esa exigencia histórica es injusta.
 
-Los 3 pilares irrenunciables de nuestra misión:
-1️⃣ Cero Barrera Económica: La comunicación es un derecho humano fundamental, no un producto premium. Mova es y será gratuito.
-2️⃣ Privacidad Innegociable: Tus manos, tu rostro y tus conversaciones nunca se suben a servidores. Todo corre localmente en tu teléfono.
-3️⃣ Inclusión Sin Fronteras: Conectamos la Lengua de Señas Venezolana (LSV 🇻🇪), American Sign Language (ASL 🇺🇸) y Lengua de Signos Española (LSE 🇪🇸).
+Nuestra misión es poner la tecnología al servicio de la empatía humana:
+Garantizar acceso gratuito y para siempre a la comunicación, proteger la intimidad de las personas corriendo localmente en el móvil, y conectar diferentes lenguas de señas como la LSV venezolana, el ASL internacional y la LSE española.
 
-💾 Guarda este post y súmate a nuestra misión.
-👉 Sigue a @mova.app para derribar juntos el silencio.
+Además, abrimos aulas comunitarias para que las madres de niños sordos y los docentes de nuestros colegios aprendan señas cotidianas sin barreras.
+
+Guarda este post y súmate a una misión que pertenece a todos.
+Sigue a @mova.app y construyamos un futuro sin muros de silencio.
 
 #mova #mision #inclusion #accesibilidad #derechoshumanos #lsv #asl #lse #caracas #venezuela #comunidad
 ```
 
 ### 🏷️ Hashtags (Listos para copiar)
 ```text
-#mova #mision #inclusion #accesibilidad #derechoshumanos #lsv #asl #lse #tecnologia #impactosocial #comunidad
+#mova #mision #inclusion #accesibilidad #derechoshumanos #lsv #asl #lse #caracas #venezuela #comunidad
 ```
 
 ### ⏰ Mejor horario de publicación: `18:00 - 21:00`
