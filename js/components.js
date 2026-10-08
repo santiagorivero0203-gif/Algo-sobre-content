@@ -883,38 +883,48 @@ window.MovaSlide = ({ video, d, index, format = 'instagram' }) => {
                 }}
             />
 
-            {/* ======== 1. CABECERA: LOGO EN ESQUINA (SIN BARRAS APARTE) ======== */}
+            {/* ======== 1. CABECERA: KICKER (IZQUIERDA) + LOGO INTEGRADO CON TEXTO Y NÚMEROS (DERECHA) ======== */}
             <div className="flex items-center justify-between w-full shrink-0 z-20">
-                {/* Logo oficial de la pantalla principal de Mova en la esquina superior izquierda */}
-                <div className="flex items-center">
-                    <img
-                        src="assets/mova_logo_full.png"
-                        alt="Mova"
-                        className={`${isTiktok ? 'h-8' : 'h-6.5'} w-auto object-contain drop-shadow-[0_2px_10px_rgba(0,0,0,0.4)]`}
-                    />
+                {/* Lado izquierdo: Kicker temático o badge de la causa */}
+                <div className="flex items-center min-w-0 pr-2">
+                    {d.kicker ? (
+                        <span className={`inline-block bg-orange-500/15 text-orange-400 ${isTiktok ? 'text-[9.5px]' : 'text-[8.5px]'} font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full border border-orange-500/25 shadow-sm truncate`}>
+                            {d.kicker}
+                        </span>
+                    ) : (
+                        <span className={`inline-block bg-white/10 text-white/70 ${isTiktok ? 'text-[9px]' : 'text-[8px]'} font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border border-white/10`}>
+                            @mova.app
+                        </span>
+                    )}
                 </div>
 
-                {/* Badge minimalista de diapositiva en la esquina superior derecha */}
-                <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-[10px] font-mono font-bold text-white/90 shadow-sm">
-                    <span className="text-orange-400 font-extrabold">{window.pad(index + 1)}</span>
-                    <span className="text-white/30">/</span>
-                    <span>{window.pad(total)}</span>
+                {/* Lado derecho (donde están los números): Logo oficial integrado directamente con el texto y contador */}
+                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-white shadow-sm shrink-0 select-none">
+                    <img
+                        src="assets/mova_logo_principal.png"
+                        alt="Mova"
+                        className={`${isTiktok ? 'h-4 w-auto' : 'h-3.5 w-auto'} object-contain drop-shadow shrink-0`}
+                    />
+                    <span className={`${isTiktok ? 'text-[11px]' : 'text-[10px]'} font-black tracking-tight text-white font-sans`}>
+                        mova
+                    </span>
+                    <span className="text-white/25 text-[9px]">|</span>
+                    <span className={`${isTiktok ? 'text-[10.5px]' : 'text-[9.5px]'} font-mono font-bold text-orange-400`}>
+                        {window.pad(index + 1)}
+                    </span>
+                    <span className="text-white/25 font-mono text-[8.5px]">/</span>
+                    <span className={`${isTiktok ? 'text-[10px]' : 'text-[9px]'} font-mono text-white/60`}>
+                        {window.pad(total)}
+                    </span>
                 </div>
             </div>
 
             {/* ======== 2. CUERPO INMERSIVO DE LA DIAPOSITIVA ======== */}
             <div className={`flex-1 flex flex-col justify-between my-auto ${isTiktok ? 'py-2 gap-3' : 'py-1 gap-1.5'} z-10 min-h-0 overflow-hidden`}>
-                {/* Kicker y Título */}
+                {/* Título de la diapositiva */}
                 <div className="flex flex-col shrink-0">
-                    {d.kicker && (
-                        <div className={`${isTiktok ? 'mb-2' : 'mb-1'}`}>
-                            <span className={`inline-block bg-orange-500/15 text-orange-400 ${isTiktok ? 'text-[9.5px]' : 'text-[8.5px]'} font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full border border-orange-500/25 shadow-sm`}>
-                                {d.kicker}
-                            </span>
-                        </div>
-                    )}
                     {d.title && (
-                        <h2 className={`${isTiktok ? 'text-[1.65rem] leading-[1.12]' : 'text-[1.26rem] leading-[1.14]'} font-black tracking-tight text-white m-0`}>
+                        <h2 className={`${isTiktok ? 'text-[1.68rem] leading-[1.12]' : 'text-[1.28rem] leading-[1.14]'} font-black tracking-tight text-white m-0`}>
                             {window.rich(d.title, '#ff9f43')}
                         </h2>
                     )}
