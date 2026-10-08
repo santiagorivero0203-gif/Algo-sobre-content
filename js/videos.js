@@ -418,9 +418,10 @@ El secreto para cerrar proyectos y cobrar bien:
                 kicker: 'Desarrollo para Clientes',
                 title: 'Inspírate en las apps top, *crea a medida*',
                 titleSize: '2.05rem',
-                image: 'assets/simulacion_simadi_live.png',
-                sub: 'Cómo construí soluciones reales tomando la fluidez de sistemas modernos adaptadas a necesidades de negocio.',
-                prod: 'Captura real de despliegue en Vercel. Excelente para enseñar a resolver dolores reales de clientes.',
+                image: 'assets/invoficlib_live.png',
+                imageStyle: { backgroundSize: 'cover', backgroundPosition: 'top', backgroundColor: '#1e1e24' },
+                sub: 'Cómo construí Invoficlib: un sistema de gestión real adaptado a las necesidades operativas de clientes.',
+                prod: 'Captura real de Invoficlib en Vercel con panel de control, inventario y métricas en vivo.',
             },
             {
                 type: 'quote', layout: 'low', header: 'none', tone: 'paper',

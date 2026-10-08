@@ -171,6 +171,13 @@ El generador incluye un selector de formato en tiempo real para adaptar el dise�
   - **Nuevo Tema Ciber-Neón (`tokens_pro`)**: Paleta verde menta tecnológico (`#00DF8F`), nuevos iconos vectoriales SVG (`zap`, `users`) y directivas de código en terminal.
   - **Kit de Publicación Completo**: Hook, caption estructurada, hashtags e instrucciones integradas en [`posts_kit.md`](file:///c:/Users/user/Desktop/video%20proyectos/algo/posts_kit.md) y en el modal interactivo de la app.
 
+### v3.8 (2026-10-07)
+- **Integración de Captura Real Oficial para la Tercera App (Caso 03 · Invoficlib / GiraStock)**:
+  - **Sustitución de Imagen de Producción**: Reemplazo de la maqueta temporal por la captura real del sistema de gestión en producción desplegado en Vercel ([`assets/invoficlib_live.png`](file:///c:/Users/user/Desktop/video%20proyectos/algo/assets/invoficlib_live.png)).
+  - **Limpieza de Datos Personales y Enmarcado Web Profesional**: Eliminación de la barra de tareas de Windows 11 (notificaciones de WhatsApp, reloj y aplicaciones personales) y de las pestañas privadas del navegador, sustituyéndolas por una cabecera minimalista oscura con controles Mac (`● ● ●`) y píldora de URL segura `🔒 invoficlib-beta.vercel.app`.
+  - **Preservación de Autoría y Marca Personal**: Conservación intacta del saludo del desarrollador (*"Hola, Santiago Rivero 👋"*) y perfil de usuario (*Santiago Rivero / Developer*), reforzando la credibilidad técnica y el portafolio real.
+  - **Validación Visual Dual**: Verificación y pruebas de render en resoluciones nativas de TikTok (1080×1920) e Instagram (1080×1350) garantizando ausencia de solapamientos o recortes en tarjetas de contenido.
+
 ### v3.7 (2026-10-05)
 - **Fidelidad Total de Exportación HD (Fondo y Elementos sin Recortes)**:
   - **Cuadrícula Técnica Vectorial SVG (`window.GridPattern`)**: Implementación de un patrón SVG nativo `<pattern id="blueprint-grid">` a `27px × 27px` y trazo de alta definición (`rgba(255, 255, 255, 0.15)`). Elimina por completo la pérdida de líneas horizontales provocada por el subpixel sampling de gradientes CSS en canvas/foreignObject de Safari y Chrome.
