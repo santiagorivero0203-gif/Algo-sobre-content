@@ -846,24 +846,506 @@ window.CustomElementsOverlay = ({ elements = [], theme, format = 'tiktok', meta,
 
 /**
  * =====================================================================
- * MOVA APP · SLIDE NATIVO E INMERSIVO (FULL-BLEED PARA INSTAGRAM 4:5)
+ * MOVA APP · SISTEMA DE COMPONENTES MODULARES (FULL-BLEED 4:5 Y 9:16)
  * =====================================================================
- * Diseñado específicamente para @mova.app sin la tarjeta flotante de Santi.Dev:
- *   - Proporción nativa Instagram Feed (4:5 / 1080x1350).
- *   - Fondo azul noche profundo (#05163F) con resplandor radial naranja/azul.
- *   - Cabecera oficial: Pill ovalado MovaLogo + 'Rompiendo el silencio'.
- *   - Elementos reales de la app: Selector deslizante con banderas (LSV, ASL, LSE),
- *     HUD de cámara en vivo a 60 FPS, burbuja de traducción flotante y botón con brillo.
+ * Arquitectura atómica y escalable:
+ *   - Primitivos: MovaHeader, MovaTitle, MovaFooter, MovaCard, MovaFootNote
+ *   - Vistas por pantalla: Hero, Scenarios, Flow, Pillars, Timeline,
+ *     QuoteHero, Comparison, Stat, School, Camera, Community, Cta
+ *   - Cero código duplicado (DRY) y adaptación automática TikTok / Instagram
  * =====================================================================
+ */
+
+/** Cabecera oficial: Kicker contextual a la izquierda y cápsula de marca integrada a la derecha */
+window.MovaHeader = ({ kicker, isTiktok }) => (
+    <div className="flex items-center justify-between w-full shrink-0 z-20">
+        <div className="flex items-center min-w-0 pr-2">
+            {kicker ? (
+                <span className={`inline-block bg-orange-500/15 text-orange-400 ${isTiktok ? 'text-[9.5px]' : 'text-[8.5px]'} font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full border border-orange-500/25 shadow-sm truncate`}>
+                    {kicker}
+                </span>
+            ) : (
+                <span className={`inline-block bg-white/10 text-white/70 ${isTiktok ? 'text-[9px]' : 'text-[8px]'} font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border border-white/10`}>
+                    @mova.app
+                </span>
+            )}
+        </div>
+        <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-white shadow-sm shrink-0 select-none">
+            <img
+                src="assets/mova_logo_principal.png"
+                alt="Mova"
+                className={`${isTiktok ? 'h-4 w-auto' : 'h-3.5 w-auto'} object-contain drop-shadow shrink-0`}
+            />
+            <span className={`${isTiktok ? 'text-[11px]' : 'text-[10px]'} font-black tracking-tight text-white font-sans`}>
+                mova
+            </span>
+            <span className="text-white/20 text-[9px]">·</span>
+            <span className={`${isTiktok ? 'text-[9.5px]' : 'text-[8.5px]'} font-bold tracking-tight text-orange-400`}>
+                Rompiendo el silencio
+            </span>
+        </div>
+    </div>
+);
+
+/** Titular y subtítulo de la diapositiva con rotulador dinámico */
+window.MovaTitle = ({ title, sub, isTiktok }) => (
+    <div className="flex flex-col shrink-0">
+        {title && (
+            <h2 className={`${isTiktok ? 'text-[1.68rem] leading-[1.12]' : 'text-[1.28rem] leading-[1.14]'} font-black tracking-tight text-white m-0`}>
+                {window.rich(title, '#ff9f43')}
+            </h2>
+        )}
+        {sub && (
+            <p className={`${isTiktok ? 'text-[12px] mt-1.5' : 'text-[10px] mt-1'} text-white/80 font-medium leading-snug mb-0`}>
+                {sub}
+            </p>
+        )}
+    </div>
+);
+
+/** Pie de página oficial de la diapositiva de Mova */
+window.MovaFooter = ({ isTiktok }) => (
+    <div className="flex items-center justify-between w-full pt-1.5 shrink-0 border-t border-white/10 text-[9.5px] text-white/60 z-20">
+        <div className="flex items-center gap-1.5 font-bold text-white/80">
+            <window.Icon name="movaWave" size={11} color="#f97316" />
+            <span>@mova.app</span>
+            <span className="text-white/30">·</span>
+            <span className="font-normal text-white/60">Rompiendo el silencio</span>
+        </div>
+        <span className="font-mono text-[8.5px] text-white/50">Colegio La Consolación · Caracas</span>
+    </div>
+);
+
+/** Primitivo de tarjeta modular para listas, escenarios, pilares y flujos */
+window.MovaCard = ({ icon, title, tag, badge, desc, isTiktok, titleColor = 'text-white', borderColor = 'border-white/12', bg = 'bg-white/8', children }) => (
+    <div className={`${isTiktok ? 'p-2.5' : 'p-2'} rounded-xl ${bg} backdrop-blur-md border ${borderColor} flex items-start gap-2.5 shadow-sm`}>
+        {icon && (
+            typeof icon === 'string' && icon.length <= 4 ? (
+                <span className="text-base shrink-0 select-none mt-0.5">{icon}</span>
+            ) : (
+                <div className="shrink-0 mt-0.5">{icon}</div>
+            )
+        )}
+        <div className="flex flex-col min-w-0 flex-1">
+            {(title || tag || badge) && (
+                <div className="flex items-center gap-1.5 flex-wrap">
+                    {title && (
+                        <span className={`${isTiktok ? 'text-[11px]' : 'text-[10px]'} font-extrabold ${titleColor} tracking-tight leading-tight`}>
+                            {title}
+                        </span>
+                    )}
+                    {tag && (
+                        <span className="text-[7.5px] font-mono px-1.5 py-0.2 rounded bg-blue-500/20 text-blue-300 border border-blue-400/30">
+                            {tag}
+                        </span>
+                    )}
+                    {badge && (
+                        <span className="text-[7.5px] font-mono px-1.5 py-0.2 rounded bg-amber-400/20 text-amber-300 border border-amber-400/30">
+                            {badge}
+                        </span>
+                    )}
+                </div>
+            )}
+            {desc && (
+                <p className={`${isTiktok ? 'text-[10px]' : 'text-[9px]'} text-white/85 leading-snug m-0 mt-0.5`}>
+                    {desc}
+                </p>
+            )}
+            {children}
+        </div>
+    </div>
+);
+
+/** Primitivo de nota reflexiva al pie */
+window.MovaFootNote = ({ text, isTiktok, tone = 'orange' }) => {
+    if (!text) return null;
+    const toneClasses = tone === 'blue'
+        ? 'bg-blue-500/10 border-blue-400/20 text-blue-200'
+        : 'bg-orange-500/10 border-l-2 border-orange-400 text-white/90 italic';
+
+    return (
+        <div className={`${isTiktok ? 'p-2 text-[10px]' : 'p-1.5 text-[9px]'} rounded-xl ${toneClasses} leading-snug shrink-0`}>
+            {window.rich(text, '#ff9f43')}
+        </div>
+    );
+};
+
+// ==================== VISTAS ESPECÍFICAS DE PANTALLA ====================
+
+/** 1. Vista Hero: Portada oficial con logo principal y selector deslizante */
+window.MovaHeroView = ({ d, isTiktok }) => (
+    <div className="flex-1 flex flex-col items-center justify-center py-1">
+        <div className="relative flex flex-col items-center justify-center my-auto w-full">
+            <div
+                className="absolute w-[260px] h-[110px] rounded-full blur-[35px] pointer-events-none opacity-50"
+                style={{ background: 'radial-gradient(ellipse, rgba(255,165,0,0.4) 0%, rgba(59,130,246,0.25) 50%, transparent 80%)' }}
+            />
+            <img
+                src={d.image || "assets/mova_logo_full.png"}
+                alt="Mova - Rompiendo el silencio"
+                className={`${isTiktok ? 'max-h-[88px] my-3' : 'max-h-[66px] my-1.5'} w-auto object-contain relative z-10 drop-shadow-[0_0_24px_rgba(255,165,0,0.35)]`}
+            />
+            <div className={`relative flex bg-white/10 backdrop-blur-xl border border-white/15 rounded-[18px] p-1 w-full ${isTiktok ? 'max-w-[320px] h-12' : 'max-w-[280px] h-10'} shadow-lg select-none`}>
+                <div className="flex-1 flex items-center justify-center text-[10.5px] font-bold text-white z-[2] bg-white/20 rounded-[14px] shadow-sm">
+                    <window.MovaFlagVE className="w-4 h-3 mr-1.5 rounded-[2px]" /> LSV
+                </div>
+                <div className="flex-1 flex items-center justify-center text-[10.5px] font-semibold text-white/50 z-[2]">
+                    <window.MovaFlagUS className="w-4 h-3 mr-1.5 rounded-[2px]" /> ASL
+                </div>
+                <div className="flex-1 flex items-center justify-center text-[10.5px] font-semibold text-white/50 z-[2]">
+                    <window.MovaFlagES className="w-4 h-3 mr-1.5 rounded-[2px]" /> LSE
+                </div>
+            </div>
+            <div className={`w-full ${isTiktok ? 'max-w-[320px] py-3 text-xs mt-3' : 'max-w-[280px] py-2 text-[10.5px] mt-2'} bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-[14px] shadow-[0_4px_16px_rgba(59,130,246,0.4)] mova-btn-shine flex items-center justify-center gap-2`}>
+                <window.Icon name="movaWave" size={13} color="#fff" />
+                <span>{d.action || 'COMENZAR TRADUCCIÓN EN VIVO'}</span>
+            </div>
+        </div>
+    </div>
+);
+
+/** 2. Vista Scenarios: Situaciones reales de calle y soledad */
+window.MovaScenariosView = ({ d, isTiktok }) => (
+    <div className={`flex-1 flex flex-col justify-center ${isTiktok ? 'gap-2.5 py-1' : 'gap-1.5 py-0.5'}`}>
+        <div className="flex flex-col gap-1.5 shrink-0">
+            {(d.scenarios || []).map((sc, i) => (
+                <window.MovaCard
+                    key={i}
+                    icon={sc.icon}
+                    title={sc.title}
+                    desc={sc.desc}
+                    isTiktok={isTiktok}
+                    titleColor="text-orange-400"
+                />
+            ))}
+        </div>
+        <window.MovaFootNote text={d.foot} isTiktok={isTiktok} tone="orange" />
+    </div>
+);
+
+/** 3. Vista Flow: Flujo tecnológico en 3 pasos */
+window.MovaFlowView = ({ d, isTiktok }) => (
+    <div className={`flex-1 flex flex-col justify-center ${isTiktok ? 'gap-2.5 py-1' : 'gap-1.5 py-0.5'}`}>
+        <div className="flex flex-col gap-1.5 shrink-0">
+            {(d.flow || []).map((fl, i) => (
+                <window.MovaCard
+                    key={i}
+                    icon={fl.icon}
+                    title={fl.title}
+                    tag={fl.tag}
+                    desc={fl.desc}
+                    isTiktok={isTiktok}
+                    titleColor="text-white"
+                />
+            ))}
+        </div>
+        <window.MovaFootNote text={d.foot} isTiktok={isTiktok} tone="blue" />
+    </div>
+);
+
+/** 4. Vista Pillars: Los 3 pilares éticos innegociables */
+window.MovaPillarsView = ({ d, isTiktok }) => (
+    <div className={`flex-1 flex flex-col justify-center ${isTiktok ? 'gap-2.5 py-1' : 'gap-1.5 py-0.5'}`}>
+        <div className="flex flex-col gap-1.5 shrink-0">
+            {(d.pillars || []).map((pl, i) => (
+                <window.MovaCard
+                    key={i}
+                    icon={pl.icon}
+                    title={pl.title}
+                    badge={pl.badge}
+                    desc={pl.desc}
+                    isTiktok={isTiktok}
+                    titleColor="text-amber-300"
+                />
+            ))}
+        </div>
+        <window.MovaFootNote text={d.foot} isTiktok={isTiktok} tone="default" />
+    </div>
+);
+
+/** 5. Vista Timeline: Hitos reales de desarrollo estudiantil */
+window.MovaTimelineView = ({ d, isTiktok }) => (
+    <div className={`flex-1 flex flex-col justify-center ${isTiktok ? 'gap-2.5 py-1' : 'gap-1.5 py-0.5'}`}>
+        <div className="flex flex-col gap-1.5 shrink-0">
+            {(d.milestones || []).map((ml, i) => (
+                <window.MovaCard
+                    key={i}
+                    icon={
+                        <span className="text-[8.5px] font-mono px-1.5 py-0.5 rounded-full bg-orange-500/20 text-orange-400 border border-orange-500/30 shrink-0 font-bold">
+                            {ml.tag}
+                        </span>
+                    }
+                    title={ml.title}
+                    desc={ml.desc}
+                    isTiktok={isTiktok}
+                    titleColor="text-white"
+                />
+            ))}
+        </div>
+        <window.MovaFootNote text={d.foot} isTiktok={isTiktok} tone="orange" />
+    </div>
+);
+
+/** 6. Vista QuoteHero: Cita editorial de alto impacto */
+window.MovaQuoteHeroView = ({ d, isTiktok }) => (
+    <div className="flex-1 flex flex-col justify-center py-1">
+        <div className={`${isTiktok ? 'p-5 gap-3.5' : 'p-3.5 gap-2.5'} rounded-2xl bg-white/10 backdrop-blur-xl border border-white/15 flex flex-col my-auto shadow-2xl shrink-0`}>
+            <div className="text-amber-400 text-3xl font-serif leading-none select-none">“</div>
+            <p className={`${isTiktok ? 'text-[13.5px] leading-relaxed' : 'text-[11px] leading-snug'} font-bold text-white m-0 tracking-tight`}>
+                {d.quote}
+            </p>
+            <div className="flex items-center justify-between pt-1 border-t border-white/15">
+                <span className="text-[9.5px] font-bold text-orange-400">
+                    {d.quoteAuthor || 'Colegio La Consolación · Caracas'}
+                </span>
+                <span className="text-[8.5px] text-white/50">Mova Manifiesto</span>
+            </div>
+        </div>
+        {d.foot && (
+            <div className={`${isTiktok ? 'p-2 text-[10.5px] mt-2' : 'p-1.5 text-[9.5px] mt-1'} text-center text-white/70 font-medium shrink-0`}>
+                {d.foot}
+            </div>
+        )}
+    </div>
+);
+
+/** 7. Vista Comparison: Contraste directo entre el aislamiento y Mova */
+window.MovaComparisonView = ({ d, isTiktok }) => (
+    <div className={`flex-1 flex flex-col justify-center ${isTiktok ? 'gap-3 py-1.5' : 'gap-1.5 py-0.5'}`}>
+        <div className="grid grid-cols-1 gap-2 shrink-0">
+            <div className={`${isTiktok ? 'p-3' : 'p-2'} rounded-xl bg-rose-500/10 border border-rose-500/20 flex flex-col gap-0.5`}>
+                <div className="flex items-center gap-1.5 text-rose-400 text-[10px] font-bold">
+                    <i className="fa-solid fa-ban text-[8.5px]"></i>
+                    <span>{d.badTitle || 'El Aislamiento Tradicional'}</span>
+                </div>
+                <p className={`${isTiktok ? 'text-[10.5px]' : 'text-[9px]'} text-white/80 leading-snug m-0`}>
+                    {d.bad}
+                </p>
+            </div>
+            <div className={`${isTiktok ? 'p-3' : 'p-2'} rounded-xl bg-blue-500/15 border border-blue-400/25 flex flex-col gap-0.5`}>
+                <div className="flex items-center gap-1.5 text-blue-300 text-[10px] font-bold">
+                    <window.Icon name="movaHandshake" size={11} color="#93c5fd" />
+                    <span>{d.goodTitle || 'La Respuesta de Mova'}</span>
+                </div>
+                <p className={`${isTiktok ? 'text-[10.5px]' : 'text-[9px]'} text-white/90 leading-snug m-0`}>
+                    {d.good}
+                </p>
+            </div>
+        </div>
+        <window.MovaFootNote text={d.foot} isTiktok={isTiktok} tone="orange" />
+    </div>
+);
+
+/** 8. Vista Stat: Estadística de impacto con desglose */
+window.MovaStatView = ({ d, isTiktok }) => (
+    <div className={`flex-1 flex flex-col justify-center ${isTiktok ? 'gap-3 py-1.5' : 'gap-1.5 py-0.5'}`}>
+        <div className={`flex items-center gap-3 ${isTiktok ? 'p-3 rounded-2xl' : 'p-2 rounded-xl'} bg-white/8 backdrop-blur-md border border-white/15 shadow-sm shrink-0`}>
+            <div className={`${isTiktok ? 'text-[2.8rem]' : 'text-[2.1rem]'} font-black leading-none text-orange-400 font-mono tracking-tighter shrink-0`}>
+                {d.number || '70M'}
+            </div>
+            <div className={`${isTiktok ? 'text-xs' : 'text-[10px]'} font-bold leading-tight text-white/90`}>
+                {d.label || 'de personas en el mundo se comunican con sus manos'}
+            </div>
+        </div>
+        {d.bad && d.good && (
+            <div className="grid grid-cols-2 gap-2 shrink-0">
+                <div className={`${isTiktok ? 'p-3' : 'p-2'} rounded-xl bg-rose-500/10 border border-rose-500/20 flex flex-col gap-0.5`}>
+                    <div className="flex items-center gap-1.5 text-rose-400 text-[9.5px] font-bold">
+                        <i className="fa-solid fa-ban text-[8.5px]"></i>
+                        <span>La Barrera Invisible</span>
+                    </div>
+                    <p className={`${isTiktok ? 'text-[10.5px]' : 'text-[9px]'} text-white/80 leading-snug m-0`}>
+                        {d.bad}
+                    </p>
+                </div>
+                <div className={`${isTiktok ? 'p-3' : 'p-2'} rounded-xl bg-blue-500/15 border border-blue-400/25 flex flex-col gap-0.5`}>
+                    <div className="flex items-center gap-1.5 text-blue-300 text-[9.5px] font-bold">
+                        <window.Icon name="movaHandshake" size={11} color="#93c5fd" />
+                        <span>La Misión Mova</span>
+                    </div>
+                    <p className={`${isTiktok ? 'text-[10.5px]' : 'text-[9px]'} text-white/90 leading-snug m-0`}>
+                        {d.good}
+                    </p>
+                </div>
+            </div>
+        )}
+        <window.MovaFootNote text={d.foot} isTiktok={isTiktok} tone="orange" />
+    </div>
+);
+
+/** 9. Vista School: Contexto de origen en el Colegio La Consolación */
+window.MovaSchoolView = ({ d, isTiktok }) => (
+    <div className={`flex-1 flex flex-col justify-center ${isTiktok ? 'gap-3 py-1.5' : 'gap-1.5 py-0.5'}`}>
+        <div className={`${isTiktok ? 'p-4 gap-2.5 rounded-2xl' : 'p-2.5 gap-1.5 rounded-xl'} bg-white/8 backdrop-blur-md border border-white/15 flex flex-col shadow-lg shrink-0`}>
+            <div className="flex items-center gap-2 text-amber-300 text-[11px] font-bold">
+                <window.Icon name="movaAcademicCap" size={16} color="#fcd34d" />
+                <span>De las aulas a la calle · Sin cartulinas de adorno</span>
+            </div>
+            <p className={`${isTiktok ? 'text-[11.5px]' : 'text-[9.5px]'} text-white/85 leading-relaxed m-0`}>
+                {d.body || 'En el Colegio La Consolación en Caracas vimos a compañeros sordos y oyentes queriendo ser amigos, separados por una barrera invisible.'}
+            </p>
+            {d.quote && (
+                <div className={`${isTiktok ? 'p-2.5 text-[10.5px]' : 'p-1.5 px-2 text-[9px]'} rounded-xl bg-black/40 border-l-2 border-orange-400 italic text-white/90 leading-snug`}>
+                    {d.quote}
+                </div>
+            )}
+        </div>
+        {d.foot && (
+            <div className={`${isTiktok ? 'p-2 text-[10.5px]' : 'p-1 text-[9px]'} text-center text-white/60 font-medium shrink-0`}>
+                {d.foot}
+            </div>
+        )}
+    </div>
+);
+
+/** 10. Vista Camera: Mockup HUD de la cámara en vivo */
+window.MovaCameraView = ({ d, isTiktok }) => (
+    <div className={`flex-1 flex flex-col justify-center ${isTiktok ? 'gap-2.5 py-1.5' : 'gap-1 py-0.5'}`}>
+        <div className={`relative w-full ${isTiktok ? 'h-[250px]' : 'h-[165px]'} rounded-2xl bg-black/85 border border-white/20 overflow-hidden flex flex-col justify-between p-2.5 shadow-2xl shrink-0`}>
+            <div className="flex items-center justify-between z-10">
+                <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/20 text-[9px] font-semibold text-white">
+                    ‹ Menú
+                </div>
+                <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-black/60 border border-white/15 text-[8.5px] font-bold text-white">
+                    <span className="w-2 h-2 rounded-full bg-[#34C759] animate-mova-blink" />
+                    <span>LIVE · 60 FPS</span>
+                </div>
+                <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-black/60 border border-white/15 text-[8.5px] font-mono font-bold text-white">
+                    LSV 🇻🇪
+                </div>
+            </div>
+            <div className="relative flex-1 flex items-center justify-center my-0.5">
+                <img
+                    src="assets/mova_hand.jpg"
+                    alt="Detección de Seña"
+                    className="absolute inset-0 w-full h-full object-cover opacity-40 rounded-xl"
+                />
+                <div className="relative z-10 flex items-center gap-2 px-3 py-1 rounded-full bg-white text-neutral-900 shadow-[0_6px_20px_rgba(0,0,0,0.5)]">
+                    <span className="text-lg">🤝</span>
+                    <div className="flex flex-col text-left">
+                        <span className="text-[10.5px] font-black tracking-tight leading-none text-neutral-950">"HOLA, BUENOS DÍAS"</span>
+                        <span className="text-[8px] font-semibold text-blue-600 mt-0.5">Vocalizado en tiempo real · 99%</span>
+                    </div>
+                </div>
+            </div>
+            <div className="flex items-center gap-1 overflow-hidden z-10 justify-center">
+                <span className="px-2 py-0.5 rounded-full bg-white/20 text-[8.5px] font-semibold flex items-center gap-1">
+                    <window.Icon name="movaWave" size={9} color="#fff" /> Saludo
+                </span>
+                <span className="px-2 py-0.5 rounded-full bg-white/20 text-[8.5px] font-semibold flex items-center gap-1">
+                    <window.Icon name="movaHeart" size={9} color="#ff6b81" /> Gracias
+                </span>
+                <span className="px-2 py-0.5 rounded-full bg-white/20 text-[8.5px] font-semibold">💧 Agua</span>
+                <span className="px-2 py-0.5 rounded-full bg-white/20 text-[8.5px] font-semibold">❓ Ayuda</span>
+            </div>
+        </div>
+        <div className={`${isTiktok ? 'text-[11px]' : 'text-[9.5px]'} text-white/75 font-medium text-center shrink-0`}>
+            {d.foot || '100% en el dispositivo · No requiere internet · Privacidad total'}
+        </div>
+    </div>
+);
+
+/** 11. Vista Community: Banderas de lenguas y red de aulas */
+window.MovaCommunityView = ({ d, isTiktok }) => (
+    <div className={`flex-1 flex flex-col justify-center ${isTiktok ? 'gap-3 py-1.5' : 'gap-1.5 py-0.5'}`}>
+        <div className="grid grid-cols-3 gap-2 shrink-0">
+            <div className={`${isTiktok ? 'p-3' : 'p-2'} rounded-xl bg-white/10 border border-white/15 flex flex-col items-center text-center gap-1`}>
+                <window.MovaFlagVE className={`${isTiktok ? 'w-8 h-5' : 'w-6 h-4'} rounded shadow`} />
+                <span className={`${isTiktok ? 'text-xs' : 'text-[11px]'} font-black`}>LSV</span>
+                <span className="text-[8px] text-white/70">Venezuela</span>
+            </div>
+            <div className={`${isTiktok ? 'p-3' : 'p-2'} rounded-xl bg-white/10 border border-white/15 flex flex-col items-center text-center gap-1`}>
+                <window.MovaFlagUS className={`${isTiktok ? 'w-8 h-5' : 'w-6 h-4'} rounded shadow`} />
+                <span className={`${isTiktok ? 'text-xs' : 'text-[11px]'} font-black`}>ASL</span>
+                <span className="text-[8px] text-white/70">Internacional</span>
+            </div>
+            <div className={`${isTiktok ? 'p-3' : 'p-2'} rounded-xl bg-white/10 border border-white/15 flex flex-col items-center text-center gap-1`}>
+                <window.MovaFlagES className={`${isTiktok ? 'w-8 h-5' : 'w-6 h-4'} rounded shadow`} />
+                <span className={`${isTiktok ? 'text-xs' : 'text-[11px]'} font-black`}>LSE</span>
+                <span className="text-[8px] text-white/70">España</span>
+            </div>
+        </div>
+        <div className={`${isTiktok ? 'p-3.5 gap-2 rounded-2xl' : 'p-2.5 gap-1 rounded-xl'} bg-white/8 backdrop-blur-md border border-white/15 flex flex-col shrink-0`}>
+            <div className="flex items-center gap-1.5 text-orange-400 text-[11px] font-bold">
+                <window.Icon name="movaBookOpen" size={14} color="#f97316" />
+                <span>Aulas Virtuales y Estandarización</span>
+            </div>
+            <p className={`${isTiktok ? 'text-[11px]' : 'text-[9.5px]'} text-white/85 leading-snug m-0`}>
+                {d.body || 'Profesores, familias y estudiantes alimentan el diccionario de señas para aprender juntos.'}
+            </p>
+        </div>
+        {d.foot && (
+            <div className={`${isTiktok ? 'p-2 text-[10.5px]' : 'p-1 text-[9px]'} text-center text-white/60 font-medium shrink-0`}>
+                {d.foot}
+            </div>
+        )}
+    </div>
+);
+
+/** 12. Vista CTA: Llamado a la acción oficial para unirse y descargar */
+window.MovaCtaView = ({ d, isTiktok }) => (
+    <div className="flex-1 flex flex-col justify-center py-0.5">
+        <div className={`${isTiktok ? 'p-5 gap-3.5 rounded-2xl' : 'p-3 gap-2 rounded-xl'} bg-white/10 backdrop-blur-xl border border-white/20 flex flex-col my-auto shadow-2xl text-center shrink-0`}>
+            <div className="flex flex-col items-center">
+                <img src="assets/mova_logo_full.png" alt="Mova" className={`${isTiktok ? 'h-7' : 'h-5.5'} w-auto object-contain mb-1`} />
+                <span className="text-[10px] font-bold text-orange-400">@mova.app · Rompiendo el silencio</span>
+            </div>
+            <div className={`w-full ${isTiktok ? 'py-3 text-xs' : 'py-2 text-[10.5px]'} bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl text-center font-black text-white shadow-[0_4px_20px_rgba(59,130,246,0.5)] mova-btn-shine cursor-pointer`}>
+                {d.action || 'DESCARGA LA BETA GRATUITA'}
+            </div>
+            <div className="flex items-center justify-center gap-1.5 flex-wrap">
+                {(d.badges || ['100% GRATIS', 'SIN INTERNET', 'COLEGIO LA CONSOLACIÓN']).map((b, i) => (
+                    <span key={i} className="px-2 py-0.5 rounded-full bg-white/10 border border-white/15 text-[8.5px] font-bold text-white/80">
+                        {b}
+                    </span>
+                ))}
+            </div>
+            <p className={`${isTiktok ? 'text-[11px]' : 'text-[9.5px]'} text-white/90 leading-snug m-0`}>
+                {d.line || 'Sigue a @mova.app y comparte este carrusel con tu colegio o amigos. Cada persona que conoce Mova ayuda a derribar la muralla del silencio.'}
+            </p>
+        </div>
+    </div>
+);
+
+/** 13. Vista Default / Fallback */
+window.MovaDefaultView = ({ d, isTiktok }) => (
+    <div className="flex-1 flex flex-col justify-center gap-2 py-1">
+        {d.body && (
+            <div className="p-3 rounded-xl bg-white/8 backdrop-blur-md border border-white/15 text-[10.5px] text-white/90 leading-relaxed shadow-lg">
+                {window.rich(d.body, '#ff9f43')}
+            </div>
+        )}
+        <window.MovaFootNote text={d.foot} isTiktok={isTiktok} tone="orange" />
+    </div>
+);
+
+/**
+ * Orquestador principal de diapositivas nativas e inmersivas de Mova
  */
 window.MovaSlide = ({ video, d, index, format = 'instagram' }) => {
     const total = video.slides.length;
     const theme = window.THEMES?.mova || { accent: '#3b82f6', mark: '#f97316' };
     const meta = { index, total, format, video };
     const isTiktok = format === 'tiktok';
-
-    // Determinar subtipo de pantalla de Mova
     const type = d.movaVariant || d.type;
+
+    const renderContent = () => {
+        switch (type) {
+            case 'hero': return <window.MovaHeroView d={d} isTiktok={isTiktok} />;
+            case 'scenarios': return <window.MovaScenariosView d={d} isTiktok={isTiktok} />;
+            case 'flow': return <window.MovaFlowView d={d} isTiktok={isTiktok} />;
+            case 'pillars': return <window.MovaPillarsView d={d} isTiktok={isTiktok} />;
+            case 'timeline': return <window.MovaTimelineView d={d} isTiktok={isTiktok} />;
+            case 'quote-hero': return <window.MovaQuoteHeroView d={d} isTiktok={isTiktok} />;
+            case 'comparison': return <window.MovaComparisonView d={d} isTiktok={isTiktok} />;
+            case 'stat': return <window.MovaStatView d={d} isTiktok={isTiktok} />;
+            case 'school': return <window.MovaSchoolView d={d} isTiktok={isTiktok} />;
+            case 'camera': return <window.MovaCameraView d={d} isTiktok={isTiktok} />;
+            case 'community': return <window.MovaCommunityView d={d} isTiktok={isTiktok} />;
+            case 'cta': return <window.MovaCtaView d={d} isTiktok={isTiktok} />;
+            default: return <window.MovaDefaultView d={d} isTiktok={isTiktok} />;
+        }
+    };
 
     return (
         <div
@@ -883,490 +1365,19 @@ window.MovaSlide = ({ video, d, index, format = 'instagram' }) => {
                 }}
             />
 
-            {/* ======== 1. CABECERA: KICKER (IZQUIERDA) + LOGO INTEGRADO CON TEXTO Y NÚMEROS (DERECHA) ======== */}
-            <div className="flex items-center justify-between w-full shrink-0 z-20">
-                {/* Lado izquierdo: Kicker temático o badge de la causa */}
-                <div className="flex items-center min-w-0 pr-2">
-                    {d.kicker ? (
-                        <span className={`inline-block bg-orange-500/15 text-orange-400 ${isTiktok ? 'text-[9.5px]' : 'text-[8.5px]'} font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full border border-orange-500/25 shadow-sm truncate`}>
-                            {d.kicker}
-                        </span>
-                    ) : (
-                        <span className={`inline-block bg-white/10 text-white/70 ${isTiktok ? 'text-[9px]' : 'text-[8px]'} font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border border-white/10`}>
-                            @mova.app
-                        </span>
-                    )}
-                </div>
+            {/* 1. Cabecera limpia y oficial sin numeración */}
+            <window.MovaHeader kicker={d.kicker} isTiktok={isTiktok} />
 
-                {/* Lado derecho: Logo oficial integrado directamente con el texto de marca (SIN NUMERACIÓN) */}
-                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-white shadow-sm shrink-0 select-none">
-                    <img
-                        src="assets/mova_logo_principal.png"
-                        alt="Mova"
-                        className={`${isTiktok ? 'h-4 w-auto' : 'h-3.5 w-auto'} object-contain drop-shadow shrink-0`}
-                    />
-                    <span className={`${isTiktok ? 'text-[11px]' : 'text-[10px]'} font-black tracking-tight text-white font-sans`}>
-                        mova
-                    </span>
-                    <span className="text-white/20 text-[9px]">·</span>
-                    <span className={`${isTiktok ? 'text-[9.5px]' : 'text-[8.5px]'} font-bold tracking-tight text-orange-400`}>
-                        Rompiendo el silencio
-                    </span>
-                </div>
-            </div>
-
-            {/* ======== 2. CUERPO INMERSIVO DE LA DIAPOSITIVA ======== */}
+            {/* 2. Cuerpo inmersivo modular */}
             <div className={`flex-1 flex flex-col justify-between my-auto ${isTiktok ? 'py-2 gap-3' : 'py-1 gap-1.5'} z-10 min-h-0 overflow-hidden`}>
-                {/* Título de la diapositiva */}
-                <div className="flex flex-col shrink-0">
-                    {d.title && (
-                        <h2 className={`${isTiktok ? 'text-[1.68rem] leading-[1.12]' : 'text-[1.28rem] leading-[1.14]'} font-black tracking-tight text-white m-0`}>
-                            {window.rich(d.title, '#ff9f43')}
-                        </h2>
-                    )}
-                    {d.sub && (
-                        <p className={`${isTiktok ? 'text-[12px] mt-1.5' : 'text-[10px] mt-1'} text-white/80 font-medium leading-snug mb-0`}>
-                            {d.sub}
-                        </p>
-                    )}
-                </div>
-
-                {/* --- VARIANTE HERO / PORTADA --- */}
-                {(type === 'hero' || d.movaVariant === 'hero') && (
-                    <div className="flex-1 flex flex-col items-center justify-center py-1">
-                        <div className="relative flex flex-col items-center justify-center my-auto w-full">
-                            {/* Resplandor cálido */}
-                            <div
-                                className="absolute w-[260px] h-[110px] rounded-full blur-[35px] pointer-events-none opacity-50"
-                                style={{ background: 'radial-gradient(ellipse, rgba(255,165,0,0.4) 0%, rgba(59,130,246,0.25) 50%, transparent 80%)' }}
-                            />
-                            {/* Logo Full centrado de la pantalla principal */}
-                            <img
-                                src={d.image || "assets/mova_logo_full.png"}
-                                alt="Mova - Rompiendo el silencio"
-                                className={`${isTiktok ? 'max-h-[88px] my-3' : 'max-h-[66px] my-1.5'} w-auto object-contain relative z-10 drop-shadow-[0_0_24px_rgba(255,165,0,0.35)]`}
-                            />
-
-                            {/* Selector Deslizante Oficial de Idiomas */}
-                            <div className={`relative flex bg-white/10 backdrop-blur-xl border border-white/15 rounded-[18px] p-1 w-full ${isTiktok ? 'max-w-[320px] h-12' : 'max-w-[280px] h-10'} shadow-lg select-none`}>
-                                <div className="flex-1 flex items-center justify-center text-[10.5px] font-bold text-white z-[2] bg-white/20 rounded-[14px] shadow-sm">
-                                    <window.MovaFlagVE className="w-4 h-3 mr-1.5 rounded-[2px]" /> LSV
-                                </div>
-                                <div className="flex-1 flex items-center justify-center text-[10.5px] font-semibold text-white/50 z-[2]">
-                                    <window.MovaFlagUS className="w-4 h-3 mr-1.5 rounded-[2px]" /> ASL
-                                </div>
-                                <div className="flex-1 flex items-center justify-center text-[10.5px] font-semibold text-white/50 z-[2]">
-                                    <window.MovaFlagES className="w-4 h-3 mr-1.5 rounded-[2px]" /> LSE
-                                </div>
-                            </div>
-
-                            {/* Botón Comenzar con Brillo Diagonal */}
-                            <div className={`w-full ${isTiktok ? 'max-w-[320px] py-3 text-xs mt-3' : 'max-w-[280px] py-2 text-[10.5px] mt-2'} bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-[14px] shadow-[0_4px_16px_rgba(59,130,246,0.4)] mova-btn-shine flex items-center justify-center gap-2`}>
-                                <window.Icon name="movaWave" size={13} color="#fff" />
-                                <span>{d.action || 'COMENZAR TRADUCCIÓN EN VIVO'}</span>
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-                {/* --- VARIANTE SCENARIOS / ESCENARIOS REALES DE DOLOR Y VIDA DIARIA --- */}
-                {(type === 'scenarios' || d.scenarios) && (
-                    <div className={`flex-1 flex flex-col justify-center ${isTiktok ? 'gap-2.5 py-1' : 'gap-1.5 py-0.5'}`}>
-                        <div className="flex flex-col gap-1.5 shrink-0">
-                            {d.scenarios.map((sc, i) => (
-                                <div key={i} className={`${isTiktok ? 'p-2.5' : 'p-2'} rounded-xl bg-white/8 backdrop-blur-md border border-white/12 flex items-start gap-2.5 shadow-sm`}>
-                                    <span className="text-base shrink-0 select-none mt-0.5">{sc.icon}</span>
-                                    <div className="flex flex-col min-w-0">
-                                        <span className={`${isTiktok ? 'text-[11px]' : 'text-[10px]'} font-extrabold text-orange-400 tracking-tight leading-tight`}>
-                                            {sc.title}
-                                        </span>
-                                        <p className={`${isTiktok ? 'text-[10px]' : 'text-[9px]'} text-white/85 leading-snug m-0 mt-0.5`}>
-                                            {sc.desc}
-                                        </p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                        {d.foot && (
-                            <div className={`${isTiktok ? 'p-2 text-[10px]' : 'p-1.5 text-[9px]'} rounded-xl bg-orange-500/10 border-l-2 border-orange-400 italic text-white/90 leading-snug shrink-0`}>
-                                {d.foot}
-                            </div>
-                        )}
-                    </div>
-                )}
-
-                {/* --- VARIANTE FLOW / FLUJO EN PASOS DE ACCIÓN --- */}
-                {(type === 'flow' || d.flow) && (
-                    <div className={`flex-1 flex flex-col justify-center ${isTiktok ? 'gap-2.5 py-1' : 'gap-1.5 py-0.5'}`}>
-                        <div className="flex flex-col gap-1.5 shrink-0">
-                            {d.flow.map((fl, i) => (
-                                <div key={i} className={`${isTiktok ? 'p-2.5' : 'p-2'} rounded-xl bg-white/8 backdrop-blur-md border border-white/12 flex items-start gap-2.5 shadow-sm`}>
-                                    <span className="text-base shrink-0 select-none mt-0.5">{fl.icon}</span>
-                                    <div className="flex flex-col min-w-0">
-                                        <div className="flex items-center gap-1.5">
-                                            <span className={`${isTiktok ? 'text-[11px]' : 'text-[10px]'} font-extrabold text-white tracking-tight leading-tight`}>
-                                                {fl.title}
-                                            </span>
-                                            {fl.tag && (
-                                                <span className="text-[7.5px] font-mono px-1.5 py-0.2 rounded bg-blue-500/20 text-blue-300 border border-blue-400/30">
-                                                    {fl.tag}
-                                                </span>
-                                            )}
-                                        </div>
-                                        <p className={`${isTiktok ? 'text-[10px]' : 'text-[9px]'} text-white/85 leading-snug m-0 mt-0.5`}>
-                                            {fl.desc}
-                                        </p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                        {d.foot && (
-                            <div className={`${isTiktok ? 'p-2 text-[10px]' : 'p-1.5 text-[9px]'} rounded-xl bg-blue-500/10 border border-blue-400/20 text-center text-blue-200 font-medium shrink-0`}>
-                                {d.foot}
-                            </div>
-                        )}
-                    </div>
-                )}
-
-                {/* --- VARIANTE PILLARS / LOS PILARES INNEGOCIABLES --- */}
-                {(type === 'pillars' || d.pillars) && (
-                    <div className={`flex-1 flex flex-col justify-center ${isTiktok ? 'gap-2.5 py-1' : 'gap-1.5 py-0.5'}`}>
-                        <div className="flex flex-col gap-1.5 shrink-0">
-                            {d.pillars.map((pl, i) => (
-                                <div key={i} className={`${isTiktok ? 'p-2.5' : 'p-2'} rounded-xl bg-white/8 backdrop-blur-md border border-white/12 flex items-start gap-2.5 shadow-sm`}>
-                                    <span className="text-base shrink-0 select-none mt-0.5">{pl.icon}</span>
-                                    <div className="flex flex-col min-w-0">
-                                        <div className="flex items-center gap-1.5">
-                                            <span className={`${isTiktok ? 'text-[11px]' : 'text-[10px]'} font-black text-amber-300 tracking-tight leading-tight`}>
-                                                {pl.title}
-                                            </span>
-                                            {pl.badge && (
-                                                <span className="text-[7.5px] font-mono px-1.5 py-0.2 rounded bg-amber-400/20 text-amber-300 border border-amber-400/30">
-                                                    {pl.badge}
-                                                </span>
-                                            )}
-                                        </div>
-                                        <p className={`${isTiktok ? 'text-[10px]' : 'text-[9px]'} text-white/85 leading-snug m-0 mt-0.5`}>
-                                            {pl.desc}
-                                        </p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                        {d.foot && (
-                            <div className={`${isTiktok ? 'p-2 text-[10px]' : 'p-1.5 text-[9px]'} rounded-xl bg-white/5 border border-white/10 text-center text-white/80 font-medium shrink-0`}>
-                                {d.foot}
-                            </div>
-                        )}
-                    </div>
-                )}
-
-                {/* --- VARIANTE TIMELINE / DE LA IDEA A LA REALIDAD --- */}
-                {(type === 'timeline' || d.milestones) && (
-                    <div className={`flex-1 flex flex-col justify-center ${isTiktok ? 'gap-2.5 py-1' : 'gap-1.5 py-0.5'}`}>
-                        <div className="flex flex-col gap-1.5 shrink-0 relative">
-                            {d.milestones.map((ml, i) => (
-                                <div key={i} className={`${isTiktok ? 'p-2.5' : 'p-2'} rounded-xl bg-white/8 backdrop-blur-md border border-white/12 flex items-start gap-2.5 shadow-sm`}>
-                                    <span className="text-[8.5px] font-mono px-1.5 py-0.5 rounded-full bg-orange-500/20 text-orange-400 border border-orange-500/30 shrink-0 font-bold mt-0.5">
-                                        {ml.tag}
-                                    </span>
-                                    <div className="flex flex-col min-w-0">
-                                        <span className={`${isTiktok ? 'text-[11px]' : 'text-[10px]'} font-bold text-white tracking-tight leading-tight`}>
-                                            {ml.title}
-                                        </span>
-                                        <p className={`${isTiktok ? 'text-[10px]' : 'text-[9px]'} text-white/80 leading-snug m-0 mt-0.5`}>
-                                            {ml.desc}
-                                        </p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                        {d.foot && (
-                            <div className={`${isTiktok ? 'p-2 text-[10px]' : 'p-1.5 text-[9px]'} rounded-xl bg-white/5 border-l-2 border-orange-400 italic text-white/85 leading-snug shrink-0`}>
-                                {d.foot}
-                            </div>
-                        )}
-                    </div>
-                )}
-
-                {/* --- VARIANTE QUOTE-HERO / FRASE DE IMPACTO EMOCIONAL --- */}
-                {(type === 'quote-hero' || d.movaVariant === 'quote-hero' || (d.quote && !d.body && !d.bad)) && (
-                    <div className="flex-1 flex flex-col justify-center py-1">
-                        <div className={`${isTiktok ? 'p-5 gap-3.5' : 'p-3.5 gap-2.5'} rounded-2xl bg-white/10 backdrop-blur-xl border border-white/15 flex flex-col my-auto shadow-2xl shrink-0`}>
-                            <div className="text-amber-400 text-3xl font-serif leading-none select-none">“</div>
-                            <p className={`${isTiktok ? 'text-[13.5px] leading-relaxed' : 'text-[11px] leading-snug'} font-bold text-white m-0 tracking-tight`}>
-                                {d.quote}
-                            </p>
-                            <div className="flex items-center justify-between pt-1 border-t border-white/15">
-                                <span className="text-[9.5px] font-bold text-orange-400">
-                                    {d.quoteAuthor || 'Colegio La Consolación · Caracas'}
-                                </span>
-                                <span className="text-[8.5px] text-white/50">Mova Manifiesto</span>
-                            </div>
-                        </div>
-                        {d.foot && (
-                            <div className={`${isTiktok ? 'p-2 text-[10.5px] mt-2' : 'p-1.5 text-[9.5px] mt-1'} text-center text-white/70 font-medium shrink-0`}>
-                                {d.foot}
-                            </div>
-                        )}
-                    </div>
-                )}
-
-                {/* --- VARIANTE COMPARISON / EL VIEJO PARADIGMA VS MOVA --- */}
-                {(type === 'comparison' || (d.bad && d.good && !d.number)) && (
-                    <div className={`flex-1 flex flex-col justify-center ${isTiktok ? 'gap-3 py-1.5' : 'gap-1.5 py-0.5'}`}>
-                        <div className="grid grid-cols-1 gap-2 shrink-0">
-                            <div className={`${isTiktok ? 'p-3' : 'p-2'} rounded-xl bg-rose-500/10 border border-rose-500/20 flex flex-col gap-0.5`}>
-                                <div className="flex items-center gap-1.5 text-rose-400 text-[10px] font-bold">
-                                    <i className="fa-solid fa-ban text-[8.5px]"></i>
-                                    <span>{d.badTitle || 'El Aislamiento Tradicional'}</span>
-                                </div>
-                                <p className={`${isTiktok ? 'text-[10.5px]' : 'text-[9px]'} text-white/80 leading-snug m-0`}>
-                                    {d.bad}
-                                </p>
-                            </div>
-                            <div className={`${isTiktok ? 'p-3' : 'p-2'} rounded-xl bg-blue-500/15 border border-blue-400/25 flex flex-col gap-0.5`}>
-                                <div className="flex items-center gap-1.5 text-blue-300 text-[10px] font-bold">
-                                    <window.Icon name="movaHandshake" size={11} color="#93c5fd" />
-                                    <span>{d.goodTitle || 'La Respuesta de Mova'}</span>
-                                </div>
-                                <p className={`${isTiktok ? 'text-[10.5px]' : 'text-[9px]'} text-white/90 leading-snug m-0`}>
-                                    {d.good}
-                                </p>
-                            </div>
-                        </div>
-                        {d.foot && (
-                            <div className={`${isTiktok ? 'p-2 text-[10.5px]' : 'p-1.5 px-2 text-[9px]'} rounded-xl bg-white/5 border-l-2 border-orange-400 italic text-white/80 leading-snug shrink-0`}>
-                                {d.foot}
-                            </div>
-                        )}
-                    </div>
-                )}
-
-                {/* --- VARIANTE ESTADÍSTICA / IMPACTO NUMÉRICO --- */}
-                {(type === 'stat' || d.movaVariant === 'isolation') && (
-                    <div className={`flex-1 flex flex-col justify-center ${isTiktok ? 'gap-3 py-1.5' : 'gap-1.5 py-0.5'}`}>
-                        {/* Bloque estadístico compacto */}
-                        <div className={`flex items-center gap-3 ${isTiktok ? 'p-3 rounded-2xl' : 'p-2 rounded-xl'} bg-white/8 backdrop-blur-md border border-white/15 shadow-sm shrink-0`}>
-                            <div className={`${isTiktok ? 'text-[2.8rem]' : 'text-[2.1rem]'} font-black leading-none text-orange-400 font-mono tracking-tighter shrink-0`}>
-                                {d.number || '70M'}
-                            </div>
-                            <div className={`${isTiktok ? 'text-xs' : 'text-[10px]'} font-bold leading-tight text-white/90`}>
-                                {d.label || 'de personas sordas en el mundo se comunican con sus manos'}
-                            </div>
-                        </div>
-
-                        {/* Comparativa compacta: Barrera vs Misión */}
-                        {d.bad && d.good && (
-                            <div className="grid grid-cols-2 gap-2 shrink-0">
-                                <div className={`${isTiktok ? 'p-3' : 'p-2'} rounded-xl bg-rose-500/10 border border-rose-500/20 flex flex-col gap-0.5`}>
-                                    <div className="flex items-center gap-1.5 text-rose-400 text-[9.5px] font-bold">
-                                        <i className="fa-solid fa-ban text-[8.5px]"></i>
-                                        <span>La Barrera Invisible</span>
-                                    </div>
-                                    <p className={`${isTiktok ? 'text-[10.5px]' : 'text-[9px]'} text-white/80 leading-snug m-0`}>
-                                        {d.bad}
-                                    </p>
-                                </div>
-                                <div className={`${isTiktok ? 'p-3' : 'p-2'} rounded-xl bg-blue-500/15 border border-blue-400/25 flex flex-col gap-0.5`}>
-                                    <div className="flex items-center gap-1.5 text-blue-300 text-[9.5px] font-bold">
-                                        <window.Icon name="movaHandshake" size={11} color="#93c5fd" />
-                                        <span>La Misión Mova</span>
-                                    </div>
-                                    <p className={`${isTiktok ? 'text-[10.5px]' : 'text-[9px]'} text-white/90 leading-snug m-0`}>
-                                        {d.good}
-                                    </p>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Cita reflexiva contenida */}
-                        {d.foot && (
-                            <div className={`${isTiktok ? 'p-2.5 text-[10.5px]' : 'p-1.5 px-2 text-[9px]'} rounded-xl bg-white/5 border-l-2 border-orange-400 italic text-white/80 leading-snug shrink-0`}>
-                                {d.foot}
-                            </div>
-                        )}
-                    </div>
-                )}
-
-                {/* --- VARIANTE COLEGIO LA CONSOLACIÓN CARACAS --- */}
-                {(type === 'school' || d.movaVariant === 'school' || d.title?.includes('Consolación') || d.kicker?.includes('Consolación')) && (
-                    <div className={`flex-1 flex flex-col justify-center ${isTiktok ? 'gap-3 py-1.5' : 'gap-1.5 py-0.5'}`}>
-                        <div className={`${isTiktok ? 'p-4 gap-2.5 rounded-2xl' : 'p-2.5 gap-1.5 rounded-xl'} bg-white/8 backdrop-blur-md border border-white/15 flex flex-col shadow-lg shrink-0`}>
-                            <div className="flex items-center gap-2 text-amber-300 text-[11px] font-bold">
-                                <window.Icon name="movaAcademicCap" size={16} color="#fcd34d" />
-                                <span>De las aulas a la calle · Sin cartulinas de adorno</span>
-                            </div>
-                            <p className={`${isTiktok ? 'text-[11.5px]' : 'text-[9.5px]'} text-white/85 leading-relaxed m-0`}>
-                                {d.body || 'En el Colegio La Consolación en Caracas vimos a compañeros sordos y oyentes queriendo ser amigos, separados por una barrera invisible. Nos negamos a que este proyecto fuera un trabajo de papel: prometimos crear una app real que sirviera en la vida cotidiana.'}
-                            </p>
-                            {d.quote && (
-                                <div className={`${isTiktok ? 'p-2.5 text-[10.5px]' : 'p-1.5 px-2 text-[9px]'} rounded-xl bg-black/40 border-l-2 border-orange-400 italic text-white/90 leading-snug`}>
-                                    {d.quote}
-                                </div>
-                            )}
-                        </div>
-                        {d.foot && (
-                            <div className={`${isTiktok ? 'p-2 text-[10.5px]' : 'p-1 text-[9px]'} text-center text-white/60 font-medium shrink-0`}>
-                                {d.foot}
-                            </div>
-                        )}
-                    </div>
-                )}
-
-                {/* --- VARIANTE MOCKUP DE CÁMARA EN VIVO (CameraScreen.jsx) --- */}
-                {(type === 'camera' || d.movaVariant === 'camera') && (
-                    <div className={`flex-1 flex flex-col justify-center ${isTiktok ? 'gap-2.5 py-1.5' : 'gap-1 py-0.5'}`}>
-                        <div className={`relative w-full ${isTiktok ? 'h-[250px]' : 'h-[165px]'} rounded-2xl bg-black/85 border border-white/20 overflow-hidden flex flex-col justify-between p-2.5 shadow-2xl shrink-0`}>
-                            {/* HUD Top Bar */}
-                            <div className="flex items-center justify-between z-10">
-                                <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/20 text-[9px] font-semibold text-white">
-                                    ‹ Menú
-                                </div>
-                                <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-black/60 border border-white/15 text-[8.5px] font-bold text-white">
-                                    <span className="w-2 h-2 rounded-full bg-[#34C759] animate-mova-blink" />
-                                    <span>LIVE · 60 FPS</span>
-                                </div>
-                                <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-black/60 border border-white/15 text-[8.5px] font-mono font-bold text-white">
-                                    LSV 🇻🇪
-                                </div>
-                            </div>
-
-                            {/* Center: Hand detection & Floating Sign Card */}
-                            <div className="relative flex-1 flex items-center justify-center my-0.5">
-                                <img
-                                    src="assets/mova_hand.jpg"
-                                    alt="Detección de Seña"
-                                    className="absolute inset-0 w-full h-full object-cover opacity-40 rounded-xl"
-                                />
-                                <div className="relative z-10 flex items-center gap-2 px-3 py-1 rounded-full bg-white text-neutral-900 shadow-[0_6px_20px_rgba(0,0,0,0.5)]">
-                                    <span className="text-lg">🤝</span>
-                                    <div className="flex flex-col text-left">
-                                        <span className="text-[10.5px] font-black tracking-tight leading-none text-neutral-950">"HOLA, BUENOS DÍAS"</span>
-                                        <span className="text-[8px] font-semibold text-blue-600 mt-0.5">Vocalizado en tiempo real · 99%</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Bottom: Quick Phrases */}
-                            <div className="flex items-center gap-1 overflow-hidden z-10 justify-center">
-                                <span className="px-2 py-0.5 rounded-full bg-white/20 text-[8.5px] font-semibold flex items-center gap-1">
-                                    <window.Icon name="movaWave" size={9} color="#fff" /> Saludo
-                                </span>
-                                <span className="px-2 py-0.5 rounded-full bg-white/20 text-[8.5px] font-semibold flex items-center gap-1">
-                                    <window.Icon name="movaHeart" size={9} color="#ff6b81" /> Gracias
-                                </span>
-                                <span className="px-2 py-0.5 rounded-full bg-white/20 text-[8.5px] font-semibold">
-                                    💧 Agua
-                                </span>
-                                <span className="px-2 py-0.5 rounded-full bg-white/20 text-[8.5px] font-semibold">
-                                    ❓ Ayuda
-                                </span>
-                            </div>
-                        </div>
-
-                        <div className={`${isTiktok ? 'text-[11px]' : 'text-[9.5px]'} text-white/75 font-medium text-center shrink-0`}>
-                            {d.foot || '100% en el dispositivo · No requiere internet · Privacidad total'}
-                        </div>
-                    </div>
-                )}
-
-                {/* --- VARIANTE COMUNIDAD / AULAS VIRTUALES --- */}
-                {(type === 'community' || d.movaVariant === 'community') && (
-                    <div className={`flex-1 flex flex-col justify-center ${isTiktok ? 'gap-3 py-1.5' : 'gap-1.5 py-0.5'}`}>
-                        <div className="grid grid-cols-3 gap-2 shrink-0">
-                            <div className={`${isTiktok ? 'p-3' : 'p-2'} rounded-xl bg-white/10 border border-white/15 flex flex-col items-center text-center gap-1`}>
-                                <window.MovaFlagVE className={`${isTiktok ? 'w-8 h-5' : 'w-6 h-4'} rounded shadow`} />
-                                <span className={`${isTiktok ? 'text-xs' : 'text-[11px]'} font-black`}>LSV</span>
-                                <span className="text-[8px] text-white/70">Venezuela</span>
-                            </div>
-                            <div className={`${isTiktok ? 'p-3' : 'p-2'} rounded-xl bg-white/10 border border-white/15 flex flex-col items-center text-center gap-1`}>
-                                <window.MovaFlagUS className={`${isTiktok ? 'w-8 h-5' : 'w-6 h-4'} rounded shadow`} />
-                                <span className={`${isTiktok ? 'text-xs' : 'text-[11px]'} font-black`}>ASL</span>
-                                <span className="text-[8px] text-white/70">Internacional</span>
-                            </div>
-                            <div className={`${isTiktok ? 'p-3' : 'p-2'} rounded-xl bg-white/10 border border-white/15 flex flex-col items-center text-center gap-1`}>
-                                <window.MovaFlagES className={`${isTiktok ? 'w-8 h-5' : 'w-6 h-4'} rounded shadow`} />
-                                <span className={`${isTiktok ? 'text-xs' : 'text-[11px]'} font-black`}>LSE</span>
-                                <span className="text-[8px] text-white/70">España</span>
-                            </div>
-                        </div>
-
-                        <div className={`${isTiktok ? 'p-3.5 gap-2 rounded-2xl' : 'p-2.5 gap-1 rounded-xl'} bg-white/8 backdrop-blur-md border border-white/15 flex flex-col shrink-0`}>
-                            <div className="flex items-center gap-1.5 text-orange-400 text-[11px] font-bold">
-                                <window.Icon name="movaBookOpen" size={14} color="#f97316" />
-                                <span>Aulas Virtuales y Estandarización</span>
-                            </div>
-                            <p className={`${isTiktok ? 'text-[11px]' : 'text-[9.5px]'} text-white/85 leading-snug m-0`}>
-                                {d.body || 'Profesores, familias y estudiantes alimentan el diccionario de señas para que niños y adultos aprendan juntos y estandaricen gestos cotidianos.'}
-                            </p>
-                        </div>
-
-                        {d.foot && (
-                            <div className={`${isTiktok ? 'p-2 text-[10.5px]' : 'p-1 text-[9px]'} text-center text-white/60 font-medium shrink-0`}>
-                                {d.foot}
-                            </div>
-                        )}
-                    </div>
-                )}
-
-                {/* --- VARIANTE CTA / LLAMADO A LA CAUSA --- */}
-                {(type === 'cta' || d.movaVariant === 'cta') && (
-                    <div className="flex-1 flex flex-col justify-center py-0.5">
-                        <div className={`${isTiktok ? 'p-5 gap-3.5 rounded-2xl' : 'p-3 gap-2 rounded-xl'} bg-white/10 backdrop-blur-xl border border-white/20 flex flex-col my-auto shadow-2xl text-center shrink-0`}>
-                            <div className="flex flex-col items-center">
-                                <img src="assets/mova_logo_full.png" alt="Mova" className={`${isTiktok ? 'h-7' : 'h-5.5'} w-auto object-contain mb-1`} />
-                                <span className="text-[10px] font-bold text-orange-400">@mova.app · Rompiendo el silencio</span>
-                            </div>
-
-                            <div className={`w-full ${isTiktok ? 'py-3 text-xs' : 'py-2 text-[10.5px]'} bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl text-center font-black text-white shadow-[0_4px_20px_rgba(59,130,246,0.5)] mova-btn-shine cursor-pointer`}>
-                                {d.action || 'DESCARGA LA BETA GRATUITA'}
-                            </div>
-
-                            <div className="flex items-center justify-center gap-1.5 flex-wrap">
-                                {(d.badges || ['100% GRATIS', 'SIN INTERNET', 'COLEGIO LA CONSOLACIÓN']).map((b, i) => (
-                                    <span key={i} className="px-2 py-0.5 rounded-full bg-white/10 border border-white/15 text-[8.5px] font-bold text-white/80">
-                                        {b}
-                                    </span>
-                                ))}
-                            </div>
-
-                            <p className={`${isTiktok ? 'text-[11px]' : 'text-[9.5px]'} text-white/90 leading-snug m-0`}>
-                                {d.line || 'Sigue a @mova.app y comparte este carrusel con tu colegio o amigos. Cada persona que conoce Mova ayuda a derribar la muralla del silencio.'}
-                            </p>
-                        </div>
-                    </div>
-                )}
-
-                {/* --- VARIANTE GENERAL / TEXTO EXTENDIDO O NARRATIVO --- */}
-                {!['hero', 'stat', 'school', 'camera', 'community', 'cta', 'scenarios', 'flow', 'pillars', 'timeline', 'quote-hero', 'comparison'].includes(type) && (
-                    <div className="flex-1 flex flex-col justify-center gap-2 py-1">
-                        {d.body && (
-                            <div className="p-3 rounded-xl bg-white/8 backdrop-blur-md border border-white/15 text-[10.5px] text-white/90 leading-relaxed shadow-lg">
-                                {window.rich(d.body, '#ff9f43')}
-                            </div>
-                        )}
-                        {d.foot && (
-                            <div className="p-2 rounded-xl bg-white/5 border border-white/10 text-[9.5px] text-white/80 font-medium shrink-0">
-                                {window.rich(d.foot, '#ff9f43')}
-                            </div>
-                        )}
-                    </div>
-                )}
+                <window.MovaTitle title={d.title} sub={d.sub} isTiktok={isTiktok} />
+                {renderContent()}
             </div>
 
-            {/* ======== 3. PIE DE PÁGINA COMUNITARIO ======== */}
-            <div className="flex items-center justify-between w-full pt-1.5 shrink-0 border-t border-white/10 text-[9.5px] text-white/60 z-20">
-                <div className="flex items-center gap-1.5 font-bold text-white/80">
-                    <window.Icon name="movaWave" size={11} color="#f97316" />
-                    <span>@mova.app</span>
-                    <span className="text-white/30">·</span>
-                    <span className="font-normal text-white/60">Rompiendo el silencio</span>
-                </div>
-                <span className="font-mono text-[8.5px] text-white/50">Colegio La Consolación · Caracas</span>
-            </div>
+            {/* 3. Pie de página comunitario */}
+            <window.MovaFooter isTiktok={isTiktok} />
 
-            {/* Renderizado de elementos adicionales añadidos desde Studio Inspector */}
+            {/* Capas adicionales añadidas desde Studio Inspector */}
             {d.customElements && d.customElements.length > 0 && (
                 <window.CustomElementsOverlay elements={d.customElements} theme={theme} format={format} meta={meta} d={d} />
             )}
