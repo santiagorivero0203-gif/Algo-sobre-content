@@ -16,7 +16,7 @@
 window.VIDEOS = [
     // ==================== TRILOGÍA 1: DE LA IDEA AL CÓDIGO ====================
     {
-        id: 'stack1', slug: 'stack_visual_y_logico', theme: 'stack1', caseNo: 1, group: 'Trilogía: De la Idea al Código',
+        id: 'stack1', accountId: 'santidev', slug: 'stack_visual_y_logico', theme: 'stack1', caseNo: 1, group: 'Trilogía: De la Idea al Código',
         title: 'Parte 1: Stack Secreto', subtitle: 'Juegos y webs sin saber programar',
         post: {
             hook: '¿Juegos y webs sin saber programar? Te enseño mi stack secreto 👇',
@@ -85,7 +85,7 @@ En este carrusel te revelo el stack técnico exacto que uso para pasar de una id
         ],
     },
     {
-        id: 'stack2', slug: 'automatizacion_y_mcp', theme: 'stack2', caseNo: 2, group: 'Trilogía: De la Idea al Código',
+        id: 'stack2', accountId: 'santidev', slug: 'automatizacion_y_mcp', theme: 'stack2', caseNo: 2, group: 'Trilogía: De la Idea al Código',
         title: 'Parte 2: Automatización', subtitle: 'El trabajo sucio resuelto con MCP',
         post: {
             hook: 'Deja de subir archivos a mano. Así automatizo todo con MCP 👇',
@@ -158,7 +158,7 @@ En la parte 2 de este stack técnico te muestro el poder de las herramientas MCP
         ],
     },
     {
-        id: 'stack3', slug: 'el_secreto_del_prompting', theme: 'stack3', caseNo: 3, group: 'Trilogía: De la Idea al Código',
+        id: 'stack3', accountId: 'santidev', slug: 'el_secreto_del_prompting', theme: 'stack3', caseNo: 3, group: 'Trilogía: De la Idea al Código',
         title: 'Parte 3: El Arte del Prompt', subtitle: 'Planificación inteligente > Ejecución',
         post: {
             hook: 'La razón real por la que tus proyectos con IA colapsan a mitad de camino 👇',
@@ -233,7 +233,7 @@ Mi fórmula probada para proyectos que sí terminan:
 
     // ==================== TRILOGÍA 2: CASOS DE ÉXITO REALES ====================
     {
-        id: 'endo', slug: 'the_last_endo', theme: 'endo', caseNo: 4, group: 'Casos Reales & Pitch',
+        id: 'endo', accountId: 'endo', slug: 'the_last_endo', theme: 'endo', caseNo: 4, group: 'Casos Reales & Pitch',
         title: 'The Last Endo', subtitle: '¿Cómo destacar y ganar un torneo?',
         post: {
             hook: '¿Sabes cómo destacar y ganar un torneo de videojuegos o desarrollo? 👇',
@@ -312,88 +312,341 @@ Siguiendo estos 4 principios gané el torneo nacional con "The Last Endo":
             },
         ],
     },
+    // ==================== SUITE MOVA: ROMPIENDO EL SILENCIO ====================
+    // Carrusel 1: Manifiesto Oficial (Todo en Uno: Idea, Inspiración y Misión)
     {
-        id: 'mova', slug: 'mova', theme: 'mova', caseNo: 5, group: 'Casos Reales & Pitch',
-        title: 'Mova App', subtitle: 'Lógica compleja, experiencia pacífica',
+        id: 'mova', accountId: 'mova', slug: 'mova_manifiesto_oficial', theme: 'mova', caseNo: 5, group: 'Mova: Rompiendo el Silencio',
+        title: 'Mova: Manifiesto', subtitle: 'Idea, Inspiración y Misión (Todo en Uno)',
         post: {
-            hook: '¿Quieres saber cómo formar una idea verdaderamente innovadora? 👇',
-            caption: `La verdadera innovación tecnológica no nace de usar la herramienta más compleja, sino de resolver un problema humano real de forma pacífica.
+            hook: '¿Si una persona sorda te habla con sus manos... eres capaz de entenderla? Así nació Mova 👇',
+            caption: `Más de 70 millones de personas sordas en el mundo viven rodeadas por una muralla invisible: el 95% de la sociedad no sabe lengua de señas.
 
-Así construí Mova (traducción de lenguaje de señas en tiempo real):
+En este carrusel te contamos la historia completa detrás de Mova (@mova.app):
 
-1️⃣ La regla del iceberg: El 90% de la matemática pesada (MediaPipe rastreando 21 puntos por mano en cada frame) se queda invisible.
-2️⃣ Paz visual: El usuario solo ve palabras grandes, gestos fluidos y máxima claridad.
-3️⃣ Valida un solo gesto primero: No intentes traducir todo el diccionario el día uno.
-4️⃣ Prueba en teléfonos reales: React + CapacitorJS optimizado para cuidar batería, temperatura y fluidez en cualquier móvil.
+1️⃣ En qué nos inspiramos: Nació como una investigación en el Colegio La Consolación (Caracas). Al ver cómo el aislamiento apagaba oportunidades, nos negamos a dejar el proyecto en una cartulina escolar.
+2️⃣ Nuestra Idea: Una app con IA que convierte la cámara de tu móvil en voz instantánea. Rastreamos 21 puntos anatómicos por mano y sintetizamos voz en milisegundos a 60 FPS, 100% offline y privado.
+3️⃣ Nuestra Misión: Democratizar la comunicación. Cero costos para el usuario, cero dependencia de internet y soporte multi-idioma para LSV (Venezuela 🇻🇪), ASL (EE.UU. 🇺🇸) y LSE (España 🇪🇸).
 
-💾 Guarda este carrusel para inspirar tu próximo proyecto de impacto.
-👉 ¿Quieres seguir aprendiendo? Entra a mi perfil para ver más contenido sobre desarrollo y gaming.`,
-            hashtags: ['#innovacion', '#lenguajedeseñas', '#inclusión', '#mediapipe', '#reactjs', '#capacitorjs', '#ia', '#mobiledev', '#programacion', '#tecnologia', '#creadores'],
-            bestTime: '13:00 - 15:00 o 20:00 - 22:00',
-            sound: 'Piano emotivo ambiental / Lo-fi suave inspirador',
+💾 Guarda este post y compártelo para apoyar la verdadera inclusión tecnológica.
+👉 Síguenos en @mova.app y construyamos juntos un mundo sin barreras.`,
+            hashtags: ['#mova', '#lenguajedeseñas', '#inclusión', '#accesibilidad', '#ia', '#mediapipe', '#consolacion', '#caracas', '#venezuela', '#lsv', '#asl', '#tecnologiahumana'],
+            bestTime: '18:00 - 21:00',
+            sound: 'Inspirational piano strings / Lo-Fi emotivo acústico',
         },
         slides: [
             {
                 type: 'hero', layout: 'high', header: 'mini',
-                kicker: 'Reto Inspira 2026',
-                title: '¿Quieres saber cómo formar una *idea innovadora*?',
+                kicker: 'Manifiesto Mova · @mova.app',
+                title: 'Rompiendo el silencio *con tecnología real*',
                 titleSize: '2.05rem',
-                image: 'assets/mova_hero.png',
-                imageStyle: { backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: '#071330' },
-                sub: 'Así construí Mova: traducción de lenguaje de señas en tiempo real que rompe barreras de comunicación.',
-                prod: 'Pantalla oficial de Mova (BETA V2.0). Gancho de innovación con propósito social.',
+                image: 'assets/mova_logo_principal.png',
+                imageStyle: { backgroundSize: 'contain', backgroundPosition: 'center', backgroundColor: '#05163F', padding: '14px' },
+                sub: 'Nuestra idea, en qué nos inspiramos y la misión de derribar la barrera de la sordera.',
+                prod: 'Portada del manifiesto con logo oficial de Mova y paleta azul noche #05163F.',
             },
             {
                 type: 'stat', layout: 'low', header: 'none',
-                number: '21', label: 'puntos que cambian vidas',
-                body: 'MediaPipe rastrea *21 puntos por mano en cada frame*, pero el verdadero arte fue convertir esa matemática en palabras instantáneas.',
-                icon: 'hand', visual: 'hand', src: 'tecnología con propósito humano',
-            },
-            {
-                type: 'text', layout: 'float', header: 'full', tone: 'paper',
-                title: 'La regla del *iceberg*',
-                body: 'El 90% de la lógica pesada se queda *invisible*. El usuario solo ve una palabra grande, gestos fluidos y paz visual.',
-                icons: [{ name: 'chip', label: 'IA Oculta' }, { name: 'hand', label: 'Inclusión' }, { name: 'phone', label: 'Claridad' }],
-                foot: 'La verdadera maestría no es mostrar cuánta tecnología usas, sino hacer que se sienta fácil.',
-            },
-            {
-                type: 'flow', layout: 'split',
-                title: 'De la cámara a *la emoción*',
-                nodes: [
-                    { icon: 'camera', t: 'Captura natural', s: 'La persona solo hace el gesto frente al lente' },
-                    { icon: 'hand', t: 'Visión espacial', s: 'MediaPipe lee las coordenadas en milisegundos' },
-                    { icon: 'chip', t: 'Traducción inteligente', s: 'Convierte el movimiento en significado humano' },
-                    { icon: 'phone', t: 'Comunicación sin barreras', s: 'Texto grande y legible en cualquier móvil' },
-                ],
-                foot: 'React + CapacitorJS para que corra fluido en iOS y Android.',
-            },
-            {
-                type: 'steps', layout: 'low', header: 'mini',
-                title: 'Tips para *no fundirte al programar*',
-                steps: [
-                    { t: 'Valida un solo gesto primero', d: 'No intentes traducir todo el diccionario el día uno.' },
-                    { t: 'Optimiza para teléfonos reales', d: 'Prueba en dispositivos móviles para cuidar la batería y la temperatura.' },
-                    { t: 'Diseña para personas, no para pantallas', d: 'Iconos SVG limpios y alto contraste para máxima accesibilidad.' },
-                ],
-                foot: 'La escalabilidad se piensa con calma antes de escribir la primera función.',
+                number: '70M', label: 'personas sordas en el mundo',
+                title: 'La muralla que *nadie miraba*',
+                body: 'El 95% de la sociedad no sabe señas. Una persona sorda queda aislada en un hospital, banco o escuela por falta de intérpretes.',
+                icon: 'eye', visual: 'hand', src: 'investigación social · La Consolación Caracas',
             },
             {
                 type: 'compare', layout: 'tilt', header: 'mini',
-                title: 'Prueba donde *cuenta*',
-                bad: 'Creer que porque funciona en tu PC potente ya está listo.',
-                good: 'Probar en un móvil real sintiendo los FPS y la respuesta térmica.',
-                foot: 'La experiencia real de tu usuario es tu único juez.',
+                title: 'En qué nos inspiramos: *Del aula a la calle*',
+                bad: 'Dejar la investigación en una cartulina escolar que recibe una nota y muere en un armario.',
+                good: 'Llevar la solución a los bolsillos de la gente como una app real que devuelve autonomía.',
+                foot: 'La tecnología solo tiene sentido si resuelve un dolor humano real.',
             },
             {
-                type: 'cta', layout: 'low', tone: 'accent',
-                title: '¿Creas apps con impacto?',
-                keyword: 'MOVA',
-                line: '¿Quieres seguir aprendiendo? Entra a mi perfil para ver más contenido sobre desarrollo y gaming.',
+                type: 'flow', layout: 'low', header: 'mini',
+                title: 'Nuestra Idea: *De la cámara a la voz*',
+                nodes: [
+                    { icon: 'eye', t: '1. Cámara en Vivo', s: 'Captura a 60 FPS en cualquier móvil' },
+                    { icon: 'hand', t: '2. 21 Puntos 3D', s: 'MediaPipe rastrea falanges sin enviar video a internet' },
+                    { icon: 'code', t: '3. Vector Euclidiano', s: 'Inferencia matemática local en milisegundos' },
+                    { icon: 'sparkle', t: '4. Voz Instantánea', s: 'SpeechSynthesis vocaliza la frase al instante' },
+                ],
+                foot: '100% offline y privado: tu privacidad nunca sale de tu teléfono.',
+            },
+            {
+                type: 'checklist', layout: 'full', header: 'mini',
+                title: 'Nuestra Misión: *3 Compromisos*',
+                take: [
+                    '1. Acceso universal gratuito sin barreras',
+                    '2. Privacidad y soberanía en tu chip local',
+                ],
+                adapt: [
+                    '3. Multi-seña: LSV (🇻🇪), ASL (🇺🇸) y LSE (🇪🇸)',
+                    '4. No pedimos que se adapten: la IA se adapta a ellos',
+                ],
+                foot: 'Inclusión sin fronteras idiomáticas ni económicas.',
+            },
+            {
+                type: 'cta', layout: 'high', tone: 'accent',
+                title: 'Sé parte del *cambio*',
+                kicker: 'COMUNIDAD MOVA',
+                icon: 'hand',
+                keyword: 'MANIFIESTO',
+                desc: 'Sigue a @mova.app, prueba la beta y ayúdanos a llevar inclusión a cada rincón del mundo.',
+                badges: ['BETA ANDROID', '100% OFFLINE', 'LSV + ASL + LSE'],
+                line: 'Comenta "MANIFIESTO" para conocer más y sumarte al movimiento Mova.',
+            },
+        ],
+    },
+
+    // Carrusel 2: En Qué Nos Inspiramos (Colegio La Consolación a Impacto Real)
+    {
+        id: 'mova_inspiracion', accountId: 'mova', slug: 'mova_en_que_nos_inspiramos', theme: 'mova', caseNo: 6, group: 'Mova: Rompiendo el Silencio',
+        title: 'Mova: Inspiración', subtitle: 'De La Consolación a romper el silencio',
+        post: {
+            hook: 'La mayoría de proyectos escolares mueren en una cartulina. Nosotros nos negamos a que Mova fuera uno más 👇',
+            caption: `¿Sabes cuántas buenas ideas tecnológicas se quedan para siempre en un aula de clases? Demasiadas.
+
+Mova nació en los pasillos del Colegio La Consolación en Caracas con una pregunta muy simple:
+"¿Si una persona sorda te habla en señas, eres capaz de entenderla?"
+
+La respuesta casi siempre era un silencio incómodo.
+
+En este carrusel te contamos en qué nos inspiramos para pasar de una investigación escolar a una app móvil real:
+1️⃣ La brecha invisible: Más de 500.000 personas en Venezuela dependen de la Lengua de Señas Venezolana (LSV) y enfrentan barreras cotidianas en bancos, hospitales y tiendas.
+2️⃣ Romper el molde: Rechazar la maqueta de cartón que solo busca una calificación escolar para programar software real.
+3️⃣ La empatía como motor: La tecnología no debe existir solo para generar dinero o presumir algoritmos; debe devolver autonomía y dignidad a las personas.
+
+💾 Guarda esta historia si crees en los proyectos con propósito.
+👉 Síguenos en @mova.app para acompañar nuestro camino.`,
+            hashtags: ['#mova', '#consolacion', '#caracas', '#venezuela', '#inspiracion', '#lsv', '#lenguajedeseñas', '#inclusión', '#impactosocial', '#historiasreales'],
+            bestTime: '19:00 - 22:00',
+            sound: 'Inspirational piano strings / Cinematic warmth',
+        },
+        slides: [
+            {
+                type: 'hero', layout: 'high', header: 'mini',
+                kicker: 'El Origen de Mova · Historia Real',
+                title: 'En qué nos inspiramos para *crear Mova*',
+                titleSize: '2.05rem',
+                image: 'assets/mova_logo_slogan.png',
+                imageStyle: { backgroundSize: 'contain', backgroundPosition: 'center', backgroundColor: '#05163F', padding: '16px' },
+                sub: 'Cómo una investigación en el Colegio La Consolación Caracas se convirtió en un proyecto de vida.',
+                prod: 'Logo oficial con slogan "Rompiendo el silencio" sobre fondo Deep Navy Blue.',
+            },
+            {
+                type: 'text', layout: 'full', header: 'full',
+                title: '¿Si te hablan con señas... *entiendes algo?*',
+                body: 'En Venezuela, más de *500.000 personas* conviven con la sordera. Cuando van al médico o a una tienda, casi nadie puede comunicarse con ellas.',
+                icons: [
+                    { name: 'eye', label: 'Invisibilidad' },
+                    { name: 'hand', label: 'Lengua LSV' },
+                    { name: 'comment', label: 'Soledad' },
+                ],
+                foot: 'El problema nunca fue la sordera: fue nuestra incapacidad como sociedad de escucharlos.',
+            },
+            {
+                type: 'steps', layout: 'split',
+                title: 'El camino desde *La Consolación*',
+                steps: [
+                    { t: '1. Descubrir el dolor', d: 'Identificar la soledad de las personas sordas frente a oyentes sin intérpretes.' },
+                    { t: '2. Romper la cartulina', d: 'Negarse a presentar un trabajo de papel que muere al terminar el año escolar.' },
+                    { t: '3. Codificar la solución', d: 'Pasar noches programando algoritmos de visión para teléfonos móviles comunes.' },
+                ],
+                foot: 'Un proyecto escolar solo tiene valor cuando toca la vida de alguien afuera.',
+            },
+            {
+                type: 'compare', layout: 'tilt', header: 'mini',
+                title: 'Proyecto típico *vs* Visión Mova',
+                bad: 'Un PDF académico con citas teóricas que se guarda en una carpeta y nunca nadie vuelve a abrir.',
+                good: 'Una aplicación móvil instalable que traduce señas en vivo y le da voz propia a quien la necesita.',
+                foot: 'Menos teoría en el pizarrón y más impacto real en la calle.',
+            },
+            {
+                type: 'quote', layout: 'low', header: 'none',
+                quote: 'No creamos Mova para presumir código o ganar un concurso escolar: *lo creamos para que nadie vuelva a sentirse invisible.*',
+                by: 'Equipo Fundador · Colegio La Consolación Caracas',
+            },
+            {
+                type: 'cta', layout: 'high', tone: 'accent',
+                title: 'Acompáñanos en *el camino*',
+                kicker: 'ORIGEN LA CONSOLACIÓN',
+                icon: 'heart',
+                keyword: 'HISTORIA',
+                desc: 'Sigue a @mova.app y sé parte de la comunidad que transforma proyectos escolares en soluciones reales.',
+                badges: ['COLEGIO LA CONSOLACIÓN', 'CARACAS 🇻🇪', 'IMPACTO SOCIAL'],
+                line: 'Comenta "HISTORIA" para conocer más sobre nuestro proceso y avances.',
+            },
+        ],
+    },
+
+    // Carrusel 3: Nuestra Idea (El Motor Tecnológico con IA en Vivo)
+    {
+        id: 'mova_idea', accountId: 'mova', slug: 'mova_nuestra_idea_traductor_ia', theme: 'mova', caseNo: 7, group: 'Mova: Rompiendo el Silencio',
+        title: 'Mova: Nuestra Idea', subtitle: 'La cámara se convierte en tu voz',
+        post: {
+            hook: '¿Cómo habla una persona sorda si los demás no saben señas? Así funciona nuestra idea técnica 👇',
+            caption: `La mayoría de soluciones de accesibilidad fallan por dos razones: o requieren intérpretes costosos, o dependen de internet ultrarrápido que no existe en la calle.
+
+Nuestra idea con Mova v2.0 (@mova.app) fue radicalmente distinta:
+Llevar un intérprete de lengua de señas con IA dentro de cualquier smartphone, 100% offline.
+
+¿Cómo lo logramos técnicamente?
+1️⃣ 21 Landmarks por mano: MediaPipe mapea en 3D la posición de falanges, nudillos y muñeca a 60 FPS sin fricción.
+2️⃣ Distancia Euclidiana Normalizada: El algoritmo clasifica la seña comparando proporciones relativas. Da igual si la mano está a 30 cm o a 2 metros de la cámara.
+3️⃣ De Seña a Voz Hablada: El motor activa la API nativa de SpeechSynthesis en milisegundos para que el teléfono pronuncie la palabra en voz alta.
+4️⃣ Cero nube, cero consumo: Todo se procesa en el procesador del teléfono. Tu video nunca se sube a internet.
+
+💾 Guarda este post para entender cómo la IA resuelve problemas del mundo real.
+👉 Síguenos en @mova.app y prueba la beta.`,
+            hashtags: ['#mova', '#ia', '#mediapipe', '#computervision', '#lenguajedeseñas', '#reactjs', '#capacitorjs', '#webassembly', '#offline', '#techforgood'],
+            bestTime: '13:00 - 16:00 o 19:00 - 21:00',
+            sound: 'Electronic futuristic rhythm / Modern tech beat',
+        },
+        slides: [
+            {
+                type: 'hero', layout: 'float', header: 'full',
+                kicker: 'Nuestra Idea · IA en Vivo',
+                title: 'La cámara de tu móvil *se convierte en tu voz*',
+                titleSize: '2.05rem',
+                image: 'assets/mova_app_live.png',
+                imageStyle: { backgroundSize: 'cover', backgroundPosition: 'top', backgroundColor: '#05163F' },
+                sub: 'Mova v2.0 traduce lengua de señas a voz audible al instante y sin conexión a internet.',
+                prod: 'Captura en vivo de Mova detectando la seña con cuadro de confianza e interfaz móvil.',
+            },
+            {
+                type: 'stat', layout: 'split',
+                number: '21', label: 'puntos anatómicos 3D por mano',
+                title: 'Mapeo biomecánico *a 60 FPS*',
+                body: 'MediaPipe extrae *21 coordenadas espaciales* por mano. No necesitamos guantes con sensores: basta con la cámara que ya tienes.',
+                icon: 'hand', visual: 'hand', src: 'visión espacial euclidiana en el dispositivo',
+            },
+            {
+                type: 'flow', layout: 'low', header: 'mini',
+                title: 'El circuito: *De la luz al sonido*',
+                nodes: [
+                    { icon: 'eye', t: '1. Frame de Cámara', s: 'Captura fluida a 60 FPS acelerada por WebGL' },
+                    { icon: 'hand', t: '2. Extracción 3D', s: '21 landmarks normalizados respecto a la muñeca' },
+                    { icon: 'code', t: '3. Clasificación Euclidiana', s: 'Comparación vectorial con el diccionario de señas' },
+                    { icon: 'sparkle', t: '4. Síntesis Vocal', s: 'SpeechSynthesis pronuncia la palabra en milisegundos' },
+                ],
+                foot: 'Todo ocurre en menos de 16 milisegundos: conversación fluida en tiempo real.',
+            },
+            {
+                type: 'code', layout: 'split', header: 'full',
+                title: 'Matemática *invariante a la distancia*',
+                file: 'mova-engine ~ euclid-detector.ts',
+                lang: 'javascript',
+                code: [
+                    '// 1. Distancia normalizada respecto a la muñeca',
+                    'const dist = (p1, p2, scale) => Math.hypot((p1.x - p2.x)/scale, (p1.y - p2.y)/scale);',
+                    '',
+                    '// 2. Clasificar seña activa (ej: LSV)',
+                    'const match = classifySignVector(landmarks, { lang: "LSV" });',
+                    'if (match.confidence > 0.85) speechSynthesis.speak(match.text);',
+                    '✓ Funciona igual si la mano está cerca o lejos del lente',
+                ],
+                foot: 'Comparamos proporciones relativas de los dedos, no píxeles absolutos.',
+                prod: 'Consola técnica demostrando el algoritmo euclidiano de Mova.',
+            },
+            {
+                type: 'compare', layout: 'tilt', header: 'mini',
+                title: 'IA en la Nube *vs* Chip Local Mova',
+                bad: 'Enviar video a servidores: 500ms de retraso, alto gasto de datos móviles y riesgo de privacidad.',
+                good: 'WebAssembly en el procesador del móvil: 16ms de latencia, 0 megas gastados y video 100% privado.',
+                foot: 'La accesibilidad real debe funcionar en cualquier calle, incluso sin señal ni saldo.',
+            },
+            {
+                type: 'cta', layout: 'high', tone: 'accent',
+                title: 'Prueba la *tecnología*',
+                kicker: 'MOTOR MOVA V2.0',
+                icon: 'code',
+                keyword: 'IDEA',
+                desc: 'Sigue a @mova.app y prueba la beta con IA para experimentar la traducción en tiempo real.',
+                badges: ['60 FPS OFFLINE', 'WEBASSEMBLY', 'SPEECH API'],
+                line: 'Comenta "IDEA" para recibir el enlace a la beta y documentación técnica.',
+            },
+        ],
+    },
+
+    // Carrusel 4: Nuestra Misión (Inclusión Sin Barreras ni Fronteras)
+    {
+        id: 'mova_mision', accountId: 'mova', slug: 'mova_nuestra_mision_inclusion', theme: 'mova', caseNo: 8, group: 'Mova: Rompiendo el Silencio',
+        title: 'Mova: Nuestra Misión', subtitle: 'Inclusión sin barreras ni fronteras',
+        post: {
+            hook: 'La verdadera inclusión no es que la persona sorda se adapte al mundo: es que la tecnología se adapte a ellos 👇',
+            caption: `Durante décadas, a las personas con discapacidad auditiva se les ha exigido un esfuerzo sobrehumano para encajar en un mundo diseñado exclusivamente para oyentes.
+
+En Mova (@mova.app) creemos que esa ecuación está equivocada.
+Nuestra misión es usar la inteligencia artificial no como un lujo, sino como un puente de equidad humana.
+
+Los 3 pilares irrenunciables de nuestra misión:
+1️⃣ Cero Barrera Económica: La comunicación es un derecho fundamental, no un servicio premium. El acceso básico a Mova es y será gratuito.
+2️⃣ Privacidad Innegociable: Tu rostro, tus manos y tus conversaciones nunca se almacenan ni se venden. Todo corre en tu teléfono sin nube.
+3️⃣ Inclusión Sin Fronteras: Soporte dinámico para la Lengua de Señas Venezolana (LSV 🇻🇪), American Sign Language (ASL 🇺🇸) y Lengua de Signos Española (LSE 🇪🇸).
+
+💾 Guarda este post y súmate a nuestra misión.
+👉 Síguenos en @mova.app para derribar juntos el silencio.`,
+            hashtags: ['#mova', '#mision', '#inclusion', '#accesibilidad', '#derechoshumanos', '#lsv', '#asl', '#lse', '#tecnologia', '#impactosocial', '#comunidad'],
+            bestTime: '18:00 - 21:00',
+            sound: 'Piano emotivo inspirador / Lo-Fi suave y reflexivo',
+        },
+        slides: [
+            {
+                type: 'hero', layout: 'high', header: 'mini',
+                kicker: 'Nuestra Misión · Propósito Humano',
+                title: 'Tecnología para incluir, *no para cobrar peaje*',
+                titleSize: '2.05rem',
+                image: 'assets/mova_logo_icon.png',
+                imageStyle: { backgroundSize: 'contain', backgroundPosition: 'center', backgroundColor: '#05163F', padding: '16px' },
+                sub: 'Nuestra misión es derribar las barreras de comunicación para más de 70 millones de personas en el mundo.',
+                prod: 'Isotipo oficial de Mova con halo cálido y fondo nocturno.',
+            },
+            {
+                type: 'quote', layout: 'low', header: 'none',
+                quote: 'La verdadera inclusión no es exigirle a la persona sorda que se adapte al mundo: *es que la tecnología se adapte a ellos.*',
+                by: 'Manifiesto de Inclusión · Mova',
+            },
+            {
+                type: 'checklist', layout: 'full', header: 'mini',
+                title: '3 Compromisos *irrenunciables*',
+                take: [
+                    '1. Acceso 100% gratuito para quien lo necesita',
+                    '2. Privacidad total: cero video enviado a la nube',
+                ],
+                adapt: [
+                    '3. Soporte multi-seña para conectar culturas',
+                    '4. Funcionamiento offline en teléfonos de gama baja',
+                ],
+                foot: 'La accesibilidad no puede ser un privilegio para quienes pueden pagar suscripciones.',
+            },
+            {
+                type: 'stat', layout: 'split',
+                title: 'Inclusión *sin fronteras*',
+                number: '3', label: 'sistemas de señas soportados',
+                body: 'Soporte dinámico para *LSV (Venezuela 🇻🇪), ASL (EE.UU. 🇺🇸) y LSE (España 🇪🇸)* con intercambio de diccionarios en caliente.',
+                icon: 'trophy', visual: 'languages', src: 'diccionarios de señas estandarizados',
+            },
+            {
+                type: 'steps', layout: 'split',
+                title: 'Hacia dónde *vamos*',
+                steps: [
+                    { t: '1. Despliegue en Android', d: 'Publicar la app compilada con Capacitor en la Google Play Store.' },
+                    { t: '2. Alianzas en salud y banca', d: 'Llevar Mova a módulos de atención para eliminar la falta de intérpretes.' },
+                    { t: '3. Biblioteca abierta', d: 'Construir con la comunidad el mayor diccionario abierto de LSV con IA.' },
+                ],
+                foot: 'Un proyecto impulsado por la comunidad para transformar la vida diaria.',
+            },
+            {
+                type: 'cta', layout: 'high', tone: 'accent',
+                title: 'Únete a *nuestra causa*',
+                kicker: 'UN MUNDO SIN BARRERAS',
+                icon: 'sparkle',
+                keyword: 'MISION',
+                desc: 'Sigue a @mova.app, comparte esta misión y ayúdanos a llegar a más familias y personas sordas.',
+                badges: ['ACCESO LIBRE', 'COMUNIDAD ACTIVA', 'PROPÓSITO HUMANO'],
+                line: 'Comenta "MISION" para involucrarte y apoyar la difusión de Mova.',
             },
         ],
     },
     {
-        id: 'gira', slug: 'girastock', theme: 'gira', caseNo: 6, group: 'Casos Reales & Pitch',
+        id: 'gira', accountId: 'girastock', slug: 'girastock', theme: 'gira', caseNo: 6, group: 'Casos Reales & Pitch',
         title: 'GiraStock', subtitle: 'Clona el éxito, adáptalo a tu cliente',
         post: {
             hook: 'Inspírate en las mejores apps del mundo y crea sistemas a medida para clientes 👇',
@@ -476,7 +729,7 @@ El secreto para cerrar proyectos y cobrar bien:
     // Datos verificados en antigravity.google (oct 2026). Precios en USD:
     // revísalos antes de publicar, Google puede cambiarlos.
     {
-        id: 'agy', slug: 'guia_antigravity', theme: 'agy', caseNo: 7, group: 'Guías de Herramientas',
+        id: 'agy', accountId: 'santidev', slug: 'guia_antigravity', theme: 'agy', caseNo: 7, group: 'Guías de Herramientas',
         title: 'Guía: Antigravity', subtitle: 'Qué es, instalación, planes y ahorro de tokens',
         post: {
             hook: '¿Qué es Google Antigravity y cómo sacarle el 100% sin gastar tu cuota? 👇',
@@ -613,7 +866,7 @@ El secreto para cerrar proyectos y cobrar bien:
     // 4. Subagentes en segundo plano y protocolo MCP nativo.
     // =========================================================================
     {
-        id: 'agy_power', slug: 'ventajas_antigravity_vs_code', theme: 'agy_power', caseNo: 8, group: 'Guías de Herramientas',
+        id: 'agy_power', accountId: 'santidev', slug: 'ventajas_antigravity_vs_code', theme: 'agy_power', caseNo: 8, group: 'Guías de Herramientas',
         title: 'Ventajas: Antigravity', subtitle: 'Base VS Code, navegador y agentes autónomos',
         post: {
             hook: '¿Por qué Antigravity NO es otro editor más? Te muestro sus superpoderes 👇',
@@ -712,7 +965,7 @@ El secreto para cerrar proyectos y cobrar bien:
     // 6. Gemini AI Pro: Ventajas reales de la suscripción (2M tokens, cuotas ultra-altas).
     // =========================================================================
     {
-        id: 'token_mastery', slug: 'tokens_infinitos_antigravity_opencode', theme: 'tokens_pro', caseNo: 9, group: 'Guías de Herramientas',
+        id: 'token_mastery', accountId: 'santidev', slug: 'tokens_infinitos_antigravity_opencode', theme: 'tokens_pro', caseNo: 9, group: 'Guías de Herramientas',
         title: 'Tokens Infinitos: Flujo Pro', subtitle: 'Opencode + Antigravity, Gemini y Multi-Cuentas',
         post: {
             hook: '¿Te quedas sin tokens a mitad de proyecto? Así los multiplico x10 👇',

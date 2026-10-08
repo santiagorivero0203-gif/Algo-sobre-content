@@ -142,17 +142,26 @@ window.THEMES = {
         ],
     },
     mova: {
-        tag: 'CASO 02 · PRODUCTO & IA',
-        accent: '#4262DC', ink: '#FFFFFF',
-        mark: 'rgba(66,98,220,.28)', codeKw: '#8EA2F5',
+        tag: 'ACCESIBILIDAD & IA',
+        band: 'MOVA · ROMPIENDO EL SILENCIO',
+        accent: '#3B82F6', ink: '#FFFFFF',
+        mark: 'rgba(59,130,246,.38)', codeKw: '#60A5FA',
         ctaIcon: 'hand',
+        bgStyle: 'flat',
+        bgCanvas: '#05163F', // Fondo oficial Mova (Deep Navy Blue)
+        glow: '#FFA500',     // Resplandor oficial Mova (ámbar cálido)
+        mint: '#4ECCA3',     // Articulaciones de MediaPipe
         backdrop: [
-            { k: 'code', text: 'tecnologia.alServicioHumano()' },
-            { k: 'code', text: 'ui.hazlaSimple();' },
-            { k: 'code', text: '$ npx cap sync ios' },
-            { k: 'tag', text: 'IMPACTO SOCIAL' },
+            { k: 'code', text: 'mediapipe.hands({ maxHands: 2 })' },
+            { k: 'tag', text: 'MEDIAPIPE 21D' },
+            { k: 'code', text: 'speechSynthesis.speak(phrase)' },
+            { k: 'tag', text: 'VOZ EN VIVO' },
+            { k: 'code', text: 'sign.classify({ mode: "LSV" })' },
+            { k: 'tag', text: 'OFFLINE 60FPS' },
+            { k: 'code', text: '$ npx cap sync android' },
+            { k: 'tag', text: '0 BARRERAS' },
             { k: 'icon', name: 'hand' },
-            ...GAME_BITS, ...CODE_BITS,
+            ...CODE_BITS,
         ],
     },
     gira: {
@@ -468,6 +477,8 @@ window.Progress = ({ meta, theme }) => (
 /** Banda superior con número de caso y título (ajustada a TikTok o Instagram). */
 window.TopBand = ({ video, theme, meta, format = 'tiktok' }) => {
     const isIg = format === 'instagram';
+    const account = window.getAccountForVideo ? window.getAccountForVideo(video) : window.ACCOUNTS?.santidev;
+    const bandLabel = theme.band || (account && account.id !== 'santidev' ? `${account.name.toUpperCase()} · ${account.badge}` : `CASO ${window.pad(video?.caseNo || 1)} · ${theme.tag}`);
     return (
         <div className="absolute left-0 right-0 top-0 flex flex-col justify-end" style={{
             height: isIg ? 68 : 138,
@@ -475,18 +486,21 @@ window.TopBand = ({ video, theme, meta, format = 'tiktok' }) => {
             zIndex: 5,
         }}>
             <div className="flex items-center justify-between mb-1 gap-2">
-                <span className="font-mono text-[10px] tracking-[.18em] whitespace-nowrap truncate" style={{ color: '#8a8a8a' }}>{theme.band || `CASO ${window.pad(video.caseNo)} · ${theme.tag}`}</span>
+                <span className="font-mono text-[10px] tracking-[.18em] whitespace-nowrap truncate" style={{ color: '#8a8a8a' }}>{bandLabel}</span>
                 <window.Progress meta={meta} theme={theme} />
             </div>
-            <div className={`font-black text-white leading-none tracking-tight truncate ${isIg ? 'text-[18px]' : 'text-[26px]'}`}>{video.title}</div>
+            <div className={`font-black text-white leading-none tracking-tight truncate ${isIg ? 'text-[18px]' : 'text-[26px]'}`}>{video?.title}</div>
         </div>
     );
 };
 
-/** Banda inferior con handle @santi.dev y llamada a deslizar/guardar (ajustada a TikTok o Instagram). */
-window.BottomBand = ({ theme, meta, format = 'tiktok' }) => {
+/** Banda inferior con handle dinámico de la cuenta (@mova.app, @santi.dev) y llamada a deslizar/guardar. */
+window.BottomBand = ({ video, theme, meta, format = 'tiktok' }) => {
     const isIg = format === 'instagram';
     const isLast = meta.index === meta.total - 1;
+    const account = window.getAccountForVideo ? window.getAccountForVideo(video) : window.ACCOUNTS?.santidev;
+    const handle = account?.handle || '@santi.dev';
+    const hasLogo = !!account?.logo;
     return (
         <div className="absolute left-0 right-0 bottom-0 flex items-center justify-between" style={{
             height: isIg ? 54 : 122,
@@ -494,10 +508,18 @@ window.BottomBand = ({ theme, meta, format = 'tiktok' }) => {
             zIndex: 5,
         }}>
             <div className="flex items-center gap-2">
-                <span className={`${isIg ? 'w-5 h-5' : 'w-6 h-6'} rounded-full flex items-center justify-center`} style={{ background: theme.accent, color: theme.ink }}>
-                    <window.Icon name="terminal" size={isIg ? 11 : 13} stroke={2.5} />
-                </span>
-                <span className={`font-bold text-white ${isIg ? 'text-[11.5px]' : 'text-[13px]'} tracking-tight`}>@santi.dev</span>
+                {hasLogo ? (
+                    <img
+                        src={account.logo}
+                        alt={account.name}
+                        className={`${isIg ? 'w-5 h-5' : 'w-6 h-6'} rounded-full object-contain bg-white/10 p-0.5 border border-white/20 shadow-sm`}
+                    />
+                ) : (
+                    <span className={`${isIg ? 'w-5 h-5' : 'w-6 h-6'} rounded-full flex items-center justify-center`} style={{ background: theme.accent, color: theme.ink }}>
+                        <window.Icon name={account?.icon || theme.ctaIcon || 'terminal'} size={isIg ? 11 : 13} stroke={2.5} />
+                    </span>
+                )}
+                <span className={`font-bold text-white ${isIg ? 'text-[11.5px]' : 'text-[13px]'} tracking-tight`}>{handle}</span>
             </div>
             <span className={`flex items-center gap-1.5 rounded-full font-mono ${isIg ? 'text-[9.5px]' : 'text-[10.5px]'}`} style={{ padding: isIg ? '3.5px 9px' : '5px 11px', border: '1px solid #3a3a3a', color: '#cfcfcf' }}>
                 {isLast ? 'guárdalo' : 'desliza'}

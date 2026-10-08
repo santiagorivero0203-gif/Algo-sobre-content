@@ -50,10 +50,12 @@ window.Header = ({ variant = 'mini', theme, meta, tone }) => {
     if (variant === 'none') return null;
     const isIg = meta?.format === 'instagram';
     const ink = tone.text;
+    const account = window.getAccountForVideo ? window.getAccountForVideo(meta?.video) : window.ACCOUNTS?.santidev;
+    const brandName = account?.name || 'Santi.Dev';
     if (variant === 'mini') {
         return (
             <div className={`flex items-center justify-between ${isIg ? 'mb-2' : 'mb-3.5'}`}>
-                <span className="rounded-full font-bold text-[11px]" style={{ padding: isIg ? '2.5px 10px' : '3.5px 12px', border: `1.5px solid ${tone.line}`, color: ink }}>Santi.Dev</span>
+                <span className="rounded-full font-bold text-[11px]" style={{ padding: isIg ? '2.5px 10px' : '3.5px 12px', border: `1.5px solid ${tone.line}`, color: ink }}>{brandName}</span>
                 <span className="font-mono font-bold text-[11px]" style={{ color: ink, opacity: 0.55 }}>{window.pad(meta.index + 1)} / {window.pad(meta.total)}</span>
             </div>
         );
@@ -62,7 +64,7 @@ window.Header = ({ variant = 'mini', theme, meta, tone }) => {
         <div className={`flex justify-between items-center ${isIg ? 'mb-2.5' : 'mb-4'}`}>
             <div className="rounded-full font-bold text-[11.5px] flex items-center gap-1.5" style={{ padding: isIg ? '3px 11px' : '4px 14px', border: `1.5px solid ${tone.line}`, background: tone.bg, color: ink }}>
                 <span className="w-2 h-2 rounded-full" style={{ background: theme.accent }} />
-                <span>Santi.Dev</span>
+                <span>{brandName}</span>
             </div>
             <div className="flex items-center gap-2.5">
                 <span className="font-mono font-bold text-[11px]" style={{ color: ink, opacity: 0.55 }}>{window.pad(meta.index + 1)} / {window.pad(meta.total)}</span>
@@ -344,6 +346,7 @@ window.StatSlide = ({ d, theme, tone, meta, showTitle }) => {
                 </div>
                 {d.visual === 'hand' && <window.HandLandmarks accent={theme.accent} size={isIg ? 72 : 135} />}
                 {d.visual === 'servers' && <window.NoServers accent={theme.accent} size={isIg ? 68 : 118} />}
+                {d.visual === 'languages' && <window.LanguagesVisual accent={theme.accent} size={isIg ? 72 : 120} />}
             </div>
             <span className={`self-start rounded-full font-bold ${isIg ? 'text-[11px] mt-0.5' : 'text-[13px] mt-1'}`} style={{ padding: isIg ? '3px 9px' : '5px 12px', background: '#111', color: '#fff' }}>{d.label}</span>
             <div className={`flex-1 flex items-center ${isIg ? 'py-1' : 'py-2.5'}`}>
@@ -403,7 +406,7 @@ window.QuoteSlide = ({ d, theme, tone, meta }) => {
                     <window.Icon name="sparkle" size={isIg ? 14 : 16} stroke={2.5} />
                 </div>
                 <div>
-                    <div className={`font-bold ${isIg ? 'text-[11.5px]' : 'text-[12.5px]'}`} style={{ color: tone.text }}>Santi.Dev</div>
+                    <div className={`font-bold ${isIg ? 'text-[11.5px]' : 'text-[12.5px]'}`} style={{ color: tone.text }}>{meta?.video ? (window.getAccountForVideo(meta.video)?.name || 'Santi.Dev') : 'Santi.Dev'}</div>
                     <div className={`font-mono ${isIg ? 'text-[9.5px]' : 'text-[10px]'}`} style={{ color: tone.sub }}>{d.by}</div>
                 </div>
             </div>
@@ -523,7 +526,7 @@ window.CtaSlide = ({ d, theme, tone, meta }) => {
 
                 <div className={`flex ${isIg ? 'gap-1.5' : 'gap-2'}`}>
                     <span className={`flex-1 flex items-center justify-center gap-1.5 rounded-xl font-bold ${isIg ? 'text-[10px] py-1.5 px-2' : 'text-[11px] py-[7px] px-[10px]'}`} style={{ background: '#111', color: '#fff' }}>
-                        <window.Icon name="userPlus" size={isIg ? 11 : 13} color="#fff" /> Seguir @santi.dev
+                        <window.Icon name="userPlus" size={isIg ? 11 : 13} color="#fff" /> Seguir {meta?.video ? (window.getAccountForVideo(meta.video)?.handle || '@santi.dev') : '@santi.dev'}
                     </span>
                     <span className={`flex items-center gap-1.5 rounded-xl font-bold ${isIg ? 'text-[10px] py-1.5 px-2.5' : 'text-[11px] py-[7px] px-[12px]'}`} style={{ border: `1.5px solid ${tone.text}`, color: tone.text }}>
                         <window.Icon name="bookmark" size={isIg ? 11 : 13} color={tone.text} /> Guardar
@@ -622,7 +625,7 @@ window.CardFrame = ({ d, theme, meta }) => {
             <>
                 <div style={{ ...base, bottom: 'auto', height: TOP_H, background: theme.accent, padding: isIg ? '7px 14px' : '16px 20px', justifyContent: 'space-between' }}>
                     <div className="flex items-center justify-between">
-                        <span className={`rounded-full font-bold ${isIg ? 'text-[9px]' : 'text-[11px]'}`} style={{ padding: isIg ? '1.5px 7px' : '3px 10px', border: `1.5px solid ${theme.ink}`, color: theme.ink }}>Santi.Dev</span>
+                        <span className={`rounded-full font-bold ${isIg ? 'text-[9px]' : 'text-[11px]'}`} style={{ padding: isIg ? '1.5px 7px' : '3px 10px', border: `1.5px solid ${theme.ink}`, color: theme.ink }}>{meta?.video ? (window.getAccountForVideo(meta.video)?.name || 'Santi.Dev') : 'Santi.Dev'}</span>
                         <span className={`font-mono font-bold ${isIg ? 'text-[9px]' : 'text-[11px]'}`} style={{ color: theme.ink, opacity: 0.7 }}>{window.pad(meta.index + 1)} / {window.pad(meta.total)}</span>
                     </div>
                     <window.Title text={d.title} theme={theme} tone={{ text: theme.ink }} size={isIg ? '1.35rem' : '1.95rem'} meta={meta} />
@@ -661,7 +664,7 @@ window.GridPattern = () => (
 /** Slide vertical completa: Grid + Fondo dinámico + Bandas + Tarjeta */
 window.Slide = ({ video, d, index, format = 'tiktok' }) => {
     const theme = window.THEMES[video.theme];
-    const meta = { index, total: video.slides.length, format };
+    const meta = { index, total: video.slides.length, format, video };
     const seed = video.caseNo * 1000 + index * 37 + 11;
     const isFlat = theme?.bgStyle === 'flat';
     const canvasBg = theme?.bgCanvas || '#0c0c0c';
@@ -672,7 +675,7 @@ window.Slide = ({ video, d, index, format = 'tiktok' }) => {
             {!isFlat && <window.GridPattern />}
             <window.Backdrop theme={theme} seed={seed} layout={d.layout} format={format} />
             {d.layout === 'low' && <window.TopBand video={video} theme={theme} meta={meta} format={format} />}
-            {d.layout === 'high' && <window.BottomBand theme={theme} meta={meta} format={format} />}
+            {d.layout === 'high' && <window.BottomBand video={video} theme={theme} meta={meta} format={format} />}
             <window.CardFrame d={d} theme={theme} meta={meta} />
         </div>
     );

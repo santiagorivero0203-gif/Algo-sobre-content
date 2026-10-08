@@ -155,37 +155,144 @@ Siguiendo estos 4 principios gané el torneo nacional con "The Last Endo":
 
 ---
 
-## Video 5: Mova App
-**Título:** Mova App · Lógica compleja, experiencia pacífica  
-**ID:** `mova` · **Diapositivas:** 7 · **Formato recomendado:** TikTok (9:16) o Instagram (4:5)
+## Mova · Carrusel 1: Manifiesto Oficial (Idea, Inspiración y Misión)
+**Título:** Mova: Manifiesto · Rompiendo el silencio con tecnología real  
+**ID:** `mova` · **Cuenta:** `@mova.app` · **Diapositivas:** 6 · **Formato recomendado:** TikTok (9:16) e Instagram (4:5)
 
 ### 🎣 Gancho (Hook)
-> ¿Quieres saber cómo formar una idea verdaderamente innovadora? 👇
+> ¿Si una persona sorda te habla con sus manos... eres capaz de entenderla? Así nació Mova 👇
 
 ### 📝 Descripción Completa (Caption)
 ```text
-La verdadera innovación tecnológica no nace de usar la herramienta más compleja, sino de resolver un problema humano real de forma pacífica.
+Más de 70 millones de personas sordas en el mundo viven rodeadas por una muralla invisible: el 95% de la sociedad no sabe lengua de señas.
 
-Así construí Mova (traducción de lenguaje de señas en tiempo real):
+En este carrusel te contamos la historia completa detrás de Mova (@mova.app):
 
-1️⃣ La regla del iceberg: El 90% de la matemática pesada (MediaPipe rastreando 21 puntos por mano en cada frame) se queda invisible.
-2️⃣ Paz visual: El usuario solo ve palabras grandes, gestos fluidos y máxima claridad.
-3️⃣ Valida un solo gesto primero: No intentes traducir todo el diccionario el día uno.
-4️⃣ Prueba en teléfonos reales: React + CapacitorJS optimizado para cuidar batería, temperatura y fluidez en cualquier móvil.
+1️⃣ En qué nos inspiramos: Nació como una investigación en el Colegio La Consolación (Caracas). Al ver cómo el aislamiento apagaba oportunidades, nos negamos a dejar el proyecto en una cartulina escolar.
+2️⃣ Nuestra Idea: Una app con IA que convierte la cámara de tu móvil en voz instantánea. Rastreamos 21 puntos anatómicos por mano y sintetizamos voz en milisegundos a 60 FPS, 100% offline y privado.
+3️⃣ Nuestra Misión: Democratizar la comunicación. Cero costos para el usuario, cero dependencia de internet y soporte multi-idioma para LSV (Venezuela 🇻🇪), ASL (EE.UU. 🇺🇸) y LSE (España 🇪🇸).
 
-💾 Guarda este carrusel para inspirar tu próximo proyecto de impacto.
-👉 ¿Quieres seguir aprendiendo? Entra a mi perfil para ver más contenido sobre desarrollo y gaming.
+💾 Guarda este post y compártelo para apoyar la verdadera inclusión tecnológica.
+👉 Síguenos en @mova.app y construyamos juntos un mundo sin barreras.
 
-#innovacion #lenguajedeseñas #inclusión #mediapipe #reactjs #capacitorjs #ia #mobiledev #programacion #tecnologia #creadores
+#mova #lenguajedeseñas #inclusión #accesibilidad #ia #mediapipe #consolacion #caracas #venezuela #lsv #asl #tecnologiahumana
 ```
 
 ### 🏷️ Hashtags (Listos para copiar)
 ```text
-#innovacion #lenguajedeseñas #inclusión #mediapipe #reactjs #capacitorjs #ia #mobiledev #programacion #tecnologia #creadores
+#mova #lenguajedeseñas #inclusión #accesibilidad #ia #mediapipe #consolacion #caracas #venezuela #lsv #asl #tecnologiahumana
 ```
 
-### ⏰ Mejor horario de publicación: `13:00 - 15:00` o `20:00 - 22:00`
-### 🎵 Estilo de audio sugerido: `Piano emotivo ambiental / Lo-fi suave inspirador`
+### ⏰ Mejor horario de publicación: `18:00 - 21:00`
+### 🎵 Estilo de audio sugerido: `Inspirational piano strings / Lo-Fi emotivo acústico`
+
+---
+
+## Mova · Carrusel 2: En Qué Nos Inspiramos (De La Consolación al Impacto Real)
+**Título:** Mova: Inspiración · De La Consolación a romper el silencio  
+**ID:** `mova_inspiracion` · **Cuenta:** `@mova.app` · **Diapositivas:** 6 · **Formato recomendado:** TikTok (9:16) e Instagram (4:5)
+
+### 🎣 Gancho (Hook)
+> La mayoría de proyectos escolares mueren en una cartulina. Nosotros nos negamos a que Mova fuera uno más 👇
+
+### 📝 Descripción Completa (Caption)
+```text
+¿Sabes cuántas buenas ideas tecnológicas se quedan para siempre en un aula de clases? Demasiadas.
+
+Mova nació en los pasillos del Colegio La Consolación en Caracas con una pregunta muy simple:
+"¿Si una persona sorda te habla en señas, eres capaz de entenderla?"
+
+La respuesta casi siempre era un silencio incómodo.
+
+En este carrusel te contamos en qué nos inspiramos para pasar de una investigación escolar a una app móvil real:
+1️⃣ La brecha invisible: Más de 500.000 personas en Venezuela dependen de la Lengua de Señas Venezolana (LSV) y enfrentan barreras cotidianas en bancos, hospitales y tiendas.
+2️⃣ Romper el molde: Rechazar la maqueta de cartón que solo busca una calificación escolar para programar software real.
+3️⃣ La empatía como motor: La tecnología no debe existir solo para generar dinero o presumir algoritmos; debe devolver autonomía y dignidad a las personas.
+
+💾 Guarda esta historia si crees en los proyectos con propósito.
+👉 Síguenos en @mova.app para acompañar nuestro camino.
+
+#mova #consolacion #caracas #venezuela #inspiracion #lsv #lenguajedeseñas #inclusión #impactosocial #historiasreales
+```
+
+### 🏷️ Hashtags (Listos para copiar)
+```text
+#mova #consolacion #caracas #venezuela #inspiracion #lsv #lenguajedeseñas #inclusión #impactosocial #historiasreales
+```
+
+### ⏰ Mejor horario de publicación: `19:00 - 22:00`
+### 🎵 Estilo de audio sugerido: `Inspirational piano strings / Cinematic warmth`
+
+---
+
+## Mova · Carrusel 3: Nuestra Idea (El Motor Tecnológico con IA en Vivo)
+**Título:** Mova: Nuestra Idea · La cámara se convierte en tu voz  
+**ID:** `mova_idea` · **Cuenta:** `@mova.app` · **Diapositivas:** 6 · **Formato recomendado:** TikTok (9:16) e Instagram (4:5)
+
+### 🎣 Gancho (Hook)
+> ¿Cómo habla una persona sorda si los demás no saben señas? Así funciona nuestra idea técnica 👇
+
+### 📝 Descripción Completa (Caption)
+```text
+La mayoría de soluciones de accesibilidad fallan por dos razones: o requieren intérpretes costosos, o dependen de internet ultrarrápido que no existe en la calle.
+
+Nuestra idea con Mova v2.0 (@mova.app) fue radicalmente distinta:
+Llevar un intérprete de lengua de señas con IA dentro de cualquier smartphone, 100% offline.
+
+¿Cómo lo logramos técnicamente?
+1️⃣ 21 Landmarks por mano: MediaPipe mapea en 3D la posición de falanges, nudillos y muñeca a 60 FPS sin fricción.
+2️⃣ Distancia Euclidiana Normalizada: El algoritmo clasifica la seña comparando proporciones relativas. Da igual si la mano está a 30 cm o a 2 metros de la cámara.
+3️⃣ De Seña a Voz Hablada: El motor activa la API nativa de SpeechSynthesis en milisegundos para que el teléfono pronuncie la palabra en voz alta.
+4️⃣ Cero nube, cero consumo: Todo se procesa en el procesador del teléfono. Tu video nunca se sube a internet.
+
+💾 Guarda este post para entender cómo la IA resuelve problemas del mundo real.
+👉 Síguenos en @mova.app y prueba la beta.
+
+#mova #ia #mediapipe #computervision #lenguajedeseñas #reactjs #capacitorjs #webassembly #offline #techforgood
+```
+
+### 🏷️ Hashtags (Listos para copiar)
+```text
+#mova #ia #mediapipe #computervision #lenguajedeseñas #reactjs #capacitorjs #webassembly #offline #techforgood
+```
+
+### ⏰ Mejor horario de publicación: `13:00 - 16:00` o `19:00 - 21:00`
+### 🎵 Estilo de audio sugerido: `Electronic futuristic rhythm / Modern tech beat`
+
+---
+
+## Mova · Carrusel 4: Nuestra Misión (Inclusión Sin Barreras ni Fronteras)
+**Título:** Mova: Nuestra Misión · Inclusión sin barreras ni fronteras  
+**ID:** `mova_mision` · **Cuenta:** `@mova.app` · **Diapositivas:** 6 · **Formato recomendado:** TikTok (9:16) e Instagram (4:5)
+
+### 🎣 Gancho (Hook)
+> La verdadera inclusión no es que la persona sorda se adapte al mundo: es que la tecnología se adapte a ellos 👇
+
+### 📝 Descripción Completa (Caption)
+```text
+Durante décadas, a las personas con discapacidad auditiva se les ha exigido un esfuerzo sobrehumano para encajar en un mundo diseñado exclusivamente para oyentes.
+
+En Mova (@mova.app) creemos que esa ecuación está equivocada.
+Nuestra misión es usar la inteligencia artificial no como un lujo, sino como un puente de equidad humana.
+
+Los 3 pilares irrenunciables de nuestra misión:
+1️⃣ Cero Barrera Económica: La comunicación es un derecho fundamental, no un servicio premium. El acceso básico a Mova es y será gratuito.
+2️⃣ Privacidad Innegociable: Tu rostro, tus manos y tus conversaciones nunca se almacenan ni se venden. Todo corre en tu teléfono sin nube.
+3️⃣ Inclusión Sin Fronteras: Soporte dinámico para la Lengua de Señas Venezolana (LSV 🇻🇪), American Sign Language (ASL 🇺🇸) y Lengua de Signos Española (LSE 🇪🇸).
+
+💾 Guarda este post y súmate a nuestra misión.
+👉 Síguenos en @mova.app para derribar juntos el silencio.
+
+#mova #mision #inclusion #accesibilidad #derechoshumanos #lsv #asl #lse #tecnologia #impactosocial #comunidad
+```
+
+### 🏷️ Hashtags (Listos para copiar)
+```text
+#mova #mision #inclusion #accesibilidad #derechoshumanos #lsv #asl #lse #tecnologia #impactosocial #comunidad
+```
+
+### ⏰ Mejor horario de publicación: `18:00 - 21:00`
+### 🎵 Estilo de audio sugerido: `Piano emotivo inspirador / Lo-Fi suave y reflexivo`
 
 ---
 

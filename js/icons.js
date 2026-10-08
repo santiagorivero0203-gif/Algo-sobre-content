@@ -215,6 +215,19 @@ window.NoServers = ({ accent, size = 110 }) => (
     </svg>
 );
 
+/** Gráfico de lenguas de señas soportadas para Mova (LSV, ASL, LSE). */
+window.LanguagesVisual = ({ accent, size = 110 }) => (
+    <svg width={size} height={size * 0.82} viewBox="0 0 100 82" fill="none">
+        <rect x="6" y="8" width="40" height="26" rx="6" fill="#fff" stroke="#111" strokeWidth="1.8" />
+        <text x="26" y="25" textAnchor="middle" fill="#111" fontSize="10.5" fontWeight="900" fontFamily="system-ui, sans-serif">LSV 🇻🇪</text>
+        <rect x="54" y="8" width="40" height="26" rx="6" fill={accent} stroke="#111" strokeWidth="1.8" />
+        <text x="74" y="25" textAnchor="middle" fill="#fff" fontSize="10.5" fontWeight="900" fontFamily="system-ui, sans-serif">ASL 🇺🇸</text>
+        <rect x="30" y="46" width="40" height="26" rx="6" fill="#fff" stroke="#111" strokeWidth="1.8" />
+        <text x="50" y="63" textAnchor="middle" fill="#111" fontSize="10.5" fontWeight="900" fontFamily="system-ui, sans-serif">LSE 🇪🇸</text>
+        <path d="M46 21h8M44 34l-6 12M56 34l6 12" stroke="#111" strokeWidth="1.5" strokeDasharray="2 2" />
+    </svg>
+);
+
 /** Renderiza una matriz como píxeles nítidos sin interpolación borrosa. */
 window.PixelArt = ({ map, size, palette }) => {
     const h = map.length, w = map[0].length;

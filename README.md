@@ -62,16 +62,27 @@ algo/
    - Hook: *Por qué tu código IA colapsa*
    - Contenido: El error novato de pedir todo en un solo mensaje, El error de no planificar (vs Error de compilación), Gemini como arquitecto del sistema, Fórmula "Divide y Vencerás" (3 bloques modulares), CTA hacia el perfil.
 
-### Serie 2: Trilogía "Casos Reales & Pitch"
+### Serie 2: Casos Reales, Pitch & Mova Suite
 4. **The Last Endo · Gaming** (`endo`):
    - Hook: *¿Sabes cómo destacar entre los demás?*
    - Logro: Campeón nacional Kurios Competition 2026.
    - Captura: Pantalla real del juego en vivo en Vercel.
-5. **Mova App · Accesibilidad & IA** (`mova`):
-   - Hook: *¿Quieres saber cómo formar una idea innovadora?*
-   - Reto: Inspira 2026.
-   - Captura: Pantalla oficial de Mova (BETA V2.0) con soporte para LSV, ASL y LSE.
-6. **GiraStock / Soluciones Reales** (`gira`):
+
+#### 🌟 Suite Mova (@mova.app) · "Rompiendo el Silencio":
+5. **Mova: Manifiesto Oficial** (`mova`):
+   - Hook: *¿Si una persona sorda te habla con sus manos... eres capaz de entenderla?*
+   - Contenido: Manifiesto integral 360° (Todo en Uno): Inspiración en La Consolación, Idea técnica en vivo a 60 FPS y Misión comunitaria de derribar barreras.
+6. **Mova: En Qué Nos Inspiramos** (`mova_inspiracion`):
+   - Hook: *La mayoría de proyectos escolares mueren en una cartulina. Nosotros nos negamos.*
+   - Contenido: El origen real en el Colegio La Consolación Caracas, 70M de personas sin intérpretes, rechazo al trabajo de papel y empatía social.
+7. **Mova: Nuestra Idea** (`mova_idea`):
+   - Hook: *¿Cómo habla una persona sorda si los demás no saben señas?*
+   - Contenido: De la cámara a la voz en tiempo real con IA. 21 landmarks por mano, cálculo euclidiano normalizado, síntesis vocal instantánea y privacidad 100% offline.
+8. **Mova: Nuestra Misión** (`mova_mision`):
+   - Hook: *La verdadera inclusión no es que la persona sorda se adapte al mundo: es que la tecnología se adapte a ellos.*
+   - Contenido: 3 compromisos irrenunciables (Acceso gratuito, privacidad en el chip, multi-idioma LSV 🇻🇪 / ASL 🇺🇸 / LSE 🇪🇸) y ruta hacia el futuro.
+
+9. **GiraStock / Soluciones Reales** (`gira`):
    - Hook: *Inspírate en las apps top, crea a medida*
    - Enfoque: Freelancers y desarrollo ágil para clientes.
    - Captura: Pantalla real del sistema de simulación en vivo en Vercel.
@@ -187,6 +198,32 @@ El generador incluye un selector de formato en tiempo real para adaptar el dise�
       - `StatSlide`: Reescalado del número de métrica (`4.8rem` vs `8.8rem`) y visualizadores (`68-72px` vs `118-135px`) para coexistir holgadamente con titulares y citas.
       - `CompareSlide`, `FlowSlide`, `CtaSlide`, `StepsSlide` y `ListSlide`: Alturas de conectores, paddings e iconografía calibrados para encajar con holgura y respiración.
     - Validación y auditoría integral con Edge Headless CDP confirmando **0 problemas de desbordamiento** (`issues: []`) en los 9 videos y todas sus diapositivas.
+
+### v4.0 (2026-10-08) · Multi-Brand Hub, Suite Mova & Studio Editor GitOps
+- **Integración Dedicada de Mova (`@mova.app`) en su Propio Espacio**:
+  - **Identidad Oficial Extraída**: Incorporación de los activos gráficos y directrices del repositorio oficial `mova-app` y contexto del Colegio La Consolación Caracas (`assets/mova_logo_icon.png`, `mova_logo_full.png`, `mova_logo_principal.png`, `mova_logo_slogan.png`, `mova_favicon.svg`).
+  - **Paleta Oficial y Tokens**: Fondo azul noche profundo `#05163F`, acento cobalto `#3B82F6`, resplandor ámbar `#FFA500` y puntos articulares `#4ECCA3`.
+  - **Suite Completa de Carruseles Mova**:
+    1. *Mova v2.0: Rompiendo el Silencio*: Traductor con IA en tiempo real, 21 puntos euclidianos, SpeechSynthesis, LSV/ASL/LSE y compilación a Android APK con CapacitorJS.
+    2. *Mova: Señas a 60 FPS sin Internet*: Arquitectura de visión artificial offline en WebAssembly con 0ms de latencia y privacidad absoluta.
+    3. *Mova: De Colegio a App Móvil Real*: Historia y pitch de impacto desde el aula en el Colegio La Consolación hasta el desarrollo multiplataforma.
+  - **Banda Dinámica de Marca**: `TopBand` y `BottomBand` renderizan automáticamente el logo oficial y handle `@mova.app` al visualizar cualquier carrusel de la marca.
+- **Sistema Multi-Cuenta Sin Base de Datos (`js/accounts.js`)**:
+  - Contenedores independientes para 4 marcas: **Santi.Dev** (código e IA), **Mova** (accesibilidad y visión artificial), **The Last Endo** (indie gamedev) y **GiraStock** (B2B SaaS).
+  - Selector de marcas con píldoras interactivas en escritorio y móvil, filtrando dinámicamente el catálogo y actualizando el banner del Hub.
+  - Soporte para parámetros de URL (`?account=mova` o hash `#mova`) para aterrizar directamente en el contenedor deseado.
+- **Diferenciación Radical: Visor HD vs Studio Editor**:
+  - **Modo Normal (Visor HD)**: Interfaz minimalista enfocada en previsualización, ajuste de lienzo y exportación cristalina en 1 clic (1080×1920 y 1080×1350).
+  - **Modo Editor Studio**: Borde/Glow ámbar, banner superior con indicador `STUDIO LIVE`, botón de restauración rápida y panel lateral derecho **StudioInspector** (con pestañas para Contenido, Marca & Layout, y Post & Copy).
+  - **Persistencia Local-First**: Guardado reactivo inmediato en `localStorage` (`algo_custom_videos`) para que ninguna edición se pierda al recargar.
+- **Sincronización GitOps con GitHub API & Auto-Deploy en Vercel**:
+  - Modal integrado para conectar con el repositorio `santiagorivero0203-gif/Algo-sobre-content` en rama `main`.
+  - Serialización limpia de JavaScript que actualiza `js/videos.js` mediante la API REST de GitHub usando un Personal Access Token (PAT) guardado en local.
+  - Cada commit dispara el despliegue automático en Vercel para ver las actualizaciones en vivo desde cualquier dispositivo sin servidores backend intermedios.
+- **Fundamentos Técnicos de Editores Gráficos (Basado en `Alternativas Open Source a Canva.docx`)**:
+  - **Design as Code**: Aprovechamiento de estándares W3C (SVG, Flexbox, CSS Grid y Web Fonts) clonados mediante `modern-screenshot` para exportación idéntica a la vista previa, evitando la deriva entre diseño e implementación analizada en Penpot.
+  - **Ruta hacia IndexedDB / Local-First**: Preparación de la arquitectura para evolucionar de `localStorage` (límite de 5MB) a `IndexedDB` para la ingesta de activos masivos sin dependencia en la nube, siguiendo los patrones de OpenDesign y LocalStudio.dev.
+  - **Interoperabilidad Semántica**: Modelo de datos estructurado que permite tanto la edición humana como la manipulación agéntica mediante protocolos como MCP (Model Context Protocol).
 
 ### v3.8 (2026-10-07)
 - **Integración de Captura Real Oficial para la Tercera App (Caso 03 · Invoficlib / GiraStock)**:

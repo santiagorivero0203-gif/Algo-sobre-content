@@ -95,7 +95,379 @@ const copyTextToClipboard = async (text) => {
     }
 };
 
+/**
+ * Panel de inspección y edición en tiempo real (Studio Inspector).
+ * Permite alterar textos, códigos, tonos, marcas y layouts en vivo
+ * reflejando los cambios en milisegundos en el canvas.
+ */
+const StudioInspector = ({
+    video,
+    slide,
+    sIdx,
+    theme,
+    account,
+    updateActiveSlide,
+    updateActiveVideoMeta,
+    onSyncGitHub,
+    hasCustomEdits,
+    onReset,
+    onCloseMobile,
+}) => {
+    const [tab, setTab] = React.useState('slide'); // 'slide' | 'meta' | 'post'
+
+    return (
+        <aside className="w-full md:w-[350px] bg-neutral-900 border-l border-neutral-800 flex flex-col h-full shrink-0 shadow-2xl z-30 select-none">
+            {/* Cabecera del Inspector */}
+            <div className="p-3.5 border-b border-neutral-800 flex items-center justify-between bg-neutral-950/90">
+                <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse-glow"></span>
+                    <div>
+                        <h2 className="text-xs font-black text-white uppercase tracking-wider flex items-center gap-1.5">
+                            <span>Studio Inspector</span>
+                            <span className="text-[9px] bg-amber-500/20 text-amber-300 px-1 rounded font-mono">LIVE</span>
+                        </h2>
+                        <p className="text-[10px] text-neutral-400 font-mono">Slide {sIdx + 1} de {video.slides.length} · {slide.type}</p>
+                    </div>
+                </div>
+                <div className="flex items-center gap-1.5">
+                    <button
+                        onClick={onSyncGitHub}
+                        title="Guardar en GitHub para despliegue en Vercel"
+                        className="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-bold text-[11px] flex items-center gap-1 shadow transition-all">
+                        <i className="fa-brands fa-github text-xs"></i>
+                        <span>Vercel</span>
+                    </button>
+                    {onCloseMobile && (
+                        <button
+                            onClick={onCloseMobile}
+                            className="md:hidden w-7 h-7 rounded-full bg-neutral-800 text-neutral-400 hover:text-white flex items-center justify-center text-xs">
+                            <i className="fa-solid fa-xmark"></i>
+                        </button>
+                    )}
+                </div>
+            </div>
+
+            {/* Pestañas del Inspector */}
+            <div className="flex border-b border-neutral-800 bg-neutral-950 text-xs font-bold">
+                <button
+                    onClick={() => setTab('slide')}
+                    className={`flex-1 py-2 text-center border-b-2 transition-all ${tab === 'slide' ? 'border-amber-400 text-amber-300 bg-neutral-900/60' : 'border-transparent text-neutral-400 hover:text-white'}`}>
+                    Contenido
+                </button>
+                <button
+                    onClick={() => setTab('meta')}
+                    className={`flex-1 py-2 text-center border-b-2 transition-all ${tab === 'meta' ? 'border-amber-400 text-amber-300 bg-neutral-900/60' : 'border-transparent text-neutral-400 hover:text-white'}`}>
+                    Marca & Layout
+                </button>
+                <button
+                    onClick={() => setTab('post')}
+                    className={`flex-1 py-2 text-center border-b-2 transition-all ${tab === 'post' ? 'border-amber-400 text-amber-300 bg-neutral-900/60' : 'border-transparent text-neutral-400 hover:text-white'}`}>
+                    Post & Copy
+                </button>
+            </div>
+
+            {/* Cuerpo del Inspector */}
+            <div className="flex-1 p-3.5 overflow-y-auto hide-scrollbar flex flex-col gap-3.5 text-xs select-text">
+                {tab === 'slide' && (
+                    <>
+                        {/* Título de la Slide */}
+                        <div className="flex flex-col gap-1">
+                            <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 flex items-center justify-between">
+                                <span>Título</span>
+                                <span className="text-amber-400 font-mono text-[9px]">*marca con rotulador*</span>
+                            </label>
+                            <input
+                                type="text"
+                                value={slide.title || ''}
+                                onChange={(e) => updateActiveSlide({ title: e.target.value })}
+                                className="studio-input p-2 rounded-lg text-xs font-semibold"
+                                placeholder="Ej: Traductor de señas *en tiempo real*"
+                            />
+                        </div>
+
+                        {/* Kicker */}
+                        {slide.kicker !== undefined && (
+                            <div className="flex flex-col gap-1">
+                                <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Kicker / Categoría superior</label>
+                                <input
+                                    type="text"
+                                    value={slide.kicker || ''}
+                                    onChange={(e) => updateActiveSlide({ kicker: e.target.value })}
+                                    className="studio-input p-2 rounded-lg text-xs"
+                                    placeholder="Ej: Accesibilidad & IA"
+                                />
+                            </div>
+                        )}
+
+                        {/* Subtítulo / Bajada */}
+                        {slide.sub !== undefined && (
+                            <div className="flex flex-col gap-1">
+                                <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Subtítulo / Bajada</label>
+                                <textarea
+                                    rows="2"
+                                    value={slide.sub || ''}
+                                    onChange={(e) => updateActiveSlide({ sub: e.target.value })}
+                                    className="studio-input p-2 rounded-lg text-xs leading-relaxed"
+                                    placeholder="Descripción corta o bajada..."
+                                />
+                            </div>
+                        )}
+
+                        {/* Cuerpo de texto */}
+                        {slide.body !== undefined && (
+                            <div className="flex flex-col gap-1">
+                                <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Cuerpo de Texto</label>
+                                <textarea
+                                    rows="3"
+                                    value={slide.body || ''}
+                                    onChange={(e) => updateActiveSlide({ body: e.target.value })}
+                                    className="studio-input p-2 rounded-lg text-xs leading-relaxed"
+                                    placeholder="Usa *rotulador* para destacar..."
+                                />
+                            </div>
+                        )}
+
+                        {/* Cita */}
+                        {slide.quote !== undefined && (
+                            <div className="flex flex-col gap-1">
+                                <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Frase / Cita</label>
+                                <textarea
+                                    rows="3"
+                                    value={slide.quote || ''}
+                                    onChange={(e) => updateActiveSlide({ quote: e.target.value })}
+                                    className="studio-input p-2 rounded-lg text-xs leading-relaxed"
+                                />
+                            </div>
+                        )}
+
+                        {/* Líneas de Código */}
+                        {slide.code !== undefined && Array.isArray(slide.code) && (
+                            <div className="flex flex-col gap-1">
+                                <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 flex items-center justify-between">
+                                    <span>Líneas de Código / Consola</span>
+                                    <span className="font-mono text-[9px] text-neutral-500">1 línea por renglón</span>
+                                </label>
+                                <textarea
+                                    rows="6"
+                                    value={slide.code.join('\n')}
+                                    onChange={(e) => updateActiveSlide({ code: e.target.value.split('\n') })}
+                                    className="studio-input p-2 rounded-lg text-[11px] font-mono leading-snug whitespace-pre"
+                                />
+                            </div>
+                        )}
+
+                        {/* Stat / Métrica */}
+                        {slide.number !== undefined && (
+                            <div className="grid grid-cols-2 gap-2">
+                                <div className="flex flex-col gap-1">
+                                    <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Número</label>
+                                    <input
+                                        type="text"
+                                        value={slide.number || ''}
+                                        onChange={(e) => updateActiveSlide({ number: e.target.value })}
+                                        className="studio-input p-2 rounded-lg text-xs font-mono font-bold"
+                                    />
+                                </div>
+                                <div className="flex flex-col gap-1">
+                                    <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Etiqueta</label>
+                                    <input
+                                        type="text"
+                                        value={slide.label || ''}
+                                        onChange={(e) => updateActiveSlide({ label: e.target.value })}
+                                        className="studio-input p-2 rounded-lg text-xs"
+                                    />
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Pie de slide */}
+                        {slide.foot !== undefined && (
+                            <div className="flex flex-col gap-1">
+                                <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Nota al Pie</label>
+                                <input
+                                    type="text"
+                                    value={slide.foot || ''}
+                                    onChange={(e) => updateActiveSlide({ foot: e.target.value })}
+                                    className="studio-input p-2 rounded-lg text-xs"
+                                    placeholder="Nota al pie..."
+                                />
+                            </div>
+                        )}
+                    </>
+                )}
+
+                {tab === 'meta' && (
+                    <>
+                        {/* Selector de Marca / Cuenta */}
+                        <div className="flex flex-col gap-1">
+                            <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Marca / Proyecto</label>
+                            <select
+                                value={video.accountId || 'santidev'}
+                                onChange={(e) => updateActiveVideoMeta({ accountId: e.target.value })}
+                                className="studio-input p-2 rounded-lg text-xs">
+                                {Object.values(window.ACCOUNTS || {}).map((acc) => (
+                                    <option key={acc.id} value={acc.id}>{acc.name} ({acc.handle})</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {/* Selector de Tema */}
+                        <div className="flex flex-col gap-1">
+                            <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Paleta de Tema Visual</label>
+                            <select
+                                value={video.theme || 'stack1'}
+                                onChange={(e) => updateActiveVideoMeta({ theme: e.target.value })}
+                                className="studio-input p-2 rounded-lg text-xs">
+                                {Object.keys(window.THEMES || {}).map((thKey) => (
+                                    <option key={thKey} value={thKey}>{thKey} · {window.THEMES[thKey].tag || thKey}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {/* Selector de Layout */}
+                        <div className="flex flex-col gap-1">
+                            <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Disposición de Tarjeta (Layout)</label>
+                            <select
+                                value={slide.layout || 'float'}
+                                onChange={(e) => updateActiveSlide({ layout: e.target.value })}
+                                className="studio-input p-2 rounded-lg text-xs">
+                                <option value="float">Float (Flotante centrada)</option>
+                                <option value="split">Split (Dividida)</option>
+                                <option value="tilt">Tilt (Inclinada dinámica)</option>
+                                <option value="high">High (Tarjeta superior + BottomBand)</option>
+                                <option value="low">Low (TopBand + Tarjeta inferior)</option>
+                                <option value="full">Full (Pantalla completa)</option>
+                            </select>
+                        </div>
+
+                        {/* Selector de Tono */}
+                        <div className="flex flex-col gap-1">
+                            <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Tono de Fondo</label>
+                            <div className="grid grid-cols-3 gap-1.5">
+                                {['white', 'paper', 'accent'].map((tn) => (
+                                    <button
+                                        key={tn}
+                                        onClick={() => updateActiveSlide({ tone: tn })}
+                                        className={`py-1.5 px-2 rounded-lg text-[11px] font-bold border transition-all ${slide.tone === tn || (!slide.tone && tn === 'white') ? 'border-amber-400 bg-amber-500/20 text-amber-200' : 'border-neutral-800 bg-neutral-950 text-neutral-400'}`}>
+                                        {tn}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Tarjeta de la marca vinculada */}
+                        <div className="p-3 bg-neutral-950 border border-neutral-800 rounded-xl mt-1 flex items-center gap-2.5">
+                            {account.logo ? (
+                                <img src={account.logo} alt={account.name} className="w-8 h-8 rounded-full bg-white/10 p-0.5 border border-white/20 shrink-0 object-contain" />
+                            ) : (
+                                <div className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs" style={{ background: account.color, color: '#fff' }}>
+                                    <window.Icon name={account.icon || 'terminal'} size={14} />
+                                </div>
+                            )}
+                            <div className="min-w-0 flex-1">
+                                <div className="font-bold text-white text-xs truncate">{account.name}</div>
+                                <div className="text-[10px] text-neutral-400 font-mono truncate">{account.handle} · {account.badge}</div>
+                            </div>
+                        </div>
+                    </>
+                )}
+
+                {tab === 'post' && (
+                    <>
+                        <div className="flex flex-col gap-1">
+                            <label className="text-[10px] font-bold uppercase tracking-wider text-amber-400">Gancho de Primera Línea (Hook)</label>
+                            <textarea
+                                rows="2"
+                                value={video.post?.hook || ''}
+                                onChange={(e) => updateActiveVideoMeta({ post: { ...video.post, hook: e.target.value } })}
+                                className="studio-input p-2 rounded-lg text-xs"
+                            />
+                        </div>
+                        <div className="flex flex-col gap-1">
+                            <label className="text-[10px] font-bold uppercase tracking-wider text-cyan-400">Descripción Completa (Caption)</label>
+                            <textarea
+                                rows="8"
+                                value={video.post?.caption || ''}
+                                onChange={(e) => updateActiveVideoMeta({ post: { ...video.post, caption: e.target.value } })}
+                                className="studio-input p-2 rounded-lg text-xs leading-relaxed font-sans"
+                            />
+                        </div>
+                        <div className="flex flex-col gap-1">
+                            <label className="text-[10px] font-bold uppercase tracking-wider text-purple-400">Hashtags (separados por espacio)</label>
+                            <input
+                                type="text"
+                                value={(video.post?.hashtags || []).join(' ')}
+                                onChange={(e) => updateActiveVideoMeta({ post: { ...video.post, hashtags: e.target.value.split(/\s+/).filter(Boolean) } })}
+                                className="studio-input p-2 rounded-lg text-xs font-mono"
+                            />
+                        </div>
+                    </>
+                )}
+            </div>
+
+            {/* Pie del Inspector */}
+            <div className="p-3 bg-neutral-950 border-t border-neutral-800 flex items-center justify-between text-[11px]">
+                {hasCustomEdits ? (
+                    <button
+                        onClick={onReset}
+                        className="text-neutral-400 hover:text-rose-400 font-mono text-[10px] flex items-center gap-1 transition-colors">
+                        <i className="fa-solid fa-rotate-left"></i>
+                        <span>Restaurar originales</span>
+                    </button>
+                ) : (
+                    <span className="text-neutral-500 font-mono text-[10px]">✓ Sin cambios pendientes</span>
+                )}
+                <span className="text-amber-400 font-mono text-[10px]">Guardado en vivo</span>
+            </div>
+        </aside>
+    );
+};
+
 const App = () => {
+    // Colección de videos editable con persistencia local
+    const [videos, setVideos] = React.useState(() => {
+        try {
+            const raw = localStorage.getItem('algo_custom_videos');
+            if (raw) return JSON.parse(raw);
+        } catch (e) {
+            console.warn('Error al leer videos desde localStorage:', e);
+        }
+        return window.VIDEOS;
+    });
+
+    // Filtro de marca / cuenta: 'all' | 'santidev' | 'mova' | 'endo' | 'girastock'
+    const [selectedAccount, setSelectedAccount] = React.useState(() => {
+        const p = (URL_PARAMS.get('account') || URL_PARAMS.get('brand') || window.location.hash.replace('#', '') || '').toLowerCase();
+        if (window.ACCOUNTS && window.ACCOUNTS[p]) return p;
+        return 'all';
+    });
+
+    // Auto-sincroniza el video activo cuando cambia o se inicializa la cuenta
+    React.useEffect(() => {
+        if (selectedAccount !== 'all') {
+            const currentAcc = window.getAccountForVideo(videos[vIdx]);
+            if (currentAcc.id !== selectedAccount) {
+                const firstIdx = videos.findIndex((v) => window.getAccountForVideo(v).id === selectedAccount);
+                if (firstIdx >= 0) {
+                    setVIdx(firstIdx);
+                    setSIdx(0);
+                }
+            }
+        }
+    }, [selectedAccount]);
+
+    // Modo de trabajo: false = Visor Normal & Exportación HD | true = Studio Editor Activo
+    const [editorMode, setEditorMode] = React.useState(URL_PARAMS.get('edit') === '1');
+    const [editorTab, setEditorTab] = React.useState('slide'); // 'slide' | 'meta' | 'post'
+    const [mobileEditorOpen, setMobileEditorOpen] = React.useState(false);
+
+    // Modal de sincronización con GitHub / Vercel
+    const [syncModalOpen, setSyncModalOpen] = React.useState(false);
+    const [ghToken, setGhToken] = React.useState(() => localStorage.getItem('algo_gh_pat') || '');
+    const [ghStatus, setGhStatus] = React.useState('idle'); // 'idle' | 'loading' | 'success' | 'error'
+    const [ghMessage, setGhMessage] = React.useState('');
+    const [commitMsg, setCommitMsg] = React.useState('');
+
     // Estado de selección de video y slide activa
     const [vIdx, setVIdx] = React.useState(initialVideo);
     const [sIdx, setSIdx] = React.useState(initialSlide);
@@ -133,11 +505,147 @@ const App = () => {
         typeof window !== 'undefined' ? window.innerHeight : 768
     );
 
-    const video = window.VIDEOS[vIdx];
-    const slide = video.slides[sIdx];
-    const theme = window.THEMES[video.theme];
+    const video = videos[vIdx] || videos[0];
+    const slide = video.slides[sIdx] || video.slides[0];
+    const theme = window.THEMES[video.theme] || window.THEMES.stack1;
+    const account = window.getAccountForVideo(video);
     const fmt = window.FORMATS[format] || window.FORMATS.tiktok;
     const isFileProtocol = window.location.protocol === 'file:';
+
+    // Detección de cambios locales respecto a la configuración original de fábrica
+    const hasCustomEdits = React.useMemo(() => {
+        return !!localStorage.getItem('algo_custom_videos');
+    }, [videos]);
+
+    /** Actualiza campos de la slide actual con guardado inmediato en localStorage */
+    const updateActiveSlide = (fields) => {
+        setVideos((prev) => {
+            const next = JSON.parse(JSON.stringify(prev));
+            if (next[vIdx] && next[vIdx].slides[sIdx]) {
+                next[vIdx].slides[sIdx] = { ...next[vIdx].slides[sIdx], ...fields };
+            }
+            try {
+                localStorage.setItem('algo_custom_videos', JSON.stringify(next));
+            } catch (e) {
+                console.error(e);
+            }
+            return next;
+        });
+    };
+
+    /** Actualiza metadatos globales del video actual (tema, post, título) */
+    const updateActiveVideoMeta = (fields) => {
+        setVideos((prev) => {
+            const next = JSON.parse(JSON.stringify(prev));
+            if (next[vIdx]) {
+                next[vIdx] = { ...next[vIdx], ...fields };
+            }
+            try {
+                localStorage.setItem('algo_custom_videos', JSON.stringify(next));
+            } catch (e) {
+                console.error(e);
+            }
+            return next;
+        });
+    };
+
+    /** Restaura todos los carruseles al archivo videos.js original */
+    const resetToOriginals = () => {
+        if (window.confirm('¿Restaurar todos los carruseles a su contenido original de fábrica? Se borrarán las ediciones locales en este navegador.')) {
+            try {
+                localStorage.removeItem('algo_custom_videos');
+            } catch (e) {}
+            setVideos(window.VIDEOS);
+        }
+    };
+
+    /** Sincroniza y commitea los cambios directamente en el repositorio de GitHub para despliegue en Vercel */
+    const handleSyncToGitHub = async () => {
+        if (!ghToken.trim()) {
+            setGhStatus('error');
+            setGhMessage('Ingresa un Personal Access Token de GitHub con permisos de escritura (Contents: write).');
+            return;
+        }
+
+        setGhStatus('loading');
+        setGhMessage('1/3 Conectando con GitHub API...');
+
+        try {
+            localStorage.setItem('algo_gh_pat', ghToken.trim());
+            const owner = 'santiagorivero0203-gif';
+            const repo = 'Algo-sobre-content';
+            const path = 'js/videos.js';
+            const branch = 'main';
+
+            // 1. Obtener SHA actual del archivo
+            const getRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}`, {
+                headers: {
+                    'Authorization': `Bearer ${ghToken.trim()}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                }
+            });
+
+            if (!getRes.ok) {
+                const errData = await getRes.json().catch(() => ({}));
+                throw new Error(errData.message || `HTTP ${getRes.status}`);
+            }
+
+            const fileData = await getRes.json();
+            const currentSha = fileData.sha;
+
+            setGhMessage('2/3 Creando commit en la rama main...');
+
+            // 2. Serializar código JS limpio
+            const jsContent = `/**\n * SANTI.DEV & MULTI-BRAND · CONTENIDO OFICIAL DE CARRUSELES\n * Sincronizado automáticamente desde Studio Editor con GitHub y Vercel.\n */\n\nwindow.VIDEOS = ${JSON.stringify(videos, null, 4)};\n`;
+
+            const utf8Bytes = new TextEncoder().encode(jsContent);
+            let binary = '';
+            for (let i = 0; i < utf8Bytes.byteLength; i++) {
+                binary += String.fromCharCode(utf8Bytes[i]);
+            }
+            const base64Content = btoa(binary);
+
+            // 3. Enviar commit PUT
+            const putRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${ghToken.trim()}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: commitMsg.trim() || 'chore(content): actualizar carruseles desde Studio Editor [vercel deploy]',
+                    content: base64Content,
+                    sha: currentSha,
+                    branch: branch
+                })
+            });
+
+            if (!putRes.ok) {
+                const putErr = await putRes.json().catch(() => ({}));
+                throw new Error(putErr.message || `HTTP ${putRes.status}`);
+            }
+
+            setGhStatus('success');
+            setGhMessage('¡Sincronización completada! El commit fue enviado a GitHub. Vercel comenzará a desplegar la nueva versión automáticamente.');
+        } catch (err) {
+            console.error('Error sincronizando con GitHub:', err);
+            setGhStatus('error');
+            setGhMessage(`Error: ${err.message || err}`);
+        }
+    };
+
+    /** Cambia de cuenta y auto-selecciona el primer carrusel de la marca */
+    const handleSelectAccount = (accId) => {
+        setSelectedAccount(accId);
+        if (accId !== 'all') {
+            const firstIdx = videos.findIndex((v) => window.getAccountForVideo(v).id === accId);
+            if (firstIdx >= 0) {
+                setVIdx(firstIdx);
+                setSIdx(0);
+            }
+        }
+    };
 
     // Detección de ancho móvil (< 768px)
     const isMobile = viewportW < 768;
@@ -498,13 +1006,25 @@ const App = () => {
             {/* CABECERA MÓVIL STICKY (< 768px)                                */}
             {/* ============================================================== */}
             <header className="md:hidden sticky top-0 z-40 bg-neutral-950/95 backdrop-blur-md border-b border-neutral-800 px-3 py-2 flex items-center justify-between w-full max-w-[100vw]">
-                <div className="flex items-center gap-1.5 shrink-0">
-                    <span className="w-2.5 h-2.5 rounded-full" style={{ background: theme.accent, boxShadow: `0 0 10px ${theme.accent}` }}></span>
-                    <span className="font-black text-sm tracking-tight text-white">Santi.Dev</span>
+                <div className="flex items-center gap-2 shrink-0 min-w-0">
+                    {account.logo ? (
+                        <img src={account.logo} alt={account.name} className="w-5 h-5 rounded-full object-contain bg-white/10 p-0.5 border border-white/20 shrink-0" />
+                    ) : (
+                        <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ background: theme.accent, boxShadow: `0 0 10px ${theme.accent}` }}></span>
+                    )}
+                    <span className="font-black text-xs tracking-tight text-white truncate">{account.name}</span>
                 </div>
 
                 {/* Controles superiores compactos */}
                 <div className="flex items-center gap-1.5 shrink-0">
+                    {/* Botón rápido para alternar Modo Studio Editor */}
+                    <button
+                        onClick={() => setEditorMode(!editorMode)}
+                        className={`px-2 py-1 rounded-lg text-[10.5px] font-bold border transition-all flex items-center gap-1 ${editorMode ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white border-amber-400 shadow-md' : 'bg-neutral-800 text-neutral-300 border-neutral-700'}`}>
+                        <i className={`fa-solid ${editorMode ? 'fa-pen-to-square' : 'fa-eye'} text-[10px]`}></i>
+                        <span>{editorMode ? 'Studio' : 'Visor'}</span>
+                    </button>
+
                     {/* Selector de formato 9:16 vs 4:5 */}
                     <div className="flex bg-neutral-900 border border-neutral-800 rounded-lg p-0.5">
                         <button
@@ -523,20 +1043,53 @@ const App = () => {
                         </button>
                     </div>
 
-                    {/* Botón para abrir el menú de selección de los 8 videos */}
+                    {/* Botón para abrir el menú de selección de los videos */}
                     <button
                         id="mobile-menu-btn"
                         onClick={() => setDrawerOpen(true)}
                         className="bg-neutral-800 hover:bg-neutral-700 active:scale-95 text-white px-2 py-1 rounded-lg text-xs font-bold border border-neutral-700 flex items-center gap-1 transition-all">
                         <i className="fa-solid fa-layer-group text-neutral-400 text-[11px]"></i>
-                        <span className="font-mono text-[11px]">{vIdx + 1}/8</span>
+                        <span className="font-mono text-[11px]">{vIdx + 1}/{videos.length}</span>
                         <i className="fa-solid fa-chevron-down text-[8px] text-neutral-400"></i>
                     </button>
                 </div>
             </header>
 
-            {/* Sub-barra móvil: Selector de carrusel activo, Kit de Post y píldoras de slides */}
+            {/* Sub-barra móvil: Selector de marcas/cuentas, carrusel activo y slides */}
             <div className="md:hidden bg-neutral-900/80 border-b border-neutral-800/80 px-3 py-2 flex flex-col gap-2 w-full max-w-[100vw]">
+                {/* Píldoras de selección rápida de Marca en Móvil */}
+                <div className="flex items-center gap-1 overflow-x-auto hide-scrollbar pb-0.5">
+                    <button
+                        onClick={() => handleSelectAccount('all')}
+                        className={`px-2 py-0.5 rounded-lg text-[10px] font-bold border shrink-0 transition-all ${selectedAccount === 'all' ? 'bg-white text-black border-white' : 'bg-neutral-800/80 text-neutral-400 border-neutral-700'}`}>
+                        Todas ({videos.length})
+                    </button>
+                    <button
+                        onClick={() => handleSelectAccount('santidev')}
+                        className={`px-2 py-0.5 rounded-lg text-[10px] font-bold border shrink-0 transition-all flex items-center gap-1 ${selectedAccount === 'santidev' ? 'bg-[#2E9D63] text-white border-[#2E9D63]' : 'bg-neutral-800/80 text-neutral-400 border-neutral-700'}`}>
+                        <i className="fa-solid fa-terminal text-[8px]"></i>
+                        <span>Santi.Dev</span>
+                    </button>
+                    <button
+                        onClick={() => handleSelectAccount('mova')}
+                        className={`px-2 py-0.5 rounded-lg text-[10px] font-bold border shrink-0 transition-all flex items-center gap-1 ${selectedAccount === 'mova' ? 'bg-[#3B82F6] text-white border-[#3B82F6] shadow-sm' : 'bg-neutral-800/80 text-neutral-400 border-neutral-700'}`}>
+                        <img src="assets/mova_logo_icon.png" alt="Mova" className="w-3 h-3 rounded-full object-contain" />
+                        <span>Mova</span>
+                    </button>
+                    <button
+                        onClick={() => handleSelectAccount('endo')}
+                        className={`px-2 py-0.5 rounded-lg text-[10px] font-bold border shrink-0 transition-all flex items-center gap-1 ${selectedAccount === 'endo' ? 'bg-[#EE6A3E] text-white border-[#EE6A3E]' : 'bg-neutral-800/80 text-neutral-400 border-neutral-700'}`}>
+                        <i className="fa-solid fa-gamepad text-[8px]"></i>
+                        <span>Endo</span>
+                    </button>
+                    <button
+                        onClick={() => handleSelectAccount('girastock')}
+                        className={`px-2 py-0.5 rounded-lg text-[10px] font-bold border shrink-0 transition-all flex items-center gap-1 ${selectedAccount === 'girastock' ? 'bg-[#EDB828] text-black border-[#EDB828]' : 'bg-neutral-800/80 text-neutral-400 border-neutral-700'}`}>
+                        <i className="fa-solid fa-database text-[8px]"></i>
+                        <span>GiraStock</span>
+                    </button>
+                </div>
+
                 <div className="flex items-center justify-between">
                     <div
                         onClick={() => setDrawerOpen(true)}
@@ -580,32 +1133,107 @@ const App = () => {
             {/* ============================================================== */}
             <aside className="hidden md:flex w-[335px] bg-neutral-900 flex-col border-r border-neutral-800 h-full shrink-0 relative">
                 {/* Zona superior con scroll independiente */}
-                <div className="flex-1 p-5 overflow-y-auto hide-scrollbar flex flex-col">
-                    <div className="flex items-center justify-between mb-1">
-                        <h1 className="text-base font-black text-white flex items-center gap-2">
-                            <i className="fa-solid fa-layer-group" style={{ color: theme.accent }}></i> Santi.Dev Creator
-                        </h1>
-                        <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-neutral-800 text-neutral-300 font-bold border border-neutral-700">v3.6</span>
+                <div className="flex-1 p-4 overflow-y-auto hide-scrollbar flex flex-col">
+                    {/* Encabezado y Selector de Modo */}
+                    <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                            {account.logo ? (
+                                <img src={account.logo} alt={account.name} className="w-5 h-5 rounded-full object-contain bg-white/10 p-0.5 border border-white/20" />
+                            ) : (
+                                <i className="fa-solid fa-layer-group text-sm" style={{ color: theme.accent }}></i>
+                            )}
+                            <h1 className="text-sm font-black text-white truncate">{account.name} Studio</h1>
+                        </div>
+                        <span className="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded bg-neutral-800 text-neutral-300 font-bold border border-neutral-700">v4.0</span>
                     </div>
-                    <p className="text-[11px] text-neutral-500 font-mono mb-3">Generador de carruseles de alta calidad</p>
 
-                    {/* Botón de acceso al Kit de Publicación (Captions, Hooks & Hashtags) */}
+                    {/* INTERRUPTOR PRINCIPAL: MODO NORMAL vs MODO EDITOR STUDIO */}
+                    <div className="grid grid-cols-2 gap-1 p-1 bg-neutral-950 rounded-xl border border-neutral-800 mb-3 shadow-inner">
+                        <button
+                            onClick={() => setEditorMode(false)}
+                            className={`py-1.5 px-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${!editorMode ? 'bg-white text-black shadow' : 'text-neutral-400 hover:text-white'}`}>
+                            <i className="fa-solid fa-eye text-[11px]"></i>
+                            <span>Visor HD</span>
+                        </button>
+                        <button
+                            onClick={() => setEditorMode(true)}
+                            className={`py-1.5 px-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${editorMode ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow' : 'text-neutral-400 hover:text-amber-400'}`}>
+                            <i className="fa-solid fa-pen-to-square text-[11px]"></i>
+                            <span>Studio Editor</span>
+                        </button>
+                    </div>
+
+                    {/* SELECTOR DE MARCA / CUENTA (Píldoras) */}
+                    <div className="mb-3">
+                        <div className="flex items-center justify-between text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1.5">
+                            <span>Marcas & Proyectos</span>
+                            <span className="font-mono text-[9px] text-neutral-500">{selectedAccount === 'all' ? 'Todas' : account.name}</span>
+                        </div>
+                        <div className="flex flex-wrap gap-1">
+                            <button
+                                onClick={() => handleSelectAccount('all')}
+                                className={`px-2 py-1 rounded-lg text-[11px] font-bold border transition-all ${selectedAccount === 'all' ? 'bg-white text-black border-white' : 'bg-neutral-800/80 text-neutral-400 border-neutral-700 hover:text-white'}`}>
+                                Todas ({videos.length})
+                            </button>
+                            <button
+                                onClick={() => handleSelectAccount('santidev')}
+                                className={`px-2 py-1 rounded-lg text-[11px] font-bold border transition-all flex items-center gap-1 ${selectedAccount === 'santidev' ? 'bg-[#2E9D63] text-white border-[#2E9D63]' : 'bg-neutral-800/80 text-neutral-400 border-neutral-700 hover:text-white'}`}>
+                                <i className="fa-solid fa-terminal text-[9px]"></i>
+                                <span>Santi.Dev</span>
+                            </button>
+                            <button
+                                onClick={() => handleSelectAccount('mova')}
+                                className={`px-2 py-1 rounded-lg text-[11px] font-bold border transition-all flex items-center gap-1.5 ${selectedAccount === 'mova' ? 'bg-[#3B82F6] text-white border-[#3B82F6] shadow-md' : 'bg-neutral-800/80 text-neutral-400 border-neutral-700 hover:text-white'}`}>
+                                <img src="assets/mova_logo_icon.png" alt="Mova" className="w-3.5 h-3.5 rounded-full object-contain" />
+                                <span>Mova</span>
+                            </button>
+                            <button
+                                onClick={() => handleSelectAccount('endo')}
+                                className={`px-2 py-1 rounded-lg text-[11px] font-bold border transition-all flex items-center gap-1 ${selectedAccount === 'endo' ? 'bg-[#EE6A3E] text-white border-[#EE6A3E]' : 'bg-neutral-800/80 text-neutral-400 border-neutral-700 hover:text-white'}`}>
+                                <i className="fa-solid fa-gamepad text-[9px]"></i>
+                                <span>The Last Endo</span>
+                            </button>
+                            <button
+                                onClick={() => handleSelectAccount('girastock')}
+                                className={`px-2 py-1 rounded-lg text-[11px] font-bold border transition-all flex items-center gap-1 ${selectedAccount === 'girastock' ? 'bg-[#EDB828] text-black border-[#EDB828]' : 'bg-neutral-800/80 text-neutral-400 border-neutral-700 hover:text-white'}`}>
+                                <i className="fa-solid fa-database text-[9px]"></i>
+                                <span>GiraStock</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* CAJA DE MARCA ESPECIAL PARA MOVA CUANDO ESTÁ SELECCIONADA O EN SU VIDEO */}
+                    {(selectedAccount === 'mova' || account.id === 'mova') && (
+                        <div className="p-3 mb-3 rounded-xl bg-gradient-to-r from-[#05163F] to-[#0A1F4A] border border-[#3B82F6]/50 shadow-lg flex items-center gap-2.5">
+                            <img src="assets/mova_logo_icon.png" alt="Mova" className="w-8 h-8 rounded-full bg-white/10 p-0.5 border border-white/20 shrink-0 object-contain" />
+                            <div className="min-w-0 flex-1">
+                                <div className="flex items-center gap-1.5">
+                                    <span className="font-black text-white text-xs truncate">Mova App</span>
+                                    <span className="text-[9px] font-bold px-1.5 rounded bg-amber-500/20 text-orange-400 border border-amber-500/30">BETA v2.0</span>
+                                </div>
+                                <div className="text-[10px] text-blue-200 truncate">Rompiendo el silencio · IA en vivo</div>
+                                <div className="text-[9px] font-mono text-neutral-400">@mova.app · Capacitor Android & PWA</div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Botón de acceso al Kit de Publicación */}
                     <button
                         id="btn-open-postkit"
                         onClick={() => setPostKitOpen(true)}
-                        className="w-full mb-4 py-2.5 px-3 rounded-xl font-bold text-xs bg-gradient-to-r from-purple-950/80 via-neutral-900 to-indigo-950/80 hover:from-purple-900/90 hover:to-indigo-900/90 border border-purple-500/40 text-purple-200 flex items-center justify-between shadow-lg transition-all active:scale-[0.98] group">
+                        className="w-full mb-3 py-2 px-3 rounded-xl font-bold text-xs bg-gradient-to-r from-purple-950/80 via-neutral-900 to-indigo-950/80 hover:from-purple-900/90 hover:to-indigo-900/90 border border-purple-500/40 text-purple-200 flex items-center justify-between shadow-lg transition-all active:scale-[0.98] group">
                         <div className="flex items-center gap-2">
                             <i className="fa-solid fa-clipboard-list text-purple-400 group-hover:scale-110 transition-transform"></i>
-                            <span className="text-white font-black">Kit de Publicación</span>
+                            <span className="text-white font-black text-xs">Kit de Publicación</span>
                         </div>
-                        <span className="text-[10px] font-mono bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-md border border-purple-400/30">
+                        <span className="text-[9px] font-mono bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded border border-purple-400/30">
                             Copy & Tags
                         </span>
                     </button>
 
                     {/* Selector de formato para escritorio */}
-                    <div className="mb-4">
-                        <label className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-2 flex items-center justify-between">
+                    <div className="mb-3">
+                        <label className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1.5 flex items-center justify-between">
                             <span>Formato de salida</span>
                             <span className="font-mono text-neutral-400 text-[10px]">{format === 'instagram' ? '1080 × 1350' : '1080 × 1920'}</span>
                         </label>
@@ -613,73 +1241,88 @@ const App = () => {
                             <button
                                 id="fmt-btn-tiktok"
                                 onClick={() => setFormat('tiktok')}
-                                className={`flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold transition-all ${format === 'tiktok' ? 'bg-white text-black shadow' : 'text-neutral-400 hover:text-white'}`}>
+                                className={`flex items-center justify-center gap-2 py-1.5 rounded-lg text-xs font-bold transition-all ${format === 'tiktok' ? 'bg-white text-black shadow' : 'text-neutral-400 hover:text-white'}`}>
                                 <i className="fa-brands fa-tiktok"></i>
                                 <span>TikTok 9:16</span>
                             </button>
                             <button
                                 id="fmt-btn-instagram"
                                 onClick={() => setFormat('instagram')}
-                                className={`flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold transition-all ${format === 'instagram' ? 'bg-gradient-to-r from-amber-500 via-rose-500 to-purple-600 text-white shadow' : 'text-neutral-400 hover:text-white'}`}>
+                                className={`flex items-center justify-center gap-2 py-1.5 rounded-lg text-xs font-bold transition-all ${format === 'instagram' ? 'bg-gradient-to-r from-amber-500 via-rose-500 to-purple-600 text-white shadow' : 'text-neutral-400 hover:text-white'}`}>
                                 <i className="fa-brands fa-instagram"></i>
                                 <span>Instagram 4:5</span>
                             </button>
                         </div>
                     </div>
 
-                    {isFileProtocol && (
-                        <div className="mb-4 rounded-lg p-3 text-[11px] leading-snug bg-amber-950/40 text-amber-200 border border-amber-800/60">
-                            <b className="text-white">Aviso:</b> estás en <span className="font-mono">file://</span>. Para exportar sin bloqueo CORS ejecuta: <span className="font-mono text-white">npx serve .</span>
-                        </div>
-                    )}
-
-                    {/* Agrupación por series en escritorio */}
-                    {[...new Set(window.VIDEOS.map((v) => v.group))].map((grpName) => {
-                        const list = window.VIDEOS.map((v, i) => ({ v, i })).filter((item) => item.v.group === grpName);
-                        return (
-                            <div key={grpName} className="mb-3">
-                                <div className="flex items-center justify-between text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1.5">
-                                    <span>{grpName}</span>
-                                    <span className="font-mono text-[9px] bg-neutral-800 px-1.5 py-0.5 rounded text-neutral-400">{list.length} videos</span>
-                                </div>
-                                {list.map(({ v, i }) => (
-                                    <div key={v.id} className="mb-1.5">
-                                        <button
-                                            id={`video-btn-${v.id}`}
-                                            onClick={() => { setVIdx(i); setSIdx(0); }}
-                                            className={`w-full text-left p-2.5 rounded-lg transition-all ${vIdx === i ? 'bg-white text-black font-semibold shadow' : 'bg-neutral-800/80 text-neutral-300 hover:bg-neutral-700'}`}>
-                                            <div className="flex items-center gap-2 text-xs font-bold truncate">
-                                                <span style={{ width: 8, height: 8, borderRadius: 2, background: window.THEMES[v.theme].accent, flexShrink: 0 }} />
-                                                <span className="truncate">{v.title}</span>
-                                            </div>
-                                            <div className={`text-[10.5px] mt-0.5 truncate ${vIdx === i ? 'text-neutral-600' : 'text-neutral-400'}`}>{v.subtitle}</div>
-                                        </button>
-
-                                        {/* Diapositivas expandidas directamente bajo el video activo */}
-                                        {vIdx === i && (
-                                            <div className="mt-1.5 mb-2 pl-3 border-l-2 flex flex-col gap-1" style={{ borderColor: window.THEMES[v.theme].accent }}>
-                                                {v.slides.map((s, idx) => (
-                                                    <button
-                                                        key={idx}
-                                                        id={`slide-btn-${idx + 1}`}
-                                                        onClick={() => setSIdx(idx)}
-                                                        className={`w-full text-left px-2.5 py-1.5 rounded-md text-[11.5px] font-semibold transition-all flex items-center gap-2 ${sIdx === idx ? 'bg-neutral-800 text-white font-bold ring-1 ring-neutral-600' : 'text-neutral-400 hover:text-white hover:bg-neutral-800/50'}`}>
-                                                        <span className="w-4 h-4 rounded flex items-center justify-center text-[10px] font-mono shrink-0"
-                                                            style={{ background: sIdx === idx ? theme.accent : '#333', color: sIdx === idx ? theme.ink : '#bbb' }}>{idx + 1}</span>
-                                                        <span className="truncate flex-1">{(s.title || s.quote || s.number || '').replace(/\*/g, '')}</span>
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        )}
+                    {/* Lista de Carruseles Filtrados */}
+                    {(() => {
+                        const filtered = videos.map((v, i) => ({ v, i })).filter(({ v }) => {
+                            if (selectedAccount === 'all') return true;
+                            return window.getAccountForVideo(v).id === selectedAccount;
+                        });
+                        const groups = [...new Set(filtered.map((item) => item.v.group))];
+                        return groups.map((grpName) => {
+                            const list = filtered.filter((item) => item.v.group === grpName);
+                            return (
+                                <div key={grpName} className="mb-3">
+                                    <div className="flex items-center justify-between text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1.5">
+                                        <span>{grpName}</span>
+                                        <span className="font-mono text-[9px] bg-neutral-800 px-1.5 py-0.5 rounded text-neutral-400">{list.length}</span>
                                     </div>
-                                ))}
-                            </div>
-                        );
-                    })}
+                                    {list.map(({ v, i }) => {
+                                        const vAcc = window.getAccountForVideo(v);
+                                        return (
+                                            <div key={v.id} className="mb-1.5">
+                                                <button
+                                                    id={`video-btn-${v.id}`}
+                                                    onClick={() => { setVIdx(i); setSIdx(0); }}
+                                                    className={`w-full text-left p-2.5 rounded-lg transition-all ${vIdx === i ? 'bg-white text-black font-semibold shadow' : 'bg-neutral-800/80 text-neutral-300 hover:bg-neutral-700'}`}>
+                                                    <div className="flex items-center justify-between gap-1">
+                                                        <div className="flex items-center gap-2 text-xs font-bold truncate">
+                                                            <span style={{ width: 8, height: 8, borderRadius: 2, background: window.THEMES[v.theme].accent, flexShrink: 0 }} />
+                                                            <span className="truncate">{v.title}</span>
+                                                        </div>
+                                                        <span className={`text-[9px] font-mono px-1 rounded ${vIdx === i ? 'bg-neutral-200 text-neutral-800' : 'text-neutral-400 bg-neutral-900'}`}>{vAcc.handle}</span>
+                                                    </div>
+                                                    <div className={`text-[10.5px] mt-0.5 truncate ${vIdx === i ? 'text-neutral-600' : 'text-neutral-400'}`}>{v.subtitle}</div>
+                                                </button>
+
+                                                {/* Diapositivas expandidas directamente bajo el video activo */}
+                                                {vIdx === i && (
+                                                    <div className="mt-1.5 mb-2 pl-3 border-l-2 flex flex-col gap-1" style={{ borderColor: window.THEMES[v.theme].accent }}>
+                                                        {v.slides.map((s, idx) => (
+                                                            <button
+                                                                key={idx}
+                                                                id={`slide-btn-${idx + 1}`}
+                                                                onClick={() => setSIdx(idx)}
+                                                                className={`w-full text-left px-2.5 py-1.5 rounded-md text-[11.5px] font-semibold transition-all flex items-center gap-2 ${sIdx === idx ? 'bg-neutral-800 text-white font-bold ring-1 ring-neutral-600' : 'text-neutral-400 hover:text-white hover:bg-neutral-800/50'}`}>
+                                                                <span className="w-4 h-4 rounded flex items-center justify-center text-[10px] font-mono shrink-0"
+                                                                    style={{ background: sIdx === idx ? theme.accent : '#333', color: sIdx === idx ? theme.ink : '#bbb' }}>{idx + 1}</span>
+                                                                <span className="truncate flex-1">{(s.title || s.quote || s.number || '').replace(/\*/g, '')}</span>
+                                                            </button>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            );
+                        });
+                    })()}
                 </div>
 
-                {/* Botonera fija inferior en la barra lateral (sticky bottom) */}
-                <div className="p-4 bg-neutral-900 border-t border-neutral-800 flex flex-col gap-2 shrink-0 shadow-2xl">
+                {/* Botonera fija inferior en la barra lateral */}
+                <div className="p-3.5 bg-neutral-900 border-t border-neutral-800 flex flex-col gap-2 shrink-0 shadow-2xl">
+                    {editorMode && (
+                        <button
+                            onClick={() => setSyncModalOpen(true)}
+                            className="w-full py-2.5 rounded-xl font-bold text-xs bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white flex items-center justify-center gap-2 shadow-lg transition-all active:scale-[0.98]">
+                            <i className="fa-brands fa-github text-sm"></i>
+                            <span>Guardar en GitHub & Vercel</span>
+                        </button>
+                    )}
                     <button
                         id="download-one"
                         onClick={downloadOne}
@@ -707,6 +1350,65 @@ const App = () => {
                 style={{ justifyContent: 'safe center' }}
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}>
+
+                {/* BANNER OFICIAL DEL CONTENEDOR MOVA */}
+                {(selectedAccount === 'mova' || account.id === 'mova') && (
+                    <div className="w-full max-w-2xl bg-gradient-to-r from-[#05163F] via-[#0A1F4A] to-[#05163F] border border-[#3B82F6]/60 rounded-2xl p-3 md:p-3.5 mb-1 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
+                        <div className="flex items-center gap-3">
+                            <img src="assets/mova_logo_icon.png" alt="Mova" className="w-10 h-10 rounded-full bg-white/10 p-1 border border-white/20 shadow-md object-contain shrink-0" />
+                            <div>
+                                <div className="flex items-center gap-2">
+                                    <span className="text-white font-black text-sm md:text-base tracking-wide">Mova Hub</span>
+                                    <span className="text-[9px] font-mono bg-amber-500/20 text-orange-400 border border-amber-500/40 px-2 py-0.5 rounded-full font-bold">BETA v2.0</span>
+                                    <span className="text-[9px] font-mono bg-blue-500/20 text-blue-300 border border-blue-500/40 px-2 py-0.5 rounded-full font-bold hidden sm:inline">100% OFFLINE</span>
+                                </div>
+                                <p className="text-[11px] text-blue-200 mt-0.5">Rompiendo el silencio · IA en tiempo real para Lengua de Señas</p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span className="text-[10px] font-mono text-neutral-300 bg-neutral-900/90 px-2 py-1 rounded-lg border border-neutral-700">@mova.app</span>
+                            <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950/70 px-2 py-1 rounded-lg border border-emerald-800">21D MediaPipe</span>
+                        </div>
+                    </div>
+                )}
+
+                {/* BANNER SUPERIOR DE STUDIO EDITOR CUANDO ESTÁ ACTIVO */}
+                {editorMode && (
+                    <div className="w-full max-w-2xl bg-neutral-950/95 border border-amber-500/40 rounded-2xl p-2.5 md:p-3 mb-1 shadow-xl flex items-center justify-between gap-2 studio-glow-amber shrink-0">
+                        <div className="flex items-center gap-2 min-w-0">
+                            <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse-glow shrink-0"></span>
+                            <span className="text-xs font-black text-amber-300 uppercase tracking-wider truncate">Studio Editor Activo</span>
+                            <span className="text-[10px] text-neutral-400 hidden sm:inline">· Edición en vivo</span>
+                            {hasCustomEdits && (
+                                <span className="text-[9px] bg-amber-400/20 text-amber-300 px-1.5 py-0.5 rounded border border-amber-400/30 font-mono shrink-0">Modificado</span>
+                            )}
+                        </div>
+                        <div className="flex items-center gap-1.5 shrink-0">
+                            {hasCustomEdits && (
+                                <button
+                                    onClick={resetToOriginals}
+                                    title="Restaurar a la versión original de fábrica"
+                                    className="px-2 py-1 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-300 hover:text-white text-[11px] font-semibold transition-all">
+                                    <i className="fa-solid fa-rotate-left mr-1"></i>
+                                    <span className="hidden sm:inline">Restaurar</span>
+                                </button>
+                            )}
+                            <button
+                                onClick={() => setSyncModalOpen(true)}
+                                className="px-2.5 py-1 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs flex items-center gap-1 shadow-md active:scale-95 transition-all">
+                                <i className="fa-brands fa-github text-xs"></i>
+                                <span>Guardar GitHub</span>
+                            </button>
+                            <button
+                                onClick={() => setEditorMode(false)}
+                                className="px-2 py-1 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-300 hover:text-white text-xs font-bold transition-all"
+                                title="Volver a modo visor normal">
+                                <i className="fa-solid fa-eye mr-1"></i>
+                                <span>Visor</span>
+                            </button>
+                        </div>
+                    </div>
+                )}
 
                 {/* Barra de control superior de la diapositiva (formato + navegación + zoom) */}
                 <div
@@ -833,6 +1535,59 @@ const App = () => {
                 {/* Espacio de reserva para que el contenido no quede tapado por la botonera fija inferior en móvil */}
                 <div className="md:hidden h-24 w-full shrink-0"></div>
             </main>
+
+            {/* ============================================================== */}
+            {/* STUDIO INSPECTOR EN ESCRITORIO (>= 768px)                      */}
+            {/* ============================================================== */}
+            {editorMode && (
+                <div className="hidden md:flex h-full shrink-0">
+                    <StudioInspector
+                        video={video}
+                        slide={slide}
+                        sIdx={sIdx}
+                        theme={theme}
+                        account={account}
+                        updateActiveSlide={updateActiveSlide}
+                        updateActiveVideoMeta={updateActiveVideoMeta}
+                        onSyncGitHub={() => setSyncModalOpen(true)}
+                        hasCustomEdits={hasCustomEdits}
+                        onReset={resetToOriginals}
+                    />
+                </div>
+            )}
+
+            {/* BOTÓN FLOTANTE MÓVIL PARA ABRIR STUDIO INSPECTOR */}
+            {editorMode && (
+                <button
+                    id="btn-open-mobile-inspector"
+                    onClick={() => setMobileEditorOpen(true)}
+                    className="md:hidden fixed bottom-20 right-3 z-40 px-3.5 py-2.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white font-black text-xs shadow-2xl flex items-center gap-2 active:scale-95 border border-amber-300/40">
+                    <i className="fa-solid fa-pen-to-square"></i>
+                    <span>Editar Slide {sIdx + 1}</span>
+                </button>
+            )}
+
+            {/* BOTTOM SHEET / DRAWER DEL STUDIO INSPECTOR EN MÓVIL */}
+            {mobileEditorOpen && (
+                <div className="md:hidden fixed inset-0 z-50 flex flex-col justify-end bg-black/85 backdrop-blur-sm animate-fadeIn">
+                    <div className="flex-1" onClick={() => setMobileEditorOpen(false)}></div>
+                    <div className="h-[84vh] w-full bg-neutral-900 border-t border-neutral-700 rounded-t-2xl overflow-hidden shadow-2xl flex flex-col">
+                        <StudioInspector
+                            video={video}
+                            slide={slide}
+                            sIdx={sIdx}
+                            theme={theme}
+                            account={account}
+                            updateActiveSlide={updateActiveSlide}
+                            updateActiveVideoMeta={updateActiveVideoMeta}
+                            onSyncGitHub={() => { setMobileEditorOpen(false); setSyncModalOpen(true); }}
+                            hasCustomEdits={hasCustomEdits}
+                            onReset={resetToOriginals}
+                            onCloseMobile={() => setMobileEditorOpen(false)}
+                        />
+                    </div>
+                </div>
+            )}
 
             {/* ============================================================== */}
             {/* BOTONERA FIJA INFERIOR PARA MÓVIL (< 768px)                    */}
@@ -1036,7 +1791,7 @@ const App = () => {
                                 <h3 className="text-sm font-black text-white flex items-center gap-2">
                                     <i className="fa-solid fa-layer-group text-neutral-400"></i> Seleccionar Carrusel
                                 </h3>
-                                <p className="text-[11px] text-neutral-500 font-mono">8 carruseles listos en 3 series</p>
+                                <p className="text-[11px] text-neutral-500 font-mono">{videos.length} carruseles en {selectedAccount === 'all' ? 'todas las marcas' : account.name}</p>
                             </div>
                             <button
                                 onClick={() => setDrawerOpen(false)}
@@ -1045,45 +1800,85 @@ const App = () => {
                             </button>
                         </div>
 
-                        {/* Lista de series y videos */}
+                        {/* Píldoras de filtro de marca en el drawer */}
+                        <div className="flex items-center gap-1.5 overflow-x-auto hide-scrollbar px-4 pt-3 pb-1 border-b border-neutral-800/60 shrink-0">
+                            <button
+                                onClick={() => handleSelectAccount('all')}
+                                className={`px-2.5 py-1 rounded-lg text-[10px] font-bold border shrink-0 transition-all ${selectedAccount === 'all' ? 'bg-white text-black border-white' : 'bg-neutral-800 text-neutral-400 border-neutral-700'}`}>
+                                Todas ({videos.length})
+                            </button>
+                            <button
+                                onClick={() => handleSelectAccount('santidev')}
+                                className={`px-2.5 py-1 rounded-lg text-[10px] font-bold border shrink-0 transition-all flex items-center gap-1 ${selectedAccount === 'santidev' ? 'bg-[#2E9D63] text-white border-[#2E9D63]' : 'bg-neutral-800 text-neutral-400 border-neutral-700'}`}>
+                                <span>Santi.Dev</span>
+                            </button>
+                            <button
+                                onClick={() => handleSelectAccount('mova')}
+                                className={`px-2.5 py-1 rounded-lg text-[10px] font-bold border shrink-0 transition-all flex items-center gap-1 ${selectedAccount === 'mova' ? 'bg-[#3B82F6] text-white border-[#3B82F6] shadow-sm' : 'bg-neutral-800 text-neutral-400 border-neutral-700'}`}>
+                                <img src="assets/mova_logo_icon.png" alt="Mova" className="w-3 h-3 rounded-full object-contain" />
+                                <span>Mova</span>
+                            </button>
+                            <button
+                                onClick={() => handleSelectAccount('endo')}
+                                className={`px-2.5 py-1 rounded-lg text-[10px] font-bold border shrink-0 transition-all flex items-center gap-1 ${selectedAccount === 'endo' ? 'bg-[#EE6A3E] text-white border-[#EE6A3E]' : 'bg-neutral-800 text-neutral-400 border-neutral-700'}`}>
+                                <span>Endo</span>
+                            </button>
+                            <button
+                                onClick={() => handleSelectAccount('girastock')}
+                                className={`px-2.5 py-1 rounded-lg text-[10px] font-bold border shrink-0 transition-all flex items-center gap-1 ${selectedAccount === 'girastock' ? 'bg-[#EDB828] text-black border-[#EDB828]' : 'bg-neutral-800 text-neutral-400 border-neutral-700'}`}>
+                                <span>GiraStock</span>
+                            </button>
+                        </div>
+
+                        {/* Lista de series y videos filtrada */}
                         <div className="p-4 overflow-y-auto hide-scrollbar flex flex-col gap-4">
-                            {[...new Set(window.VIDEOS.map((v) => v.group))].map((grpName) => {
-                                const list = window.VIDEOS.map((v, i) => ({ v, i })).filter((item) => item.v.group === grpName);
-                                return (
-                                    <div key={grpName}>
-                                        <div className="flex items-center justify-between text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-2">
-                                            <span>{grpName}</span>
-                                            <span className="font-mono text-[9px] bg-neutral-800 px-1.5 py-0.5 rounded text-neutral-400">{list.length} videos</span>
+                            {(() => {
+                                const filtered = videos.map((v, i) => ({ v, i })).filter(({ v }) => {
+                                    if (selectedAccount === 'all') return true;
+                                    return window.getAccountForVideo(v).id === selectedAccount;
+                                });
+                                const groups = [...new Set(filtered.map((item) => item.v.group))];
+                                return groups.map((grpName) => {
+                                    const list = filtered.filter((item) => item.v.group === grpName);
+                                    return (
+                                        <div key={grpName}>
+                                            <div className="flex items-center justify-between text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-2">
+                                                <span>{grpName}</span>
+                                                <span className="font-mono text-[9px] bg-neutral-800 px-1.5 py-0.5 rounded text-neutral-400">{list.length} videos</span>
+                                            </div>
+                                            <div className="flex flex-col gap-1.5">
+                                                {list.map(({ v, i }) => {
+                                                    const vAcc = window.getAccountForVideo(v);
+                                                    return (
+                                                        <button
+                                                            key={v.id}
+                                                            id={`drawer-video-btn-${v.id}`}
+                                                            onClick={() => {
+                                                                setVIdx(i);
+                                                                setSIdx(0);
+                                                                setDrawerOpen(false);
+                                                            }}
+                                                            className={`w-full text-left p-3 rounded-xl transition-all border flex flex-col gap-1 ${vIdx === i ? 'bg-white text-black border-white shadow-lg' : 'bg-neutral-800/90 text-neutral-200 border-neutral-700/60 hover:bg-neutral-700'}`}>
+                                                            <div className="flex items-center justify-between gap-2">
+                                                                <div className="flex items-center gap-2 truncate">
+                                                                    <span style={{ width: 8, height: 8, borderRadius: 2, background: window.THEMES[v.theme].accent, flexShrink: 0 }} />
+                                                                    <span className="font-bold text-xs truncate">{v.title}</span>
+                                                                </div>
+                                                                <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded ${vIdx === i ? 'bg-neutral-200 text-neutral-800' : 'bg-neutral-700 text-neutral-300'}`}>
+                                                                    {vAcc.handle}
+                                                                </span>
+                                                            </div>
+                                                            <div className={`text-[11px] truncate ${vIdx === i ? 'text-neutral-700' : 'text-neutral-400'}`}>
+                                                                {v.subtitle}
+                                                            </div>
+                                                        </button>
+                                                    );
+                                                })}
+                                            </div>
                                         </div>
-                                        <div className="flex flex-col gap-1.5">
-                                            {list.map(({ v, i }) => (
-                                                <button
-                                                    key={v.id}
-                                                    id={`drawer-video-btn-${v.id}`}
-                                                    onClick={() => {
-                                                        setVIdx(i);
-                                                        setSIdx(0);
-                                                        setDrawerOpen(false);
-                                                    }}
-                                                    className={`w-full text-left p-3 rounded-xl transition-all border flex flex-col gap-1 ${vIdx === i ? 'bg-white text-black border-white shadow-lg' : 'bg-neutral-800/90 text-neutral-200 border-neutral-700/60 hover:bg-neutral-700'}`}>
-                                                    <div className="flex items-center justify-between gap-2">
-                                                        <div className="flex items-center gap-2 truncate">
-                                                            <span style={{ width: 8, height: 8, borderRadius: 2, background: window.THEMES[v.theme].accent, flexShrink: 0 }} />
-                                                            <span className="font-bold text-xs truncate">{v.title}</span>
-                                                        </div>
-                                                        <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded ${vIdx === i ? 'bg-neutral-200 text-neutral-800' : 'bg-neutral-700 text-neutral-300'}`}>
-                                                            {v.slides.length} slides
-                                                        </span>
-                                                    </div>
-                                                    <div className={`text-[11px] truncate ${vIdx === i ? 'text-neutral-700' : 'text-neutral-400'}`}>
-                                                        {v.subtitle}
-                                                    </div>
-                                                </button>
-                                            ))}
-                                        </div>
-                                    </div>
-                                );
-                            })}
+                                    );
+                                });
+                            })()}
                         </div>
                     </div>
                 </div>
@@ -1120,9 +1915,9 @@ const App = () => {
                             </button>
                         </div>
 
-                        {/* Barra horizontal de selección de los 8 carruseles */}
+                        {/* Barra horizontal de selección de carruseles */}
                         <div className="flex items-center gap-1.5 overflow-x-auto hide-scrollbar px-3 py-2 bg-neutral-950/90 border-b border-neutral-800/80 shrink-0">
-                            {window.VIDEOS.map((v, i) => (
+                            {videos.map((v, i) => (
                                 <button
                                     key={v.id}
                                     onClick={() => { setVIdx(i); setSIdx(0); }}
@@ -1239,6 +2034,118 @@ const App = () => {
                             ) : (
                                 <p className="text-sm text-neutral-400 p-4 text-center">No hay kit configurado para este carrusel.</p>
                             )}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* ============================================================== */}
+            {/* MODAL: SINCRONIZACIÓN CON GITHUB API & DESPLIEGUE EN VERCEL    */}
+            {/* ============================================================== */}
+            {syncModalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/85 backdrop-blur-md animate-fadeIn">
+                    <div className="bg-neutral-900 border border-neutral-700 rounded-2xl max-w-lg w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+                        {/* Cabecera del modal */}
+                        <div className="p-4 border-b border-neutral-800 flex items-center justify-between bg-neutral-950/80">
+                            <div className="flex items-center gap-2.5">
+                                <div className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-base">
+                                    <i className="fa-brands fa-github"></i>
+                                </div>
+                                <div>
+                                    <h3 className="text-sm font-black text-white">Sincronizar con GitHub & Vercel</h3>
+                                    <p className="text-[11px] text-neutral-400 font-mono">Repo: santiagorivero0203-gif/Algo-sobre-content (main)</p>
+                                </div>
+                            </div>
+                            <button
+                                onClick={() => { setSyncModalOpen(false); setGhStatus('idle'); }}
+                                className="w-7 h-7 rounded-full bg-neutral-800 text-neutral-400 hover:text-white flex items-center justify-center text-xs">
+                                <i className="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+
+                        {/* Contenido */}
+                        <div className="p-4 overflow-y-auto hide-scrollbar flex flex-col gap-3.5 text-xs">
+                            <div className="bg-neutral-950/70 p-3 rounded-xl border border-neutral-800 flex flex-col gap-1.5 leading-relaxed text-neutral-300">
+                                <div className="font-bold text-white flex items-center gap-1.5 text-xs">
+                                    <i className="fa-solid fa-rocket text-emerald-400"></i>
+                                    <span>Flujo GitOps Directo sin Base de Datos</span>
+                                </div>
+                                <p className="text-[11px] text-neutral-400">
+                                    Al confirmar, tus cambios en los carruseles se convertirán en un commit directo en el archivo <code className="text-emerald-300 font-mono">js/videos.js</code> de la rama <code className="text-emerald-300 font-mono">main</code>. Vercel detectará el commit y compilará la versión pública en vivo automáticamente.
+                                </p>
+                            </div>
+
+                            {/* Input GitHub PAT */}
+                            <div className="flex flex-col gap-1.5">
+                                <label className="text-[11px] font-bold uppercase tracking-wider text-neutral-300 flex items-center justify-between">
+                                    <span>Personal Access Token (PAT) de GitHub</span>
+                                    <a
+                                        href="https://github.com/settings/tokens/new?scopes=repo&description=Algo+Studio+Editor"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-amber-400 hover:underline text-[10px] font-mono">
+                                        Crear Token (permiso repo:write) ↗
+                                    </a>
+                                </label>
+                                <input
+                                    type="password"
+                                    value={ghToken}
+                                    onChange={(e) => setGhToken(e.target.value)}
+                                    placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                                    className="studio-input p-2.5 rounded-xl font-mono text-xs"
+                                />
+                                <p className="text-[10px] text-neutral-500">
+                                    El token se almacena únicamente en tu navegador (localStorage) y nunca viaja a servidores intermedios.
+                                </p>
+                            </div>
+
+                            {/* Input Mensaje de Commit */}
+                            <div className="flex flex-col gap-1.5">
+                                <label className="text-[11px] font-bold uppercase tracking-wider text-neutral-300">Mensaje de Commit</label>
+                                <input
+                                    type="text"
+                                    value={commitMsg}
+                                    onChange={(e) => setCommitMsg(e.target.value)}
+                                    placeholder="chore(content): actualizar carruseles desde Studio Editor [vercel deploy]"
+                                    className="studio-input p-2.5 rounded-xl text-xs"
+                                />
+                            </div>
+
+                            {/* Mensajes de estado */}
+                            {ghStatus === 'loading' && (
+                                <div className="p-3 rounded-xl bg-blue-950/50 border border-blue-500/40 text-blue-200 flex items-center gap-2">
+                                    <i className="fa-solid fa-spinner fa-spin text-blue-400"></i>
+                                    <span>{ghMessage}</span>
+                                </div>
+                            )}
+                            {ghStatus === 'success' && (
+                                <div className="p-3 rounded-xl bg-emerald-950/50 border border-emerald-500/40 text-emerald-200 flex items-center gap-2">
+                                    <i className="fa-solid fa-circle-check text-emerald-400 text-sm"></i>
+                                    <span>{ghMessage}</span>
+                                </div>
+                            )}
+                            {ghStatus === 'error' && (
+                                <div className="p-3 rounded-xl bg-rose-950/50 border border-rose-500/40 text-rose-200 flex items-start gap-2">
+                                    <i className="fa-solid fa-triangle-exclamation text-rose-400 text-sm mt-0.5"></i>
+                                    <span>{ghMessage}</span>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Pie del modal */}
+                        <div className="p-3.5 border-t border-neutral-800 bg-neutral-950 flex items-center justify-end gap-2">
+                            <button
+                                onClick={() => { setSyncModalOpen(false); setGhStatus('idle'); }}
+                                className="px-3.5 py-2 rounded-xl text-xs font-semibold text-neutral-400 hover:text-white hover:bg-neutral-800 transition-all">
+                                Cerrar
+                            </button>
+                            <button
+                                onClick={handleSyncToGitHub}
+                                disabled={ghStatus === 'loading'}
+                                className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all shadow-lg active:scale-95 ${ghStatus === 'loading' ? 'bg-neutral-700 text-neutral-400 cursor-not-allowed' : 'bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-emerald-600/20'}`}>
+                                <i className={`fa-solid ${ghStatus === 'loading' ? 'fa-spinner fa-spin' : 'fa-cloud-arrow-up'}`}></i>
+                                <span>{ghStatus === 'loading' ? 'Enviando commit...' : 'Confirmar Commit y Desplegar'}</span>
+                            </button>
                         </div>
                     </div>
                 </div>
