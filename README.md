@@ -125,6 +125,19 @@ El generador incluye un selector de formato en tiempo real para adaptar el dise�
 
 ## 📝 Registro de Cambios
 
+### v4.2 (2026-10-08)
+- **Rediseño Integral de Mova (@mova.app): Experiencia Full-Bleed Exclusiva para Instagram (4:5)**:
+  - **Eliminación Total de la Tarjeta Flotante Genérica**: Mova ya no se renderiza dentro del contenedor de tarjeta blanca sobre fondo negro de Santi.Dev. Ahora ocupa el 100% del frame (full-bleed) de Instagram Feed (4:5 / 1080×1350).
+  - **Extracción Fiel del Repositorio Real de Mova**:
+    - **Cabecera Oficial**: Pill ovalado con `mova_logo_principal.png` y eslogan dinámico *"Rompiendo el silencio"* (`MovaLogo.jsx`).
+    - **Selector Deslizante de Idiomas**: Reproducción exacta del slider de `MenuScreen.jsx` con banderas vectoriales oficiales (🇻🇪 LSV, 🇺🇸 ASL, 🇪🇸 LSE).
+    - **Mockup HUD de Cámara en Vivo**: HUD de `CameraScreen.jsx` con botón Menú, badge verde pulsante `LIVE · 60 FPS`, detección de señas y burbuja flotante de traducción instantánea (*"HOLA, BUENOS DÍAS"*).
+    - **Iconografía Oficial Extraída**: SVGs nativos del repo (`movaHand`, `movaHandshake`, `movaAcademicCap`, `movaBookOpen`, `movaHeart`, `movaWave`, `movaChat`, `movaCamera`).
+  - **Enfoque Narrativo Humano y de Causa Social (Cero Explicaciones Técnicas)**:
+    - Eliminación completa de jerga técnica abstracta (landmarks, distancias euclidianas, tensores, WebAssembly).
+    - Contenido enfocado en la empatía y la causa real: los 70 millones de personas aisladas por la barrera del silencio, la experiencia real en el Colegio La Consolación de Caracas, autonomía para personas sordas y llamado a unirse al movimiento.
+  - **Bloqueo de Formato Exclusivo para Mova**: La interfaz bloquea y auto-selecciona el formato Instagram Feed (4:5) para todos los carruseles de Mova.
+
 ### v3.6 (2026-10-03)
 - **Kit de Publicación para Redes Sociales (Post Kit)**:
   - **Captions y Ganchos Completos para los 8 Carruseles**: Cada carrusel cuenta con su gancho de marketing conversacional (Hook), descripción estructurada paso a paso con viñetas limpias (Caption), llamada a la acción hacia la comunidad y hashtags estratégicos.

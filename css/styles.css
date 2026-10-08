@@ -256,3 +256,35 @@ button {
                 transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* ============================================================== */
+/* ESTILOS Y ANIMACIONES OFICIALES MOVA APP                       */
+/* ============================================================== */
+.mova-btn-shine {
+    position: relative;
+    overflow: hidden;
+}
+.mova-btn-shine::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 40%;
+    height: 200%;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.35), transparent);
+    transform: rotate(25deg);
+    animation: movaShine 3.5s infinite ease-in-out;
+}
+@keyframes movaShine {
+    0%, 20% { left: -60%; }
+    60%, 100% { left: 140%; }
+}
+
+@keyframes movaBlink {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.35; transform: scale(0.85); }
+}
+.animate-mova-blink {
+    animation: movaBlink 1.4s infinite ease-in-out;
+}
+
+

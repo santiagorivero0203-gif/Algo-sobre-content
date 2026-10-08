@@ -53,7 +53,112 @@ window.localIcons = {
     gift:       <><polyline points="20 12 20 22 4 22 4 12" /><rect x="2" y="7" width="20" height="5" /><line x1="12" y1="22" x2="12" y2="7" /><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" /><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" /></>,
     git:        <><circle cx="6" cy="18" r="3" /><circle cx="6" cy="6" r="3" /><circle cx="18" cy="9" r="3" /><path d="M6 9v6" /><path d="M9 9l6-1.5" /><path d="M18 12v3a3 3 0 0 1-3 3H9" /></>,
     branch:     <><circle cx="6" cy="5" r="2" /><circle cx="6" cy="19" r="2" /><circle cx="18" cy="7" r="2" /><path d="M6 7v10M18 9c0 5-6 4-11 8" /></>,
+
+    // =================================================================
+    // ICONOS VECTORIALES OFICIALES EXTRAÍDOS DEL REPO DE MOVA
+    // (C:\Users\user\Pictures\Saved Pictures\tarea\Mova\mova_v2\src\components\icons\index.jsx)
+    // =================================================================
+    movaHand: (
+        <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0M14 10.5V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0M10 10.5V5a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0M6 14v-2a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0M18 11a5 5 0 0 1 5 5v3.5a3.5 3.5 0 0 1-3.5 3.5H7.5A3.5 3.5 0 0 1 4 19.5V14" />
+    ),
+    movaHandshake: (
+        <>
+            <path d="m11 17 2 2a1 1 0 0 0 1.4 0l4.3-4.3a1 1 0 0 0 0-1.4l-2.6-2.6a1 1 0 0 0-1.4 0l-1.2 1.2" />
+            <path d="m18 14 3.3-3.3a1 1 0 0 0 0-1.4L18.6 6.6a1 1 0 0 0-1.4 0L14 9.8" />
+            <path d="m3 11 2.7-2.7a1 1 0 0 1 1.4 0L10 11.2a1 1 0 0 1 0 1.4L7.3 15.3a1 1 0 0 1-1.4 0L3 12.4a1 1 0 0 1 0-1.4Z" />
+            <path d="m8.5 8.5 2.1-2.1a1 1 0 0 1 1.4 0L15 9.4" />
+        </>
+    ),
+    movaSparkles: (
+        <>
+            <path d="m12 3-1.9 5.1L5 10l5.1 1.9L12 17l1.9-5.1L19 10l-5.1-1.9z" />
+            <path d="M19 15l-.9 2.1L16 18l2.1.9.9 2.1.9-2.1L22 18l-2.1-.9z" />
+            <path d="M6 3l-.6 1.4L4 5l1.4.6L6 7l.6-1.4L8 5l-1.4-.6z" />
+        </>
+    ),
+    movaAcademicCap: (
+        <>
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+            <path d="M6 12v5c3 3 9 3 12 0v-5" />
+        </>
+    ),
+    movaBookOpen: (
+        <>
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+        </>
+    ),
+    movaHeart: (
+        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+    ),
+    movaWave: (
+        <g transform="rotate(-10 12 12)">
+            <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0" />
+            <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0" />
+            <path d="M10 10.5V5a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0" />
+            <path d="M6 14v-2a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0" />
+            <path d="M18 11a5 5 0 0 1 5 5v3.5a3.5 3.5 0 0 1-3.5 3.5H7.5A3.5 3.5 0 0 1 4 19.5V14" />
+        </g>
+    ),
+    movaChat: (
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+    ),
+    movaCamera: (
+        <>
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+            <circle cx="12" cy="13" r="4" />
+        </>
+    ),
 };
+
+// Componentes vectoriales de banderas oficiales de Mova a todo color
+window.MovaFlagVE = ({ className = "w-5 h-3.5 inline-block rounded-[3px] overflow-hidden shadow-sm" }) => (
+    <svg viewBox="0 0 640 480" className={className} aria-label="Bandera de Venezuela">
+        <g fillRule="evenodd">
+            <path fill="#ffcf00" d="M0 0h640v160H0z"/>
+            <path fill="#00247d" d="M0 160h640v160H0z"/>
+            <path fill="#cf142b" d="M0 320h640v160H0z"/>
+            <g fill="#fff" transform="translate(320 260) scale(1.15)">
+                <circle cx="-70" cy="-20" r="6"/><circle cx="-50" cy="-45" r="6"/><circle cx="-20" cy="-60" r="6"/>
+                <circle cx="20" cy="-60" r="6"/><circle cx="50" cy="-45" r="6"/><circle cx="70" cy="-20" r="6"/>
+                <circle cx="-35" cy="-32" r="5"/><circle cx="35" cy="-32" r="5"/>
+            </g>
+        </g>
+    </svg>
+);
+
+window.MovaFlagUS = ({ className = "w-5 h-3.5 inline-block rounded-[3px] overflow-hidden shadow-sm" }) => (
+    <svg viewBox="0 0 640 480" className={className} aria-label="Bandera de Estados Unidos">
+        <g fillRule="evenodd">
+            <path fill="#bd3d44" d="M0 0h640v480H0z"/>
+            <path stroke="#fff" strokeWidth="37" d="M0 55h640M0 129h640M0 203h640M0 277h640M0 351h640M0 425h640"/>
+            <path fill="#192f5d" d="M0 0h260v258H0z"/>
+            <g fill="#fff" transform="translate(15 15) scale(0.8)">
+                <circle cx="20" cy="20" r="6"/><circle cx="60" cy="20" r="6"/><circle cx="100" cy="20" r="6"/><circle cx="140" cy="20" r="6"/><circle cx="180" cy="20" r="6"/><circle cx="220" cy="20" r="6"/>
+                <circle cx="40" cy="50" r="6"/><circle cx="80" cy="50" r="6"/><circle cx="120" cy="50" r="6"/><circle cx="160" cy="50" r="6"/><circle cx="200" cy="50" r="6"/>
+                <circle cx="20" cy="80" r="6"/><circle cx="60" cy="80" r="6"/><circle cx="100" cy="80" r="6"/><circle cx="140" cy="80" r="6"/><circle cx="180" cy="80" r="6"/><circle cx="220" cy="80" r="6"/>
+                <circle cx="40" cy="110" r="6"/><circle cx="80" cy="110" r="6"/><circle cx="120" cy="110" r="6"/><circle cx="160" cy="110" r="6"/><circle cx="200" cy="110" r="6"/>
+                <circle cx="20" cy="140" r="6"/><circle cx="60" cy="140" r="6"/><circle cx="100" cy="140" r="6"/><circle cx="140" cy="140" r="6"/><circle cx="180" cy="140" r="6"/><circle cx="220" cy="140" r="6"/>
+                <circle cx="40" cy="170" r="6"/><circle cx="80" cy="170" r="6"/><circle cx="120" cy="170" r="6"/><circle cx="160" cy="170" r="6"/><circle cx="200" cy="170" r="6"/>
+                <circle cx="20" cy="200" r="6"/><circle cx="60" cy="200" r="6"/><circle cx="100" cy="200" r="6"/><circle cx="140" cy="200" r="6"/><circle cx="180" cy="200" r="6"/><circle cx="220" cy="200" r="6"/>
+            </g>
+        </g>
+    </svg>
+);
+
+window.MovaFlagES = ({ className = "w-5 h-3.5 inline-block rounded-[3px] overflow-hidden shadow-sm" }) => (
+    <svg viewBox="0 0 640 480" className={className} aria-label="Bandera de España">
+        <g fillRule="evenodd">
+            <path fill="#c60b1e" d="M0 0h640v480H0z"/>
+            <path fill="#ffc400" d="M0 120h640v240H0z"/>
+            <g transform="translate(140 180) scale(0.65)">
+                <rect x="0" y="0" width="80" height="95" rx="20" fill="#c60b1e" stroke="#fff" strokeWidth="5"/>
+                <circle cx="40" cy="45" r="18" fill="#ffc400"/>
+                <path d="M20 -20 L40 -5 L60 -20 L50 0 L30 0 Z" fill="#ffc400" stroke="#fff" strokeWidth="2"/>
+            </g>
+        </g>
+    </svg>
+);
 
 // Retrocompatibilidad con window.ICONS
 window.ICONS = window.localIcons;

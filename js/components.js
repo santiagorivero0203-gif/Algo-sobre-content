@@ -844,8 +844,357 @@ window.CustomElementsOverlay = ({ elements = [], theme, format = 'tiktok', meta,
     );
 };
 
+/**
+ * =====================================================================
+ * MOVA APP · SLIDE NATIVO E INMERSIVO (FULL-BLEED PARA INSTAGRAM 4:5)
+ * =====================================================================
+ * Diseñado específicamente para @mova.app sin la tarjeta flotante de Santi.Dev:
+ *   - Proporción nativa Instagram Feed (4:5 / 1080x1350).
+ *   - Fondo azul noche profundo (#05163F) con resplandor radial naranja/azul.
+ *   - Cabecera oficial: Pill ovalado MovaLogo + 'Rompiendo el silencio'.
+ *   - Elementos reales de la app: Selector deslizante con banderas (LSV, ASL, LSE),
+ *     HUD de cámara en vivo a 60 FPS, burbuja de traducción flotante y botón con brillo.
+ *   - Narrativa humana y comunitaria orientada a la causa de inclusión social.
+ * =====================================================================
+ */
+window.MovaSlide = ({ video, d, index }) => {
+    const total = video.slides.length;
+    const theme = window.THEMES?.mova || { accent: '#3b82f6', mark: '#f97316' };
+    const meta = { index, total, format: 'instagram', video };
+
+    // Determinar subtipo de pantalla de Mova
+    const type = d.movaVariant || d.type;
+
+    return (
+        <div
+            id="capture-slide"
+            className="slide-container format-instagram relative overflow-hidden flex flex-col justify-between text-white select-none"
+            style={{
+                backgroundColor: '#05163F',
+                backgroundImage: 'radial-gradient(ellipse at 50% 12%, rgba(255, 165, 0, 0.24) 0%, rgba(59, 130, 246, 0.18) 45%, #05163F 85%)',
+                padding: '22px 22px 18px 22px',
+            }}
+        >
+            {/* Resplandor ambiental de fondo */}
+            <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                    background: 'radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.12) 0%, transparent 50%), radial-gradient(circle at 15% 90%, rgba(255, 165, 0, 0.08) 0%, transparent 40%)'
+                }}
+            />
+
+            {/* ======== 1. CABECERA OFICIAL MOVA ======== */}
+            <div className="flex items-center justify-between w-full shrink-0 z-20 mb-2">
+                {/* Pill Ovalado oficial de Mova */}
+                <div className="h-9 px-3.5 flex items-center rounded-full bg-[#0e2a5a] border border-white/15 shadow-[0_2px_14px_rgba(59,130,246,0.22)]">
+                    <img src="assets/mova_logo_principal.png" alt="Mova" className="h-4.5 w-auto object-contain" />
+                    <span className="text-[12px] font-black tracking-tight text-white ml-2 font-sans">mova</span>
+                    <span className="text-[10px] text-white/30 mx-2">|</span>
+                    <span className="text-[9.5px] text-orange-400 font-bold tracking-tight">Rompiendo el silencio</span>
+                </div>
+
+                {/* Badge de diapositiva y acción */}
+                <div className="flex items-center gap-2">
+                    <span className="px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-[10.5px] font-mono font-bold text-white/90 shadow-sm">
+                        {window.pad(index + 1)} / {window.pad(total)}
+                    </span>
+                    <div className="w-7 h-7 rounded-full bg-white/10 border border-white/15 flex items-center justify-center">
+                        <window.Icon name="movaHeart" size={13} color="#ff5376" fill="#ff5376" />
+                    </div>
+                </div>
+            </div>
+
+            {/* ======== 2. CUERPO INMERSIVO DE LA DIAPOSITIVA ======== */}
+            <div className="flex-1 flex flex-col justify-between my-auto py-1 z-10 min-h-0">
+                {/* Kicker y Título */}
+                <div className="flex flex-col shrink-0 mb-1">
+                    {d.kicker && (
+                        <div className="mb-2">
+                            <span className="inline-block bg-white/10 text-orange-400 text-[9.5px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full border border-white/15 shadow-sm">
+                                {d.kicker}
+                            </span>
+                        </div>
+                    )}
+                    {d.title && (
+                        <h2 className="text-[1.82rem] font-black leading-[1.08] tracking-tight text-white m-0">
+                            {window.rich(d.title, '#ff9f43')}
+                        </h2>
+                    )}
+                    {d.sub && (
+                        <p className="text-[11.5px] text-white/80 font-medium leading-snug mt-1.5 mb-0">
+                            {d.sub}
+                        </p>
+                    )}
+                </div>
+
+                {/* --- VARIANTE HERO / PORTADA --- */}
+                {(type === 'hero' || d.movaVariant === 'hero') && (
+                    <div className="flex-1 flex flex-col items-center justify-center py-1">
+                        <div className="relative flex flex-col items-center justify-center my-auto w-full">
+                            {/* Resplandor cálido */}
+                            <div
+                                className="absolute w-[280px] h-[120px] rounded-full blur-[35px] pointer-events-none opacity-60"
+                                style={{ background: 'radial-gradient(ellipse, rgba(255,165,0,0.45) 0%, rgba(59,130,246,0.3) 50%, transparent 80%)' }}
+                            />
+                            {/* Logo Full centrado */}
+                            <img
+                                src={d.image || "assets/mova_logo_full.png"}
+                                alt="Mova - Rompiendo el silencio"
+                                className="max-h-[82px] w-auto object-contain relative z-10 drop-shadow-[0_0_24px_rgba(255,165,0,0.35)] my-2"
+                            />
+
+                            {/* Selector Deslizante Oficial de Idiomas */}
+                            <div className="relative flex bg-white/10 backdrop-blur-xl border border-white/15 rounded-[18px] p-1 w-full max-w-[310px] h-11 shadow-lg mt-1 select-none">
+                                <div className="flex-1 flex items-center justify-center text-[11px] font-bold text-white z-[2] bg-white/20 rounded-[14px] shadow-sm">
+                                    <window.MovaFlagVE className="w-4 h-3 mr-1.5 rounded-[2px]" /> LSV
+                                </div>
+                                <div className="flex-1 flex items-center justify-center text-[11px] font-semibold text-white/50 z-[2]">
+                                    <window.MovaFlagUS className="w-4 h-3 mr-1.5 rounded-[2px]" /> ASL
+                                </div>
+                                <div className="flex-1 flex items-center justify-center text-[11px] font-semibold text-white/50 z-[2]">
+                                    <window.MovaFlagES className="w-4 h-3 mr-1.5 rounded-[2px]" /> LSE
+                                </div>
+                            </div>
+
+                            {/* Botón Comenzar con Brillo Diagonal */}
+                            <div className="w-full max-w-[310px] py-2.5 mt-2.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-[11.5px] font-bold rounded-[14px] shadow-[0_4px_16px_rgba(59,130,246,0.4)] mova-btn-shine flex items-center justify-center gap-2">
+                                <window.Icon name="movaWave" size={14} color="#fff" />
+                                <span>COMENZAR TRADUCCIÓN EN VIVO</span>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* --- VARIANTE ESTADÍSTICA / AISLAMIENTO HUMANO --- */}
+                {(type === 'stat' || d.movaVariant === 'isolation') && (
+                    <div className="flex-1 flex flex-col justify-center gap-2.5 py-1">
+                        <div className="flex items-center gap-4 p-3 rounded-2xl bg-white/8 backdrop-blur-md border border-white/15 shadow-lg">
+                            <div className="text-[3.2rem] font-black leading-none text-orange-400 font-mono tracking-tighter shrink-0">
+                                {d.number || '70M'}
+                            </div>
+                            <div className="text-xs font-bold leading-tight text-white/90">
+                                {d.label || 'de personas sordas en el mundo se comunican con sus manos'}
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-2">
+                            <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 flex flex-col gap-1">
+                                <div className="flex items-center gap-1.5 text-rose-400 text-[10.5px] font-bold">
+                                    <i className="fa-solid fa-ban text-[10px]"></i>
+                                    <span>La Barrera Invisible</span>
+                                </div>
+                                <p className="text-[10px] text-white/80 leading-snug m-0">
+                                    {d.bad || 'Menos del 1% de los oyentes saben señas. En hospitales o trámites, quedan incomunicados.'}
+                                </p>
+                            </div>
+                            <div className="p-3 rounded-xl bg-blue-500/15 border border-blue-400/25 flex flex-col gap-1">
+                                <div className="flex items-center gap-1.5 text-blue-300 text-[10.5px] font-bold">
+                                    <window.Icon name="movaHandshake" size={12} color="#93c5fd" />
+                                    <span>La Misión Mova</span>
+                                </div>
+                                <p className="text-[10px] text-white/90 leading-snug m-0">
+                                    {d.good || 'Una herramienta libre en el móvil que traduce en vivo para devolverles autonomía plena.'}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* --- VARIANTE COLEGIO LA CONSOLACIÓN CARACAS --- */}
+                {(type === 'school' || d.movaVariant === 'school' || d.title?.includes('Consolación') || d.kicker?.includes('Consolación')) && (
+                    <div className="flex-1 flex flex-col justify-center gap-2.5 py-1">
+                        <div className="p-3.5 rounded-2xl bg-white/8 backdrop-blur-md border border-white/15 flex flex-col gap-2 shadow-lg">
+                            <div className="flex items-center gap-2 text-amber-300 text-xs font-bold">
+                                <window.Icon name="movaAcademicCap" size={18} color="#fcd34d" />
+                                <span>De las aulas a la calle · Sin cartulinas de adorno</span>
+                            </div>
+                            <p className="text-[11px] text-white/85 leading-relaxed m-0">
+                                {d.body || 'En el Colegio La Consolación en Caracas vimos a compañeros sordos y oyentes queriendo ser amigos, separados por una barrera invisible. Nos negamos a que este proyecto fuera un trabajo de papel: prometimos crear una app real que sirviera en la vida cotidiana.'}
+                            </p>
+                            <div className="p-2.5 rounded-xl bg-black/40 border-l-2 border-orange-400 text-[10.5px] italic text-white/90">
+                                {d.quote || '“La empatía no se califica con una nota escolar; se demuestra construyendo puentes que devuelvan la voz.”'}
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* --- VARIANTE MOCKUP DE CÁMARA EN VIVO (CameraScreen.jsx) --- */}
+                {(type === 'camera' || d.movaVariant === 'camera' || d.title?.includes('cámara') || d.title?.includes('voz')) && (
+                    <div className="flex-1 flex flex-col justify-center gap-2 py-1">
+                        <div className="relative w-full h-[215px] rounded-2xl bg-black/85 border border-white/20 overflow-hidden flex flex-col justify-between p-3 shadow-2xl">
+                            {/* HUD Top Bar */}
+                            <div className="flex items-center justify-between z-10">
+                                <div className="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/20 text-[10px] font-semibold text-white">
+                                    ‹ Menú
+                                </div>
+                                <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-black/60 border border-white/15 text-[9.5px] font-bold text-white">
+                                    <span className="w-2 h-2 rounded-full bg-[#34C759] animate-mova-blink" />
+                                    <span>LIVE · 60 FPS</span>
+                                </div>
+                                <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/60 border border-white/15 text-[9.5px] font-mono font-bold text-white">
+                                    LSV 🇻🇪
+                                </div>
+                            </div>
+
+                            {/* Center: Hand detection & Floating Sign Card */}
+                            <div className="relative flex-1 flex items-center justify-center">
+                                <img
+                                    src="assets/mova_hand.jpg"
+                                    alt="Detección de Seña"
+                                    className="absolute inset-0 w-full h-full object-cover opacity-40 rounded-xl"
+                                />
+                                <div className="relative z-10 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white text-neutral-900 shadow-[0_6px_20px_rgba(0,0,0,0.5)]">
+                                    <span className="text-xl">🤝</span>
+                                    <div className="flex flex-col text-left">
+                                        <span className="text-[11.5px] font-black tracking-tight leading-none text-neutral-950">"HOLA, BUENOS DÍAS"</span>
+                                        <span className="text-[8.5px] font-semibold text-blue-600 mt-0.5">Vocalizado en tiempo real · 99%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Bottom: Quick Phrases */}
+                            <div className="flex items-center gap-1.5 overflow-hidden z-10">
+                                <span className="px-2 py-0.5 rounded-full bg-white/20 text-[9px] font-semibold flex items-center gap-1">
+                                    <window.Icon name="movaWave" size={10} color="#fff" /> Saludo
+                                </span>
+                                <span className="px-2 py-0.5 rounded-full bg-white/20 text-[9px] font-semibold flex items-center gap-1">
+                                    <window.Icon name="movaHeart" size={10} color="#ff6b81" /> Gracias
+                                </span>
+                                <span className="px-2 py-0.5 rounded-full bg-white/20 text-[9px] font-semibold">
+                                    💧 Agua
+                                </span>
+                                <span className="px-2 py-0.5 rounded-full bg-white/20 text-[9px] font-semibold">
+                                    ❓ Ayuda
+                                </span>
+                            </div>
+                        </div>
+
+                        <div className="text-[10.5px] text-white/80 font-medium text-center">
+                            100% en el dispositivo · No requiere internet · Privacidad total
+                        </div>
+                    </div>
+                )}
+
+                {/* --- VARIANTE COMUNIDAD / AULAS VIRTUALES --- */}
+                {(type === 'community' || d.movaVariant === 'community' || d.title?.includes('Aulas') || d.title?.includes('personas')) && (
+                    <div className="flex-1 flex flex-col justify-center gap-2.5 py-1">
+                        <div className="grid grid-cols-3 gap-2">
+                            <div className="p-2.5 rounded-xl bg-white/10 border border-white/15 flex flex-col items-center text-center gap-1">
+                                <window.MovaFlagVE className="w-7 h-5 rounded shadow" />
+                                <span className="text-xs font-black">LSV</span>
+                                <span className="text-[8.5px] text-white/70">Venezuela</span>
+                            </div>
+                            <div className="p-2.5 rounded-xl bg-white/10 border border-white/15 flex flex-col items-center text-center gap-1">
+                                <window.MovaFlagUS className="w-7 h-5 rounded shadow" />
+                                <span className="text-xs font-black">ASL</span>
+                                <span className="text-[8.5px] text-white/70">Internacional</span>
+                            </div>
+                            <div className="p-2.5 rounded-xl bg-white/10 border border-white/15 flex flex-col items-center text-center gap-1">
+                                <window.MovaFlagES className="w-7 h-5 rounded shadow" />
+                                <span className="text-xs font-black">LSE</span>
+                                <span className="text-[8.5px] text-white/70">España</span>
+                            </div>
+                        </div>
+
+                        <div className="p-3 rounded-2xl bg-white/8 backdrop-blur-md border border-white/15 flex flex-col gap-1.5">
+                            <div className="flex items-center gap-1.5 text-orange-400 text-xs font-bold">
+                                <window.Icon name="movaBookOpen" size={15} color="#f97316" />
+                                <span>Aulas Virtuales y Estandarización</span>
+                            </div>
+                            <p className="text-[10.5px] text-white/85 leading-snug m-0">
+                                {d.body || 'Profesores, familias y estudiantes alimentan el diccionario de señas para que niños y adultos aprendan juntos y estandaricen gestos científicos y cotidianos.'}
+                            </p>
+                        </div>
+                    </div>
+                )}
+
+                {/* --- VARIANTE CTA / LLAMADO A LA CAUSA --- */}
+                {(type === 'cta' || d.movaVariant === 'cta') && (
+                    <div className="flex-1 flex flex-col justify-center py-1">
+                        <div className="p-4 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex flex-col gap-3 my-auto shadow-2xl text-center">
+                            <div className="flex flex-col items-center">
+                                <img src="assets/mova_logo_principal.png" alt="Mova" className="h-6 w-auto object-contain mb-1" />
+                                <span className="text-xs font-bold text-orange-400">@mova.app · Rompiendo el silencio</span>
+                            </div>
+
+                            <div className="w-full py-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl text-center font-black text-xs text-white shadow-[0_4px_20px_rgba(59,130,246,0.5)] mova-btn-shine cursor-pointer">
+                                DESCARGA LA BETA GRATUITA
+                            </div>
+
+                            <div className="flex items-center justify-center gap-2 flex-wrap">
+                                <span className="px-2.5 py-0.5 rounded-full bg-white/10 border border-white/15 text-[9px] font-bold text-white/80">100% GRATIS</span>
+                                <span className="px-2.5 py-0.5 rounded-full bg-white/10 border border-white/15 text-[9px] font-bold text-white/80">SIN INTERNET</span>
+                                <span className="px-2.5 py-0.5 rounded-full bg-white/10 border border-white/15 text-[9px] font-bold text-white/80">COLEGIO LA CONSOLACIÓN</span>
+                            </div>
+
+                            <p className="text-[11px] text-white/90 leading-snug m-0">
+                                {d.line || 'Sigue a @mova.app y comparte este carrusel con tu colegio o amigos. Cada persona que conoce Mova ayuda a derribar la muralla del silencio.'}
+                            </p>
+                        </div>
+                    </div>
+                )}
+
+                {/* --- VARIANTE GENERAL / FALLBACK SI HAY OTRAS DIAPOSITIVAS --- */}
+                {!['hero', 'stat', 'school', 'camera', 'community', 'cta'].includes(type) && (
+                    <div className="flex-1 flex flex-col justify-center gap-2.5 py-1">
+                        {d.body && (
+                            <div className="p-3.5 rounded-2xl bg-white/8 backdrop-blur-md border border-white/15 text-xs text-white/90 leading-relaxed shadow-lg">
+                                {window.rich(d.body, '#ff9f43')}
+                            </div>
+                        )}
+                        {d.steps && (
+                            <div className="flex flex-col gap-2">
+                                {d.steps.map((st, i) => (
+                                    <div key={i} className="p-2.5 rounded-xl bg-white/8 border border-white/15 flex items-start gap-2.5">
+                                        <span className="w-5 h-5 rounded-full bg-orange-500/20 text-orange-400 flex items-center justify-center font-bold text-[10px] shrink-0">
+                                            {i + 1}
+                                        </span>
+                                        <div className="flex flex-col">
+                                            <span className="font-bold text-[11px] text-white">{st.t}</span>
+                                            <span className="text-[10px] text-white/70">{st.d}</span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {/* Pie de diapositiva */}
+                {d.foot && (
+                    <div className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-[10.5px] text-white/80 font-medium shrink-0 mt-1">
+                        {window.rich(d.foot, '#ff9f43')}
+                    </div>
+                )}
+            </div>
+
+            {/* ======== 3. PIE DE PÁGINA COMUNITARIO ======== */}
+            <div className="flex items-center justify-between w-full pt-2 shrink-0 border-t border-white/10 text-[10px] text-white/60 z-20">
+                <div className="flex items-center gap-1.5">
+                    <window.Icon name="movaWave" size={13} color="#f97316" />
+                    <span className="font-bold text-white/85">@mova.app</span>
+                    <span>·</span>
+                    <span>Rompiendo el silencio</span>
+                </div>
+                <span className="font-mono text-[9px] text-white/50">Colegio La Consolación · Caracas</span>
+            </div>
+
+            {/* Renderizado de elementos adicionales añadidos desde Studio Inspector */}
+            {d.customElements && d.customElements.length > 0 && (
+                <window.CustomElementsOverlay elements={d.customElements} theme={theme} format="instagram" meta={meta} d={d} />
+            )}
+        </div>
+    );
+};
+
 /** Slide vertical completa: Grid + Fondo dinámico + Bandas + Tarjeta + Capas Personalizadas */
 window.Slide = ({ video, d, index, format = 'tiktok' }) => {
+    // Si el video pertenece a Mova, renderizamos la experiencia inmersiva full-bleed de Mova
+    // sin el método de tarjeta flotante y estrictamente en formato Instagram (4:5)
+    if (video.accountId === 'mova' || video.id?.startsWith('mova')) {
+        return <window.MovaSlide video={video} d={d} index={index} format="instagram" />;
+    }
+
     const theme = window.THEMES[video.theme];
     const meta = { index, total: video.slides.length, format, video };
     const seed = video.caseNo * 1000 + index * 37 + 11;
@@ -867,3 +1216,4 @@ window.Slide = ({ video, d, index, format = 'tiktok' }) => {
         </div>
     );
 };
+

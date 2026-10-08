@@ -1053,6 +1053,14 @@ const App = () => {
     const account = window.getAccountForVideo(video);
     const fmt = window.FORMATS[format] || window.FORMATS.tiktok;
     const isFileProtocol = window.location.protocol === 'file:';
+    const isMova = video.accountId === 'mova' || video.id?.startsWith('mova');
+
+    // Para Mova (@mova.app), forzar exclusivamente formato Instagram Feed (4:5 / 1080x1350)
+    React.useEffect(() => {
+        if (isMova && format !== 'instagram') {
+            setFormat('instagram');
+        }
+    }, [vIdx, isMova, format]);
 
     // Detección de cambios locales respecto a la configuración original de fábrica
     const hasCustomEdits = React.useMemo(() => {
@@ -1571,8 +1579,9 @@ const App = () => {
                     <div className="flex bg-neutral-900 border border-neutral-800 rounded-lg p-0.5">
                         <button
                             id="mobile-btn-tiktok"
-                            onClick={() => setFormat('tiktok')}
-                            className={`px-2 py-1 rounded text-[11px] font-bold transition-all flex items-center gap-1 ${format === 'tiktok' ? 'bg-white text-black' : 'text-neutral-400'}`}>
+                            disabled={isMova}
+                            onClick={() => !isMova && setFormat('tiktok')}
+                            className={`px-2 py-1 rounded text-[11px] font-bold transition-all flex items-center gap-1 ${isMova ? 'opacity-30 cursor-not-allowed text-neutral-500' : format === 'tiktok' ? 'bg-white text-black' : 'text-neutral-400'}`}>
                             <i className="fa-brands fa-tiktok text-[10px]"></i>
                             <span>9:16</span>
                         </button>
@@ -1790,8 +1799,10 @@ const App = () => {
                         <div className="grid grid-cols-2 gap-1.5 p-1 bg-neutral-950 rounded-xl border border-neutral-800">
                             <button
                                 id="fmt-btn-tiktok"
-                                onClick={() => setFormat('tiktok')}
-                                className={`flex items-center justify-center gap-2 py-1.5 rounded-lg text-xs font-bold transition-all ${format === 'tiktok' ? 'bg-white text-black shadow' : 'text-neutral-400 hover:text-white'}`}>
+                                disabled={isMova}
+                                onClick={() => !isMova && setFormat('tiktok')}
+                                title={isMova ? 'Mova está diseñado exclusivamente para Instagram Feed (4:5)' : 'TikTok / Reels 9:16'}
+                                className={`flex items-center justify-center gap-2 py-1.5 rounded-lg text-xs font-bold transition-all ${isMova ? 'opacity-35 cursor-not-allowed text-neutral-500' : format === 'tiktok' ? 'bg-white text-black shadow' : 'text-neutral-400 hover:text-white'}`}>
                                 <i className="fa-brands fa-tiktok"></i>
                                 <span>TikTok 9:16</span>
                             </button>
@@ -1800,7 +1811,7 @@ const App = () => {
                                 onClick={() => setFormat('instagram')}
                                 className={`flex items-center justify-center gap-2 py-1.5 rounded-lg text-xs font-bold transition-all ${format === 'instagram' ? 'bg-gradient-to-r from-amber-500 via-rose-500 to-purple-600 text-white shadow' : 'text-neutral-400 hover:text-white'}`}>
                                 <i className="fa-brands fa-instagram"></i>
-                                <span>Instagram 4:5</span>
+                                <span>Instagram 4:5 {isMova && '(Exclusivo)'}</span>
                             </button>
                         </div>
                     </div>
