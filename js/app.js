@@ -411,39 +411,72 @@ const App = () => {
         }
     };
 
-    /** Exporta todas las diapositivas del carrusel en serie */
+    /** Exporta todas las diapositivas del carrusel en serie con empaquetado ZIP automático */
     const downloadAll = async () => {
         setBusy(true);
         try {
             const items = [];
             for (let i = 0; i < video.slides.length; i++) {
                 setSIdx(i);
-                setProgressText(`Renderizando ${i + 1}/${video.slides.length}...`);
-                await window.sleep(400);
+                setProgressText(`Renderizando slide ${i + 1}/${video.slides.length} (${format.toUpperCase()})...`);
+                await window.sleep(350);
                 const filename = `${video.slug}_${format}_${window.pad(i + 1)}.png`;
                 const blob = await renderSlideToBlob();
                 const file = new File([blob], filename, { type: 'image/png' });
                 const url = URL.createObjectURL(blob);
                 items.push({ index: i, filename, blob, file, url });
+            }
 
-                // En escritorio se descarga secuencialmente al disco
-                if (!isMobileDevice) {
+            // Empaquetar todo el carrusel en un archivo ZIP con JSZip
+            let zipBlob = null;
+            let zipUrl = null;
+            const zipFilename = `${video.slug}_${format}_carrusel_completo.zip`;
+
+            if (window.JSZip && items.length > 0) {
+                setProgressText('Empaquetando diapositivas en ZIP...');
+                const zip = new window.JSZip();
+                items.forEach((item) => {
+                    zip.file(item.filename, item.blob);
+                });
+                zipBlob = await zip.generateAsync({ type: 'blob' });
+                zipUrl = URL.createObjectURL(zipBlob);
+            }
+
+            // En escritorio:
+            // Si hay ZIP disponible, descargamos el archivo ZIP con 1 solo clic.
+            // Esto evita al 100% el bloqueo de descargas múltiples automáticas del navegador.
+            if (!isMobileDevice) {
+                if (zipUrl) {
                     const a = document.createElement('a');
-                    a.download = filename;
-                    a.href = url;
+                    a.download = zipFilename;
+                    a.href = zipUrl;
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
-                    await window.sleep(250);
+                } else {
+                    for (const item of items) {
+                        const a = document.createElement('a');
+                        a.download = item.filename;
+                        a.href = item.url;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        await window.sleep(400);
+                    }
                 }
             }
 
-            // En iPhone / Móvil, abrimos el panel de carrusel completo para guardar cada foto en la galería
-            if (isMobileDevice && items.length > 0) {
+            // Siempre abrimos el panel modal del carrusel completo para permitir:
+            // 1. Descarga del ZIP con un botón directo
+            // 2. Guardado individual de cualquier diapositiva
+            // 3. Verificación visual de todas las diapositivas generadas
+            if (items.length > 0) {
                 setExportModal({
-                    filename: `${video.slug}_${format}_carrusel`,
+                    filename: zipFilename,
                     isMultiple: true,
                     items,
+                    zipBlob,
+                    zipUrl,
                 });
             }
         } catch (err) {
@@ -847,6 +880,7 @@ const App = () => {
                             <button
                                 onClick={() => {
                                     if (exportModal.url) URL.revokeObjectURL(exportModal.url);
+                                    if (exportModal.zipUrl) URL.revokeObjectURL(exportModal.zipUrl);
                                     if (exportModal.items) exportModal.items.forEach(it => URL.revokeObjectURL(it.url));
                                     setExportModal(null);
                                 }}
@@ -925,8 +959,22 @@ const App = () => {
                                 </div>
                             ) : (
                                 <div className="flex flex-col gap-2.5">
-                                    <p className="text-xs text-neutral-400">Toca guardar en cada diapositiva para tu carrete:</p>
-                                    <div className="flex flex-col gap-2">
+                                    {/* Botón directo de descarga en ZIP */}
+                                    {exportModal.zipUrl && (
+                                        <a
+                                            href={exportModal.zipUrl}
+                                            download={exportModal.filename}
+                                            className="w-full py-2.5 px-3 rounded-xl font-black text-xs bg-gradient-to-r from-emerald-500 to-teal-500 text-black hover:opacity-90 flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] transition-all">
+                                            <i className="fa-solid fa-file-zipper text-sm"></i>
+                                            <span>Descargar Carrusel Completo en ZIP (.zip)</span>
+                                        </a>
+                                    )}
+
+                                    <div className="flex items-center justify-between text-[11px] text-neutral-400 font-mono mt-0.5">
+                                        <span>Diapositivas listas ({exportModal.items.length})</span>
+                                        <span>PNG HD 1080px</span>
+                                    </div>
+                                    <div className="flex flex-col gap-2 max-h-[46vh] overflow-y-auto hide-scrollbar">
                                         {exportModal.items.map((item, idx) => (
                                             <div key={idx} className="flex items-center gap-2.5 p-2 bg-neutral-800/80 border border-neutral-700/60 rounded-xl">
                                                 <img
@@ -941,7 +989,7 @@ const App = () => {
                                                 <button
                                                     onClick={async () => {
                                                         try {
-                                                            if (navigator.share) {
+                                                            if (isMobileDevice && navigator.share) {
                                                                 await navigator.share({
                                                                     files: [item.file],
                                                                     title: item.filename,
@@ -950,7 +998,9 @@ const App = () => {
                                                                 const a = document.createElement('a');
                                                                 a.download = item.filename;
                                                                 a.href = item.url;
+                                                                document.body.appendChild(a);
                                                                 a.click();
+                                                                document.body.removeChild(a);
                                                             }
                                                         } catch (e) {
                                                             if (e.name !== 'AbortError') console.error(e);

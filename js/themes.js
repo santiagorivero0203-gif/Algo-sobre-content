@@ -470,15 +470,15 @@ window.TopBand = ({ video, theme, meta, format = 'tiktok' }) => {
     const isIg = format === 'instagram';
     return (
         <div className="absolute left-0 right-0 top-0 flex flex-col justify-end" style={{
-            height: isIg ? 76 : 138,
-            padding: isIg ? '0 18px 10px' : '0 24px 16px',
+            height: isIg ? 68 : 138,
+            padding: isIg ? '0 16px 8px' : '0 24px 16px',
             zIndex: 5,
         }}>
             <div className="flex items-center justify-between mb-1 gap-2">
                 <span className="font-mono text-[10px] tracking-[.18em] whitespace-nowrap truncate" style={{ color: '#8a8a8a' }}>{theme.band || `CASO ${window.pad(video.caseNo)} · ${theme.tag}`}</span>
                 <window.Progress meta={meta} theme={theme} />
             </div>
-            <div className={`font-black text-white leading-none tracking-tight truncate ${isIg ? 'text-[20px]' : 'text-[26px]'}`}>{video.title}</div>
+            <div className={`font-black text-white leading-none tracking-tight truncate ${isIg ? 'text-[18px]' : 'text-[26px]'}`}>{video.title}</div>
         </div>
     );
 };
@@ -489,19 +489,19 @@ window.BottomBand = ({ theme, meta, format = 'tiktok' }) => {
     const isLast = meta.index === meta.total - 1;
     return (
         <div className="absolute left-0 right-0 bottom-0 flex items-center justify-between" style={{
-            height: isIg ? 64 : 122,
-            padding: isIg ? '0 18px 6px' : '0 24px',
+            height: isIg ? 54 : 122,
+            padding: isIg ? '0 16px 4px' : '0 24px',
             zIndex: 5,
         }}>
             <div className="flex items-center gap-2">
-                <span className="w-6 h-6 rounded-full flex items-center justify-center" style={{ background: theme.accent, color: theme.ink }}>
-                    <window.Icon name="terminal" size={13} stroke={2.5} />
+                <span className={`${isIg ? 'w-5 h-5' : 'w-6 h-6'} rounded-full flex items-center justify-center`} style={{ background: theme.accent, color: theme.ink }}>
+                    <window.Icon name="terminal" size={isIg ? 11 : 13} stroke={2.5} />
                 </span>
-                <span className="font-bold text-white text-[13px] tracking-tight">@santi.dev</span>
+                <span className={`font-bold text-white ${isIg ? 'text-[11.5px]' : 'text-[13px]'} tracking-tight`}>@santi.dev</span>
             </div>
-            <span className="flex items-center gap-1.5 rounded-full font-mono text-[10.5px]" style={{ padding: '5px 11px', border: '1px solid #3a3a3a', color: '#cfcfcf' }}>
-                {isLast ? 'guárdalo' : isIg ? 'desliza' : 'desliza'}
-                <window.Icon name={isLast ? 'bookmark' : 'arrow'} size={12} color={theme.accent} stroke={2.4} />
+            <span className={`flex items-center gap-1.5 rounded-full font-mono ${isIg ? 'text-[9.5px]' : 'text-[10.5px]'}`} style={{ padding: isIg ? '3.5px 9px' : '5px 11px', border: '1px solid #3a3a3a', color: '#cfcfcf' }}>
+                {isLast ? 'guárdalo' : 'desliza'}
+                <window.Icon name={isLast ? 'bookmark' : 'arrow'} size={isIg ? 10 : 12} color={theme.accent} stroke={2.4} />
             </span>
         </div>
     );

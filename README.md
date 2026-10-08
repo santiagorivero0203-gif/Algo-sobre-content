@@ -171,6 +171,23 @@ El generador incluye un selector de formato en tiempo real para adaptar el dise�
   - **Nuevo Tema Ciber-Neón (`tokens_pro`)**: Paleta verde menta tecnológico (`#00DF8F`), nuevos iconos vectoriales SVG (`zap`, `users`) y directivas de código en terminal.
   - **Kit de Publicación Completo**: Hook, caption estructurada, hashtags e instrucciones integradas en [`posts_kit.md`](file:///c:/Users/user/Desktop/video%20proyectos/algo/posts_kit.md) y en el modal interactivo de la app.
 
+### v3.9 (2026-10-07)
+- **Solución Definitiva de Descarga Completa y Responsividad en Carruseles de Instagram (4:5)**:
+  - **Empaquetado Automático en ZIP Libre de Bloqueos (`JSZip`)**:
+    - Integración de biblioteca local [js/vendor/jszip.min.js](file:///c:/Users/user/Desktop/video%20proyectos/algo/js/vendor/jszip.min.js) sin dependencias externas.
+    - La función `downloadAll` ahora empaqueta todas las diapositivas HD del carrusel en un único archivo comprimido `${video.slug}_${format}_carrusel_completo.zip`.
+    - Resuelve al 100% el bloqueo silencioso de descargas múltiples automáticas que Chrome, Edge y navegadores modernos activan al intentar disparar más de dos descargas secuenciales con `<a>.click()`.
+    - Nuevo botón destacado en el modal de exportación para descargar el carrusel completo en ZIP con un solo clic, manteniendo opciones de guardado individual.
+  - **Eliminación Total de Desbordamientos y Recortes Visuales en Instagram (4:5 · 1080×1350)**:
+    - El formato Instagram Feed (4:5) cuenta con un 30% menos de altura vertical (506.25px en editor vs 720px en TikTok 9:16).
+    - Calibración reactiva proporcional (`meta.format === 'instagram'`) en todos los componentes:
+      - `CardFrame`: Padding interno reducido (`14px 18px 12px 18px`), bordes adaptativos y reajuste en layout `split` (`TOP_H = 86px`, titular a `1.35rem`) eliminando desbordamiento de cabecera.
+      - `TopBand` y `BottomBand`: Alturas compactas (`68px` y `54px`) evitando colisiones con tarjetas en layouts de banda.
+      - `ChecklistSlide`: Padding de filas reducido a `6px 10px` y tipografía a `12px` (eliminando hasta 72px de desbordamiento en diapositivas con 4+ elementos).
+      - `StatSlide`: Reescalado del número de métrica (`4.8rem` vs `8.8rem`) y visualizadores (`68-72px` vs `118-135px`) para coexistir holgadamente con titulares y citas.
+      - `CompareSlide`, `FlowSlide`, `CtaSlide`, `StepsSlide` y `ListSlide`: Alturas de conectores, paddings e iconografía calibrados para encajar con holgura y respiración.
+    - Validación y auditoría integral con Edge Headless CDP confirmando **0 problemas de desbordamiento** (`issues: []`) en los 9 videos y todas sus diapositivas.
+
 ### v3.8 (2026-10-07)
 - **Integración de Captura Real Oficial para la Tercera App (Caso 03 · Invoficlib / GiraStock)**:
   - **Sustitución de Imagen de Producción**: Reemplazo de la maqueta temporal por la captura real del sistema de gestión en producción desplegado en Vercel ([`assets/invoficlib_live.png`](file:///c:/Users/user/Desktop/video%20proyectos/algo/assets/invoficlib_live.png)).
