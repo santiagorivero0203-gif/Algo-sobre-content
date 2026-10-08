@@ -1055,13 +1055,6 @@ const App = () => {
     const isFileProtocol = window.location.protocol === 'file:';
     const isMova = video.accountId === 'mova' || video.id?.startsWith('mova');
 
-    // Para Mova (@mova.app), forzar exclusivamente formato Instagram Feed (4:5 / 1080x1350)
-    React.useEffect(() => {
-        if (isMova && format !== 'instagram') {
-            setFormat('instagram');
-        }
-    }, [vIdx, isMova, format]);
-
     // Detección de cambios locales respecto a la configuración original de fábrica
     const hasCustomEdits = React.useMemo(() => {
         return !!localStorage.getItem('algo_custom_videos');
@@ -1337,9 +1330,9 @@ const App = () => {
                         boxShadow: 'none',
                         transition: 'none',
                         margin: '0',
-                        backgroundColor: canvasBg,
-                        backgroundImage: isFlat ? 'none' : 'linear-gradient(to right, rgba(255, 255, 255, 0.18) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.18) 1px, transparent 1px)',
-                        backgroundSize: isFlat ? 'auto' : '27px 27px',
+                        backgroundColor: isMova ? '#05163F' : canvasBg,
+                        backgroundImage: isMova ? (el.style.backgroundImage || 'none') : (isFlat ? 'none' : 'linear-gradient(to right, rgba(255, 255, 255, 0.18) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.18) 1px, transparent 1px)'),
+                        backgroundSize: isMova ? 'auto' : (isFlat ? 'auto' : '27px 27px'),
                     },
                     fetch: { requestInit: { mode: 'cors', cache: 'force-cache' } },
                     features: { removeControlCharacter: true },
@@ -1377,7 +1370,7 @@ const App = () => {
                 scale,
                 width: elW,
                 height: elH,
-                backgroundColor: canvasBg,
+                backgroundColor: isMova ? '#05163F' : canvasBg,
                 useCORS: true,
                 allowTaint: false,
                 logging: false,
@@ -1387,9 +1380,9 @@ const App = () => {
                     if (c) {
                         c.style.borderRadius = '0';
                         c.style.boxShadow = 'none';
-                        c.style.backgroundColor = canvasBg;
-                        c.style.backgroundImage = isFlat ? 'none' : 'linear-gradient(to right, rgba(255, 255, 255, 0.18) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.18) 1px, transparent 1px)';
-                        c.style.backgroundSize = isFlat ? 'auto' : '27px 27px';
+                        c.style.backgroundColor = isMova ? '#05163F' : canvasBg;
+                        c.style.backgroundImage = isMova ? (el.style.backgroundImage || 'none') : (isFlat ? 'none' : 'linear-gradient(to right, rgba(255, 255, 255, 0.18) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.18) 1px, transparent 1px)');
+                        c.style.backgroundSize = isMova ? 'auto' : (isFlat ? 'auto' : '27px 27px');
                     }
                 },
             });
@@ -1579,9 +1572,8 @@ const App = () => {
                     <div className="flex bg-neutral-900 border border-neutral-800 rounded-lg p-0.5">
                         <button
                             id="mobile-btn-tiktok"
-                            disabled={isMova}
-                            onClick={() => !isMova && setFormat('tiktok')}
-                            className={`px-2 py-1 rounded text-[11px] font-bold transition-all flex items-center gap-1 ${isMova ? 'opacity-30 cursor-not-allowed text-neutral-500' : format === 'tiktok' ? 'bg-white text-black' : 'text-neutral-400'}`}>
+                            onClick={() => setFormat('tiktok')}
+                            className={`px-2 py-1 rounded text-[11px] font-bold transition-all flex items-center gap-1 ${format === 'tiktok' ? 'bg-white text-black' : 'text-neutral-400'}`}>
                             <i className="fa-brands fa-tiktok text-[10px]"></i>
                             <span>9:16</span>
                         </button>
@@ -1799,19 +1791,19 @@ const App = () => {
                         <div className="grid grid-cols-2 gap-1.5 p-1 bg-neutral-950 rounded-xl border border-neutral-800">
                             <button
                                 id="fmt-btn-tiktok"
-                                disabled={isMova}
-                                onClick={() => !isMova && setFormat('tiktok')}
-                                title={isMova ? 'Mova está diseñado exclusivamente para Instagram Feed (4:5)' : 'TikTok / Reels 9:16'}
-                                className={`flex items-center justify-center gap-2 py-1.5 rounded-lg text-xs font-bold transition-all ${isMova ? 'opacity-35 cursor-not-allowed text-neutral-500' : format === 'tiktok' ? 'bg-white text-black shadow' : 'text-neutral-400 hover:text-white'}`}>
+                                onClick={() => setFormat('tiktok')}
+                                title="TikTok / Reels 9:16 (1080×1920)"
+                                className={`flex items-center justify-center gap-2 py-1.5 rounded-lg text-xs font-bold transition-all ${format === 'tiktok' ? 'bg-white text-black shadow' : 'text-neutral-400 hover:text-white'}`}>
                                 <i className="fa-brands fa-tiktok"></i>
                                 <span>TikTok 9:16</span>
                             </button>
                             <button
                                 id="fmt-btn-instagram"
                                 onClick={() => setFormat('instagram')}
+                                title="Instagram Feed 4:5 (1080×1350)"
                                 className={`flex items-center justify-center gap-2 py-1.5 rounded-lg text-xs font-bold transition-all ${format === 'instagram' ? 'bg-gradient-to-r from-amber-500 via-rose-500 to-purple-600 text-white shadow' : 'text-neutral-400 hover:text-white'}`}>
                                 <i className="fa-brands fa-instagram"></i>
-                                <span>Instagram 4:5 {isMova && '(Exclusivo)'}</span>
+                                <span>Instagram 4:5</span>
                             </button>
                         </div>
                     </div>
@@ -1921,27 +1913,6 @@ const App = () => {
                         <i className="fa-solid fa-bars text-amber-400"></i>
                         <span>Menú</span>
                     </button>
-                )}
-
-                {/* BANNER OFICIAL DEL CONTENEDOR MOVA */}
-                {(selectedAccount === 'mova' || account.id === 'mova') && (
-                    <div className="w-full max-w-2xl bg-gradient-to-r from-[#05163F] via-[#0A1F4A] to-[#05163F] border border-[#3B82F6]/60 rounded-2xl p-3 md:p-3.5 mb-1 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
-                        <div className="flex items-center gap-3">
-                            <img src="assets/mova_logo_icon.png" alt="Mova" className="w-10 h-10 rounded-full bg-white/10 p-1 border border-white/20 shadow-md object-contain shrink-0" />
-                            <div>
-                                <div className="flex items-center gap-2">
-                                    <span className="text-white font-black text-sm md:text-base tracking-wide">Mova Hub</span>
-                                    <span className="text-[9px] font-mono bg-amber-500/20 text-orange-400 border border-amber-500/40 px-2 py-0.5 rounded-full font-bold">BETA v2.0</span>
-                                    <span className="text-[9px] font-mono bg-blue-500/20 text-blue-300 border border-blue-500/40 px-2 py-0.5 rounded-full font-bold hidden sm:inline">100% OFFLINE</span>
-                                </div>
-                                <p className="text-[11px] text-blue-200 mt-0.5">Rompiendo el silencio · IA en tiempo real para Lengua de Señas</p>
-                            </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <span className="text-[10px] font-mono text-neutral-300 bg-neutral-900/90 px-2 py-1 rounded-lg border border-neutral-700">@mova.app</span>
-                            <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950/70 px-2 py-1 rounded-lg border border-emerald-800">21D MediaPipe</span>
-                        </div>
-                    </div>
                 )}
 
                 {/* BANNER SUPERIOR DE STUDIO EDITOR CUANDO ESTÁ ACTIVO */}
@@ -2114,7 +2085,7 @@ const App = () => {
                 <div
                     className={`text-[11px] font-mono flex justify-between px-1 w-full shrink-0 ${canvaMode ? 'text-neutral-600' : 'text-neutral-500'}`}
                     style={{ maxWidth: Math.max(scaledW, 360) }}>
-                    <span>{slide.type} · {slide.layout} · {slide.tone || 'white'}</span>
+                    <span>{isMova ? '@mova.app · Rompiendo el silencio' : `${slide.type} · ${slide.layout} · ${slide.tone || 'white'}`}</span>
                     <span className="hidden md:inline">← → para navegar</span>
                     <span className="md:hidden text-neutral-600">Desliza el dedo ↔</span>
                 </div>
