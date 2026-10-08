@@ -230,3 +230,29 @@ button {
     animation: pulseGlow 2s infinite ease-in-out;
 }
 
+/* ============================================================== */
+/* MESA DE TRABAJO ESTILO CANVA (FONDO BLANCO / DROP SHADOW EDITORIAL) */
+/* ============================================================== */
+.canva-desk {
+    background-color: #f6f7f9 !important;
+    background-image:
+        radial-gradient(rgba(0, 0, 0, 0.08) 1.2px, transparent 1.2px) !important;
+    background-size: 20px 20px !important;
+    color: #1a1a1a !important;
+    transition: background-color 0.3s ease;
+}
+
+.canva-desk .slide-scaler-outer {
+    box-shadow: 0 30px 65px -12px rgba(0, 0, 0, 0.35),
+                0 12px 28px -8px rgba(0, 0, 0, 0.18),
+                0 0 0 1px rgba(0, 0, 0, 0.1) !important;
+    border-radius: 16px !important;
+}
+
+/* Transición fluida para colapso de la barra lateral en escritorio */
+.sidebar-transition {
+    transition: width 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.2s ease,
+                transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+

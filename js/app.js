@@ -113,7 +113,141 @@ const StudioInspector = ({
     onReset,
     onCloseMobile,
 }) => {
-    const [tab, setTab] = React.useState('slide'); // 'slide' | 'meta' | 'post'
+    const [tab, setTab] = React.useState('slide'); // 'slide' | 'elements' | 'meta' | 'post'
+
+    // Estados para la pestaña "+ Elementos" (Iconos locales + Lucide 1400+, Badges y Textos)
+    const [elementSubTab, setElementSubTab] = React.useState('icons'); // 'icons' | 'badges' | 'texts' | 'list'
+    const [iconSearch, setIconSearch] = React.useState('');
+    const [selectedIconName, setSelectedIconName] = React.useState('check');
+    const [iconColor, setIconColor] = React.useState('#FFFFFF');
+    const [iconSize, setIconSize] = React.useState(28);
+    const [iconStroke, setIconStroke] = React.useState(2.4);
+    const [iconPosition, setIconPosition] = React.useState('top-right');
+    const [iconWithBox, setIconWithBox] = React.useState(false);
+
+    // Estados para Badges / Chips destacados
+    const [badgeText, setBadgeText] = React.useState('100% OFFLINE');
+    const [badgeIcon, setBadgeIcon] = React.useState('sparkle');
+    const [badgeColor, setBadgeColor] = React.useState('#FFFFFF');
+    const [badgeBg, setBadgeBg] = React.useState('#05163F');
+    const [badgePosition, setBadgePosition] = React.useState('top-right');
+
+    // Estados para Texto libre adicional
+    const [customText, setCustomText] = React.useState('');
+    const [customTextColor, setCustomTextColor] = React.useState('#FFFFFF');
+    const [customTextSize, setCustomTextSize] = React.useState(14);
+    const [customTextPosition, setCustomTextPosition] = React.useState('bottom-right');
+
+    const activeCustomElements = Array.isArray(slide.customElements) ? slide.customElements : [];
+
+    // Iconos esenciales locales
+    const essentialLocalIcons = [
+        'check', 'cross', 'heart', 'bookmark', 'code', 'terminal',
+        'database', 'gamepad', 'smartphone', 'user', 'sparkle', 'zap',
+        'arrow', 'eye', 'camera', 'chip', 'trophy', 'git', 'download', 'gift'
+    ];
+
+    // Búsqueda combinada de iconos (Locales + 1400+ Lucide)
+    const filteredIcons = React.useMemo(() => {
+        const query = iconSearch.trim().toLowerCase();
+        if (!query) return essentialLocalIcons;
+
+        const results = [];
+        // 1. Filtrar locales
+        Object.keys(window.localIcons || {}).forEach((k) => {
+            if (k.toLowerCase().includes(query)) results.push(k);
+        });
+
+        // 2. Filtrar Lucide si está cargado
+        if (window.lucide && window.lucide.icons) {
+            Object.keys(window.lucide.icons).forEach((k) => {
+                const kLower = k.toLowerCase();
+                if (kLower.includes(query) && !results.includes(k) && !results.includes(k.toLowerCase())) {
+                    results.push(k);
+                }
+            });
+        }
+        return results.slice(0, 36);
+    }, [iconSearch]);
+
+    // Presets rápidos de badges
+    const badgePresets = [
+        { text: 'BETA v2.0', icon: 'zap', bg: 'rgba(245, 158, 11, 0.25)', border: '1.5px solid #f59e0b', color: '#fbbf24', position: 'top-right' },
+        { text: '100% OFFLINE', icon: 'database', bg: 'rgba(59, 130, 246, 0.25)', border: '1.5px solid #3b82f6', color: '#93c5fd', position: 'top-right' },
+        { text: 'OPEN SOURCE', icon: 'git', bg: 'rgba(34, 197, 94, 0.25)', border: '1.5px solid #22c55e', color: '#86efac', position: 'top-right' },
+        { text: 'IA EN VIVO', icon: 'sparkle', bg: 'rgba(168, 85, 247, 0.25)', border: '1.5px solid #a855f7', color: '#d8b4fe', position: 'top-right' },
+        { text: 'PRO TIP', icon: 'trophy', bg: 'rgba(234, 179, 8, 0.25)', border: '1.5px solid #eab308', color: '#fef08a', position: 'top-right' },
+        { text: 'PASO CLAVE', icon: 'check', bg: 'rgba(6, 182, 212, 0.25)', border: '1.5px solid #06b6d4', color: '#67e8f9', position: 'top-right' },
+    ];
+
+    const handleAddIcon = () => {
+        const newEl = {
+            id: 'icon_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
+            type: 'icon',
+            name: selectedIconName,
+            color: iconColor,
+            size: Number(iconSize),
+            strokeWidth: Number(iconStroke),
+            position: iconPosition,
+            box: iconWithBox,
+            bg: iconWithBox ? '#111111' : undefined,
+        };
+        updateActiveSlide({ customElements: [...activeCustomElements, newEl] });
+    };
+
+    const handleAddPresetBadge = (preset) => {
+        const newEl = {
+            id: 'badge_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
+            type: 'badge',
+            text: preset.text,
+            icon: preset.icon,
+            color: preset.color || '#FFFFFF',
+            bg: preset.bg || '#111111',
+            border: preset.border,
+            position: preset.position || 'top-right',
+        };
+        updateActiveSlide({ customElements: [...activeCustomElements, newEl] });
+    };
+
+    const handleAddCustomBadge = () => {
+        if (!badgeText.trim()) return;
+        const newEl = {
+            id: 'badge_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
+            type: 'badge',
+            text: badgeText.trim(),
+            icon: badgeIcon || undefined,
+            color: badgeColor,
+            bg: badgeBg,
+            position: badgePosition,
+        };
+        updateActiveSlide({ customElements: [...activeCustomElements, newEl] });
+    };
+
+    const handleAddText = () => {
+        if (!customText.trim()) return;
+        const newEl = {
+            id: 'text_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
+            type: 'text',
+            text: customText.trim(),
+            color: customTextColor,
+            size: Number(customTextSize),
+            position: customTextPosition,
+        };
+        updateActiveSlide({ customElements: [...activeCustomElements, newEl] });
+        setCustomText('');
+    };
+
+    const handleRemoveElement = (id) => {
+        updateActiveSlide({
+            customElements: activeCustomElements.filter((el) => el.id !== id)
+        });
+    };
+
+    const handleClearAllElements = () => {
+        if (window.confirm('¿Eliminar todos los elementos adicionales de esta diapositiva?')) {
+            updateActiveSlide({ customElements: [] });
+        }
+    };
 
     return (
         <aside className="w-full md:w-[350px] bg-neutral-900 border-l border-neutral-800 flex flex-col h-full shrink-0 shadow-2xl z-30 select-none">
@@ -148,21 +282,32 @@ const StudioInspector = ({
             </div>
 
             {/* Pestañas del Inspector */}
-            <div className="flex border-b border-neutral-800 bg-neutral-950 text-xs font-bold">
+            <div className="flex border-b border-neutral-800 bg-neutral-950 text-[11px] font-bold">
                 <button
                     onClick={() => setTab('slide')}
                     className={`flex-1 py-2 text-center border-b-2 transition-all ${tab === 'slide' ? 'border-amber-400 text-amber-300 bg-neutral-900/60' : 'border-transparent text-neutral-400 hover:text-white'}`}>
                     Contenido
                 </button>
                 <button
+                    onClick={() => setTab('elements')}
+                    className={`flex-1 py-2 text-center border-b-2 transition-all flex items-center justify-center gap-1 ${tab === 'elements' ? 'border-amber-400 text-amber-300 bg-neutral-900/60' : 'border-transparent text-neutral-400 hover:text-white'}`}>
+                    <i className="fa-solid fa-icons text-[10px]"></i>
+                    <span>+ Elementos</span>
+                    {activeCustomElements.length > 0 && (
+                        <span className="w-4 h-4 rounded-full bg-amber-500 text-black font-mono text-[9px] flex items-center justify-center font-black">
+                            {activeCustomElements.length}
+                        </span>
+                    )}
+                </button>
+                <button
                     onClick={() => setTab('meta')}
                     className={`flex-1 py-2 text-center border-b-2 transition-all ${tab === 'meta' ? 'border-amber-400 text-amber-300 bg-neutral-900/60' : 'border-transparent text-neutral-400 hover:text-white'}`}>
-                    Marca & Layout
+                    Diseño
                 </button>
                 <button
                     onClick={() => setTab('post')}
                     className={`flex-1 py-2 text-center border-b-2 transition-all ${tab === 'post' ? 'border-amber-400 text-amber-300 bg-neutral-900/60' : 'border-transparent text-neutral-400 hover:text-white'}`}>
-                    Post & Copy
+                    Post
                 </button>
             </div>
 
@@ -294,6 +439,388 @@ const StudioInspector = ({
                             </div>
                         )}
                     </>
+                )}
+
+                {/* ============================================================== */}
+                {/* PESTAÑA: + ELEMENTOS (ICONOS LOCALES + LUCIDE 1400+, BADGES)  */}
+                {/* ============================================================== */}
+                {tab === 'elements' && (
+                    <div className="flex flex-col gap-3.5">
+                        {/* Selector de sub-categoría de elementos */}
+                        <div className="flex p-0.5 bg-neutral-950 rounded-xl border border-neutral-800 text-[10.5px] font-bold">
+                            <button
+                                onClick={() => setElementSubTab('icons')}
+                                className={`flex-1 py-1 px-1.5 rounded-lg transition-all flex items-center justify-center gap-1 ${elementSubTab === 'icons' ? 'bg-neutral-800 text-white shadow' : 'text-neutral-400 hover:text-white'}`}>
+                                <i className="fa-solid fa-icons text-[9px]"></i>
+                                <span>Iconos</span>
+                            </button>
+                            <button
+                                onClick={() => setElementSubTab('badges')}
+                                className={`flex-1 py-1 px-1.5 rounded-lg transition-all flex items-center justify-center gap-1 ${elementSubTab === 'badges' ? 'bg-neutral-800 text-white shadow' : 'text-neutral-400 hover:text-white'}`}>
+                                <i className="fa-solid fa-tag text-[9px]"></i>
+                                <span>Badges</span>
+                            </button>
+                            <button
+                                onClick={() => setElementSubTab('texts')}
+                                className={`flex-1 py-1 px-1.5 rounded-lg transition-all flex items-center justify-center gap-1 ${elementSubTab === 'texts' ? 'bg-neutral-800 text-white shadow' : 'text-neutral-400 hover:text-white'}`}>
+                                <i className="fa-solid fa-font text-[9px]"></i>
+                                <span>Texto</span>
+                            </button>
+                            <button
+                                onClick={() => setElementSubTab('list')}
+                                className={`flex-1 py-1 px-1.5 rounded-lg transition-all flex items-center justify-center gap-1 ${elementSubTab === 'list' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'text-neutral-400 hover:text-white'}`}>
+                                <i className="fa-solid fa-layer-group text-[9px]"></i>
+                                <span>Capas ({activeCustomElements.length})</span>
+                            </button>
+                        </div>
+
+                        {/* ---------------- SUB-TAB 1: ICONOS (LOCALES + LUCIDE 1400+) ---------------- */}
+                        {elementSubTab === 'icons' && (
+                            <div className="flex flex-col gap-3">
+                                {/* Buscador de Iconos */}
+                                <div className="flex flex-col gap-1">
+                                    <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 flex items-center justify-between">
+                                        <span>Buscar Icono</span>
+                                        <span className="text-amber-400 font-mono text-[9px]">1400+ Lucide & Locales</span>
+                                    </label>
+                                    <div className="relative">
+                                        <input
+                                            type="text"
+                                            value={iconSearch}
+                                            onChange={(e) => setIconSearch(e.target.value)}
+                                            placeholder="Ej: check, heart, camera, terminal, rocket..."
+                                            className="studio-input w-full p-2 pl-7 rounded-lg text-xs"
+                                        />
+                                        <i className="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-neutral-500 text-[10px]"></i>
+                                        {iconSearch && (
+                                            <button
+                                                onClick={() => setIconSearch('')}
+                                                className="absolute right-2.5 top-2 text-neutral-400 hover:text-white text-xs">
+                                                ×
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Cuadrícula de iconos con previsualización */}
+                                <div className="flex flex-col gap-1">
+                                    <span className="text-[9.5px] font-mono text-neutral-500">Selecciona un icono:</span>
+                                    <div className="grid grid-cols-6 gap-1.5 p-2 bg-neutral-950 rounded-xl border border-neutral-800 max-h-36 overflow-y-auto hide-scrollbar">
+                                        {filteredIcons.map((icName) => {
+                                            const isSelected = selectedIconName.toLowerCase() === icName.toLowerCase();
+                                            return (
+                                                <button
+                                                    key={icName}
+                                                    onClick={() => setSelectedIconName(icName)}
+                                                    title={icName}
+                                                    className={`w-full aspect-square rounded-lg flex items-center justify-center transition-all ${isSelected ? 'bg-amber-400 text-black shadow-lg scale-105 ring-2 ring-amber-300' : 'bg-neutral-900 text-neutral-300 hover:bg-neutral-800 hover:text-white'}`}>
+                                                    <window.Icon
+                                                        name={icName}
+                                                        size={18}
+                                                        color={isSelected ? '#000000' : '#ffffff'}
+                                                        strokeWidth={2.4}
+                                                    />
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+
+                                {/* Tarjeta de Previsualización del Icono Seleccionado */}
+                                <div className="p-3 rounded-xl bg-neutral-950 border border-neutral-800 flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                        <div
+                                            className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${iconWithBox ? 'bg-neutral-900 border border-neutral-700' : 'bg-neutral-900/40'}`}
+                                            style={{ background: iconWithBox ? '#181818' : 'transparent' }}>
+                                            <window.Icon
+                                                name={selectedIconName}
+                                                size={Math.min(32, iconSize)}
+                                                color={iconColor}
+                                                strokeWidth={iconStroke}
+                                            />
+                                        </div>
+                                        <div>
+                                            <div className="font-bold text-white text-xs font-mono">{selectedIconName}</div>
+                                            <div className="text-[10px] text-neutral-400 font-mono">
+                                                {iconSize}px · {iconPosition} · {iconColor}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <label className="flex items-center gap-1.5 cursor-pointer text-[10px] text-neutral-300 select-none">
+                                        <input
+                                            type="checkbox"
+                                            checked={iconWithBox}
+                                            onChange={(e) => setIconWithBox(e.target.checked)}
+                                            className="rounded accent-amber-400"
+                                        />
+                                        <span>Caja/Botón</span>
+                                    </label>
+                                </div>
+
+                                {/* Paleta de Color */}
+                                <div className="flex flex-col gap-1">
+                                    <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Color del Trazo</label>
+                                    <div className="flex items-center gap-1.5 flex-wrap">
+                                        {['#FFFFFF', '#000000', '#22C55E', '#EF4444', '#3B82F6', '#F59E0B', '#A855F7', theme.accent].map((c) => (
+                                            <button
+                                                key={c}
+                                                onClick={() => setIconColor(c)}
+                                                style={{ backgroundColor: c }}
+                                                className={`w-6 h-6 rounded-full border transition-all ${iconColor === c ? 'ring-2 ring-amber-400 scale-110 border-white' : 'border-neutral-700'}`}
+                                            />
+                                        ))}
+                                        <input
+                                            type="color"
+                                            value={iconColor.startsWith('#') && iconColor.length === 7 ? iconColor : '#ffffff'}
+                                            onChange={(e) => setIconColor(e.target.value)}
+                                            className="w-6 h-6 rounded cursor-pointer bg-transparent border-0"
+                                            title="Color personalizado"
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Selector de Tamaño y Grosor */}
+                                <div className="grid grid-cols-2 gap-2">
+                                    <div className="flex flex-col gap-1">
+                                        <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Tamaño: {iconSize}px</label>
+                                        <div className="flex gap-1">
+                                            {[20, 28, 36, 48].map((s) => (
+                                                <button
+                                                    key={s}
+                                                    onClick={() => setIconSize(s)}
+                                                    className={`flex-1 py-1 rounded text-[10px] font-mono font-bold ${iconSize === s ? 'bg-amber-400 text-black' : 'bg-neutral-800 text-neutral-300'}`}>
+                                                    {s}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-col gap-1">
+                                        <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Grosor: {iconStroke}</label>
+                                        <div className="flex gap-1">
+                                            {[1.5, 2.2, 3.0].map((w) => (
+                                                <button
+                                                    key={w}
+                                                    onClick={() => setIconStroke(w)}
+                                                    className={`flex-1 py-1 rounded text-[10px] font-mono font-bold ${iconStroke === w ? 'bg-amber-400 text-black' : 'bg-neutral-800 text-neutral-300'}`}>
+                                                    {w}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Selector de Posición en la Slide */}
+                                <div className="flex flex-col gap-1">
+                                    <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Posición en la Diapositiva</label>
+                                    <select
+                                        value={iconPosition}
+                                        onChange={(e) => setIconPosition(e.target.value)}
+                                        className="studio-input p-2 rounded-lg text-xs font-semibold">
+                                        <option value="top-right">↗ Superior Derecha</option>
+                                        <option value="top-left">↖ Superior Izquierda</option>
+                                        <option value="bottom-right">↘ Inferior Derecha</option>
+                                        <option value="bottom-left">↙ Inferior Izquierda</option>
+                                        <option value="card-top-right">🎴 Sobre la Tarjeta (Sup. Der.)</option>
+                                        <option value="card-bottom-right">🎴 Sobre la Tarjeta (Inf. Der.)</option>
+                                        <option value="center">🎯 Centro de la Slide</option>
+                                    </select>
+                                </div>
+
+                                {/* Botón Insertar Icono */}
+                                <button
+                                    onClick={handleAddIcon}
+                                    className="w-full py-2.5 px-3 rounded-xl font-bold text-xs bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white flex items-center justify-center gap-2 shadow-lg transition-all active:scale-[0.98]">
+                                    <i className="fa-solid fa-plus text-xs"></i>
+                                    <span>Añadir Icono "{selectedIconName}" a Slide</span>
+                                </button>
+                            </div>
+                        )}
+
+                        {/* ---------------- SUB-TAB 2: BADGES & CHIPS DESTACADOS ---------------- */}
+                        {elementSubTab === 'badges' && (
+                            <div className="flex flex-col gap-3">
+                                <div className="flex flex-col gap-1">
+                                    <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Badges Rápidos (1 Clic)</label>
+                                    <div className="grid grid-cols-2 gap-1.5">
+                                        {badgePresets.map((bp) => (
+                                            <button
+                                                key={bp.text}
+                                                onClick={() => handleAddPresetBadge(bp)}
+                                                className="p-2 rounded-lg bg-neutral-950 border border-neutral-800 hover:border-amber-400 text-left flex items-center gap-1.5 transition-all group">
+                                                <window.Icon name={bp.icon} size={14} color={bp.color} strokeWidth={2.4} />
+                                                <span className="font-bold text-[10.5px] truncate" style={{ color: bp.color }}>{bp.text}</span>
+                                                <i className="fa-solid fa-plus ml-auto text-[9px] text-neutral-500 group-hover:text-amber-400"></i>
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Creador de Badge Personalizado */}
+                                <div className="p-3 rounded-xl bg-neutral-950 border border-neutral-800 flex flex-col gap-2.5">
+                                    <span className="text-[10.5px] font-bold text-white uppercase tracking-wider">Badge Personalizado</span>
+                                    <div className="flex flex-col gap-1">
+                                        <label className="text-[10px] text-neutral-400">Texto del Badge</label>
+                                        <input
+                                            type="text"
+                                            value={badgeText}
+                                            onChange={(e) => setBadgeText(e.target.value)}
+                                            placeholder="Ej: 100% OFFLINE, PRO TIP..."
+                                            className="studio-input p-2 rounded-lg text-xs font-semibold"
+                                        />
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-2">
+                                        <div className="flex flex-col gap-1">
+                                            <label className="text-[10px] text-neutral-400">Icono</label>
+                                            <select
+                                                value={badgeIcon}
+                                                onChange={(e) => setBadgeIcon(e.target.value)}
+                                                className="studio-input p-1.5 rounded-lg text-xs">
+                                                <option value="sparkle">Sparkle ✨</option>
+                                                <option value="zap">Rayo ⚡</option>
+                                                <option value="check">Check ✓</option>
+                                                <option value="database">Base de datos 🗄️</option>
+                                                <option value="git">Git 🐙</option>
+                                                <option value="trophy">Trofeo 🏆</option>
+                                                <option value="code">Código &lt;&gt;</option>
+                                            </select>
+                                        </div>
+                                        <div className="flex flex-col gap-1">
+                                            <label className="text-[10px] text-neutral-400">Posición</label>
+                                            <select
+                                                value={badgePosition}
+                                                onChange={(e) => setBadgePosition(e.target.value)}
+                                                className="studio-input p-1.5 rounded-lg text-xs">
+                                                <option value="top-right">Sup. Derecha</option>
+                                                <option value="top-left">Sup. Izquierda</option>
+                                                <option value="bottom-right">Inf. Derecha</option>
+                                                <option value="bottom-left">Inf. Izquierda</option>
+                                                <option value="card-top-right">Sobre Tarjeta</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <button
+                                        onClick={handleAddCustomBadge}
+                                        className="mt-1 py-2 rounded-lg font-bold text-xs bg-neutral-800 hover:bg-neutral-700 text-white flex items-center justify-center gap-1.5 transition-all">
+                                        <i className="fa-solid fa-plus text-[10px]"></i>
+                                        <span>Añadir Badge Personalizado</span>
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* ---------------- SUB-TAB 3: TEXTO / STICKER ADICIONAL ---------------- */}
+                        {elementSubTab === 'texts' && (
+                            <div className="flex flex-col gap-3">
+                                <div className="flex flex-col gap-1">
+                                    <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Texto Flotante / Sticker</label>
+                                    <textarea
+                                        rows="3"
+                                        value={customText}
+                                        onChange={(e) => setCustomText(e.target.value)}
+                                        placeholder="Escribe un comentario, nota o sticker..."
+                                        className="studio-input p-2 rounded-lg text-xs leading-relaxed font-semibold"
+                                    />
+                                </div>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <div className="flex flex-col gap-1">
+                                        <label className="text-[10px] text-neutral-400">Tamaño: {customTextSize}px</label>
+                                        <div className="flex gap-1">
+                                            {[11, 14, 18, 24].map((sz) => (
+                                                <button
+                                                    key={sz}
+                                                    onClick={() => setCustomTextSize(sz)}
+                                                    className={`flex-1 py-1 rounded text-[10px] font-mono font-bold ${customTextSize === sz ? 'bg-amber-400 text-black' : 'bg-neutral-800 text-neutral-300'}`}>
+                                                    {sz}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-col gap-1">
+                                        <label className="text-[10px] text-neutral-400">Posición</label>
+                                        <select
+                                            value={customTextPosition}
+                                            onChange={(e) => setCustomTextPosition(e.target.value)}
+                                            className="studio-input p-1.5 rounded-lg text-xs">
+                                            <option value="bottom-right">Inf. Derecha</option>
+                                            <option value="bottom-left">Inf. Izquierda</option>
+                                            <option value="top-right">Sup. Derecha</option>
+                                            <option value="top-left">Sup. Izquierda</option>
+                                            <option value="card-bottom-right">Sobre Tarjeta</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button
+                                    onClick={handleAddText}
+                                    disabled={!customText.trim()}
+                                    className={`py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all ${customText.trim() ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg' : 'bg-neutral-800 text-neutral-500 cursor-not-allowed'}`}>
+                                    <i className="fa-solid fa-plus text-[10px]"></i>
+                                    <span>Añadir Texto a Slide</span>
+                                </button>
+                            </div>
+                        )}
+
+                        {/* ---------------- SUB-TAB 4: LISTA DE ELEMENTOS ACTIVOS ---------------- */}
+                        {elementSubTab === 'list' && (
+                            <div className="flex flex-col gap-2.5">
+                                <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+                                    <span>Elementos en esta Slide ({activeCustomElements.length})</span>
+                                    {activeCustomElements.length > 0 && (
+                                        <button
+                                            onClick={handleClearAllElements}
+                                            className="text-rose-400 hover:text-rose-300 font-mono text-[9px] transition-colors">
+                                            Limpiar todos
+                                        </button>
+                                    )}
+                                </div>
+
+                                {activeCustomElements.length === 0 ? (
+                                    <div className="p-4 rounded-xl bg-neutral-950 border border-dashed border-neutral-800 text-center text-neutral-500 text-xs">
+                                        <i className="fa-solid fa-layer-group text-lg mb-1 block opacity-50"></i>
+                                        <span>No hay elementos adicionales en esta diapositiva.</span>
+                                        <div className="mt-2 text-[10.5px] text-amber-400 font-semibold cursor-pointer" onClick={() => setElementSubTab('icons')}>
+                                            + Añadir un icono o badge
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-col gap-1.5 max-h-60 overflow-y-auto hide-scrollbar">
+                                        {activeCustomElements.map((el, i) => (
+                                            <div
+                                                key={el.id || i}
+                                                className="p-2 rounded-xl bg-neutral-950 border border-neutral-800 flex items-center justify-between gap-2 text-xs">
+                                                <div className="flex items-center gap-2 min-w-0">
+                                                    <div className="w-7 h-7 rounded-lg bg-neutral-900 flex items-center justify-center shrink-0">
+                                                        {el.type === 'icon' && (
+                                                            <window.Icon name={el.name} size={16} color={el.color || '#fff'} />
+                                                        )}
+                                                        {el.type === 'badge' && (
+                                                            <i className="fa-solid fa-tag text-[10px] text-amber-400"></i>
+                                                        )}
+                                                        {el.type === 'text' && (
+                                                            <i className="fa-solid fa-font text-[10px] text-cyan-400"></i>
+                                                        )}
+                                                    </div>
+                                                    <div className="min-w-0">
+                                                        <div className="font-bold text-white text-xs truncate">
+                                                            {el.type === 'icon' ? el.name : (el.text || el.type)}
+                                                        </div>
+                                                        <div className="text-[9.5px] text-neutral-400 font-mono truncate">
+                                                            {el.type} · {el.position}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <button
+                                                    onClick={() => handleRemoveElement(el.id)}
+                                                    title="Eliminar elemento"
+                                                    className="w-6 h-6 rounded-md bg-neutral-900 hover:bg-rose-950/70 text-neutral-400 hover:text-rose-300 flex items-center justify-center text-xs transition-colors shrink-0">
+                                                    <i className="fa-solid fa-trash text-[10px]"></i>
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
                 )}
 
                 {tab === 'meta' && (
@@ -458,8 +985,23 @@ const App = () => {
 
     // Modo de trabajo: false = Visor Normal & Exportación HD | true = Studio Editor Activo
     const [editorMode, setEditorMode] = React.useState(URL_PARAMS.get('edit') === '1');
-    const [editorTab, setEditorTab] = React.useState('slide'); // 'slide' | 'meta' | 'post'
+    const [editorTab, setEditorTab] = React.useState('slide'); // 'slide' | 'elements' | 'meta' | 'post'
     const [mobileEditorOpen, setMobileEditorOpen] = React.useState(false);
+
+    // Ocultar barra lateral en modo editor automáticamente para dar todo el foco a la diapositiva
+    const [sidebarCollapsed, setSidebarCollapsed] = React.useState(() => URL_PARAMS.get('edit') === '1');
+
+    // Modo mesa de trabajo estilo Canva: fondo blanco/claro (#f6f7f9) con drop-shadow editorial
+    const [canvaMode, setCanvaMode] = React.useState(true);
+
+    // Auto-colapsar barra lateral al entrar en Studio Editor
+    React.useEffect(() => {
+        if (editorMode) {
+            setSidebarCollapsed(true);
+        } else {
+            setSidebarCollapsed(false);
+        }
+    }, [editorMode]);
 
     // Modal de sincronización con GitHub / Vercel
     const [syncModalOpen, setSyncModalOpen] = React.useState(false);
@@ -1131,7 +1673,7 @@ const App = () => {
             {/* ============================================================== */}
             {/* BARRA LATERAL ESCRITORIO (>= 768px)                            */}
             {/* ============================================================== */}
-            <aside className="hidden md:flex w-[335px] bg-neutral-900 flex-col border-r border-neutral-800 h-full shrink-0 relative">
+            <aside className={`hidden md:flex flex-col bg-neutral-900 border-r border-neutral-800 h-full shrink-0 relative sidebar-transition ${sidebarCollapsed ? 'w-0 border-r-0 overflow-hidden opacity-0 pointer-events-none' : 'w-[335px] opacity-100'}`}>
                 {/* Zona superior con scroll independiente */}
                 <div className="flex-1 p-4 overflow-y-auto hide-scrollbar flex flex-col">
                     {/* Encabezado y Selector de Modo */}
@@ -1144,7 +1686,15 @@ const App = () => {
                             )}
                             <h1 className="text-sm font-black text-white truncate">{account.name} Studio</h1>
                         </div>
-                        <span className="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded bg-neutral-800 text-neutral-300 font-bold border border-neutral-700">v4.0</span>
+                        <div className="flex items-center gap-1.5">
+                            <span className="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded bg-neutral-800 text-neutral-300 font-bold border border-neutral-700">v4.0</span>
+                            <button
+                                onClick={() => setSidebarCollapsed(true)}
+                                title="Ocultar barra lateral para maximizar el lienzo"
+                                className="w-6 h-6 rounded-md bg-neutral-800 hover:bg-neutral-700 text-neutral-400 hover:text-white flex items-center justify-center text-xs transition-colors">
+                                <i className="fa-solid fa-angles-left text-[10px]"></i>
+                            </button>
+                        </div>
                     </div>
 
                     {/* INTERRUPTOR PRINCIPAL: MODO NORMAL vs MODO EDITOR STUDIO */}
@@ -1346,10 +1896,21 @@ const App = () => {
             {/* ÁREA PRINCIPAL: LIENZO RESPONSIVO + DETALLES                   */}
             {/* ============================================================== */}
             <main
-                className="flex-1 bg-[#0a0a0a] flex flex-col items-center p-3 md:p-5 overflow-y-auto overflow-x-hidden hide-scrollbar gap-2.5 w-full max-w-[100vw]"
+                className={`flex-1 flex flex-col items-center p-3 md:p-5 overflow-y-auto overflow-x-hidden hide-scrollbar gap-2.5 w-full max-w-[100vw] ${canvaMode ? 'canva-desk' : 'bg-[#0a0a0a]'}`}
                 style={{ justifyContent: 'safe center' }}
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}>
+
+                {/* Botón flotante para reabrir barra lateral si está colapsada en escritorio */}
+                {sidebarCollapsed && (
+                    <button
+                        onClick={() => setSidebarCollapsed(false)}
+                        title="Mostrar barra lateral (carruseles y marcas)"
+                        className="hidden md:flex fixed top-4 left-4 z-40 px-3 py-1.5 rounded-xl bg-neutral-900/95 hover:bg-neutral-800 text-neutral-200 hover:text-white border border-neutral-700 shadow-xl items-center gap-2 text-xs font-bold transition-all active:scale-95 backdrop-blur-md">
+                        <i className="fa-solid fa-bars text-amber-400"></i>
+                        <span>Menú</span>
+                    </button>
+                )}
 
                 {/* BANNER OFICIAL DEL CONTENEDOR MOVA */}
                 {(selectedAccount === 'mova' || account.id === 'mova') && (
@@ -1384,6 +1945,22 @@ const App = () => {
                             )}
                         </div>
                         <div className="flex items-center gap-1.5 shrink-0">
+                            {/* Toggle para mostrar/ocultar barra lateral */}
+                            <button
+                                onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+                                title={sidebarCollapsed ? "Mostrar barra lateral" : "Ocultar barra lateral"}
+                                className="hidden md:flex px-2 py-1 rounded-lg bg-neutral-900 hover:bg-neutral-800 text-neutral-300 hover:text-white text-[11px] font-semibold border border-neutral-700 items-center gap-1 transition-all">
+                                <i className={`fa-solid ${sidebarCollapsed ? 'fa-bars text-amber-400' : 'fa-angles-left'}`}></i>
+                                <span>{sidebarCollapsed ? 'Barra' : 'Ocultar'}</span>
+                            </button>
+                            {/* Toggle para mesa estilo Canva (fondo blanco) */}
+                            <button
+                                onClick={() => setCanvaMode(!canvaMode)}
+                                title={canvaMode ? "Cambiar a mesa oscura" : "Mesa estilo Canva (fondo blanco)"}
+                                className={`hidden md:flex px-2 py-1 rounded-lg text-[11px] font-semibold border items-center gap-1 transition-all ${canvaMode ? 'bg-white text-black border-white shadow' : 'bg-neutral-900 text-neutral-300 border-neutral-700'}`}>
+                                <i className={`fa-solid ${canvaMode ? 'fa-palette text-amber-500' : 'fa-moon text-blue-400'}`}></i>
+                                <span>{canvaMode ? 'Canva' : 'Dark'}</span>
+                            </button>
                             {hasCustomEdits && (
                                 <button
                                     onClick={resetToOriginals}
@@ -1412,43 +1989,54 @@ const App = () => {
 
                 {/* Barra de control superior de la diapositiva (formato + navegación + zoom) */}
                 <div
-                    className="flex items-center justify-between text-neutral-400 text-xs px-1 w-full shrink-0"
+                    className={`flex items-center justify-between text-xs px-1 w-full shrink-0 ${canvaMode ? 'text-neutral-700' : 'text-neutral-400'}`}
                     style={{ maxWidth: Math.max(scaledW, 360) }}>
                     <div className="flex items-center gap-2 font-mono text-[11px]">
                         <span className={`w-2 h-2 rounded-full ${format === 'instagram' ? 'bg-rose-500' : 'bg-cyan-400'}`}></span>
-                        <span className="font-bold text-white uppercase">{format}</span>
-                        <span className="text-neutral-500">· {format === 'instagram' ? '1080×1350' : '1080×1920'}</span>
+                        <span className={`font-bold uppercase ${canvaMode ? 'text-neutral-900' : 'text-white'}`}>{format}</span>
+                        <span className={canvaMode ? 'text-neutral-500' : 'text-neutral-500'}>· {format === 'instagram' ? '1080×1350' : '1080×1920'}</span>
                     </div>
 
                     {/* Controles de vista y slides en escritorio */}
                     <div className="flex items-center gap-2">
                         {/* Selector rápido de slides en escritorio */}
-                        <div className="hidden md:flex items-center gap-1 bg-neutral-900 border border-neutral-800 rounded-lg p-0.5">
+                        <div className={`hidden md:flex items-center gap-1 border rounded-lg p-0.5 ${canvaMode ? 'bg-white/90 border-neutral-300 shadow-sm' : 'bg-neutral-900 border-neutral-800'}`}>
                             {video.slides.map((_, idx) => (
                                 <button
                                     key={idx}
                                     onClick={() => setSIdx(idx)}
-                                    className={`w-5 h-5 rounded text-[10px] font-mono font-bold flex items-center justify-center transition-all ${sIdx === idx ? 'bg-white text-black' : 'text-neutral-400 hover:text-white'}`}>
+                                    className={`w-5 h-5 rounded text-[10px] font-mono font-bold flex items-center justify-center transition-all ${sIdx === idx ? (canvaMode ? 'bg-neutral-900 text-white shadow' : 'bg-white text-black') : (canvaMode ? 'text-neutral-600 hover:text-black' : 'text-neutral-400 hover:text-white')}`}>
                                     {idx + 1}
                                 </button>
                             ))}
                         </div>
 
                         {/* Toggle de ajuste a pantalla (Fit) vs 100% */}
-                        <div className="hidden md:flex bg-neutral-900 border border-neutral-800 rounded-lg p-0.5 text-[10px] font-mono">
+                        <div className={`hidden md:flex border rounded-lg p-0.5 text-[10px] font-mono ${canvaMode ? 'bg-white/90 border-neutral-300 shadow-sm' : 'bg-neutral-900 border-neutral-800'}`}>
                             <button
                                 onClick={() => setFitView(true)}
-                                className={`px-2 py-0.5 rounded font-bold transition-all ${fitView ? 'bg-neutral-700 text-white' : 'text-neutral-400 hover:text-white'}`}
+                                className={`px-2 py-0.5 rounded font-bold transition-all ${fitView ? (canvaMode ? 'bg-neutral-900 text-white' : 'bg-neutral-700 text-white') : (canvaMode ? 'text-neutral-600 hover:text-black' : 'text-neutral-400 hover:text-white')}`}
                                 title="Ajusta la diapositiva completa a la altura visible de la pantalla">
                                 Ajustar
                             </button>
                             <button
                                 onClick={() => setFitView(false)}
-                                className={`px-2 py-0.5 rounded font-bold transition-all ${!fitView ? 'bg-neutral-700 text-white' : 'text-neutral-400 hover:text-white'}`}
+                                className={`px-2 py-0.5 rounded font-bold transition-all ${!fitView ? (canvaMode ? 'bg-neutral-900 text-white' : 'bg-neutral-700 text-white') : (canvaMode ? 'text-neutral-600 hover:text-black' : 'text-neutral-400 hover:text-white')}`}
                                 title="Tamaño natural 100%">
                                 100%
                             </button>
                         </div>
+
+                        {/* Botón rápido para alternar mesa Canva si editorMode está inactivo */}
+                        {!editorMode && (
+                            <button
+                                onClick={() => setCanvaMode(!canvaMode)}
+                                className={`hidden md:flex px-2 py-1 rounded-lg text-xs font-bold items-center gap-1.5 transition-all border ${canvaMode ? 'bg-white text-neutral-800 border-neutral-300 shadow-sm hover:bg-neutral-50' : 'bg-neutral-900 text-neutral-300 border-neutral-800 hover:text-white'}`}
+                                title="Alternar entre Mesa Canva (Fondo Blanco) y Modo Oscuro">
+                                <i className={`fa-solid ${canvaMode ? 'fa-palette text-amber-500' : 'fa-moon text-blue-400'}`}></i>
+                                <span>{canvaMode ? 'Canva' : 'Dark'}</span>
+                            </button>
+                        )}
 
                         {/* Botón Kit de Publicación en el encabezado del lienzo */}
                         <button
@@ -1513,7 +2101,7 @@ const App = () => {
 
                 {/* Metadatos y notas de producción */}
                 <div
-                    className="text-[11px] font-mono text-neutral-500 flex justify-between px-1 w-full shrink-0"
+                    className={`text-[11px] font-mono flex justify-between px-1 w-full shrink-0 ${canvaMode ? 'text-neutral-600' : 'text-neutral-500'}`}
                     style={{ maxWidth: Math.max(scaledW, 360) }}>
                     <span>{slide.type} · {slide.layout} · {slide.tone || 'white'}</span>
                     <span className="hidden md:inline">← → para navegar</span>

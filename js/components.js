@@ -661,7 +661,190 @@ window.GridPattern = () => (
     </svg>
 );
 
-/** Slide vertical completa: Grid + Fondo dinámico + Bandas + Tarjeta */
+/**
+ * Capa de Elementos Personalizados y Flotantes (Iconos Locales + Lucide 1400+, Badges y Textos)
+ * Renderiza dinámicamente elementos adicionales creados desde la pestaña "+ Elementos" del Studio Inspector.
+ * Garantiza fidelidad visual tanto en previsualización como en la exportación PNG a 1080x1920 y 1080x1350.
+ */
+window.CustomElementsOverlay = ({ elements = [], theme, format = 'tiktok', meta, d }) => {
+    if (!elements || !Array.isArray(elements) || elements.length === 0) return null;
+    const isIg = format === 'instagram';
+    const L = window.getLayout ? window.getLayout(d?.layout, format) : null;
+
+    return (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 25 }}>
+            {elements.map((el) => {
+                if (!el || !el.id) return null;
+
+                // Cálculo adaptativo de posición en el lienzo
+                let posStyle = {};
+                const padX = isIg ? 18 : 26;
+                const padY = isIg ? 18 : 28;
+
+                switch (el.position) {
+                    case 'top-left':
+                        posStyle = { top: padY, left: padX };
+                        break;
+                    case 'top-right':
+                        posStyle = { top: padY, right: padX };
+                        break;
+                    case 'bottom-left':
+                        posStyle = { bottom: padY, left: padX };
+                        break;
+                    case 'bottom-right':
+                        posStyle = { bottom: padY, right: padX };
+                        break;
+                    case 'center':
+                        posStyle = { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' };
+                        break;
+                    case 'card-top-right':
+                        // Esquina superior derecha de la tarjeta editorial
+                        posStyle = {
+                            top: L ? L.top + (isIg ? 14 : 20) : (isIg ? 110 : 160),
+                            right: L ? L.right + (isIg ? 14 : 20) : (isIg ? 26 : 34)
+                        };
+                        break;
+                    case 'card-bottom-right':
+                        // Esquina inferior derecha de la tarjeta editorial
+                        posStyle = {
+                            bottom: L ? L.bottom + (isIg ? 14 : 20) : (isIg ? 50 : 80),
+                            right: L ? L.right + (isIg ? 14 : 20) : (isIg ? 26 : 34)
+                        };
+                        break;
+                    case 'custom':
+                        posStyle = {
+                            top: el.top !== undefined ? el.top : '20%',
+                            left: el.left !== undefined ? el.left : '50%',
+                            transform: 'translate(-50%, -50%)'
+                        };
+                        break;
+                    default:
+                        posStyle = { top: padY, right: padX };
+                }
+
+                if (el.rotate) {
+                    posStyle.transform = `${posStyle.transform || ''} rotate(${el.rotate}deg)`.trim();
+                }
+
+                // 1. Elemento tipo Icono (Biblioteca Local + Lucide 1400+)
+                if (el.type === 'icon') {
+                    const iconColor = el.color || theme?.accent || '#ffffff';
+                    const iconSize = isIg ? Math.max(16, Math.round((el.size || 28) * 0.85)) : (el.size || 28);
+                    const strokeWidth = el.strokeWidth || 2.4;
+
+                    return (
+                        <div
+                            key={el.id}
+                            style={{ position: 'absolute', ...posStyle, zIndex: el.zIndex || 25 }}
+                            className="flex items-center justify-center animate-fadeIn"
+                        >
+                            {el.box ? (
+                                <div
+                                    className="flex items-center justify-center shadow-xl backdrop-blur-sm"
+                                    style={{
+                                        background: el.bg || '#111111',
+                                        borderRadius: isIg ? 10 : 14,
+                                        padding: isIg ? '6px 8px' : '8px 12px',
+                                        border: `1.5px solid ${el.borderColor || theme?.accent || 'rgba(255,255,255,0.2)'}`
+                                    }}
+                                >
+                                    <window.Icon
+                                        name={el.name}
+                                        size={iconSize}
+                                        color={iconColor}
+                                        strokeWidth={strokeWidth}
+                                        fill={el.fill || 'none'}
+                                    />
+                                    {el.label && (
+                                        <span
+                                            className="font-mono font-bold uppercase tracking-wider ml-1.5"
+                                            style={{ color: iconColor, fontSize: isIg ? '9.5px' : '11px' }}
+                                        >
+                                            {el.label}
+                                        </span>
+                                    )}
+                                </div>
+                            ) : (
+                                <div className="p-1 drop-shadow-md">
+                                    <window.Icon
+                                        name={el.name}
+                                        size={iconSize}
+                                        color={iconColor}
+                                        strokeWidth={strokeWidth}
+                                        fill={el.fill || 'none'}
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    );
+                }
+
+                // 2. Elemento tipo Badge / Chip destacado
+                if (el.type === 'badge') {
+                    const bg = el.bg || '#111111';
+                    const color = el.color || '#ffffff';
+                    const border = el.border || `1.5px solid ${theme?.accent || 'rgba(255,255,255,0.25)'}`;
+                    const fontSize = isIg ? '9.5px' : '11px';
+
+                    return (
+                        <div
+                            key={el.id}
+                            style={{
+                                position: 'absolute',
+                                ...posStyle,
+                                zIndex: el.zIndex || 25,
+                                background: bg,
+                                color: color,
+                                border: border,
+                                fontSize: fontSize,
+                            }}
+                            className="px-2.5 py-1 rounded-full font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-xl backdrop-blur-sm animate-fadeIn"
+                        >
+                            {el.icon && (
+                                <window.Icon
+                                    name={el.icon}
+                                    size={isIg ? 11 : 13}
+                                    color={color}
+                                    strokeWidth={2.4}
+                                />
+                            )}
+                            <span>{el.text}</span>
+                        </div>
+                    );
+                }
+
+                // 3. Elemento tipo Texto / Sticker adicional
+                if (el.type === 'text') {
+                    const fontSize = isIg ? (el.size ? el.size * 0.85 : 12) : (el.size || 14);
+                    return (
+                        <div
+                            key={el.id}
+                            style={{
+                                position: 'absolute',
+                                ...posStyle,
+                                zIndex: el.zIndex || 25,
+                                color: el.color || '#ffffff',
+                                fontSize: `${fontSize}px`,
+                                maxWidth: isIg ? '280px' : '340px',
+                                background: el.bg || 'transparent',
+                                padding: el.bg ? '5px 10px' : '0',
+                                borderRadius: el.bg ? '8px' : '0',
+                                border: el.border || 'none',
+                            }}
+                            className={`font-sans font-extrabold leading-snug drop-shadow-md select-none animate-fadeIn ${el.fontMono ? 'font-mono' : ''}`}
+                        >
+                            {el.text}
+                        </div>
+                    );
+                }
+
+                return null;
+            })}
+        </div>
+    );
+};
+
+/** Slide vertical completa: Grid + Fondo dinámico + Bandas + Tarjeta + Capas Personalizadas */
 window.Slide = ({ video, d, index, format = 'tiktok' }) => {
     const theme = window.THEMES[video.theme];
     const meta = { index, total: video.slides.length, format, video };
@@ -677,6 +860,10 @@ window.Slide = ({ video, d, index, format = 'tiktok' }) => {
             {d.layout === 'low' && <window.TopBand video={video} theme={theme} meta={meta} format={format} />}
             {d.layout === 'high' && <window.BottomBand video={video} theme={theme} meta={meta} format={format} />}
             <window.CardFrame d={d} theme={theme} meta={meta} />
+            {/* Renderizado automático de elementos añadidos desde el Studio Inspector */}
+            {d.customElements && d.customElements.length > 0 && (
+                <window.CustomElementsOverlay elements={d.customElements} theme={theme} format={format} meta={meta} d={d} />
+            )}
         </div>
     );
 };
