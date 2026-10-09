@@ -313,306 +313,220 @@ Siguiendo estos 4 principios gané el torneo nacional con "The Last Endo":
         ],
     },
     // ==================== SUITE MOVA: ROMPIENDO EL SILENCIO ====================
-    // Carrusel 1: Manifiesto Oficial (La Muralla del Silencio)
+
+    // CASO 05: MANIFIESTO FUNDACIONAL (Causa & Conciencia)
     {
         id: 'mova', accountId: 'mova', slug: 'mova_manifiesto_oficial', theme: 'mova', caseNo: 5, group: 'Mova: Rompiendo el Silencio',
         title: 'Mova: Manifiesto', subtitle: '70 Millones Rompiendo el Silencio',
-        post: {
+        copy: {
             hook: 'Más de 70 millones de personas hablan con sus manos en el mundo... pero casi nadie se detiene a escucharlas. En Mova decidimos derribar el silencio.',
-            caption: `¿Te imaginas entrar a un hospital con un dolor agudo o estar en una taquilla bancaria y que nadie sea capaz de entender lo que intentas decir?
-
-Ese aislamiento no es una exageración: es la realidad diaria de más de 70 millones de personas sordas en el mundo y más de 500.000 en Venezuela.
+            problem: 'Menos del 1% de la población oyente entiende la lengua de señas. En hospitales, trámites y emergencias, una persona sorda queda en soledad absoluta.',
+            solution: 'Mova es la primera herramienta de traducción instantánea de lengua de señas diseñada para funcionar en cualquier teléfono móvil, 100% gratuita y sin internet.',
+            manifesto: `70 MILLONES DE PERSONAS TIENEN VOZ.
+EL MUNDO DECIDIÓ NO ESCUCHAR.
 
 En Mova (@mova.app) creemos que la comunicación no es un privilegio para unos pocos: es la base indispensable de la dignidad humana.
 
-Por eso creamos una herramienta libre y ética que transforma la cámara de cualquier teléfono en un intérprete instantáneo de lengua de señas a voz, 100% offline y sin suscripciones.
+Nuestra tecnología procesa cada gesto directamente en tu dispositivo para que nadie quede excluido en una sala de emergencias, en una ventanilla pública o en un salón de clases.
 
-Nadie debería sentirse invisible en su propia ciudad.
-
-Guarda esta publicación y compártela para que más personas se sumen a derribar la muralla del silencio.
 Sigue a @mova.app y acompáñanos en este camino.`,
             hashtags: ['#mova', '#lenguajedeseñas', '#inclusión', '#consolacion', '#caracas', '#venezuela', '#lsv', '#comunidad', '#impactosocial', '#derechoshumanos'],
-            bestTime: '18:00 - 21:00',
-            sound: 'Inspirational piano strings / Lo-Fi emotivo acústico',
+            schedule: 'Lunes 19:30 VET / 20:30 ART'
         },
         slides: [
             {
-                type: 'hero', movaVariant: 'hero',
+                type: 'manifesto-hero', movaVariant: 'manifesto-hero',
                 kicker: 'MANIFIESTO HUMANO · @MOVA.APP',
-                title: '70 millones usan señas. *Menos del 1% las entiende.*',
-                sub: 'Mova nació para derribar la muralla invisible que aísla a la comunidad sorda en su vida cotidiana.',
-                highlight: 'La comunicación no es un privilegio: es la base de la dignidad humana.',
-            },
-            {
-                type: 'scenarios', movaVariant: 'scenarios',
-                kicker: 'LA SOLEDAD EN LA CIUDAD',
-                title: '¿Alguna vez necesitaste auxilio *y nadie entendió tus manos?*',
-                sub: 'Tres situaciones reales donde el silencio se convierte en una barrera angustiante:',
-                scenarios: [
-                    { icon: '🏥', title: 'En urgencias médicas', desc: 'Intentar describir un dolor agudo o una alergia a medicamentos mientras el doctor te mira sin saber cómo ayudarte.' },
-                    { icon: '🏦', title: 'Frente a una taquilla bancaria', desc: 'Depender de que un tercero firme por ti o adivine qué trámite necesitas hacer con tu propio dinero.' },
-                    { icon: '🚌', title: 'En la calle o el transporte', desc: 'No poder preguntar una dirección, pedir ayuda inmediata o alertar de un peligro porque casi nadie sabe señas.' },
-                ],
-                foot: 'El problema nunca fue la sordera: fue nuestra incapacidad como sociedad de escucharlos.',
+                title: '70 millones de personas hablan con sus manos. *El mundo decidió no escuchar.*',
+                sub: 'Mova nació para derribar la muralla invisible que aísla a la comunidad sorda en su propio país.',
+                highlight: 'La comunicación no es un privilegio: es la base indispensable de la dignidad humana.',
+                foot: 'Mova · Rompiendo el silencio · 2026'
             },
             {
                 type: 'stat', movaVariant: 'stat',
-                kicker: 'LA BARRERA DEL SILENCIO',
-                title: 'El aislamiento no es una excepción: *es la norma cotidiana*',
-                number: '70M', label: 'de personas en el mundo viven incomunicadas en su propio entorno',
-                ratioDesc: 'Menos del 0.8% de la población oyente conoce señas elementales para prestar auxilio.',
-                foot: 'La comunicación no es una comodidad técnica: es la raíz de los derechos humanos.',
+                kicker: 'LA BRECHA DEL SILENCIO',
+                number: '70M',
+                label: 'de personas en el mundo se comunican a través de lengua de señas',
+                ratioDesc: 'Menos del 1% de la población oyente sabe comunicarse en señas. 8 de cada 10 personas sordas enfrentan aislamiento diario.',
+                foot: 'Datos: Federación Mundial de Sordos · Brecha histórica'
+            },
+            {
+                type: 'medical-emergency', movaVariant: 'medical-emergency',
+                kicker: 'ESCENA DE EMERGENCIA REAL',
+                foot: 'Mova convierte la cámara del teléfono en un puente de auxilio inmediato'
             },
             {
                 type: 'quote-hero', movaVariant: 'quote-hero',
-                kicker: 'LA VOZ DEL SILENCIO',
-                quote: 'No existe mayor soledad que estar rodeado de una multitud en una avenida y saber que nadie puede entender lo que tus manos suplican.',
-                quoteAuthor: 'Mova · Manifiesto Fundacional',
-                tag: 'Caracas, Venezuela',
-            },
-            {
-                type: 'comparison', movaVariant: 'comparison',
-                kicker: 'TRANSFORMACIÓN REAL',
-                title: 'Del aislamiento forzado *a la autonomía absoluta*',
-                badTitle: 'El día a día sin Mova',
-                bad: 'Depender de intérpretes de pago, notas en papel que nadie lee o la mirada esquiva de quienes sienten incomodidad al ver señas.',
-                goodTitle: 'La libertad con Mova',
-                good: 'Caminar con la seguridad de que cualquier teléfono común pronuncia tus palabras con voz clara en cualquier esquina.',
-                foot: 'La autonomía no se pide como un favor: se ejerce con tecnología ética.',
+                kicker: 'LA VOZ DEL MANIFIESTO',
+                quote: '«La comunicación no es un favor que la sociedad le hace a quien no puede oír. Es la condición indispensable para no ser invisible en tu propia tierra.»',
+                quoteAuthor: 'Mova · Manifiesto Fundacional 2026',
+                quoteRole: 'Caracas, Venezuela',
+                foot: 'Un compromiso ético innegociable'
             },
             {
                 type: 'cta', movaVariant: 'cta',
-                kicker: 'ROMPE EL SILENCIO CON NOSOTROS',
-                action: 'ÚNETE A NUESTRA CAUSA',
-                badges: ['DERECHO HUMANO', 'AUTONOMÍA TOTAL', '100% GRATIS'],
-                line: 'Sigue a @mova.app y comparte este post con tu colegio o comunidad. Cada compartida ayuda a derribar el silencio.',
-            },
-        ],
+                kicker: 'FIRMA EL MANIFIESTO',
+                action: 'FIRMA Y COMPARTE ESTE MANIFIESTO',
+                line: 'Sigue a @mova.app y comparte este manifiesto. Cada compartida ayuda a derribar el silencio.',
+                foot: 'Sigue a @mova.app · Caracas 2026'
+            }
+        ]
     },
 
-    // Carrusel 2: En Qué Nos Inspiramos (Colegio La Consolación Caracas)
+    // CASO 06: NUESTRA INSPIRACIÓN (Colegio La Consolación Caracas)
     {
         id: 'mova_inspiracion', accountId: 'mova', slug: 'mova_en_que_nos_inspiramos', theme: 'mova', caseNo: 6, group: 'Mova: Rompiendo el Silencio',
         title: 'Mova: Nuestra Inspiración', subtitle: 'Colegio La Consolación Caracas',
-        post: {
+        copy: {
             hook: 'La mayoría de investigaciones escolares terminan engrapadas en un cajón. En el Colegio La Consolación nos negamos a que Mova fuera una más.',
-            caption: `¿Cuántas ideas increíbles nacen en los colegios y mueren el día que entregan la nota final?
+            problem: 'En las ferias de ciencias los jurados felicitan maquetas ingeniosas, pero al día siguiente los compañeros sordos siguen sin poder hablar en el recreo.',
+            solution: 'En vez de conformarnos con una cartulina y una nota perfecta, convertimos nuestro proyecto de bachillerato en una aplicación móvil real.',
+            manifesto: `DEL PATIO DEL RECREO AL SOFTWARE REAL.
 
 Mova nació en los pasillos del Colegio La Consolación en Caracas al presenciar algo muy simple pero doloroso: dos compañeros de clase querían ser amigos en el recreo, pero uno era sordo y el otro no sabía cómo hablarle.
 
-Ese silencio nos marcó. Nos negamos a hacer una maqueta de cartón para sacarnos 20 puntos en la feria de ciencias. Decidimos salir del aula y escribir código real para la calle.
+Nos negamos a sacar 20 sobre 20 en la feria de ciencias mientras nuestro compañero seguía en silencio.
 
-Un proyecto estudiantil solo tiene valor verdadero cuando transforma la vida de alguien afuera del colegio.
-
-Guarda esta historia si crees en la juventud con propósito.
 Sigue a @mova.app y acompaña nuestro camino.`,
             hashtags: ['#mova', '#consolacion', '#caracas', '#venezuela', '#inspiracion', '#lsv', '#lenguajedeseñas', '#inclusión', '#impactosocial', '#historiasreales'],
-            bestTime: '19:00 - 22:00',
-            sound: 'Inspirational piano strings / Cinematic warmth',
+            schedule: 'Miércoles 19:30 VET / 20:30 ART'
         },
         slides: [
             {
-                type: 'photo-hero', movaVariant: 'photo-hero',
+                type: 'school-polaroid-hero', movaVariant: 'school-polaroid-hero',
                 kicker: 'HISTORIA REAL · COLEGIO LA CONSOLACIÓN',
-                title: 'Nos negamos a que este proyecto *muriera en una cartulina escolar*',
-                sub: 'Cómo una mirada en el recreo del Colegio La Consolación en Caracas encendió un movimiento de impacto social.',
-                badge: 'AULA & RECREO · CARACAS',
+                title: 'Nos negamos a que este proyecto fuera *otra cartulina de adorno.*',
+                sub: 'Mova nació en los pasillos de nuestro colegio en Caracas cuando vimos que dos compañeros querían ser amigos, pero el silencio se interponía.',
+                foot: 'Colegio La Consolación · Caracas · 2026'
             },
             {
-                type: 'school', movaVariant: 'school',
-                kicker: 'EL PATIO DEL RECREO · CARACAS',
-                title: 'La barrera no eran los metros: *era el silencio entre nosotros*',
-                body: 'En el Colegio La Consolación en Caracas presenciamos la escena que lo cambió todo: dos compañeros querían compartir una merienda y una duda de clase... pero solo había miradas tímidas y sonrisas frustradas por no saber señas.',
-                quote: '“Ese día entendimos que el colegio nos enseña fórmulas y fechas históricas, pero nadie nos enseña a hablar con las manos de nuestro propio compañero.”',
-                foot: 'Colegio La Consolación · Donde nació la promesa de no mirar hacia otro lado.',
+                type: 'recreo-storyboard', movaVariant: 'recreo-storyboard',
+                kicker: 'CRÓNICA DE UN RECREO ESCOLAR',
+                foot: 'Ese día decidimos que la tecnología escolar tenía que servir para algo real'
             },
             {
-                type: 'timeline', movaVariant: 'timeline',
-                kicker: 'BITÁCORA ESTUDIANTIL',
-                title: 'De una hoja de examen *a una app libre en la calle*',
-                sub: 'Los tres momentos clave de nuestro equipo estudiantil:',
-                milestones: [
-                    { tag: 'El Salón', title: 'Rechazar el trabajo de adorno', desc: 'Nos negamos a presentar una maqueta decorativa para salir del paso. Asumimos el reto de programar un traductor real.' },
-                    { tag: 'El Código', title: 'El primer "Hola" en la pantalla', desc: 'Meses entrenando redes neuronales en computadoras modestas en Caracas para reconocer la Lengua de Señas Venezolana (LSV).' },
-                    { tag: 'La Calle', title: 'Llevar los móviles a familias reales', desc: 'Probar la app con madres e hijos de la comunidad sorda y ver la emoción de escuchar la traducción por primera vez en altavoz.' },
-                ],
-                foot: 'Un proyecto escolar solo tiene sentido cuando transforma una vida afuera.',
+                type: 'report-card', movaVariant: 'report-card',
+                kicker: 'EL DILEMA DE LA CALIFICACIÓN',
+                foot: 'De la maqueta teórica a una herramienta que funciona sin internet'
             },
             {
-                type: 'comparison', movaVariant: 'comparison',
-                kicker: 'ROMPER EL MOLDE ACADÉMICO',
-                title: 'La diferencia entre sacarse un 20 *y transformar una realidad*',
-                badTitle: 'El informe escolar tradicional',
-                bad: 'Un informe engrapado de 60 páginas que recibe la felicitación del jurado y termina acumulando polvo en un estante olvidado.',
-                goodTitle: 'El camino rebelde de Mova',
-                good: 'Una app libre, gratuita y offline que cualquier persona puede llevar en el bolsillo para comunicarse sin pagar nada.',
-                foot: 'La verdadera educación no busca calificaciones: despierta servidores de su comunidad.',
-            },
-            {
-                type: 'quote-hero', movaVariant: 'quote-hero',
-                kicker: 'VOZ ESTUDIANTIL',
-                quote: 'Si la ciencia y el software que aprendemos en el colegio no sirven para devolverle la voz a quien ha vivido silenciado, entonces no estamos innovando: solo estamos perdiendo el tiempo.',
-                quoteAuthor: 'Equipo Estudiantil Mova · La Consolación',
-                tag: 'Caracas, Venezuela',
+                type: 'voicenote', movaVariant: 'voicenote',
+                kicker: 'VOZ ESTUDIANTIL REBELDE',
+                foot: 'Equipo Estudiantil Mova · Bachillerato La Consolación'
             },
             {
                 type: 'cta', movaVariant: 'cta',
-                kicker: 'INSPIRA A TU COMUNIDAD',
+                kicker: 'RED DE EMBAJADORES ESCOLARES',
                 action: 'LLEVA MOVA A TU COLEGIO',
-                badges: ['COLEGIO LA CONSOLACIÓN', 'JUVENTUD CON PROPÓSITO', 'CARACAS'],
-                line: 'Comparte esta historia con tus compañeros y profesores. Demostremos que las aulas son el motor de cambio más potente que existe.',
-            },
-        ],
+                line: '¿Estudias o trabajas en una institución educativa? Ayúdanos a llevar Mova a más aulas en Venezuela y Latinoamérica.',
+                foot: 'Colegio La Consolación · Caracas 2026'
+            }
+        ]
     },
 
-    // Carrusel 3: Nuestra Idea (Tecnología en el Chip & 60 FPS)
+    // CASO 07: NUESTRA IDEA (Deep Tech On-Device & HUD de Cámara)
     {
         id: 'mova_idea', accountId: 'mova', slug: 'mova_nuestra_idea_traductor_ia', theme: 'mova', caseNo: 7, group: 'Mova: Rompiendo el Silencio',
         title: 'Mova: Nuestra Idea', subtitle: 'La cámara se convierte en tu voz',
-        post: {
-            hook: '¿Cómo habla una persona sorda si los demás no saben señas? Sin comprar aparatos caros ni pagar suscripciones, así lo resolvemos.',
-            caption: `La mayoría de herramientas de accesibilidad en el mercado cometen dos grandes injusticias: o cobran suscripciones mensuales en dólares que casi nadie en Latinoamérica puede pagar, o exigen conexión continua a internet que no existe en un autobús o un hospital público.
+        copy: {
+            hook: 'La mayoría cree que traducir lengua de señas requiere servidores gigantes en la nube. Te demostramos por qué estaban equivocados.',
+            problem: 'Las apps que dependen de internet consumen datos caros, tienen latencia de segundos y exponen la intimidad de las conversaciones.',
+            solution: 'Modelos neuronales ultra-optimizados que corren al 100% en el chip local de tu teléfono a 60 cuadros por segundo.',
+            manifesto: `VISIÓN POR COMPUTADORA EN TU BOLSILLO.
 
 En Mova (@mova.app) diseñamos una arquitectura radicalmente distinta:
+1. Rastreo espacial de 21 puntos clave por mano.
+2. Inferencia instantánea en 32 milisegundos con MediaPipe y TFLite.
+3. Cero consumo de megas. Cero dependencia de WiFi. Cero grabaciones en servidores externos.
 
-Convertir la cámara de cualquier teléfono en un intérprete instantáneo que corre 100% en el procesador del móvil, sin gastar megas y con privacidad total.
-
-Tus manos hacen el gesto, la red neuronal lo reconoce a 60 FPS y el altavoz pronuncia la palabra en voz alta para quien te escucha.
-
-La tecnología ética no le pide tarjeta de crédito a quien necesita auxilio.
-
-Guarda este post y comparte una idea que pone a las personas en primer lugar.
 Sigue a @mova.app y prueba la beta gratuita.`,
             hashtags: ['#mova', '#lenguajedeseñas', '#inclusión', '#accesibilidad', '#offline', '#tecnologiaparatodos', '#lsv', '#caracas', '#venezuela'],
-            bestTime: '13:00 - 16:00 o 19:00 - 21:00',
-            sound: 'Warm acoustic melody / Inspirational upbeat',
+            schedule: 'Viernes 19:30 VET / 20:30 ART'
         },
         slides: [
             {
-                type: 'tech-hero', movaVariant: 'tech-hero',
+                type: 'ai-scanner-hero', movaVariant: 'ai-scanner-hero',
                 kicker: 'TECNOLOGÍA EN EL CHIP · @MOVA.APP',
-                title: 'Tu teléfono se convierte en tu voz. *Sin cables, sin guantes y sin internet.*',
-                sub: 'Una cámara inteligente que lee tus manos a 60 FPS y las vocaliza en cualquier lugar del mundo.',
-                badge: 'VISIÓN ARTIFICIAL · ON-DEVICE',
-            },
-            {
-                type: 'flow', movaVariant: 'flow',
-                kicker: 'ARQUITECTURA DE TRES SEGUNDOS',
-                title: 'Tres segundos para transformar *un gesto en una voz clara*',
-                sub: 'Sin cables, sin accesorios externos y sin configuraciones complejas:',
-                flow: [
-                    { icon: '👁️', title: '1. Visión Artificial a 60 FPS', tag: 'Cámara en Vivo', desc: 'Apuntas el lente hacia las manos. El sistema rastrea articulaciones, orientación y trayectoria de los dedos con fluidez.' },
-                    { icon: '🧠', title: '2. IA Ética dentro del Chip', tag: '100% Offline', desc: 'Todo el procesamiento ocurre en el procesador del teléfono. Tu video nunca viaja a la nube ni consume tu plan de datos.' },
-                    { icon: '🔊', title: '3. Síntesis de Voz Inmediata', tag: 'Altavoz Claro', desc: 'El teléfono pronuncia la frase en español en voz alta y nítida para que cualquier persona oyente entienda al segundo.' },
-                ],
-                foot: 'Diseñado para funcionar en el autobús, el consultorio o una plaza sin señal.',
+                title: 'La cámara de tu teléfono *ahora se convierte en tu voz.*',
+                sub: 'Inferencia instantánea en el dispositivo a 60 cuadros por segundo: cero consumo de megas y cero servidores extranjeros.',
+                foot: 'Arquitectura on-device optimizada para teléfonos de gama media y baja'
             },
             {
                 type: 'camera', movaVariant: 'camera',
-                kicker: 'MOCKUP HUD EN VIVO',
-                title: 'Interfaz limpia diseñada *para la velocidad de la calle*',
-                sub: 'HUD táctil con visor de gestos a 60 FPS, selector de lenguas y barra de frases rápidas de emergencia.',
-                foot: '100% en el procesador local · No requiere internet · Privacidad total',
+                kicker: 'VISOR HUD EN TIEMPO REAL',
+                foot: '60 FPS · 18ms latencia · 100% en el procesador local · Privacidad absoluta'
+            },
+            {
+                type: 'chip-flow', movaVariant: 'chip-flow',
+                kicker: 'PIPELINE HARDWARE LOCAL',
+                foot: 'Más rápido que un parpadeo: la voz se reproduce antes de que bajes la mano'
             },
             {
                 type: 'privacy', movaVariant: 'privacy',
-                kicker: 'PRIVACIDAD INNEGOCIABLE',
-                shieldTitle: 'Soberanía Total · Cero Video a la Nube',
-                body: 'Tus conversaciones y tus expresiones jamás serán datos para servidores extranjeros. En Mova, lo que dices con tus manos se procesa en tu chip y se destruye al instante.',
-                foot: 'Seguridad y soberanía tecnológica para cada familia.',
-            },
-            {
-                type: 'comparison', movaVariant: 'comparison',
-                kicker: 'ÉTICA VS MERCANTILISMO',
-                title: 'Por qué nos negamos a cobrar *por el derecho a hablar*',
-                badTitle: 'El mercado corporativo tradicional',
-                bad: 'Plataformas que exigen planes de $40 mensuales, guantes con sensores costosos y servidores remotos que venden datos privados.',
-                goodTitle: 'La arquitectura libre de Mova',
-                good: 'Cero dólares. Cero accesorios extras. Funciona en teléfonos estándar de gama media y baja sin requerir saldo ni wifi.',
-                foot: 'Cobrar peaje por la voz de una persona sorda es una forma moderna de discriminación.',
+                kicker: 'BÓVEDA DE PRIVACIDAD ON-DEVICE',
+                foot: 'Tus conversaciones nacen en tu cámara y mueren en tu memoria RAM'
             },
             {
                 type: 'cta', movaVariant: 'cta',
-                kicker: 'LLEVA LA VOZ EN TU BOLSILLO',
+                kicker: 'ACCESO A LA BETA TÉCNICA',
                 action: 'PRUEBA LA BETA GRATUITA',
-                badges: ['CERO SUSCRIPCIÓN', 'SIN INTERNET', 'PRIVACIDAD TOTAL'],
                 line: 'Sigue a @mova.app y descarga la beta gratuita en tu móvil. Cada sugerencia que nos das nos ayuda a perfeccionar la herramienta.',
-            },
-        ],
+                foot: 'Descarga disponible para iOS y Android'
+            }
+        ]
     },
 
-    // Carrusel 4: Nuestra Misión (Inclusión Sin Barreras ni Fronteras)
+    // CASO 08: NUESTRA MISIÓN (Derechos Humanos, Lenguas & Comunidad)
     {
         id: 'mova_mision', accountId: 'mova', slug: 'mova_nuestra_mision_inclusion', theme: 'mova', caseNo: 8, group: 'Mova: Rompiendo el Silencio',
         title: 'Mova: Nuestra Misión', subtitle: 'Inclusión sin barreras ni fronteras',
-        post: {
-            hook: 'La inclusión no consiste en que la persona sorda se adapte a nuestro mundo: consiste en que nosotros aprendamos a escuchar.',
-            caption: `Durante generaciones se le ha exigido a las personas con discapacidad auditiva un esfuerzo desgastante para encajar en una sociedad pensada exclusivamente para quienes oyen.
+        copy: {
+            hook: 'Durante décadas se le exigió a las personas sordas que se adaptaran a un mundo que nunca quiso aprender su idioma. Esa deuda termina hoy.',
+            problem: 'Exigir lectura labial forzada o depender de intérpretes pagos en consultas médicas aísla a miles de personas.',
+            solution: 'Construir una red tecnológica abierta y gratuita que reconozca la riqueza de la LSV, ASL y LSE.',
+            manifesto: `NO ES UN FAVOR. ES UN DERECHO.
 
 En Mova (@mova.app) creemos que esa exigencia histórica es injusta.
+Nuestra misión tiene tres pilares innegociables:
+1. Gratuito para siempre.
+2. Funciona en cualquier teléfono sin internet.
+3. Co-creado con la comunidad sorda real.
 
-Nuestra misión es poner la tecnología al servicio de la empatía humana:
-Garantizar acceso gratuito y para siempre a la comunicación, proteger la intimidad de las personas corriendo localmente en el móvil, y conectar diferentes lenguas de señas como la LSV venezolana, el ASL internacional y la LSE española.
-
-Además, abrimos aulas comunitarias para que las madres de niños sordos y los docentes de nuestros colegios aprendan señas cotidianas sin barreras.
-
-Guarda este post y súmate a una misión que pertenece a todos.
 Sigue a @mova.app y construyamos un futuro sin muros de silencio.`,
             hashtags: ['#mova', '#mision', '#inclusion', '#accesibilidad', '#derechoshumanos', '#lsv', '#asl', '#lse', '#caracas', '#venezuela', '#comunidad'],
-            bestTime: '18:00 - 21:00',
-            sound: 'Piano emotivo inspirador / Lo-Fi suave y reflexivo',
+            schedule: 'Domingo 19:30 VET / 20:30 ART'
         },
         slides: [
             {
-                type: 'family-hero', movaVariant: 'family-hero',
+                type: 'mother-child-hero', movaVariant: 'mother-child-hero',
                 kicker: 'NUESTRA MISIÓN · @MOVA.APP',
-                title: 'Decir \'tengo dolor\' o \'gracias\' *no debería ser un privilegio*',
-                sub: 'Nuestra misión es derribar las barreras económicas y lingüísticas que separan a millones de familias en el mundo.',
-                badge: 'FAMILIA & COMUNIDAD · CARACAS',
+                title: 'El derecho a decir "te quiero" *no puede necesitar un intérprete pagado.*',
+                sub: 'La inclusión no es un eslogan de marketing: es la certeza de que ninguna madre ni ningún hijo queden atrapados en el silencio.',
+                foot: 'La tecnología al servicio del amor familiar'
             },
             {
-                type: 'community', movaVariant: 'community',
-                kicker: 'RED LINGÜÍSTICA SIN FRONTERAS',
-                title: 'Un puente vivo entre *tres comunidades de señas*',
-                sub: 'Alterna entre dialectos con un solo toque en la pantalla de inicio:',
-                body: 'Honramos la riqueza y cultura de la Lengua de Señas Venezolana (LSV 🇻🇪), abrimos puertas globales con el American Sign Language (ASL 🇺🇸) y unimos lazos hispanos con la Lengua de Signos Española (LSE 🇪🇸).',
-                foot: 'Respetar cada lengua de señas es honrar la historia de su propia comunidad.',
+                type: 'triptych', movaVariant: 'triptych',
+                kicker: 'TRÍPTICO LINGÜÍSTICO VIVO',
+                foot: 'Mova no homogeniza: celebra el dialecto de cada comunidad'
             },
             {
-                type: 'aulas', movaVariant: 'aulas',
-                kicker: 'RED DE AULAS ABIERTAS',
-                title: 'Madres y docentes *aprendiendo juntos en el aula*',
-                body: 'La verdadera inclusión comienza en el desayuno familiar y en el salón de clases. Impulsamos aulas abiertas donde las madres de niños sordos aprenden las señas de sus hijos y los educadores integran a sus alumnos sin miedo a no entenderlos.',
-                quote: '“Cuando una madre aprende a comunicarse con su hijo sordo en señas, no solo aprende un idioma: derriba años de angustia contenida.”',
-                foot: 'Aulas abiertas para colegios públicos y privados en toda Venezuela.',
+                type: 'constellation', movaVariant: 'constellation',
+                kicker: 'CÍRCULOS DE IMPACTO CONCÉNTRICO',
+                foot: 'De la autonomía individual a una sociedad verdaderamente accesible'
             },
             {
-                type: 'pillars', movaVariant: 'pillars',
-                kicker: 'LOS TRES PILARES INNEGOCIABLES',
-                title: 'Tres principios éticos *detrás de cada línea de código*',
-                sub: 'Lo que nunca cambiará en Mova, sin importar cuánto crezcamos en el futuro:',
-                pillars: [
-                    { icon: '⚖️', title: 'Cero Barrera Económica', badge: 'Gratis para siempre', desc: 'La comunicación es un derecho humano inalienable. Mova jamás cobrará una suscripción para traducir señas a voz.' },
-                    { icon: '🛡️', title: 'Privacidad y Soberanía Local', badge: '100% On-Device', desc: 'Ningún video viaja a la nube. Cuidamos la intimidad de las familias con la misma fuerza con la que amplificamos su voz.' },
-                    { icon: '🌍', title: 'Inclusión Multi-Seña', badge: 'LSV · ASL · LSE', desc: 'No imponemos un único estándar: reconocemos la identidad de la seña venezolana, el estándar americano y la seña española.' },
-                ],
-                foot: 'Principios forjados en el Colegio La Consolación para el mundo entero.',
-            },
-            {
-                type: 'quote-hero', movaVariant: 'quote-hero',
-                kicker: 'EL HORIZONTE DE NUESTRA CAUSA',
-                quote: 'La verdadera inclusión no consiste en obligar a la persona sorda a leer nuestros labios o adaptarse a nuestro ritmo. Consiste en que los oyentes tengamos la humildad de aprender a escuchar con los ojos.',
-                quoteAuthor: 'Mova · Declaración de Principios',
-                tag: 'Horizonte Comunitario',
+                type: 'podium', movaVariant: 'podium',
+                kicker: 'TRES PRINCIPIOS INNEGOCIABLES',
+                foot: 'Pilares éticos fundacionales de Mova'
             },
             {
                 type: 'cta', movaVariant: 'cta',
-                kicker: 'SÚMATE AL MOVIMIENTO',
-                action: 'ÚNETE A NUESTRA COMUNIDAD',
-                badges: ['RED EDUCATIVA', 'COMUNIDAD SORDA', 'IMPACTO SOCIAL'],
-                line: 'Sigue a @mova.app y comparte esta publicación. Cada aula, colegio y familia que sumamos nos acerca a un mundo sin muros de silencio.',
-            },
-        ],
+                kicker: 'MOVIMIENTO COMUNITARIO VIVO',
+                action: 'SÚMATE AL MOVIMIENTO',
+                line: 'Sigue a @mova.app y comparte este mensaje. Juntos hacemos que la tecnología rompa el silencio.',
+                foot: 'Mova · Rompiendo el silencio · 2026'
+            }
+        ]
     },
     {
         id: 'gira', accountId: 'girastock', slug: 'girastock', theme: 'gira', caseNo: 6, group: 'Casos Reales & Pitch',

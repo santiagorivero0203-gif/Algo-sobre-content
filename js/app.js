@@ -108,7 +108,7 @@ const StudioInspector = (props) => {
 
 const App = () => {
     // Control de versión para invalidar estados obsoletos en navegadores de usuarios
-    const VIDEOS_STORAGE_VERSION = 'v5_mova_variety_suite';
+    const VIDEOS_STORAGE_VERSION = 'v8_mova_radical_diversity';
 
     // Colección de videos editable con persistencia local
     const [videos, setVideos] = React.useState(() => {
@@ -782,7 +782,7 @@ const App = () => {
                     <button
                         onClick={() => handleSelectAccount('mova')}
                         className={`px-2 py-0.5 rounded-lg text-[10px] font-bold border shrink-0 transition-all flex items-center gap-1 ${selectedAccount === 'mova' ? 'bg-[#3B82F6] text-white border-[#3B82F6] shadow-sm' : 'bg-neutral-800/80 text-neutral-400 border-neutral-700'}`}>
-                        <img src="assets/mova_logo_icon.png" alt="Mova" className="w-3 h-3 rounded-full object-contain" />
+                        <img src="assets/mova_logo_clean.png" alt="Mova" className="w-3 h-3 rounded-full object-contain" />
                         <span>Mova</span>
                     </button>
                     <button
@@ -901,7 +901,7 @@ const App = () => {
                             <button
                                 onClick={() => handleSelectAccount('mova')}
                                 className={`px-2 py-1 rounded-lg text-[11px] font-bold border transition-all flex items-center gap-1.5 ${selectedAccount === 'mova' ? 'bg-[#3B82F6] text-white border-[#3B82F6] shadow-md' : 'bg-neutral-800/80 text-neutral-400 border-neutral-700 hover:text-white'}`}>
-                                <img src="assets/mova_logo_icon.png" alt="Mova" className="w-3.5 h-3.5 rounded-full object-contain" />
+                                <img src="assets/mova_logo_clean.png" alt="Mova" className="w-3.5 h-3.5 rounded-full object-contain" />
                                 <span>Mova</span>
                             </button>
                             <button
@@ -922,7 +922,7 @@ const App = () => {
                     {/* CAJA DE MARCA ESPECIAL PARA MOVA CUANDO ESTÁ SELECCIONADA O EN SU VIDEO */}
                     {(selectedAccount === 'mova' || account.id === 'mova') && (
                         <div className="p-3 mb-3 rounded-xl bg-gradient-to-r from-[#05163F] to-[#0A1F4A] border border-[#3B82F6]/50 shadow-lg flex items-center gap-2.5">
-                            <img src="assets/mova_logo_icon.png" alt="Mova" className="w-8 h-8 rounded-full bg-white/10 p-0.5 border border-white/20 shrink-0 object-contain" />
+                            <img src="assets/mova_logo_clean.png" alt="Mova" className="w-8 h-8 rounded-full bg-white/10 p-0.5 border border-white/20 shrink-0 object-contain" />
                             <div className="min-w-0 flex-1">
                                 <div className="flex items-center gap-1.5">
                                     <span className="font-black text-white text-xs truncate">Mova App</span>

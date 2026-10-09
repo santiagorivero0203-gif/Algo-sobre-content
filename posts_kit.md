@@ -157,8 +157,8 @@ Siguiendo estos 4 principios gané el torneo nacional con "The Last Endo":
 
 ## Mova · Carrusel 1: Manifiesto Oficial (El Dolor del Aislamiento y el Derecho a Comunicarse)
 **Título:** Mova: Manifiesto · 70 Millones Rompiendo el Silencio  
-**ID:** `mova` · **Cuenta:** `@mova.app` · **Diapositivas:** 6 · **Formato exclusivo:** Instagram Feed (4:5 · 1080×1350)  
-**Estructura Visual:** `Hero (Portada)` → `Scenarios (Calle y Hospital)` → `Stat (La Cifra del Olvido)` → `Quote (Muralla del Silencio)` → `Comparison (Aislamiento vs Autonomía)` → `CTA (Rompe el Silencio)`
+**ID:** `mova` · **Cuenta:** `@mova.app` · **Diapositivas:** 5 · **Formato:** Instagram Feed (4:5) o TikTok (9:16)  
+**Estructura Visual:** `Manifesto-Hero (70M de Personas en Silencio)` → `Stat (La Brecha del 80%)` → `Medical-Emergency (La Sala de Urgencias)` → `Quote-Hero (Pacto por la Dignidad)` → `CTA (Firma el Manifiesto)`
 
 ### 🎣 Gancho (Hook)
 > Más de 70 millones de personas hablan con sus manos en el mundo... pero casi nadie se detiene a escucharlas. En Mova decidimos derribar el silencio.
@@ -193,8 +193,8 @@ Sigue a @mova.app y acompáñanos en este camino.
 
 ## Mova · Carrusel 2: En Qué Nos Inspiramos (Colegio La Consolación Caracas)
 **Título:** Mova: Nuestra Inspiración · Colegio La Consolación Caracas  
-**ID:** `mova_inspiracion` · **Cuenta:** `@mova.app` · **Diapositivas:** 6 · **Formato exclusivo:** Instagram Feed (4:5 · 1080×1350)  
-**Estructura Visual:** `Hero (De la Cartulina a la Calle)` → `School (El Patio del Recreo)` → `Timeline (Hitos de Rebeldía)` → `Comparison (20 Puntos vs App Libre)` → `Quote (Voz Estudiantil)` → `CTA (Inspira a tu Colegio)`
+**ID:** `mova_inspiracion` · **Cuenta:** `@mova.app` · **Diapositivas:** 5 · **Formato:** Instagram Feed (4:5) o TikTok (9:16)  
+**Estructura Visual:** `School-Polaroid-Hero (Foto Real Recreo)` → `Recreo-Storyboard (Crónica 10:00 - 10:10 AM)` → `Report-Card (Boleta 20/20 vs Realidad)` → `Voicenote (Audio de los Estudiantes)` → `CTA (Pasaporte Escolar)`
 
 ### 🎣 Gancho (Hook)
 > La mayoría de investigaciones escolares terminan engrapadas en un cajón. En el Colegio La Consolación nos negamos a que Mova fuera una más.
@@ -227,8 +227,8 @@ Sigue a @mova.app y acompaña nuestro camino.
 
 ## Mova · Carrusel 3: Nuestra Idea (La Cámara se Convierte en tu Voz)
 **Título:** Mova: Nuestra Idea · La cámara se convierte en tu voz  
-**ID:** `mova_idea` · **Cuenta:** `@mova.app` · **Diapositivas:** 6 · **Formato exclusivo:** Instagram Feed (4:5 · 1080×1350)  
-**Estructura Visual:** `Hero (Tu Teléfono es tu Voz)` → `Flow (Flujo Técnico en 3 Pasos)` → `Camera (HUD en Vivo 60 FPS)` → `Comparison (Mercado de Pago vs Ética Libre)` → `Quote (Privacidad Innegociable)` → `CTA (Prueba la Beta)`
+**ID:** `mova_idea` · **Cuenta:** `@mova.app` · **Diapositivas:** 5 · **Formato:** Instagram Feed (4:5) o TikTok (9:16)  
+**Estructura Visual:** `Ai-Scanner-Hero (Visión en el Chip)` → `Camera-HUD (Visor en Vivo 60 FPS)` → `Chip-Flow (Pipeline 3 Nodos On-Device)` → `Privacy-Vault (Bóveda de Hardware)` → `CTA (Terminal Beta)`
 
 ### 🎣 Gancho (Hook)
 > ¿Cómo habla una persona sorda si los demás no saben señas? Sin comprar aparatos caros ni pagar suscripciones, así lo resolvemos.
@@ -263,8 +263,8 @@ Sigue a @mova.app y prueba la beta gratuita.
 
 ## Mova · Carrusel 4: Nuestra Misión (Inclusión Sin Barreras ni Fronteras)
 **Título:** Mova: Nuestra Misión · Inclusión sin barreras ni fronteras  
-**ID:** `mova_mision` · **Cuenta:** `@mova.app` · **Diapositivas:** 6 · **Formato exclusivo:** Instagram Feed (4:5 · 1080×1350)  
-**Estructura Visual:** `Hero (El Derecho a no ser Invisible)` → `Pillars (Los 3 Principios Éticos)` → `Community (LSV · ASL · LSE)` → `School (Aulas para Familias y Madres)` → `Quote (Escuchar con los Ojos)` → `CTA (Únete al Movimiento)`
+**ID:** `mova_mision` · **Cuenta:** `@mova.app` · **Diapositivas:** 5 · **Formato:** Instagram Feed (4:5) o TikTok (9:16)  
+**Estructura Visual:** `Mother-Child-Hero (El Derecho a Decir Te Quiero)` → `Triptych (Tríptico LSV / ASL / LSE)` → `Constellation (Círculos Concéntricos)` → `Podium (Podio 3 Principios Éticos)` → `CTA (Movimiento Comunitario)`
 
 ### 🎣 Gancho (Hook)
 > La inclusión no consiste en que la persona sorda se adapte a nuestro mundo: consiste en que nosotros aprendamos a escuchar.

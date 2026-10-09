@@ -236,7 +236,7 @@ window.MobileDrawer = ({
                     <button
                         onClick={() => onSelectAccount('mova')}
                         className={`px-2.5 py-1 rounded-lg text-[10px] font-bold border shrink-0 transition-all flex items-center gap-1 ${selectedAccount === 'mova' ? 'bg-[#3B82F6] text-white border-[#3B82F6] shadow-sm' : 'bg-neutral-800 text-neutral-400 border-neutral-700'}`}>
-                        <img src="assets/mova_logo_icon.png" alt="Mova" className="w-3 h-3 rounded-full object-contain" />
+                        <img src="assets/mova_logo_clean.png" alt="Mova" className="w-3 h-3 rounded-full object-contain" />
                         <span>Mova</span>
                     </button>
                     <button
