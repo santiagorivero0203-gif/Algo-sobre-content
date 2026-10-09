@@ -444,17 +444,75 @@ const App = () => {
      *
      * Motor de respaldo: html2canvas (sólo si el principal lanza un error).
      */
-    const renderSlideToBlob = async () => {
+    /**
+     * Motor de Renderizado Ultrarrobusto para Exportación HD (1080×1920 / 1080×1350):
+     * 1. Sincronización determinista: si targetSlideIndex está definido, espera a que
+     *    React termine de montar y pintar exactamente esa diapositiva en el DOM.
+     * 2. Espera completa de tipografías Web (document.fonts.ready).
+     * 3. Espera activa de TODAS las imágenes (img.complete) y decodificación forzada
+     *    en GPU (await img.decode()) para eliminar renderizados en blanco o caídas.
+     * 4. Estabilización de frame con doble requestAnimationFrame.
+     * 5. Motor primario (modern-screenshot) con timeout extendido y configuración
+     *    exacta de fondo y estilo computado.
+     * 6. Motor de respaldo (html2canvas) con aislamiento y restauración garantizada del DOM.
+     * 7. Reintento automático en caso de error transitorio.
+     */
+    const renderSlideToBlob = async (targetSlideIndex = null) => {
+        // 1. Si se especificó un índice, esperar activamente a que React actualice el DOM
+        if (targetSlideIndex !== null) {
+            let mounted = false;
+            for (let w = 0; w < 30; w++) {
+                const checkEl = document.getElementById('capture-slide');
+                if (checkEl && Number(checkEl.dataset.slideIndex) === targetSlideIndex) {
+                    mounted = true;
+                    break;
+                }
+                await window.sleep(50);
+            }
+            if (!mounted) {
+                console.warn(`[Render] Timeout esperando montaje de slide ${targetSlideIndex + 1}, continuando...`);
+            }
+        }
+
+        // 2. Esperar fuentes web
         try {
             await Promise.race([
                 document.fonts.ready,
-                new Promise((resolve) => setTimeout(resolve, 1500)),
+                new Promise((resolve) => setTimeout(resolve, 2000)),
             ]);
         } catch (e) {
-            console.warn('Font loading check skipped:', e);
+            console.warn('[Render] Font loading check skipped:', e);
         }
 
         const el = document.getElementById('capture-slide');
+        if (!el) {
+            throw new Error('No se encontró el elemento #capture-slide en el DOM.');
+        }
+
+        // 3. Esperar carga completa y decodificación de TODAS las imágenes contenidas
+        const imgs = Array.from(el.querySelectorAll('img'));
+        if (imgs.length > 0) {
+            await Promise.all(imgs.map(async (img) => {
+                if (!img.complete) {
+                    await new Promise((resolve) => {
+                        img.onload = resolve;
+                        img.onerror = resolve;
+                        setTimeout(resolve, 3000);
+                    });
+                }
+                if (img.decode) {
+                    try {
+                        await img.decode();
+                    } catch (_) {
+                        // decode puede no ser soportado o fallar en SVGs; no bloquea
+                    }
+                }
+            }));
+        }
+
+        // 4. Estabilización de pintado del motor gráfico del navegador
+        await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+
         const isIg = format === 'instagram';
         const targetW = 1080;
         const targetH = isIg ? 1350 : 1920;
@@ -483,40 +541,37 @@ const App = () => {
         // ---------- 1) Motor principal: modern-screenshot ----------
         if (window.modernScreenshot) {
             try {
+                const computedStyle = window.getComputedStyle(el);
                 const opts = {
                     width: elW,
                     height: elH,
                     scale,
-                    backgroundColor: canvasBg,
-                    timeout: 15000,
-                    // El PNG debe tener esquinas rectas y sin sombra exterior
-                    // (el redondeo y la sombra sólo decoran la vista previa del editor)
+                    backgroundColor: isMova ? (computedStyle.backgroundColor || '#05163F') : canvasBg,
+                    timeout: 20000,
                     style: {
                         borderRadius: '0',
                         boxShadow: 'none',
                         transition: 'none',
                         margin: '0',
-                        backgroundColor: isMova ? '#05163F' : canvasBg,
-                        backgroundImage: isMova ? (el.style.backgroundImage || 'none') : (isFlat ? 'none' : 'linear-gradient(to right, rgba(255, 255, 255, 0.18) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.18) 1px, transparent 1px)'),
-                        backgroundSize: isMova ? 'auto' : (isFlat ? 'auto' : '27px 27px'),
+                        backgroundColor: isMova ? (el.style.backgroundColor || computedStyle.backgroundColor || '#05163F') : canvasBg,
+                        backgroundImage: isMova ? (el.style.backgroundImage || computedStyle.backgroundImage || 'none') : (isFlat ? 'none' : 'linear-gradient(to right, rgba(255, 255, 255, 0.18) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.18) 1px, transparent 1px)'),
+                        backgroundSize: isMova ? (el.style.backgroundSize || computedStyle.backgroundSize || 'auto') : (isFlat ? 'auto' : '27px 27px'),
                     },
                     fetch: { requestInit: { mode: 'cors', cache: 'force-cache' } },
                     features: { removeControlCharacter: true },
                 };
-                // WebKit (iPhone/Safari) a veces pinta la primera pasada sin imágenes ni
-                // fuentes decodificadas: hacemos una pasada de calentamiento barata.
+
                 if (isMobileDevice) {
                     await window.modernScreenshot.domToCanvas(el, { ...opts, scale: 1 });
                 }
                 const canvas = await window.modernScreenshot.domToCanvas(el, opts);
                 return await canvasToExactBlob(canvas);
             } catch (err) {
-                console.warn('modern-screenshot falló, usando html2canvas como respaldo:', err);
+                console.warn('[Render] modern-screenshot falló, usando html2canvas como respaldo:', err);
             }
         }
 
         // ---------- 2) Respaldo: html2canvas ----------
-        // Requiere quitar temporalmente el escalado CSS del contenedor para no recortar.
         const outer = document.getElementById('slide-scaler-outer');
         const inner = document.getElementById('slide-scaler-inner');
         const prevInnerTransform = inner ? inner.style.transform : '';
@@ -540,15 +595,15 @@ const App = () => {
                 useCORS: true,
                 allowTaint: false,
                 logging: false,
-                imageTimeout: 5000,
+                imageTimeout: 8000,
                 onclone: (doc) => {
                     const c = doc.getElementById('capture-slide');
                     if (c) {
                         c.style.borderRadius = '0';
                         c.style.boxShadow = 'none';
-                        c.style.backgroundColor = isMova ? '#05163F' : canvasBg;
+                        c.style.backgroundColor = isMova ? (el.style.backgroundColor || '#05163F') : canvasBg;
                         c.style.backgroundImage = isMova ? (el.style.backgroundImage || 'none') : (isFlat ? 'none' : 'linear-gradient(to right, rgba(255, 255, 255, 0.18) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.18) 1px, transparent 1px)');
-                        c.style.backgroundSize = isMova ? 'auto' : (isFlat ? 'auto' : '27px 27px');
+                        c.style.backgroundSize = isMova ? (el.style.backgroundSize || 'auto') : (isFlat ? 'auto' : '27px 27px');
                     }
                 },
             });
@@ -564,18 +619,16 @@ const App = () => {
     };
 
     /**
-     * Exporta la diapositiva activa con compatibilidad total para iPhone / iOS Safari:
-     * 1. Intenta abrir el Web Share Sheet nativo de iOS para 'Guardar imagen' en Fotos.
-     * 2. Si falla o se cancela, abre el modal de guardado directo con previsualización
-     *    y botón directo libre de bloqueo de popups.
-     * 3. En escritorio, descarga automáticamente el archivo vía Blob URL.
+     * Exporta la diapositiva activa con compatibilidad total para iPhone / iOS Safari y Escritorio
      */
     const downloadOne = async () => {
         setBusy(true);
-        setProgressText('Generando slide HD...');
+        setProgressText('Preparando captura HD...');
         try {
-            const filename = `${video.slug}_${format}_${window.pad(sIdx + 1)}.png`;
-            const blob = await renderSlideToBlob();
+            const curIdx = sIdx;
+            const filename = `${video.slug}_${format}_${window.pad(curIdx + 1)}.png`;
+            setProgressText(`Generando slide ${curIdx + 1}...`);
+            const blob = await renderSlideToBlob(curIdx);
             const file = new File([blob], filename, { type: 'image/png' });
             const url = URL.createObjectURL(blob);
 
@@ -587,19 +640,14 @@ const App = () => {
                         title: filename,
                         text: 'Slide guardada con Santi.Dev Creator',
                     });
-                    // Éxito con el Share Sheet de iOS (el usuario guardó o envió a Instagram/WhatsApp)
                     return;
                 } catch (shareErr) {
-                    if (shareErr.name === 'AbortError') {
-                        // El usuario cerró el menú deliberadamente
-                        return;
-                    }
+                    if (shareErr.name === 'AbortError') return;
                     console.warn('navigator.share falló, abriendo modal de guardado:', shareErr);
                 }
             }
 
-            // En dispositivos móviles (iPhone / Android) o si no se compartió directamente,
-            // abrimos el modal de guardado táctil optimizado
+            // En dispositivos móviles (iPhone / Android) o respaldo táctil
             if (isMobileDevice) {
                 setExportModal({
                     filename,
@@ -611,37 +659,69 @@ const App = () => {
                 return;
             }
 
-            // En escritorio: descarga directa vía <a download> con Blob URL (100% compatible)
+            // En escritorio: descarga directa vía <a download> con Blob URL
             const a = document.createElement('a');
             a.download = filename;
             a.href = url;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
-            setTimeout(() => URL.revokeObjectURL(url), 5000);
+            // Liberar memoria de forma segura después de 60 segundos
+            setTimeout(() => URL.revokeObjectURL(url), 60000);
         } catch (err) {
-            console.error(err);
-            alert('No se pudo exportar la diapositiva. Asegúrate de ejecutar en servidor local.');
+            console.error('[DownloadOne Error]:', err);
+            alert('No se pudo exportar la diapositiva. Por favor verifica que los recursos hayan cargado.');
         } finally {
             setBusy(false);
             setProgressText('');
         }
     };
 
-    /** Exporta todas las diapositivas del carrusel en serie con empaquetado ZIP automático */
+    /** Exporta todas las diapositivas del carrusel en serie con sincronización garantizada y empaquetado ZIP */
     const downloadAll = async () => {
         setBusy(true);
+        const originalIdx = sIdx;
         try {
             const items = [];
+            const failedSlides = [];
+
             for (let i = 0; i < video.slides.length; i++) {
                 setSIdx(i);
                 setProgressText(`Renderizando slide ${i + 1}/${video.slides.length} (${format.toUpperCase()})...`);
-                await window.sleep(350);
+                
+                // Esperar a que el DOM se sincronice y los recursos se estabilicen
+                await window.sleep(200);
+
                 const filename = `${video.slug}_${format}_${window.pad(i + 1)}.png`;
-                const blob = await renderSlideToBlob();
-                const file = new File([blob], filename, { type: 'image/png' });
-                const url = URL.createObjectURL(blob);
-                items.push({ index: i, filename, blob, file, url });
+                let blob = null;
+
+                try {
+                    blob = await renderSlideToBlob(i);
+                } catch (firstErr) {
+                    console.warn(`[DownloadAll] Reintento en slide ${i + 1}:`, firstErr);
+                    // Margen de reintento con estabilización extra
+                    await window.sleep(400);
+                    try {
+                        blob = await renderSlideToBlob(i);
+                    } catch (retryErr) {
+                        console.error(`[DownloadAll] Error definitivo en slide ${i + 1}:`, retryErr);
+                        failedSlides.push(i + 1);
+                    }
+                }
+
+                if (blob) {
+                    const file = new File([blob], filename, { type: 'image/png' });
+                    const url = URL.createObjectURL(blob);
+                    items.push({ index: i, filename, blob, file, url });
+                }
+            }
+
+            // Restaurar diapositiva original del usuario
+            setSIdx(originalIdx);
+
+            if (items.length === 0) {
+                alert('No se pudo renderizar ninguna diapositiva. Revisa la consola.');
+                return;
             }
 
             // Empaquetar todo el carrusel en un archivo ZIP con JSZip
@@ -651,53 +731,48 @@ const App = () => {
 
             if (window.JSZip && items.length > 0) {
                 setProgressText('Empaquetando diapositivas en ZIP...');
-                const zip = new window.JSZip();
-                items.forEach((item) => {
-                    zip.file(item.filename, item.blob);
-                });
-                zipBlob = await zip.generateAsync({ type: 'blob' });
-                zipUrl = URL.createObjectURL(zipBlob);
+                try {
+                    const zip = new window.JSZip();
+                    items.forEach((item) => {
+                        zip.file(item.filename, item.blob);
+                    });
+                    zipBlob = await zip.generateAsync({ type: 'blob' });
+                    zipUrl = URL.createObjectURL(zipBlob);
+                } catch (zipErr) {
+                    console.error('[JSZip Error]:', zipErr);
+                }
             }
 
             // En escritorio:
             // Si hay ZIP disponible, descargamos el archivo ZIP con 1 solo clic.
             // Esto evita al 100% el bloqueo de descargas múltiples automáticas del navegador.
-            if (!isMobileDevice) {
-                if (zipUrl) {
-                    const a = document.createElement('a');
-                    a.download = zipFilename;
-                    a.href = zipUrl;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                } else {
-                    for (const item of items) {
-                        const a = document.createElement('a');
-                        a.download = item.filename;
-                        a.href = item.url;
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
-                        await window.sleep(400);
-                    }
-                }
+            if (!isMobileDevice && zipUrl) {
+                const a = document.createElement('a');
+                a.download = zipFilename;
+                a.href = zipUrl;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
             }
 
             // Siempre abrimos el panel modal del carrusel completo para permitir:
             // 1. Descarga del ZIP con un botón directo
             // 2. Guardado individual de cualquier diapositiva
             // 3. Verificación visual de todas las diapositivas generadas
-            if (items.length > 0) {
-                setExportModal({
-                    filename: zipFilename,
-                    isMultiple: true,
-                    items,
-                    zipBlob,
-                    zipUrl,
-                });
+            setExportModal({
+                filename: zipFilename,
+                isMultiple: true,
+                items,
+                zipBlob,
+                zipUrl,
+                failedSlides: failedSlides.length > 0 ? failedSlides : null,
+            });
+
+            if (failedSlides.length > 0) {
+                console.warn(`[DownloadAll] Se completaron ${items.length} de ${video.slides.length} slides. Diapositivas con aviso: ${failedSlides.join(', ')}`);
             }
         } catch (err) {
-            console.error(err);
+            console.error('[DownloadAll Critical]:', err);
             alert('Error exportando carrusel. Revisa la consola para más detalles.');
         } finally {
             setBusy(false);

@@ -1721,6 +1721,8 @@ window.MovaSlide = ({ video, d, index, format = 'instagram' }) => {
     return (
         <div
             id="capture-slide"
+            data-slide-index={index}
+            data-slide-format={format}
             className={`slide-container format-${format} relative overflow-hidden flex flex-col justify-between text-white select-none`}
             style={{
                 backgroundColor: atmosphere.bg,
@@ -1769,6 +1771,8 @@ window.Slide = ({ video, d, index, format = 'tiktok' }) => {
     const canvasBg = theme?.bgCanvas || '#0c0c0c';
     return (
         <div id="capture-slide"
+             data-slide-index={index}
+             data-slide-format={format}
              className={`slide-container format-${format} relative overflow-hidden ${isFlat ? 'bg-flat' : 'bg-[#0c0c0c] bg-grid'}`}
              style={{ backgroundColor: canvasBg }}>
             {!isFlat && <window.GridPattern />}

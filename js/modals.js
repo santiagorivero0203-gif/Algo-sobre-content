@@ -34,9 +34,17 @@ window.ExportModal = ({ exportModal, setExportModal, setPostKitOpen, isMobileDev
                     </div>
                     <button
                         onClick={() => {
-                            if (exportModal.url) URL.revokeObjectURL(exportModal.url);
-                            if (exportModal.zipUrl) URL.revokeObjectURL(exportModal.zipUrl);
-                            if (exportModal.items) exportModal.items.forEach(it => URL.revokeObjectURL(it.url));
+                            // Programar revocación con margen seguro de 60 segundos
+                            // para no interrumpir descargas activas en tránsito
+                            const urlsToRevoke = [];
+                            if (exportModal.url) urlsToRevoke.push(exportModal.url);
+                            if (exportModal.zipUrl) urlsToRevoke.push(exportModal.zipUrl);
+                            if (exportModal.items) exportModal.items.forEach(it => urlsToRevoke.push(it.url));
+                            setTimeout(() => {
+                                urlsToRevoke.forEach(u => {
+                                    try { URL.revokeObjectURL(u); } catch (_) {}
+                                });
+                            }, 60000);
                             setExportModal(null);
                         }}
                         className="w-7 h-7 rounded-full bg-neutral-800 text-neutral-400 hover:text-white flex items-center justify-center text-xs">
@@ -124,6 +132,25 @@ window.ExportModal = ({ exportModal, setExportModal, setPostKitOpen, isMobileDev
                                     <span>Descargar Carrusel Completo en ZIP (.zip)</span>
                                 </a>
                             )}
+
+                            {/* Botón opcional para descargar todas las imágenes de forma secuencial */}
+                            <button
+                                onClick={async () => {
+                                    for (let i = 0; i < exportModal.items.length; i++) {
+                                        const it = exportModal.items[i];
+                                        const a = document.createElement('a');
+                                        a.download = it.filename;
+                                        a.href = it.url;
+                                        document.body.appendChild(a);
+                                        a.click();
+                                        document.body.removeChild(a);
+                                        if (window.sleep) await window.sleep(500);
+                                    }
+                                }}
+                                className="w-full py-2 px-3 rounded-xl font-bold text-xs bg-neutral-800 text-neutral-200 hover:bg-neutral-700 flex items-center justify-center gap-2 border border-neutral-700 active:scale-[0.98]">
+                                <i className="fa-solid fa-download"></i>
+                                <span>Descargar Todas Sueltas (.png)</span>
+                            </button>
 
                             <div className="flex items-center justify-between text-[11px] text-neutral-400 font-mono mt-0.5">
                                 <span>Diapositivas listas ({exportModal.items.length})</span>
