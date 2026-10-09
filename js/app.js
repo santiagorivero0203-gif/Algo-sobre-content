@@ -108,7 +108,7 @@ const StudioInspector = (props) => {
 
 const App = () => {
     // Control de versión para invalidar estados obsoletos en navegadores de usuarios
-    const VIDEOS_STORAGE_VERSION = 'v9_mova_post_kits_integrated';
+    const VIDEOS_STORAGE_VERSION = 'v10_fix_ios_instagram_image_scaling';
 
     // Colección de videos editable con persistencia local
     const [videos, setVideos] = React.useState(() => {

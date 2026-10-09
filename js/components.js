@@ -870,11 +870,22 @@ window.MovaHeader = ({ kicker, isTiktok }) => (
                 </span>
             )}
         </div>
-        <div className="flex items-center px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15 shadow-sm shrink-0 select-none">
+        <div
+            className={`flex items-center ${isTiktok ? 'px-2.5 py-1' : 'px-2 py-0.5'} rounded-full bg-white/10 backdrop-blur-md border border-white/15 shadow-sm shrink-0 select-none overflow-hidden`}
+            style={{ maxHeight: isTiktok ? '28px' : '20px', maxWidth: isTiktok ? '120px' : '85px' }}
+        >
             <img
                 src="assets/mova_logo_clean.png"
                 alt="Mova · Rompiendo el silencio"
-                className={`${isTiktok ? 'h-6' : 'h-4.5'} w-auto object-contain drop-shadow`}
+                style={{
+                    height: isTiktok ? '20px' : '14px',
+                    maxHeight: isTiktok ? '20px' : '14px',
+                    width: 'auto',
+                    maxWidth: isTiktok ? '100px' : '75px',
+                    objectFit: 'contain',
+                    display: 'block'
+                }}
+                className="drop-shadow shrink-0"
             />
         </div>
     </div>
@@ -898,9 +909,9 @@ window.MovaTitle = ({ title, sub, isTiktok }) => (
 
 /** Pie de página oficial de la diapositiva de Mova */
 window.MovaFooter = ({ isTiktok }) => (
-    <div className="flex items-center justify-between w-full pt-2 shrink-0 border-t border-white/10 text-[9.5px] text-white/60 z-20">
+    <div className={`flex items-center justify-between w-full ${isTiktok ? 'pt-2 text-[9.5px]' : 'pt-1 text-[8.5px]'} shrink-0 border-t border-white/10 text-white/60 z-20`}>
         <div className="flex items-center gap-1.5 font-bold text-white/80">
-            <window.Icon name="movaWave" size={12} color="#f97316" />
+            <window.Icon name="movaWave" size={isTiktok ? 12 : 10} color="#f97316" />
             <span>@mova.app</span>
         </div>
         <div className="flex items-center gap-2">
@@ -1099,7 +1110,15 @@ window.MovaManifestoCitizenCta = ({ d, isTiktok }) => (
             <img
                 src="assets/mova_logo_clean.png"
                 alt="Mova"
-                className={`${isTiktok ? 'h-10' : 'h-7'} w-auto object-contain mx-auto drop-shadow-md`}
+                style={{
+                    height: isTiktok ? '36px' : '24px',
+                    maxHeight: isTiktok ? '36px' : '24px',
+                    width: 'auto',
+                    maxWidth: '120px',
+                    objectFit: 'contain',
+                    display: 'block'
+                }}
+                className="mx-auto drop-shadow-md shrink-0"
             />
             <h3 className={`${isTiktok ? 'text-[1.4rem]' : 'text-[1.05rem]'} font-black text-white m-0 tracking-tight`}>
                 ¿Te sumas a este Manifiesto?
@@ -1134,7 +1153,7 @@ window.MovaManifestoCitizenCta = ({ d, isTiktok }) => (
 window.MovaSchoolPolaroidHero = ({ d, isTiktok }) => (
     <div className="flex-1 flex flex-col justify-between py-1 select-none text-left">
         <div className={`relative rounded-2xl overflow-hidden border-2 border-amber-300/30 bg-black/60 shadow-2xl ${isTiktok ? 'p-3' : 'p-2.5'} flex flex-col gap-2`}>
-            <div className="relative w-full h-40 rounded-xl overflow-hidden bg-neutral-900 border border-white/15">
+            <div className={`relative w-full ${isTiktok ? 'h-40' : 'h-24'} rounded-xl overflow-hidden bg-neutral-900 border border-white/15`}>
                 <img
                     src="assets/mova_estudiantes_aula.jpg"
                     alt="Aula La Consolación"
@@ -1286,7 +1305,7 @@ window.MovaSchoolAmbassadorCta = ({ d, isTiktok }) => (
 window.MovaAiScannerHero = ({ d, isTiktok }) => (
     <div className="flex-1 flex flex-col justify-between py-1 select-none text-left">
         <div className={`relative rounded-2xl overflow-hidden border border-sky-400/40 bg-black/70 shadow-2xl ${isTiktok ? 'p-3' : 'p-2.5'} flex flex-col gap-2`}>
-            <div className="relative w-full h-40 rounded-xl overflow-hidden bg-neutral-950 border border-sky-500/20">
+            <div className={`relative w-full ${isTiktok ? 'h-40' : 'h-24'} rounded-xl overflow-hidden bg-neutral-950 border border-sky-500/20`}>
                 <img
                     src="assets/mova_ai_vision_hand.jpg"
                     alt="AI Vision Scanner"
@@ -1450,7 +1469,7 @@ window.MovaBetaTesterTerminalCta = ({ d, isTiktok }) => (
 window.MovaMotherChildHero = ({ d, isTiktok }) => (
     <div className="flex-1 flex flex-col justify-between py-1 select-none text-left">
         <div className={`relative rounded-2xl overflow-hidden border border-emerald-400/40 bg-black/70 shadow-2xl ${isTiktok ? 'p-3' : 'p-2.5'} flex flex-col gap-2`}>
-            <div className="relative w-full h-40 rounded-xl overflow-hidden bg-neutral-950 border border-emerald-500/20">
+            <div className={`relative w-full ${isTiktok ? 'h-40' : 'h-24'} rounded-xl overflow-hidden bg-neutral-950 border border-emerald-500/20`}>
                 <img
                     src="assets/mova_madre_hijo_inclusion.jpg"
                     alt="Madre e Hijo Inclusión"
