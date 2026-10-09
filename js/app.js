@@ -107,9 +107,19 @@ const StudioInspector = (props) => {
 };
 
 const App = () => {
+    // Control de versión para invalidar estados obsoletos en navegadores de usuarios
+    const VIDEOS_STORAGE_VERSION = 'v5_mova_variety_suite';
+
     // Colección de videos editable con persistencia local
     const [videos, setVideos] = React.useState(() => {
         try {
+            const currentVer = localStorage.getItem('algo_videos_version');
+            if (currentVer !== VIDEOS_STORAGE_VERSION) {
+                // Se purga la versión antigua en caché para cargar las nuevas narrativas dinámicas de Mova
+                localStorage.removeItem('algo_custom_videos');
+                localStorage.setItem('algo_videos_version', VIDEOS_STORAGE_VERSION);
+                return window.VIDEOS;
+            }
             const raw = localStorage.getItem('algo_custom_videos');
             if (raw) return JSON.parse(raw);
         } catch (e) {
