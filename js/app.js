@@ -108,7 +108,7 @@ const StudioInspector = (props) => {
 
 const App = () => {
     // Control de versión para invalidar estados obsoletos en navegadores de usuarios
-    const VIDEOS_STORAGE_VERSION = 'v10_fix_ios_instagram_image_scaling';
+    const VIDEOS_STORAGE_VERSION = 'v11_fix_ios_canvas_memory_and_slide_downloads';
 
     // Colección de videos editable con persistencia local
     const [videos, setVideos] = React.useState(() => {
@@ -461,7 +461,7 @@ const App = () => {
         // 1. Si se especificó un índice, esperar activamente a que React actualice el DOM
         if (targetSlideIndex !== null) {
             let mounted = false;
-            for (let w = 0; w < 30; w++) {
+            for (let w = 0; w < 60; w++) {
                 const checkEl = document.getElementById('capture-slide');
                 if (checkEl && Number(checkEl.dataset.slideIndex) === targetSlideIndex) {
                     mounted = true;
@@ -523,10 +523,11 @@ const App = () => {
         const isFlat = theme?.bgStyle === 'flat';
         const canvasBg = theme?.bgCanvas || '#0c0c0c';
 
-        /** Normaliza cualquier canvas al tamaño exacto de la red social y lo convierte en PNG */
+        /** Normaliza cualquier canvas al tamaño exacto de la red social y lo convierte en PNG con fallback y liberación de memoria */
         const canvasToExactBlob = (src) => new Promise((resolve, reject) => {
             let out = src;
-            if (src.width !== targetW || src.height !== targetH) {
+            const needsResize = src.width !== targetW || src.height !== targetH;
+            if (needsResize) {
                 out = document.createElement('canvas');
                 out.width = targetW;
                 out.height = targetH;
@@ -535,7 +536,61 @@ const App = () => {
                 ctx.fillRect(0, 0, targetW, targetH);
                 ctx.drawImage(src, 0, 0, targetW, targetH);
             }
-            out.toBlob((b) => (b ? resolve(b) : reject(new Error('Canvas toBlob failed'))), 'image/png', 1.0);
+
+            const freeMemory = () => {
+                try {
+                    if (needsResize && out) {
+                        out.width = 0;
+                        out.height = 0;
+                    }
+                    if (src) {
+                        src.width = 0;
+                        src.height = 0;
+                    }
+                } catch (_) {}
+            };
+
+            try {
+                out.toBlob((b) => {
+                    if (b) {
+                        freeMemory();
+                        resolve(b);
+                    } else {
+                        // Respaldo ultrarrobusto para Safari iOS cuando toBlob devuelve null por límite de memoria o GPU
+                        try {
+                            const dataUrl = out.toDataURL('image/png', 1.0);
+                            const binStr = atob(dataUrl.split(',')[1]);
+                            const len = binStr.length;
+                            const u8 = new Uint8Array(len);
+                            for (let i = 0; i < len; i++) {
+                                u8[i] = binStr.charCodeAt(i);
+                            }
+                            const fallbackBlob = new Blob([u8], { type: 'image/png' });
+                            freeMemory();
+                            resolve(fallbackBlob);
+                        } catch (errDataUrl) {
+                            freeMemory();
+                            reject(new Error('Canvas toBlob y fallback toDataURL fallaron: ' + (errDataUrl.message || errDataUrl)));
+                        }
+                    }
+                }, 'image/png', 1.0);
+            } catch (errToBlob) {
+                try {
+                    const dataUrl = out.toDataURL('image/png', 1.0);
+                    const binStr = atob(dataUrl.split(',')[1]);
+                    const len = binStr.length;
+                    const u8 = new Uint8Array(len);
+                    for (let i = 0; i < len; i++) {
+                        u8[i] = binStr.charCodeAt(i);
+                    }
+                    const fallbackBlob = new Blob([u8], { type: 'image/png' });
+                    freeMemory();
+                    resolve(fallbackBlob);
+                } catch (errDataUrl) {
+                    freeMemory();
+                    reject(errToBlob);
+                }
+            }
         });
 
         // ---------- 1) Motor principal: modern-screenshot ----------
@@ -547,7 +602,7 @@ const App = () => {
                     height: elH,
                     scale,
                     backgroundColor: isMova ? (computedStyle.backgroundColor || '#05163F') : canvasBg,
-                    timeout: 20000,
+                    timeout: 25000,
                     style: {
                         borderRadius: '0',
                         boxShadow: 'none',
@@ -561,9 +616,6 @@ const App = () => {
                     features: { removeControlCharacter: true },
                 };
 
-                if (isMobileDevice) {
-                    await window.modernScreenshot.domToCanvas(el, { ...opts, scale: 1 });
-                }
                 const canvas = await window.modernScreenshot.domToCanvas(el, opts);
                 return await canvasToExactBlob(canvas);
             } catch (err) {
@@ -632,22 +684,9 @@ const App = () => {
             const file = new File([blob], filename, { type: 'image/png' });
             const url = URL.createObjectURL(blob);
 
-            // Intentar guardado nativo en iPhone mediante Web Share API
-            if (isMobileDevice && navigator.canShare && navigator.canShare({ files: [file] })) {
-                try {
-                    await navigator.share({
-                        files: [file],
-                        title: filename,
-                        text: 'Slide guardada con Santi.Dev Creator',
-                    });
-                    return;
-                } catch (shareErr) {
-                    if (shareErr.name === 'AbortError') return;
-                    console.warn('navigator.share falló, abriendo modal de guardado:', shareErr);
-                }
-            }
-
-            // En dispositivos móviles (iPhone / Android) o respaldo táctil
+            // En dispositivos móviles (iPhone / Android) o pantallas táctiles:
+            // Abrimos directamente el modal de guardado. Esto garantiza que cuando el usuario toque
+            // "Guardar en Fotos", Safari disponga de un gesto fresco de usuario (sin expirar).
             if (isMobileDevice) {
                 setExportModal({
                     filename,
@@ -690,22 +729,26 @@ const App = () => {
                 setProgressText(`Renderizando slide ${i + 1}/${video.slides.length} (${format.toUpperCase()})...`);
                 
                 // Esperar a que el DOM se sincronice y los recursos se estabilicen
-                await window.sleep(200);
+                await window.sleep(300);
+                await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
 
                 const filename = `${video.slug}_${format}_${window.pad(i + 1)}.png`;
                 let blob = null;
 
-                try {
-                    blob = await renderSlideToBlob(i);
-                } catch (firstErr) {
-                    console.warn(`[DownloadAll] Reintento en slide ${i + 1}:`, firstErr);
-                    // Margen de reintento con estabilización extra
-                    await window.sleep(400);
+                // Hasta 3 reintentos con enfriamiento progresivo para estabilizar GPU y DOM
+                for (let attempt = 1; attempt <= 3; attempt++) {
                     try {
                         blob = await renderSlideToBlob(i);
-                    } catch (retryErr) {
-                        console.error(`[DownloadAll] Error definitivo en slide ${i + 1}:`, retryErr);
-                        failedSlides.push(i + 1);
+                        if (blob) break;
+                    } catch (attemptErr) {
+                        console.warn(`[DownloadAll] Intento ${attempt} falló en slide ${i + 1}:`, attemptErr);
+                        if (attempt < 3) {
+                            await window.sleep(350 * attempt);
+                            await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+                        } else {
+                            console.error(`[DownloadAll] Error definitivo en slide ${i + 1}:`, attemptErr);
+                            failedSlides.push(i + 1);
+                        }
                     }
                 }
 
@@ -714,6 +757,8 @@ const App = () => {
                     const url = URL.createObjectURL(blob);
                     items.push({ index: i, filename, blob, file, url });
                 }
+                // Pausa breve para permitir recolección de basura entre slides
+                await window.sleep(80);
             }
 
             // Restaurar diapositiva original del usuario

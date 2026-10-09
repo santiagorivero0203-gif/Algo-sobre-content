@@ -16,6 +16,103 @@
 window.ExportModal = ({ exportModal, setExportModal, setPostKitOpen, isMobileDevice }) => {
     if (!exportModal) return null;
 
+    // Estado local para retroalimentación visual durante descargas secuenciales
+    const [downloadingBatch, setDownloadingBatch] = React.useState(false);
+    const [batchProgress, setBatchProgress] = React.useState('');
+
+    // Permite compartir o guardar todas las diapositivas en fotos con 1 clic en iPhone / iPad
+    const handleShareAll = async () => {
+        try {
+            const allFiles = exportModal.items.map(it => it.file || new File([it.blob], it.filename, { type: 'image/png' }));
+            if (navigator.canShare && navigator.canShare({ files: allFiles })) {
+                await navigator.share({
+                    files: allFiles,
+                    title: exportModal.filename || 'Carrusel Completo',
+                    text: 'Guardar diapositivas en Fotos',
+                });
+                return;
+            } else if (navigator.share) {
+                await navigator.share({
+                    files: allFiles,
+                    title: exportModal.filename || 'Carrusel Completo',
+                });
+                return;
+            }
+        } catch (err) {
+            if (err.name === 'AbortError') return;
+            console.warn('[ExportModal] navigator.share bulk falló, guiando al usuario:', err);
+            alert('Para guardar en tu iPhone, toca "Guardar" en cada diapositiva de la lista o mantén presionada la imagen para enviarla a tu carrete.');
+        }
+    };
+
+    // Descarga secuencial con ritmo controlado para evitar bloqueos del navegador
+    const handleDownloadAllSequential = async () => {
+        if (downloadingBatch) return;
+        setDownloadingBatch(true);
+        try {
+            for (let i = 0; i < exportModal.items.length; i++) {
+                const it = exportModal.items[i];
+                setBatchProgress(`Descargando ${i + 1} de ${exportModal.items.length}...`);
+                const a = document.createElement('a');
+                a.download = it.filename;
+                a.href = it.url;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                // Margen de 800ms para que Chrome/Safari no bloquee descargas sucesivas
+                if (window.sleep) await window.sleep(800);
+            }
+            setBatchProgress('¡Todas descargadas!');
+            setTimeout(() => {
+                setDownloadingBatch(false);
+                setBatchProgress('');
+            }, 2000);
+        } catch (e) {
+            console.error('[DownloadAllSequential Error]:', e);
+            setDownloadingBatch(false);
+            setBatchProgress('');
+        }
+    };
+
+    // Guardar una diapositiva individual con resiliencia ante rechazos de Safari
+    const handleSaveSingleItem = async (item, e) => {
+        if (e && e.stopPropagation) e.stopPropagation();
+        try {
+            const f = item.file || new File([item.blob], item.filename, { type: 'image/png' });
+            if (isMobileDevice && navigator.canShare && navigator.canShare({ files: [f] })) {
+                await navigator.share({
+                    files: [f],
+                    title: item.filename,
+                });
+                return;
+            }
+            if (isMobileDevice && navigator.share) {
+                await navigator.share({
+                    files: [f],
+                    title: item.filename,
+                });
+                return;
+            }
+        } catch (err) {
+            if (err.name === 'AbortError') return;
+            console.warn('[SaveSingleItem] Web Share falló, recurriendo a descarga/apertura:', err);
+        }
+
+        // Respaldo inmediato si Web Share no está disponible o falla:
+        if (isMobileDevice) {
+            // Abrir imagen en pestaña limpia donde Safari permite toque largo 'Guardar en Fotos'
+            const win = window.open(item.url, '_blank');
+            if (!win) window.location.href = item.url;
+        } else {
+            const a = document.createElement('a');
+            a.download = item.filename;
+            a.href = item.url;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    };
+
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/85 backdrop-blur-md animate-fadeIn">
             <div className="bg-neutral-900 border border-neutral-700 rounded-2xl max-w-sm w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
@@ -34,8 +131,6 @@ window.ExportModal = ({ exportModal, setExportModal, setPostKitOpen, isMobileDev
                     </div>
                     <button
                         onClick={() => {
-                            // Programar revocación con margen seguro de 60 segundos
-                            // para no interrumpir descargas activas en tránsito
                             const urlsToRevoke = [];
                             if (exportModal.url) urlsToRevoke.push(exportModal.url);
                             if (exportModal.zipUrl) urlsToRevoke.push(exportModal.zipUrl);
@@ -54,16 +149,41 @@ window.ExportModal = ({ exportModal, setExportModal, setPostKitOpen, isMobileDev
 
                 {/* Contenido con scroll */}
                 <div className="p-3.5 overflow-y-auto hide-scrollbar flex flex-col gap-3">
+                    {/* Botón para volver al listado del carrusel si se vino de una vista múltiple */}
+                    {!exportModal.isMultiple && exportModal.prevItems && (
+                        <button
+                            onClick={() => {
+                                setExportModal({
+                                    isMultiple: true,
+                                    items: exportModal.prevItems,
+                                    zipBlob: exportModal.zipBlob,
+                                    zipUrl: exportModal.zipUrl,
+                                    filename: 'carrusel_completo.zip',
+                                });
+                            }}
+                            className="w-full py-2 px-3 rounded-xl font-bold text-xs bg-neutral-800 text-cyan-300 hover:bg-neutral-700 flex items-center justify-center gap-2 border border-neutral-700 active:scale-[0.98] transition-all">
+                            <i className="fa-solid fa-arrow-left"></i>
+                            <span>Volver a la lista de slides ({exportModal.prevItems.length})</span>
+                        </button>
+                    )}
+
                     {/* Instrucción visual para iPhone */}
                     <div className="bg-gradient-to-r from-blue-950/60 to-cyan-950/60 border border-cyan-800/60 rounded-xl p-2.5 text-xs text-cyan-200 flex items-start gap-2">
                         <i className="fa-brands fa-apple text-base text-cyan-300 shrink-0 mt-0.5"></i>
                         <div className="text-[11px] leading-tight text-neutral-300">
                             <b className="text-white">Para guardar en tu iPhone:</b>
                             <p className="mt-0.5 text-cyan-200/90">
-                                Toca <b>"Guardar en Fotos"</b> abajo o mantén presionada la imagen para seleccionar <i>"Guardar en Fotos"</i>.
+                                Toca <b>"Guardar en Fotos"</b> o mantén presionada la imagen para seleccionar <i>"Guardar en Fotos"</i>.
                             </p>
                         </div>
                     </div>
+
+                    {/* Aviso si alguna diapositiva requirió atención */}
+                    {exportModal.isMultiple && exportModal.failedSlides && exportModal.failedSlides.length > 0 && (
+                        <div className="p-2.5 rounded-xl bg-amber-950/60 border border-amber-600/50 text-amber-200 text-[11px] leading-snug">
+                            <b>Nota:</b> Las slides {exportModal.failedSlides.join(', ')} tardaron más en procesarse. Puedes descargarlas individualmente tocando su número en la barra inferior.
+                        </div>
+                    )}
 
                     {!exportModal.isMultiple ? (
                         <div className="flex flex-col gap-3 items-center">
@@ -72,7 +192,13 @@ window.ExportModal = ({ exportModal, setExportModal, setPostKitOpen, isMobileDev
                                 <img
                                     src={exportModal.url}
                                     alt="Slide generada"
-                                    className="ios-save-image max-h-[44vh] w-auto object-contain"
+                                    className="ios-save-image max-h-[44vh] w-auto object-contain cursor-pointer"
+                                    onClick={() => {
+                                        if (isMobileDevice) {
+                                            const win = window.open(exportModal.url, '_blank');
+                                            if (!win) window.location.href = exportModal.url;
+                                        }
+                                    }}
                                 />
                             </div>
 
@@ -89,7 +215,13 @@ window.ExportModal = ({ exportModal, setExportModal, setPostKitOpen, isMobileDev
                                                     text: 'Guardar slide en Fotos',
                                                 });
                                             } catch (e) {
-                                                if (e.name !== 'AbortError') console.error(e);
+                                                if (e.name !== 'AbortError') {
+                                                    console.warn('Share falló, abriendo imagen:', e);
+                                                    if (isMobileDevice) {
+                                                        const win = window.open(exportModal.url, '_blank');
+                                                        if (!win) window.location.href = exportModal.url;
+                                                    }
+                                                }
                                             }
                                         }}
                                         className="w-full py-2.5 px-3 rounded-xl font-black text-xs bg-white text-black hover:bg-neutral-200 flex items-center justify-center gap-2 shadow-lg active:scale-[0.98]">
@@ -98,15 +230,24 @@ window.ExportModal = ({ exportModal, setExportModal, setPostKitOpen, isMobileDev
                                     </button>
                                 )}
 
-                                <a
-                                    href={exportModal.url}
-                                    download={exportModal.filename}
-                                    target="_blank"
-                                    rel="noreferrer"
+                                <button
+                                    onClick={() => {
+                                        if (isMobileDevice) {
+                                            const win = window.open(exportModal.url, '_blank');
+                                            if (!win) window.location.href = exportModal.url;
+                                        } else {
+                                            const a = document.createElement('a');
+                                            a.download = exportModal.filename;
+                                            a.href = exportModal.url;
+                                            document.body.appendChild(a);
+                                            a.click();
+                                            document.body.removeChild(a);
+                                        }
+                                    }}
                                     className="w-full py-2 px-3 rounded-xl font-bold text-xs bg-neutral-800 text-neutral-200 hover:bg-neutral-700 flex items-center justify-center gap-2 border border-neutral-700 active:scale-[0.98]">
                                     <i className="fa-solid fa-download"></i>
                                     <span>Descargar Archivo PNG</span>
-                                </a>
+                                </button>
 
                                 <button
                                     id="btn-modal-open-postkit"
@@ -122,7 +263,17 @@ window.ExportModal = ({ exportModal, setExportModal, setPostKitOpen, isMobileDev
                         </div>
                     ) : (
                         <div className="flex flex-col gap-2.5">
-                            {/* Botón directo de descarga en ZIP */}
+                            {/* 1. Botón nativo de guardado masivo en iPhone si está soportado */}
+                            {isMobileDevice && navigator.share && (
+                                <button
+                                    onClick={handleShareAll}
+                                    className="w-full py-2.5 px-3 rounded-xl font-black text-xs bg-white text-black hover:bg-neutral-200 flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] transition-all">
+                                    <i className="fa-solid fa-arrow-up-from-bracket text-sm text-cyan-700"></i>
+                                    <span>Guardar Todas en Fotos (iPhone)</span>
+                                </button>
+                            )}
+
+                            {/* 2. Botón directo de descarga en ZIP */}
                             {exportModal.zipUrl && (
                                 <a
                                     href={exportModal.zipUrl}
@@ -133,62 +284,52 @@ window.ExportModal = ({ exportModal, setExportModal, setPostKitOpen, isMobileDev
                                 </a>
                             )}
 
-                            {/* Botón opcional para descargar todas las imágenes de forma secuencial */}
+                            {/* 3. Botón para descargar todas las imágenes de forma secuencial */}
                             <button
-                                onClick={async () => {
-                                    for (let i = 0; i < exportModal.items.length; i++) {
-                                        const it = exportModal.items[i];
-                                        const a = document.createElement('a');
-                                        a.download = it.filename;
-                                        a.href = it.url;
-                                        document.body.appendChild(a);
-                                        a.click();
-                                        document.body.removeChild(a);
-                                        if (window.sleep) await window.sleep(500);
-                                    }
-                                }}
-                                className="w-full py-2 px-3 rounded-xl font-bold text-xs bg-neutral-800 text-neutral-200 hover:bg-neutral-700 flex items-center justify-center gap-2 border border-neutral-700 active:scale-[0.98]">
-                                <i className="fa-solid fa-download"></i>
-                                <span>Descargar Todas Sueltas (.png)</span>
+                                onClick={handleDownloadAllSequential}
+                                disabled={downloadingBatch}
+                                className={`w-full py-2 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 border border-neutral-700 active:scale-[0.98] transition-all ${downloadingBatch ? 'bg-neutral-700 text-neutral-300 cursor-wait' : 'bg-neutral-800 text-neutral-200 hover:bg-neutral-700'}`}>
+                                <i className={`fa-solid ${downloadingBatch ? 'fa-spinner fa-spin' : 'fa-download'}`}></i>
+                                <span>{downloadingBatch ? (batchProgress || 'Descargando...') : 'Descargar Todas Sueltas (.png)'}</span>
                             </button>
 
                             <div className="flex items-center justify-between text-[11px] text-neutral-400 font-mono mt-0.5">
                                 <span>Diapositivas listas ({exportModal.items.length})</span>
-                                <span>PNG HD 1080px</span>
+                                <span>Toca una slide para abrirla</span>
                             </div>
+
+                            {/* 4. Lista interactiva de diapositivas */}
                             <div className="flex flex-col gap-2 max-h-[46vh] overflow-y-auto hide-scrollbar">
                                 {exportModal.items.map((item, idx) => (
-                                    <div key={idx} className="flex items-center gap-2.5 p-2 bg-neutral-800/80 border border-neutral-700/60 rounded-xl">
+                                    <div
+                                        key={idx}
+                                        id={`export-item-${idx + 1}`}
+                                        onClick={() => {
+                                            setExportModal({
+                                                ...item,
+                                                isMultiple: false,
+                                                prevItems: exportModal.items,
+                                                zipBlob: exportModal.zipBlob,
+                                                zipUrl: exportModal.zipUrl,
+                                            });
+                                        }}
+                                        className="flex items-center gap-2.5 p-2 bg-neutral-800/80 hover:bg-neutral-750 border border-neutral-700/60 hover:border-cyan-500/50 rounded-xl cursor-pointer transition-all active:scale-[0.99] group">
                                         <img
                                             src={item.url}
                                             alt={`Slide ${idx + 1}`}
-                                            className="ios-save-image w-10 h-14 object-cover rounded-lg border border-neutral-700 shrink-0"
+                                            className="ios-save-image w-10 h-14 object-cover rounded-lg border border-neutral-700 shrink-0 group-hover:border-cyan-400"
                                         />
                                         <div className="flex-1 min-w-0">
-                                            <div className="font-bold text-xs text-white truncate">Slide {idx + 1} de {exportModal.items.length}</div>
+                                            <div className="font-bold text-xs text-white truncate flex items-center gap-1.5">
+                                                <span>Slide {idx + 1} de {exportModal.items.length}</span>
+                                                <i className="fa-solid fa-up-right-from-square text-[9px] text-neutral-500 group-hover:text-cyan-400"></i>
+                                            </div>
                                             <div className="text-[10px] text-neutral-400 font-mono truncate">{item.filename}</div>
                                         </div>
                                         <button
-                                            onClick={async () => {
-                                                try {
-                                                    if (isMobileDevice && navigator.share) {
-                                                        await navigator.share({
-                                                            files: [item.file],
-                                                            title: item.filename,
-                                                        });
-                                                    } else {
-                                                        const a = document.createElement('a');
-                                                        a.download = item.filename;
-                                                        a.href = item.url;
-                                                        document.body.appendChild(a);
-                                                        a.click();
-                                                        document.body.removeChild(a);
-                                                    }
-                                                } catch (e) {
-                                                    if (e.name !== 'AbortError') console.error(e);
-                                                }
-                                            }}
-                                            className="px-2.5 py-1.5 rounded-lg bg-white text-black font-black text-xs flex items-center gap-1 shrink-0 active:scale-95 shadow">
+                                            id={`export-save-btn-${idx + 1}`}
+                                            onClick={(e) => handleSaveSingleItem(item, e)}
+                                            className="px-2.5 py-1.5 rounded-lg bg-white text-black hover:bg-neutral-200 font-black text-xs flex items-center gap-1 shrink-0 active:scale-95 shadow">
                                             <i className="fa-solid fa-arrow-down-to-bracket text-[10px]"></i>
                                             <span>Guardar</span>
                                         </button>
