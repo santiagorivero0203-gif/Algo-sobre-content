@@ -972,42 +972,15 @@ window.MovaFootNote = ({ text, isTiktok, tone = 'orange' }) => {
 
 // ==================== VISTAS ESPECÍFICAS DE PANTALLA (MOVA) ====================
 
-/** Selector de atmósfera visual y paleta por publicación */
-window.getMovaThemeAtmosphere = (videoId) => {
-    switch (videoId) {
-        case 'mova_inspiracion':
-            return {
-                bg: '#051226',
-                gradient: 'radial-gradient(ellipse at 50% 12%, rgba(245, 158, 11, 0.22) 0%, rgba(37, 99, 235, 0.12) 45%, #051226 85%)',
-                glow: 'radial-gradient(circle at 85% 85%, rgba(245, 158, 11, 0.1) 0%, transparent 50%), radial-gradient(circle at 15% 90%, rgba(37, 99, 235, 0.08) 0%, transparent 40%)',
-                accent: '#f59e0b',
-                badgeBg: 'bg-amber-500/15 border-amber-500/25 text-amber-300'
-            };
-        case 'mova_idea':
-            return {
-                bg: '#020d20',
-                gradient: 'radial-gradient(ellipse at 50% 12%, rgba(14, 165, 233, 0.24) 0%, rgba(59, 130, 246, 0.15) 50%, #020d20 88%)',
-                glow: 'radial-gradient(circle at 85% 85%, rgba(14, 165, 233, 0.12) 0%, transparent 50%), radial-gradient(circle at 15% 90%, rgba(59, 130, 246, 0.08) 0%, transparent 40%)',
-                accent: '#38bdf8',
-                badgeBg: 'bg-sky-500/15 border-sky-400/25 text-sky-300'
-            };
-        case 'mova_mision':
-            return {
-                bg: '#031420',
-                gradient: 'radial-gradient(ellipse at 50% 10%, rgba(16, 185, 129, 0.22) 0%, rgba(59, 130, 246, 0.14) 45%, #031420 88%)',
-                glow: 'radial-gradient(circle at 85% 85%, rgba(16, 185, 129, 0.1) 0%, transparent 50%), radial-gradient(circle at 15% 90%, rgba(59, 130, 246, 0.08) 0%, transparent 40%)',
-                accent: '#10b981',
-                badgeBg: 'bg-emerald-500/15 border-emerald-400/25 text-emerald-300'
-            };
-        default: // 'mova' (Manifiesto Oficial)
-            return {
-                bg: '#030C22',
-                gradient: 'radial-gradient(ellipse at 50% 10%, rgba(59, 130, 246, 0.22) 0%, rgba(249, 115, 22, 0.14) 42%, #030C22 88%)',
-                glow: 'radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.1) 0%, transparent 50%), radial-gradient(circle at 15% 90%, rgba(249, 115, 22, 0.08) 0%, transparent 40%)',
-                accent: '#f97316',
-                badgeBg: 'bg-orange-500/15 border-orange-500/25 text-orange-400'
-            };
-    }
+/** Atmósfera visual oficial de Mova: azul marino profundo (#05163F) con iluminación naranja y azul */
+window.getMovaThemeAtmosphere = (_videoId) => {
+    return {
+        bg: '#05163F',
+        gradient: 'radial-gradient(ellipse at 50% 12%, rgba(255, 165, 0, 0.22) 0%, rgba(59, 130, 246, 0.16) 45%, #05163F 85%)',
+        glow: 'radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.12) 0%, transparent 50%), radial-gradient(circle at 15% 90%, rgba(255, 165, 0, 0.08) 0%, transparent 40%)',
+        accent: '#f97316',
+        badgeBg: 'bg-orange-500/15 border-orange-500/25 text-orange-400'
+    };
 };
 
 /** 1. Portada del Manifiesto: Armonía espacial, logo minimalista oficial y gran respiración visual */
