@@ -318,6 +318,24 @@ Siguiendo estos 4 principios gané el torneo nacional con "The Last Endo":
     {
         id: 'mova', accountId: 'mova', slug: 'mova_manifiesto_oficial', theme: 'mova', caseNo: 5, group: 'Mova: Rompiendo el Silencio',
         title: 'Mova: Manifiesto', subtitle: '70 Millones Rompiendo el Silencio',
+        post: {
+            hook: 'Más de 70 millones de personas hablan con sus manos en el mundo... pero casi nadie se detiene a escucharlas. En Mova decidimos derribar el silencio. 👇',
+            caption: `¿Te imaginas entrar a un hospital con un dolor agudo o estar en una taquilla bancaria y que nadie sea capaz de entender lo que intentas decir?
+
+Ese aislamiento no es una exageración: es la realidad diaria de más de 70 millones de personas sordas en el mundo y más de 500.000 en Venezuela.
+
+En Mova (@mova.app) creemos que la comunicación no es un privilegio para unos pocos: es la base indispensable de la dignidad humana.
+
+Por eso creamos una herramienta libre y ética que transforma la cámara de cualquier teléfono en un intérprete instantáneo de lengua de señas a voz, 100% offline y sin suscripciones.
+
+Nadie debería sentirse invisible en su propia ciudad.
+
+💾 Guarda esta publicación y compártela para que más personas se sumen a derribar la muralla del silencio.
+👉 Sigue a @mova.app y acompáñanos en este camino.`,
+            hashtags: ['#mova', '#lenguajedeseñas', '#inclusión', '#consolacion', '#caracas', '#venezuela', '#lsv', '#comunidad', '#impactosocial', '#derechoshumanos'],
+            bestTime: '18:00 - 21:00 (Lunes / Jueves)',
+            sound: 'Inspirational piano strings / Lo-Fi emotivo acústico',
+        },
         copy: {
             hook: 'Más de 70 millones de personas hablan con sus manos en el mundo... pero casi nadie se detiene a escucharlas. En Mova decidimos derribar el silencio.',
             problem: 'Menos del 1% de la población oyente entiende la lengua de señas. En hospitales, trámites y emergencias, una persona sorda queda en soledad absoluta.',
@@ -377,6 +395,22 @@ Sigue a @mova.app y acompáñanos en este camino.`,
     {
         id: 'mova_inspiracion', accountId: 'mova', slug: 'mova_en_que_nos_inspiramos', theme: 'mova', caseNo: 6, group: 'Mova: Rompiendo el Silencio',
         title: 'Mova: Nuestra Inspiración', subtitle: 'Colegio La Consolación Caracas',
+        post: {
+            hook: 'La mayoría de investigaciones escolares terminan engrapadas en un cajón. En el Colegio La Consolación nos negamos a que Mova fuera una más. 👇',
+            caption: `¿Cuántas ideas increíbles nacen en los colegios y mueren el día que entregan la nota final?
+
+Mova nació en los pasillos del Colegio La Consolación en Caracas al presenciar algo muy simple pero doloroso: dos compañeros de clase querían ser amigos en el recreo, pero uno era sordo y el otro no sabía cómo hablarle.
+
+Ese silencio nos marcó. Nos negamos a hacer una maqueta de cartón para sacarnos 20 puntos en la feria de ciencias mientras nuestro compañero seguía aislado. Decidimos salir del aula y escribir código real para la calle.
+
+Un proyecto estudiantil solo tiene valor verdadero cuando transforma la vida de alguien afuera del colegio.
+
+💾 Guarda esta historia si crees en una juventud que construye con propósito.
+👉 Sigue a @mova.app y acompáñanos en este camino.`,
+            hashtags: ['#mova', '#consolacion', '#caracas', '#venezuela', '#inspiracion', '#lsv', '#lenguajedeseñas', '#inclusión', '#impactosocial', '#historiasreales'],
+            bestTime: '19:00 - 22:00 (Miércoles / Viernes)',
+            sound: 'Cinematic warmth / Piano acústico inspirador',
+        },
         copy: {
             hook: 'La mayoría de investigaciones escolares terminan engrapadas en un cajón. En el Colegio La Consolación nos negamos a que Mova fuera una más.',
             problem: 'En las ferias de ciencias los jurados felicitan maquetas ingeniosas, pero al día siguiente los compañeros sordos siguen sin poder hablar en el recreo.',
@@ -428,6 +462,24 @@ Sigue a @mova.app y acompaña nuestro camino.`,
     {
         id: 'mova_idea', accountId: 'mova', slug: 'mova_nuestra_idea_traductor_ia', theme: 'mova', caseNo: 7, group: 'Mova: Rompiendo el Silencio',
         title: 'Mova: Nuestra Idea', subtitle: 'La cámara se convierte en tu voz',
+        post: {
+            hook: '¿Cómo habla una persona sorda si los demás no saben señas? Sin comprar aparatos caros ni pagar suscripciones, así lo resolvemos. 👇',
+            caption: `La mayoría de herramientas de accesibilidad en el mercado cometen dos grandes injusticias: o cobran suscripciones en dólares que casi nadie en Latinoamérica puede pagar, o exigen conexión continua a internet que falla en un hospital o un autobús.
+
+En Mova (@mova.app) diseñamos una arquitectura radicalmente distinta:
+
+📱 Convertimos la cámara de cualquier teléfono en un intérprete instantáneo que corre 100% en el chip local del móvil.
+⚡ 60 cuadros por segundo: tus manos hacen el gesto y el altavoz pronuncia la palabra en voz alta antes de que bajes la mano.
+🔒 Privacidad total: cero consumo de megas y cero grabaciones enviadas a la nube.
+
+La tecnología ética no le pide tarjeta de crédito a quien necesita auxilio.
+
+💾 Guarda este post y comparte una idea que pone a las personas en primer lugar.
+👉 Sigue a @mova.app y prueba la beta gratuita.`,
+            hashtags: ['#mova', '#lenguajedeseñas', '#inclusión', '#accesibilidad', '#offline', '#tecnologiaparatodos', '#lsv', '#caracas', '#venezuela'],
+            bestTime: '13:00 - 15:00 o 19:00 - 21:00 (Martes / Viernes)',
+            sound: 'Tech beat minimal / Electronic uplifting clean',
+        },
         copy: {
             hook: 'La mayoría cree que traducir lengua de señas requiere servidores gigantes en la nube. Te demostramos por qué estaban equivocados.',
             problem: 'Las apps que dependen de internet consumen datos caros, tienen latencia de segundos y exponen la intimidad de las conversaciones.',
@@ -480,6 +532,25 @@ Sigue a @mova.app y prueba la beta gratuita.`,
     {
         id: 'mova_mision', accountId: 'mova', slug: 'mova_nuestra_mision_inclusion', theme: 'mova', caseNo: 8, group: 'Mova: Rompiendo el Silencio',
         title: 'Mova: Nuestra Misión', subtitle: 'Inclusión sin barreras ni fronteras',
+        post: {
+            hook: 'La inclusión no consiste en que la persona sorda se adapte a nuestro mundo: consiste en que nosotros aprendamos a escuchar. 👇',
+            caption: `Durante generaciones se le ha exigido a las personas con discapacidad auditiva un esfuerzo desgastante para encajar en una sociedad pensada exclusivamente para quienes oyen.
+
+En Mova (@mova.app) creemos que esa exigencia histórica es injusta.
+
+Nuestra misión es poner la tecnología al servicio de la empatía humana:
+1️⃣ Garantizar acceso libre y gratuito a la comunicación para siempre.
+2️⃣ Proteger la intimidad de las familias procesando todo localmente en el móvil.
+3️⃣ Conectar lenguas hermanas: LSV venezolana, ASL internacional y LSE española.
+
+Además, abrimos aulas comunitarias para que las madres de niños sordos y los docentes de nuestros colegios aprendan señas cotidianas sin barreras.
+
+💾 Guarda este post y súmate a una misión que nos pertenece a todos.
+👉 Sigue a @mova.app y construyamos un futuro sin muros de silencio.`,
+            hashtags: ['#mova', '#mision', '#inclusion', '#accesibilidad', '#derechoshumanos', '#lsv', '#asl', '#lse', '#caracas', '#venezuela', '#comunidad'],
+            bestTime: '18:00 - 21:00 (Sábado / Domingo)',
+            sound: 'Piano emotivo inspirador / Lo-Fi suave y reflexivo',
+        },
         copy: {
             hook: 'Durante décadas se le exigió a las personas sordas que se adaptaran a un mundo que nunca quiso aprender su idioma. Esa deuda termina hoy.',
             problem: 'Exigir lectura labial forzada o depender de intérpretes pagos en consultas médicas aísla a miles de personas.',

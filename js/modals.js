@@ -335,9 +335,17 @@ window.PostKitModal = ({
     copiedKey,
     onCopy
 }) => {
-    if (!postKitOpen) return null;
+    if (!postKitOpen || !activeVideo) return null;
 
-    const post = activeVideo.post;
+    const post = activeVideo.post || activeVideo.copy;
+    const account = window.getAccountForVideo(activeVideo);
+
+    const hookText = post?.hook || '';
+    const captionText = post?.caption || post?.manifesto || post?.problem || '';
+    const rawHashtags = post?.hashtags || [];
+    const hashtagsList = Array.isArray(rawHashtags) ? rawHashtags : (typeof rawHashtags === 'string' ? rawHashtags.split(' ') : []);
+    const bestTime = post?.bestTime || post?.schedule || '18:00 - 21:00';
+    const sound = post?.sound || 'Audio en tendencia / Instrumental inspirador';
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/85 backdrop-blur-md animate-fadeIn">
@@ -346,11 +354,11 @@ window.PostKitModal = ({
                 <div className="p-4 border-b border-neutral-800 flex items-center justify-between bg-neutral-950/70 shrink-0">
                     <div className="flex items-center gap-2.5 min-w-0">
                         <div className="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center text-base shrink-0">
-                            <i className="fa-solid fa-copy"></i>
+                            <i className="fa-solid fa-clipboard-list"></i>
                         </div>
                         <div className="truncate">
                             <h3 className="text-sm font-black text-white truncate">Kit de Publicación para Redes</h3>
-                            <p className="text-[11px] text-neutral-400 font-mono truncate">{activeVideo.title} · {window.getAccountForVideo(activeVideo).handle}</p>
+                            <p className="text-[11px] text-neutral-400 font-mono truncate">{activeVideo.title} · {account.handle}</p>
                         </div>
                     </div>
                     <button
@@ -362,74 +370,80 @@ window.PostKitModal = ({
 
                 {/* Contenido con scroll */}
                 <div className="p-4 overflow-y-auto hide-scrollbar flex flex-col gap-4 text-xs select-text">
-                    {post ? (
+                    {post && (hookText || captionText) ? (
                         <>
                             {/* Gancho */}
-                            <div className="flex flex-col gap-1.5">
-                                <div className="flex items-center justify-between">
-                                    <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 flex items-center gap-1.5">
-                                        <i className="fa-solid fa-bolt text-amber-400 text-xs"></i>
-                                        <span>Gancho / Hook (Detiene el scroll)</span>
-                                    </span>
-                                    <button
-                                        onClick={() => onCopy('hook', post.hook)}
-                                        className="text-amber-400 hover:underline font-mono text-[11px] flex items-center gap-1 active:scale-95">
-                                        <i className={`fa-solid ${copiedKey === 'hook' ? 'fa-check text-emerald-400' : 'fa-copy'}`}></i>
-                                        <span>{copiedKey === 'hook' ? '¡Copiado!' : 'Copiar'}</span>
-                                    </button>
+                            {hookText && (
+                                <div className="flex flex-col gap-1.5">
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 flex items-center gap-1.5">
+                                            <i className="fa-solid fa-bolt text-amber-400 text-xs"></i>
+                                            <span>Gancho / Hook (Detiene el scroll)</span>
+                                        </span>
+                                        <button
+                                            onClick={() => onCopy('hook', hookText)}
+                                            className="text-amber-400 hover:underline font-mono text-[11px] flex items-center gap-1 active:scale-95">
+                                            <i className={`fa-solid ${copiedKey === 'hook' ? 'fa-check text-emerald-400' : 'fa-copy'}`}></i>
+                                            <span>{copiedKey === 'hook' ? '¡Copiado!' : 'Copiar'}</span>
+                                        </button>
+                                    </div>
+                                    <div className="p-3 bg-neutral-950 rounded-xl border border-neutral-800 text-neutral-200 leading-snug font-semibold text-xs">
+                                        {hookText}
+                                    </div>
                                 </div>
-                                <div className="p-3 bg-neutral-950 rounded-xl border border-neutral-800 text-neutral-200 leading-snug font-semibold text-xs">
-                                    {post.hook}
-                                </div>
-                            </div>
+                            )}
 
                             {/* Caption completo */}
-                            <div className="flex flex-col gap-1.5">
-                                <div className="flex items-center justify-between">
-                                    <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 flex items-center gap-1.5">
-                                        <i className="fa-solid fa-align-left text-blue-400 text-xs"></i>
-                                        <span>Descripción Completa (Caption)</span>
-                                    </span>
-                                    <button
-                                        onClick={() => onCopy('caption', post.caption)}
-                                        className="text-blue-400 hover:underline font-mono text-[11px] flex items-center gap-1 active:scale-95">
-                                        <i className={`fa-solid ${copiedKey === 'caption' ? 'fa-check text-emerald-400' : 'fa-copy'}`}></i>
-                                        <span>{copiedKey === 'caption' ? '¡Copiado!' : 'Copiar'}</span>
-                                    </button>
+                            {captionText && (
+                                <div className="flex flex-col gap-1.5">
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 flex items-center gap-1.5">
+                                            <i className="fa-solid fa-align-left text-blue-400 text-xs"></i>
+                                            <span>Descripción Completa (Caption)</span>
+                                        </span>
+                                        <button
+                                            onClick={() => onCopy('caption', captionText)}
+                                            className="text-blue-400 hover:underline font-mono text-[11px] flex items-center gap-1 active:scale-95">
+                                            <i className={`fa-solid ${copiedKey === 'caption' ? 'fa-check text-emerald-400' : 'fa-copy'}`}></i>
+                                            <span>{copiedKey === 'caption' ? '¡Copiado!' : 'Copiar'}</span>
+                                        </button>
+                                    </div>
+                                    <div className="p-3 bg-neutral-950 rounded-xl border border-neutral-800 text-neutral-300 leading-relaxed font-sans text-xs whitespace-pre-wrap max-h-52 overflow-y-auto hide-scrollbar">
+                                        {captionText}
+                                    </div>
                                 </div>
-                                <div className="p-3 bg-neutral-950 rounded-xl border border-neutral-800 text-neutral-300 leading-relaxed font-sans text-xs whitespace-pre-wrap max-h-48 overflow-y-auto hide-scrollbar">
-                                    {post.caption}
-                                </div>
-                            </div>
+                            )}
 
                             {/* Hashtags */}
-                            <div className="flex flex-col gap-1.5">
-                                <div className="flex items-center justify-between">
-                                    <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 flex items-center gap-1.5">
-                                        <i className="fa-solid fa-hashtag text-cyan-400 text-xs"></i>
-                                        <span>Hashtags Optimizados</span>
-                                    </span>
-                                    <button
-                                        onClick={() => onCopy('hashtags', post.hashtags.join(' '))}
-                                        className="text-cyan-400 hover:underline font-mono text-[11px] flex items-center gap-1 active:scale-95">
-                                        <i className={`fa-solid ${copiedKey === 'hashtags' ? 'fa-check text-emerald-400' : 'fa-copy'}`}></i>
-                                        <span>{copiedKey === 'hashtags' ? '¡Copiados!' : 'Copiar'}</span>
-                                    </button>
+                            {hashtagsList.length > 0 && (
+                                <div className="flex flex-col gap-1.5">
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 flex items-center gap-1.5">
+                                            <i className="fa-solid fa-hashtag text-cyan-400 text-xs"></i>
+                                            <span>Hashtags Optimizados</span>
+                                        </span>
+                                        <button
+                                            onClick={() => onCopy('hashtags', hashtagsList.join(' '))}
+                                            className="text-cyan-400 hover:underline font-mono text-[11px] flex items-center gap-1 active:scale-95">
+                                            <i className={`fa-solid ${copiedKey === 'hashtags' ? 'fa-check text-emerald-400' : 'fa-copy'}`}></i>
+                                            <span>{copiedKey === 'hashtags' ? '¡Copiados!' : 'Copiar'}</span>
+                                        </button>
+                                    </div>
+                                    <div className="p-3 bg-neutral-950 rounded-xl border border-neutral-800 text-cyan-300/90 font-mono text-[11px] leading-relaxed">
+                                        {hashtagsList.join(' ')}
+                                    </div>
                                 </div>
-                                <div className="p-3 bg-neutral-950 rounded-xl border border-neutral-800 text-cyan-300/90 font-mono text-[11px] leading-relaxed">
-                                    {post.hashtags.join(' ')}
-                                </div>
-                            </div>
+                            )}
 
                             {/* Horario y Sonido */}
                             <div className="grid grid-cols-2 gap-2 pt-1 border-t border-neutral-800">
                                 <div className="p-2.5 bg-neutral-950 rounded-xl border border-neutral-800 flex flex-col gap-0.5">
                                     <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Mejor Horario</span>
-                                    <span className="font-bold text-white text-xs">{post.bestTime}</span>
+                                    <span className="font-bold text-white text-xs">{bestTime}</span>
                                 </div>
                                 <div className="p-2.5 bg-neutral-950 rounded-xl border border-neutral-800 flex flex-col gap-0.5">
                                     <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Audio Recomendado</span>
-                                    <span className="font-bold text-white text-xs truncate">{post.sound}</span>
+                                    <span className="font-bold text-white text-xs truncate" title={sound}>{sound}</span>
                                 </div>
                             </div>
                         </>
