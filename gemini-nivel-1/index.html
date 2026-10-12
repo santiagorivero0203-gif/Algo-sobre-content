@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>Google Gemini · Nivel 1 (Básico)</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: #080D1A;
+        color: #F8FAFC;
+        font-family: system-ui, -apple-system, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        overflow: hidden;
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #080D1A;
+      }
+      .bg-radial {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 50% 35%, rgba(56, 189, 248, 0.18) 0%, rgba(8, 13, 26, 0.95) 75%);
+        pointer-events: none;
+      }
+      .bg-grid {
+        position: absolute;
+        inset: 0;
+        background-image: linear-gradient(rgba(56, 189, 248, 0.05) 1px, transparent 1px),
+                          linear-gradient(90deg, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
+        background-size: 60px 60px;
+        opacity: 0.6;
+        pointer-events: none;
+      }
+      .clip-scene {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 80px 60px;
+        box-sizing: border-box;
+      }
+      .top-brand {
+        position: absolute;
+        top: 70px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .gemini-icon {
+        width: 48px;
+        height: 48px;
+        filter: drop-shadow(0 0 16px rgba(56, 189, 248, 0.6));
+      }
+      .brand-title {
+        font-family: monospace;
+        font-size: 24px;
+        font-weight: 800;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: #7DD3FC;
+      }
+      .badge {
+        font-family: monospace;
+        font-size: 24px;
+        font-weight: 800;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #38BDF8;
+        background: rgba(56, 189, 248, 0.12);
+        border: 1px solid rgba(56, 189, 248, 0.35);
+        padding: 10px 28px;
+        border-radius: 9999px;
+        margin-bottom: 28px;
+      }
+      .hero-title {
+        font-size: 96px;
+        font-weight: 900;
+        line-height: 1.05;
+        letter-spacing: -0.04em;
+        text-align: center;
+        margin: 0;
+        max-width: 960px;
+      }
+      .text-accent {
+        color: #38BDF8;
+      }
+      .hero-sub {
+        font-size: 36px;
+        font-weight: 500;
+        color: #CBD5E1;
+        margin-top: 32px;
+        text-align: center;
+        max-width: 860px;
+        line-height: 1.35;
+      }
+      .card-box {
+        width: 940px;
+        background: rgba(15, 23, 42, 0.85);
+        border: 1px solid rgba(56, 189, 248, 0.25);
+        border-radius: 32px;
+        padding: 44px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(56, 189, 248, 0.1);
+      }
+      .card-header {
+        font-size: 44px;
+        font-weight: 800;
+        color: #F8FAFC;
+        letter-spacing: -0.02em;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .step-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 22px;
+        background: rgba(30, 41, 59, 0.6);
+        border: 1px solid rgba(56, 189, 248, 0.15);
+        border-radius: 20px;
+        padding: 22px 28px;
+      }
+      .step-num {
+        font-family: monospace;
+        font-size: 30px;
+        font-weight: 900;
+        color: #38BDF8;
+        background: rgba(56, 189, 248, 0.15);
+        padding: 6px 16px;
+        border-radius: 12px;
+      }
+      .step-text {
+        font-size: 28px;
+        line-height: 1.35;
+        color: #CBD5E1;
+      }
+      .step-text strong {
+        color: #FFFFFF;
+      }
+      .image-preview-container {
+        width: 940px;
+        height: 480px;
+        border-radius: 24px;
+        overflow: hidden;
+        border: 1px solid rgba(56, 189, 248, 0.3);
+        margin-top: 10px;
+        position: relative;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      }
+      .image-preview {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .image-overlay-badge {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        background: rgba(8, 13, 26, 0.85);
+        border: 1px solid rgba(56, 189, 248, 0.4);
+        padding: 8px 20px;
+        border-radius: 12px;
+        font-family: monospace;
+        font-size: 20px;
+        color: #38BDF8;
+        font-weight: 800;
+      }
+      .footer-cta {
+        position: absolute;
+        bottom: 75px;
+        font-family: monospace;
+        font-size: 22px;
+        color: #94A3B8;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-width="1080"
+      data-height="1920"
+      data-duration="16.5"
+    >
+      <div class="bg-radial"></div>
+      <div class="bg-grid"></div>
+
+      <!-- Marca Superior Compartida -->
+      <div class="top-brand">
+        <img class="gemini-icon" src="assets/gemini_logo.svg" alt="Gemini" />
+        <span class="brand-title">GOOGLE GEMINI · GUÍA DE DOMINIO</span>
+      </div>
+
+      <!-- BEAT 1: HOOK (0.0s a 3.8s) -->
+      <section id="b1-hook" class="clip clip-scene" data-start="0" data-duration="3.8">
+        <div id="b1-badge" class="badge">NIVEL 1: BÁSICO · CERO CONFIGURACIÓN</div>
+        <h1 id="b1-title" class="hero-title">
+          <div>¿Usas Gemini solo para</div>
+          <div class="text-accent">preguntas simples?</div>
+        </h1>
+        <p id="b1-sub" class="hero-sub">
+          Estás desperdiciando el 90% de su capacidad. Mira cómo exprimirlo en la interfaz gratuita sin tocar un solo ajuste.
+        </p>
+      </section>
+
+      <!-- BEAT 2: CRUCE DE DOCS Y DIGITALIZACIÓN FÍSICA (3.8s a 8.2s) -->
+      <section id="b2-multimodal" class="clip clip-scene" data-start="3.8" data-duration="4.4">
+        <div id="b2-badge" class="badge">1.1 & 1.2 · MULTIMODAL DIRECTO</div>
+        <div id="b2-card" class="card-box">
+          <div class="card-header">
+            <span>Digitalización y Cruce de Datos</span>
+          </div>
+          <div class="step-item">
+            <span class="step-num">01</span>
+            <div class="step-text">
+              <strong>Cruce de Documentos:</strong> Sube notas sueltas + specs técnicas. Extrae prioridades y próximos pasos en segundos.
+            </div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">02</span>
+            <div class="step-text">
+              <strong>Foto a Pizarra o Apuntes:</strong> Boceto a mano alzada transformado en Roadmap por fases y tabla exportable.
+            </div>
+          </div>
+          <div class="image-preview-container">
+            <img class="image-preview" src="assets/level1_multimodal.jpg" alt="Escaneo Multimodal" />
+            <div class="image-overlay-badge">MULTIMODAL · FOTO A ROADMAP DIGITAL</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BEAT 3: GEMINI LIVE & AUDITORÍA EN VIDEO (8.2s a 12.6s) -->
+      <section id="b3-live" class="clip clip-scene" data-start="8.2" data-duration="4.4">
+        <div id="b3-badge" class="badge">1.3 & 1.4 · COMUNICACIÓN EN TIEMPO REAL</div>
+        <div id="b3-card" class="card-box">
+          <div class="card-header">
+            <span>Roleplay en Vivo y Análisis Audiovisual</span>
+          </div>
+          <div class="step-item">
+            <span class="step-num">03</span>
+            <div class="step-text">
+              <strong>Gemini Live (Voz Real):</strong> Simula reuniones de venta o entrevistas difíciles. Te evalúa qué falló y cómo mejorar.
+            </div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">04</span>
+            <div class="step-text">
+              <strong>Auditoría de Video:</strong> Pega un enlace de video y examina claridad, ritmo, lenguaje y retención de la audiencia.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BEAT 4: NOTEBOOKLM Y CTA (12.6s a 16.5s) -->
+      <section id="b4-cta" class="clip clip-scene" data-start="12.6" data-duration="3.9">
+        <div id="b4-badge" class="badge">1.5 · FUENTES COMPLEJAS & CIERRE</div>
+        <h2 id="b4-title" class="hero-title">
+          <div>Gemini Notebook</div>
+          <div class="text-accent">Sin Alucinaciones</div>
+        </h2>
+        <p id="b4-sub" class="hero-sub">
+          Cruza decenas de fuentes dispares en una misma consulta con rigor absoluto.
+        </p>
+        <div id="b4-box" class="card-box" style="margin-top: 30px; text-align: center; align-items: center;">
+          <div style="font-size: 32px; font-weight: 800; color: #38BDF8;">
+            👉 Guarda este video. En la Parte 2 desbloqueamos el ecosistema Google Workspace.
+          </div>
+        </div>
+      </section>
+
+      <div class="footer-cta">SANTI.DEV · GOOGLE GEMINI GUÍA INTEGRAL</div>
+    </div>
+
+    <script>
+      // Timeline único pausado para renderizado determinista
+      const tl = gsap.timeline({ paused: true });
+
+      // ==========================================
+      // BEAT 1: HOOK (0.0s - 3.8s)
+      // ==========================================
+      tl.fromTo("#b1-badge", 
+        { y: -30, opacity: 0, scale: 0.9 }, 
+        { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: "power3.out" }, 
+        0.1
+      );
+      tl.fromTo("#b1-title", 
+        { y: 40, opacity: 0 }, 
+        { y: 0, opacity: 1, duration: 0.65, ease: "power3.out" }, 
+        0.25
+      );
+      tl.fromTo("#b1-sub", 
+        { y: 24, opacity: 0 }, 
+        { y: 0, opacity: 1, duration: 0.55, ease: "power3.out" }, 
+        0.55
+      );
+      // Salida Beat 1
+      tl.to(["#b1-badge", "#b1-title", "#b1-sub"], 
+        { y: -35, opacity: 0, duration: 0.4, ease: "power3.in", stagger: 0.04 }, 
+        3.4
+      );
+
+      // ==========================================
+      // BEAT 2: CRUCE & MULTIMODAL (3.8s - 8.2s)
+      // ==========================================
+      tl.fromTo("#b2-badge", 
+        { y: -30, opacity: 0 }, 
+        { y: 0, opacity: 1, duration: 0.45, ease: "power3.out" }, 
+        3.9
+      );
+      tl.fromTo("#b2-card", 
+        { y: 60, opacity: 0, scale: 0.96 }, 
+        { y: 0, opacity: 1, scale: 1, duration: 0.65, ease: "power3.out" }, 
+        4.05
+      );
+      // Salida Beat 2
+      tl.to(["#b2-badge", "#b2-card"], 
+        { y: -35, opacity: 0, duration: 0.4, ease: "power3.in", stagger: 0.05 }, 
+        7.8
+      );
+
+      // ==========================================
+      // BEAT 3: LIVE & VIDEO (8.2s - 12.6s)
+      // ==========================================
+      tl.fromTo("#b3-badge", 
+        { y: -30, opacity: 0 }, 
+        { y: 0, opacity: 1, duration: 0.45, ease: "power3.out" }, 
+        8.3
+      );
+      tl.fromTo("#b3-card", 
+        { y: 60, opacity: 0, scale: 0.96 }, 
+        { y: 0, opacity: 1, scale: 1, duration: 0.65, ease: "power3.out" }, 
+        8.45
+      );
+      // Salida Beat 3
+      tl.to(["#b3-badge", "#b3-card"], 
+        { y: -35, opacity: 0, duration: 0.4, ease: "power3.in", stagger: 0.05 }, 
+        12.2
+      );
+
+      // ==========================================
+      // BEAT 4: NOTEBOOK & CTA (12.6s - 16.5s)
+      // ==========================================
+      tl.fromTo("#b4-badge", 
+        { y: -30, opacity: 0 }, 
+        { y: 0, opacity: 1, duration: 0.45, ease: "power3.out" }, 
+        12.7
+      );
+      tl.fromTo("#b4-title", 
+        { y: 40, opacity: 0 }, 
+        { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, 
+        12.85
+      );
+      tl.fromTo("#b4-sub", 
+        { y: 24, opacity: 0 }, 
+        { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 
+        13.1
+      );
+      tl.fromTo("#b4-box", 
+        { y: 30, opacity: 0, scale: 0.95 }, 
+        { y: 0, opacity: 1, scale: 1, duration: 0.55, ease: "power3.out" }, 
+        13.35
+      );
+      // Cierre
+      tl.to(["#b4-badge", "#b4-title", "#b4-sub", "#b4-box"], 
+        { opacity: 0, duration: 0.35, ease: "power2.in" }, 
+        16.1
+      );
+
+      // Registro oficial en HyperFrames
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

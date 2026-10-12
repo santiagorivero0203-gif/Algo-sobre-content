@@ -723,3 +723,363 @@ window.GitHubSyncModal = ({
         </div>
     );
 };
+
+/**
+ * =====================================================================
+ * REEL CREATOR MODAL · MOTOR DE CREACIÓN DE NUEVOS REELS POR CÓDIGO
+ * =====================================================================
+ * Permite crear nuevos Reels de 60 FPS desde cero, importar estructuras JSON
+ * generadas por IA o copiar los System Prompts derivados de 'claude-content-skills'.
+ * =====================================================================
+ */
+window.ReelCreatorModal = ({
+    isOpen,
+    onClose,
+    onReelCreated,
+    currentAccount = 'santidev'
+}) => {
+    if (!isOpen) return null;
+
+    const [tab, setTab] = React.useState('wizard'); // 'wizard' | 'json' | 'prompt'
+    const [title, setTitle] = React.useState('');
+    const [subtitle, setSubtitle] = React.useState('');
+    const [account, setAccount] = React.useState(currentAccount || 'santidev');
+    const [theme, setTheme] = React.useState(currentAccount === 'mova' ? 'mova' : 'dev_blue');
+    const [keyword, setKeyword] = React.useState(currentAccount === 'mova' ? 'MOVA' : 'STACK');
+    const [jsonInput, setJsonInput] = React.useState('');
+    const [jsonError, setJsonError] = React.useState('');
+    const [copiedPrompt, setCopiedPrompt] = React.useState(false);
+
+    // Prompt maestro para Antigravity y Claude: Erradica diagramas de flujo y fuerza un solo elemento central
+    const AI_REEL_SYSTEM_PROMPT = `Actúa como Director de Motion Graphics al estilo Anthropic / Apple.
+Crea la secuencia para un video vertical ultra rápido de 6 a 8 segundos sobre: "${title || 'Rendimiento Web y Cómputo Local'}".
+Marca: ${account === 'mova' ? 'Mova' : 'Santi.Dev'}
+
+REGLAS ESTRICTAS DE RITMO Y DISEÑO (ANTI-SLOP & ANTI-DIAPOSITIVAS):
+1. PROHIBIDO GENERAR DIAGRAMAS: Cero pipelines, flujos, tarjetas agrupadas o listas.
+2. UN SOLO ELEMENTO POR BEAT: Cada escena muestra ÚNICAMENTE un texto centrado de 1 a 3 palabras o una métrica gigante.
+3. RITMO VELOZ: Cada beat dura entre 800ms y 1200ms.
+4. ESTÉTICA: Fondo #070B14 cinemático, texto #FFFFFF gigante, palabra clave con acento neón de la marca. Cero terminales bash.
+5. METADATOS CINEMÁTICOS: Cada beat incluye "badgeText" (píldora superior), "chipLabel" (métrica inferior) y "vo" (guión de locución).
+
+DEVUELVE EXCLUSIVAMENTE ESTE JSON VÁLIDO (sin markdown):
+{
+  "duration_ms": 7000,
+  "beats": [
+    {
+      "start_ms": 0,
+      "end_ms": 1200,
+      "text": "MENOS CÓDIGO",
+      "accent": "CÓDIGO",
+      "badgeText": "ARQUITECTURA ÁGIL",
+      "chipLabel": "HOOK DE IMPACTO",
+      "vo": "¿Cansado de lidiar con código inflado?",
+      "size": "text-7xl",
+      "motion": "mask-up"
+    },
+    {
+      "start_ms": 1200,
+      "end_ms": 2500,
+      "text": "MÁS VELOCIDAD",
+      "accent": "VELOCIDAD",
+      "badgeText": "OPTIMIZACIÓN",
+      "chipLabel": "LA TÁCTICA",
+      "vo": "Con una arquitectura modular aceleras 10x tu flujo.",
+      "size": "text-7xl",
+      "motion": "snap-scale"
+    },
+    {
+      "start_ms": 2500,
+      "end_ms": 4500,
+      "text": "60 FPS",
+      "accent": "60 FPS",
+      "badgeText": "DETERMINISTA",
+      "chipLabel": "EL PAYOFF",
+      "vo": "Animación determinista sin caída de fotogramas.",
+      "size": "text-8xl",
+      "motion": "mask-up"
+    },
+    {
+      "start_ms": 4500,
+      "end_ms": 7000,
+      "text": "DIRECTO EN WEB",
+      "accent": "WEB",
+      "badgeText": "COMUNIDAD",
+      "chipLabel": "LLAMADO A LA ACCIÓN",
+      "vo": "Comenta CÓDIGO y te envío la plantilla completa.",
+      "size": "text-6xl",
+      "motion": "fade-out"
+    }
+  ]
+}`;
+
+    const handleCreateFromWizard = () => {
+        if (!title.trim()) {
+            alert('Por favor ingresa un título para el Reel.');
+            return;
+        }
+        const newReel = window.createReelTemplate({
+            title: title.trim(),
+            subtitle: subtitle.trim() || 'Generado con Santi.Dev Creator',
+            accountId: account,
+            theme,
+            keyword: keyword.trim().toUpperCase() || 'STACK'
+        });
+
+        window.saveNewReel(newReel);
+        if (onReelCreated) onReelCreated(newReel);
+        onClose();
+    };
+
+    const [promptType, setPromptType] = React.useState('claude'); // 'claude' (Anthropic Motion) | 'code' (Terminal/HUD)
+
+    const claudePrompt = (window.SKILL_FAST_KINETIC || window.SKILL_CLEAN_MOTION_REEL || window.SKILL_CLAUDE_MOTION)?.getPrompt(
+        { name: account === 'mova' ? 'Mova' : 'Santi.Dev' },
+        title || 'Rendimiento Web y Cómputo Local'
+    ) || AI_REEL_SYSTEM_PROMPT;
+
+    const handleImportJson = () => {
+        setJsonError('');
+        try {
+            const parsed = JSON.parse(jsonInput.trim());
+            // 1. Detección de formato Motion Reel / Fast Kinetic (Un solo foco visual, beats con text o words)
+            const beats = parsed.beats || parsed.scenes;
+            if (beats && Array.isArray(beats) && beats.length > 0) {
+                if (!parsed.id) parsed.id = `fast_reel_${Date.now()}`;
+                if (!parsed.title) parsed.title = title || 'Reel Cinético Rápido';
+                if (!parsed.duration_ms && !parsed.total_ms) {
+                    const lastBeat = beats[beats.length - 1];
+                    parsed.duration_ms = lastBeat.end_ms || (typeof lastBeat.end === 'number' ? lastBeat.end * 1000 : 7000);
+                }
+                if (!parsed.accountId) parsed.accountId = account || 'santidev';
+                if (!parsed.theme) parsed.theme = theme || 'dev_blue';
+                window.saveNewReel(parsed);
+                if (onReelCreated) onReelCreated(parsed);
+                onClose();
+                return;
+            }
+
+            // 2. Formato alternativo con objeto raíz
+            if (!parsed.id) parsed.id = `reel_${Date.now()}`;
+            window.saveNewReel(parsed);
+            if (onReelCreated) onReelCreated(parsed);
+            onClose();
+        } catch (e) {
+            setJsonError('Error de sintaxis JSON: ' + e.message);
+        }
+    };
+
+    const activePromptText = promptType === 'claude' && claudePrompt ? claudePrompt : AI_REEL_SYSTEM_PROMPT;
+
+    const handleCopyPrompt = async () => {
+        if (navigator.clipboard) {
+            await navigator.clipboard.writeText(activePromptText);
+            setCopiedPrompt(true);
+            setTimeout(() => setCopiedPrompt(false), 2500);
+        }
+    };
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/85 backdrop-blur-md animate-fadeIn">
+            <div className="bg-neutral-900 border border-neutral-700 rounded-2xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden text-left">
+                {/* Cabecera */}
+                <div className="p-4 border-b border-neutral-800 flex items-center justify-between bg-neutral-950/80 shrink-0">
+                    <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-lg bg-sky-500/20 text-sky-400 flex items-center justify-center text-sm shrink-0">
+                            <i className="fa-solid fa-wand-magic-sparkles"></i>
+                        </div>
+                        <div>
+                            <h3 className="text-sm font-black text-white">Tecnología de Reels por Código</h3>
+                            <p className="text-[11px] text-neutral-400 font-mono">Crea videos animados a 60 FPS con las reglas de 'claude-content-skills'</p>
+                        </div>
+                    </div>
+                    <button
+                        onClick={onClose}
+                        className="w-7 h-7 rounded-full bg-neutral-800 text-neutral-400 hover:text-white flex items-center justify-center text-xs">
+                        <i className="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                {/* Selector de pestañas */}
+                <div className="grid grid-cols-3 p-1.5 bg-neutral-950 border-b border-neutral-800 shrink-0 gap-1 text-xs font-bold">
+                    <button
+                        onClick={() => setTab('wizard')}
+                        className={`py-2 px-3 rounded-xl transition-all flex items-center justify-center gap-1.5 ${tab === 'wizard' ? 'bg-sky-500 text-white shadow' : 'text-neutral-400 hover:text-white'}`}>
+                        <i className="fa-solid fa-plus-circle"></i>
+                        <span>Nuevo Reel</span>
+                    </button>
+                    <button
+                        onClick={() => setTab('json')}
+                        className={`py-2 px-3 rounded-xl transition-all flex items-center justify-center gap-1.5 ${tab === 'json' ? 'bg-sky-500 text-white shadow' : 'text-neutral-400 hover:text-white'}`}>
+                        <i className="fa-solid fa-code"></i>
+                        <span>Pegar JSON</span>
+                    </button>
+                    <button
+                        onClick={() => setTab('prompt')}
+                        className={`py-2 px-3 rounded-xl transition-all flex items-center justify-center gap-1.5 ${tab === 'prompt' ? 'bg-sky-500 text-white shadow' : 'text-neutral-400 hover:text-white'}`}>
+                        <i className="fa-solid fa-robot"></i>
+                        <span>Prompt para IA</span>
+                    </button>
+                </div>
+
+                {/* Contenido según pestaña */}
+                <div className="p-4 overflow-y-auto hide-scrollbar flex-1 flex flex-col gap-4 text-xs">
+                    {tab === 'wizard' && (
+                        <div className="flex flex-col gap-3">
+                            <div className="flex flex-col gap-1">
+                                <label className="text-[11px] font-bold text-neutral-300 uppercase tracking-wider">Título del Reel (Hook Conceptual)</label>
+                                <input
+                                    type="text"
+                                    value={title}
+                                    onChange={(e) => setTitle(e.target.value)}
+                                    placeholder="Ej: Automatiza tus APIs con Subagentes en 2026"
+                                    className="p-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-white text-xs focus:border-sky-500 outline-none"
+                                />
+                            </div>
+
+                            <div className="flex flex-col gap-1">
+                                <label className="text-[11px] font-bold text-neutral-300 uppercase tracking-wider">Subtítulo o Promesa Técnica</label>
+                                <input
+                                    type="text"
+                                    value={subtitle}
+                                    onChange={(e) => setSubtitle(e.target.value)}
+                                    placeholder="Ej: Terminal interactiva y reducción del 80% de tokens"
+                                    className="p-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-white text-xs focus:border-sky-500 outline-none"
+                                />
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-3">
+                                <div className="flex flex-col gap-1">
+                                    <label className="text-[11px] font-bold text-neutral-300 uppercase tracking-wider">Marca / Proyecto</label>
+                                    <select
+                                        value={account}
+                                        onChange={(e) => {
+                                            setAccount(e.target.value);
+                                            setTheme(e.target.value === 'mova' ? 'mova' : 'dev_blue');
+                                            setKeyword(e.target.value === 'mova' ? 'MOVA' : 'STACK');
+                                        }}
+                                        className="p-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-white text-xs outline-none">
+                                        <option value="santidev">Santi.Dev (Software & Tech)</option>
+                                        <option value="mova">Mova (IA & Accesibilidad 21D)</option>
+                                        <option value="endo">The Last Endo (Gaming & Pixel Art)</option>
+                                    </select>
+                                </div>
+
+                                <div className="flex flex-col gap-1">
+                                    <label className="text-[11px] font-bold text-neutral-300 uppercase tracking-wider">Paleta de Color / Tema</label>
+                                    <select
+                                        value={theme}
+                                        onChange={(e) => setTheme(e.target.value)}
+                                        className="p-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-white text-xs outline-none">
+                                        <option value="dev_blue">Cyber Dev Blue (Azul Medianoche + Cyan)</option>
+                                        <option value="tokens_pro">Tokens Pro (Verde Neón Menta)</option>
+                                        <option value="mova">Mova Deep Navy (Azul Eléctrico + Naranja Glow)</option>
+                                        <option value="pixel_arcade">Retro Pixel Arcade (Rosa Synthwave + Amarillo)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col gap-1">
+                                <label className="text-[11px] font-bold text-neutral-300 uppercase tracking-wider">Palabra Clave para Auto-DM (CTA)</label>
+                                <input
+                                    type="text"
+                                    value={keyword}
+                                    onChange={(e) => setKeyword(e.target.value.toUpperCase())}
+                                    placeholder="STACK / MOVA / TOKENS"
+                                    className="p-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-white text-xs font-mono font-bold focus:border-sky-500 outline-none"
+                                />
+                            </div>
+
+                            <div className="p-3 bg-sky-950/40 border border-sky-800/50 rounded-xl text-sky-200 text-xs flex items-start gap-2">
+                                <i className="fa-solid fa-circle-info text-sky-400 mt-0.5 shrink-0"></i>
+                                <span>El nuevo Reel se generará con la estructura de 4 beats validada (Hook visual en Frame 0 ➔ Problema ➔ Código en vivo ➔ Tarjeta de comentarios para auto-DM).</span>
+                            </div>
+                        </div>
+                    )}
+
+                    {tab === 'json' && (
+                        <div className="flex flex-col gap-2">
+                            <label className="text-[11px] font-bold text-neutral-300 uppercase tracking-wider">Pega el objeto JSON generado por la IA</label>
+                            <textarea
+                                value={jsonInput}
+                                onChange={(e) => setJsonInput(e.target.value)}
+                                rows={10}
+                                placeholder='{\n  "id": "reel_mi_tema",\n  "accountId": "santidev",\n  "title": "...",\n  "beats": [...]\n}'
+                                className="w-full p-3 rounded-xl bg-neutral-950 border border-neutral-800 text-white font-mono text-xs focus:border-sky-500 outline-none"
+                            />
+                            {jsonError && (
+                                <div className="p-2.5 bg-rose-950/60 border border-rose-600/50 rounded-xl text-rose-300 text-xs">
+                                    {jsonError}
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {tab === 'prompt' && (
+                        <div className="flex flex-col gap-2.5">
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-1.5 p-1 bg-neutral-950 rounded-xl border border-neutral-800">
+                                    <button
+                                        onClick={() => setPromptType('claude')}
+                                        className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${promptType === 'claude' ? 'bg-[#D97757] text-white shadow' : 'text-neutral-400 hover:text-white'}`}>
+                                        <i className="fa-solid fa-atom text-[10px]"></i>
+                                        <span>Estilo Claude / Anthropic</span>
+                                    </button>
+                                    <button
+                                        onClick={() => setPromptType('code')}
+                                        className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${promptType === 'code' ? 'bg-sky-500 text-white shadow' : 'text-neutral-400 hover:text-white'}`}>
+                                        <i className="fa-solid fa-terminal text-[10px]"></i>
+                                        <span>Estilo Terminal / Canvas</span>
+                                    </button>
+                                </div>
+
+                                <button
+                                    onClick={handleCopyPrompt}
+                                    className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-rose-600 text-white font-bold text-xs flex items-center gap-1.5 active:scale-95 shadow">
+                                    <i className={`fa-solid ${copiedPrompt ? 'fa-check' : 'fa-copy'}`}></i>
+                                    <span>{copiedPrompt ? '¡Copiado!' : 'Copiar Prompt'}</span>
+                                </button>
+                            </div>
+
+                            <p className="text-neutral-400 text-xs">
+                                {promptType === 'claude'
+                                    ? 'Prompt oficial con reglas visuales de Anthropic (#0D0D0E, #F3F3F3, #D97757) y cálculo determinista por milisegundos.'
+                                    : 'Prompt técnico orientado a terminal reactivo, visión por computadora y odómetro de código.'}
+                            </p>
+
+                            <pre className="p-3 bg-neutral-950 border border-neutral-800 rounded-xl font-mono text-[11px] text-neutral-300 overflow-x-auto whitespace-pre-wrap select-all max-h-80">
+                                {activePromptText}
+                            </pre>
+                        </div>
+                    )}
+                </div>
+
+                {/* Pie del modal */}
+                <div className="p-3.5 border-t border-neutral-800 bg-neutral-950 flex items-center justify-end gap-2 shrink-0">
+                    <button
+                        onClick={onClose}
+                        className="px-3.5 py-2 rounded-xl text-xs font-semibold text-neutral-400 hover:text-white hover:bg-neutral-800 transition-all">
+                        Cancelar
+                    </button>
+                    {tab === 'wizard' && (
+                        <button
+                            onClick={handleCreateFromWizard}
+                            className="px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white shadow-lg shadow-sky-500/20 active:scale-95 transition-all flex items-center gap-2">
+                            <i className="fa-solid fa-play"></i>
+                            <span>Crear y Renderizar a 60 FPS</span>
+                        </button>
+                    )}
+                    {tab === 'json' && (
+                        <button
+                            onClick={handleImportJson}
+                            className="px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white shadow-lg active:scale-95 transition-all flex items-center gap-2">
+                            <i className="fa-solid fa-check"></i>
+                            <span>Importar Reel</span>
+                        </button>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+};
+

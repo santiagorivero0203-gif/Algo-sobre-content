@@ -11,3 +11,8 @@ Thumbs.db
 # Temporary & logs
 *.log
 scratch/
+
+# Remotion build outputs
+remotion-test/build/
+remotion-test/out/
+.remotion/

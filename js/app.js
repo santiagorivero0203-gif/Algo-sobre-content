@@ -221,6 +221,55 @@ const App = () => {
     const isFileProtocol = window.location.protocol === 'file:';
     const isMova = video.accountId === 'mova' || video.id?.startsWith('mova');
 
+    // Modo de visualización: 'slides' (carruseles HD) vs 'reels' (videos animados 60 FPS)
+    const [viewMode, setViewMode] = React.useState(() => {
+        const m = (URL_PARAMS.get('mode') || '').toLowerCase();
+        return m === 'reel' || m === 'reels' || m === 'video' ? 'reels' : 'slides';
+    });
+    const [activeReelIdx, setActiveReelIdx] = React.useState(0);
+    const [isReelCreatorOpen, setIsReelCreatorOpen] = React.useState(false);
+    // Colección unificada de Videos Motion Graphics 60 FPS
+    const [allReels, setAllReels] = React.useState(() => {
+        if (typeof window !== 'undefined' && window.getAllReels) {
+            return window.getAllReels();
+        }
+        return window.REELS || [];
+    });
+
+    const availableReels = React.useMemo(() => {
+        if (selectedAccount === 'all') return allReels;
+        const byAcc = allReels.filter(r => r.accountId === selectedAccount);
+        return byAcc.length > 0 ? byAcc : allReels;
+    }, [allReels, selectedAccount]);
+
+    const activeReel = availableReels[activeReelIdx] || availableReels[0] || (window.REELS && window.REELS[0]);
+
+    const handleReelCreated = (newReel) => {
+        setAllReels(prev => [newReel, ...prev]);
+        setActiveReelIdx(0);
+    };
+
+    // Limpieza de residuos antiguos en localStorage para garantizar carga limpia de los nuevos reels
+    React.useEffect(() => {
+        try {
+            const stored = localStorage.getItem('algo_custom_reels');
+            if (stored) {
+                const list = JSON.parse(stored);
+                const hasLegacy = Array.isArray(list) && list.some(r =>
+                    r.id === 'reel_ag_terminal' || r.id === 'reel_sign_language' ||
+                    r.id === 'reel_mcp_pipeline' || r.id === 'reel_retro_game' ||
+                    r.id === 'reel_token_saver' || (r.duration && r.duration > 10) || (r.duration_ms && r.duration_ms > 10000)
+                );
+                if (hasLegacy) {
+                    localStorage.removeItem('algo_custom_reels');
+                    if (window.getAllReels) setAllReels(window.getAllReels());
+                }
+            }
+        } catch (e) {
+            console.warn('Limpieza de reels error:', e);
+        }
+    }, []);
+
     // Detección de cambios locales respecto a la configuración original de fábrica
     const hasCustomEdits = React.useMemo(() => {
         return !!localStorage.getItem('algo_custom_videos');
@@ -846,6 +895,22 @@ const App = () => {
 
                 {/* Controles superiores compactos */}
                 <div className="flex items-center gap-1.5 shrink-0">
+                    {/* Selector de Modo: Slides vs Reels */}
+                    <div className="flex bg-neutral-900 border border-neutral-800 rounded-lg p-0.5">
+                        <button
+                            onClick={() => setViewMode('slides')}
+                            className={`px-1.5 py-1 rounded text-[10.5px] font-bold transition-all flex items-center gap-1 ${viewMode === 'slides' ? 'bg-white text-black' : 'text-neutral-400'}`}>
+                            <i className="fa-solid fa-images text-[9px]"></i>
+                            <span>Slides</span>
+                        </button>
+                        <button
+                            onClick={() => setViewMode('reels')}
+                            className={`px-1.5 py-1 rounded text-[10.5px] font-bold transition-all flex items-center gap-1 ${viewMode === 'reels' ? 'bg-gradient-to-r from-sky-500 to-indigo-600 text-white' : 'text-neutral-400'}`}>
+                            <i className="fa-solid fa-video text-[9px]"></i>
+                            <span>Reels</span>
+                        </button>
+                    </div>
+
                     {/* Botón rápido para alternar Modo Studio Editor */}
                     <button
                         onClick={() => setEditorMode(!editorMode)}
@@ -961,8 +1026,8 @@ const App = () => {
             {/* BARRA LATERAL ESCRITORIO (>= 768px)                            */}
             {/* ============================================================== */}
             <aside className={`hidden md:flex flex-col bg-neutral-900 border-r border-neutral-800 h-full shrink-0 relative sidebar-transition ${sidebarCollapsed ? 'w-0 border-r-0 overflow-hidden opacity-0 pointer-events-none' : 'w-[335px] opacity-100'}`}>
-                {/* Zona superior con scroll independiente */}
-                <div className="flex-1 p-4 overflow-y-auto hide-scrollbar flex flex-col">
+                {/* Zona superior con scroll independiente y barra visible estilizada de alto contraste */}
+                <div className="flex-1 pl-4 pr-3 py-4 overflow-y-scroll custom-scrollbar flex flex-col">
                     {/* Encabezado y Selector de Modo */}
                     <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
@@ -984,21 +1049,39 @@ const App = () => {
                         </div>
                     </div>
 
-                    {/* INTERRUPTOR PRINCIPAL: MODO NORMAL vs MODO EDITOR STUDIO */}
-                    <div className="grid grid-cols-2 gap-1 p-1 bg-neutral-950 rounded-xl border border-neutral-800 mb-3 shadow-inner">
+                    {/* INTERRUPTOR PRINCIPAL DE CONTENIDO: CARRUSELES HD vs REELS 60FPS */}
+                    <div className="grid grid-cols-2 gap-1 p-1 bg-neutral-950 rounded-xl border border-neutral-800 mb-2 shadow-inner">
                         <button
-                            onClick={() => setEditorMode(false)}
-                            className={`py-1.5 px-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${!editorMode ? 'bg-white text-black shadow' : 'text-neutral-400 hover:text-white'}`}>
-                            <i className="fa-solid fa-eye text-[11px]"></i>
-                            <span>Visor HD</span>
+                            onClick={() => setViewMode('slides')}
+                            className={`py-1.5 px-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${viewMode === 'slides' ? 'bg-white text-black shadow' : 'text-neutral-400 hover:text-white'}`}>
+                            <i className="fa-solid fa-images text-[11px]"></i>
+                            <span>Carruseles</span>
                         </button>
                         <button
-                            onClick={() => setEditorMode(true)}
-                            className={`py-1.5 px-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${editorMode ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow' : 'text-neutral-400 hover:text-amber-400'}`}>
-                            <i className="fa-solid fa-pen-to-square text-[11px]"></i>
-                            <span>Studio Editor</span>
+                            onClick={() => setViewMode('reels')}
+                            className={`py-1.5 px-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${viewMode === 'reels' ? 'bg-gradient-to-r from-sky-500 to-indigo-600 text-white shadow' : 'text-neutral-400 hover:text-sky-400'}`}>
+                            <i className="fa-solid fa-video text-[11px]"></i>
+                            <span>Reels 60FPS</span>
                         </button>
                     </div>
+
+                    {/* INTERRUPTOR SECUNDARIO: VISOR vs STUDIO EDITOR (Sólo en carruseles) */}
+                    {viewMode === 'slides' && (
+                        <div className="grid grid-cols-2 gap-1 p-1 bg-neutral-950 rounded-xl border border-neutral-800 mb-3 shadow-inner">
+                            <button
+                                onClick={() => setEditorMode(false)}
+                                className={`py-1.5 px-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${!editorMode ? 'bg-white text-black shadow' : 'text-neutral-400 hover:text-white'}`}>
+                                <i className="fa-solid fa-eye text-[11px]"></i>
+                                <span>Visor HD</span>
+                            </button>
+                            <button
+                                onClick={() => setEditorMode(true)}
+                                className={`py-1.5 px-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${editorMode ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow' : 'text-neutral-400 hover:text-amber-400'}`}>
+                                <i className="fa-solid fa-pen-to-square text-[11px]"></i>
+                                <span>Studio Editor</span>
+                            </button>
+                        </div>
+                    )}
 
                     {/* SELECTOR DE MARCA / CUENTA (Píldoras) */}
                     <div className="mb-3">
@@ -1094,67 +1177,138 @@ const App = () => {
                         </div>
                     </div>
 
-                    {/* Lista de Carruseles Filtrados */}
-                    {(() => {
-                        const filtered = videos.map((v, i) => ({ v, i })).filter(({ v }) => {
-                            if (selectedAccount === 'all') return true;
-                            return window.getAccountForVideo(v).id === selectedAccount;
-                        });
-                        const groups = [...new Set(filtered.map((item) => item.v.group))];
-                        return groups.map((grpName) => {
-                            const list = filtered.filter((item) => item.v.group === grpName);
-                            return (
-                                <div key={grpName} className="mb-3">
-                                    <div className="flex items-center justify-between text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1.5">
-                                        <span>{grpName}</span>
-                                        <span className="font-mono text-[9px] bg-neutral-800 px-1.5 py-0.5 rounded text-neutral-400">{list.length}</span>
-                                    </div>
-                                    {list.map(({ v, i }) => {
-                                        const vAcc = window.getAccountForVideo(v);
-                                        return (
-                                            <div key={v.id} className="mb-1.5">
-                                                <button
-                                                    id={`video-btn-${v.id}`}
-                                                    onClick={() => { setVIdx(i); setSIdx(0); }}
-                                                    className={`w-full text-left p-2.5 rounded-lg transition-all ${vIdx === i ? 'bg-white text-black font-semibold shadow' : 'bg-neutral-800/80 text-neutral-300 hover:bg-neutral-700'}`}>
-                                                    <div className="flex items-center justify-between gap-1">
-                                                        <div className="flex items-center gap-2 text-xs font-bold truncate">
-                                                            <span style={{ width: 8, height: 8, borderRadius: 2, background: window.THEMES[v.theme].accent, flexShrink: 0 }} />
-                                                            <span className="truncate">{v.title}</span>
-                                                        </div>
-                                                        <span className={`text-[9px] font-mono px-1 rounded ${vIdx === i ? 'bg-neutral-200 text-neutral-800' : 'text-neutral-400 bg-neutral-900'}`}>{vAcc.handle}</span>
-                                                    </div>
-                                                    <div className={`text-[10.5px] mt-0.5 truncate ${vIdx === i ? 'text-neutral-600' : 'text-neutral-400'}`}>{v.subtitle}</div>
-                                                </button>
-
-                                                {/* Diapositivas expandidas directamente bajo el video activo */}
-                                                {vIdx === i && (
-                                                    <div className="mt-1.5 mb-2 pl-3 border-l-2 flex flex-col gap-1" style={{ borderColor: window.THEMES[v.theme].accent }}>
-                                                        {v.slides.map((s, idx) => (
-                                                            <button
-                                                                key={idx}
-                                                                id={`slide-btn-${idx + 1}`}
-                                                                onClick={() => setSIdx(idx)}
-                                                                className={`w-full text-left px-2.5 py-1.5 rounded-md text-[11.5px] font-semibold transition-all flex items-center gap-2 ${sIdx === idx ? 'bg-neutral-800 text-white font-bold ring-1 ring-neutral-600' : 'text-neutral-400 hover:text-white hover:bg-neutral-800/50'}`}>
-                                                                <span className="w-4 h-4 rounded flex items-center justify-center text-[10px] font-mono shrink-0"
-                                                                    style={{ background: sIdx === idx ? theme.accent : '#333', color: sIdx === idx ? theme.ink : '#bbb' }}>{idx + 1}</span>
-                                                                <span className="truncate flex-1">{(s.title || s.quote || s.number || '').replace(/\*/g, '')}</span>
-                                                            </button>
-                                                        ))}
-                                                    </div>
-                                                )}
-                                            </div>
-                                        );
-                                    })}
+                    {/* Lista de Contenidos: Reels 60FPS o Carruseles */}
+                    {viewMode === 'reels' ? (
+                        <div className="flex flex-col gap-2 pb-8">
+                            <div className="flex items-center justify-between text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">
+                                <span>Reels Motion (60 FPS)</span>
+                                <div className="flex items-center gap-1.5">
+                                    <span className="font-mono text-[9px] bg-neutral-800 px-1.5 py-0.5 rounded text-amber-400 font-bold">
+                                        {availableReels.length}
+                                    </span>
+                                    <button
+                                        id="sidebar-create-reel"
+                                        onClick={() => setIsReelCreatorOpen(true)}
+                                        title="Crear un nuevo Video o importar JSON"
+                                        className="px-2 py-0.5 rounded bg-[#D97757] hover:bg-[#c56747] text-white text-[10px] font-bold flex items-center gap-1 shadow transition-all active:scale-95">
+                                        <i className="fa-solid fa-plus text-[9px]"></i>
+                                        <span>Crear</span>
+                                    </button>
                                 </div>
-                            );
-                        });
-                    })()}
+                            </div>
+
+                            {/* Selector de motor en barra lateral */}
+                            {/* Listado de Videos Motion Graphics 60 FPS */}
+                            <div className="flex items-center justify-between px-1 mb-1">
+                                <span className="text-[10px] font-mono uppercase tracking-wider text-neutral-400 font-bold">VIDEOS MOTION 60 FPS</span>
+                                <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold">1080×1920</span>
+                            </div>
+
+                            {availableReels.map((r, i) => {
+                                const isSel = activeReelIdx === i;
+                                const brandAccent = r.accentColor || '#10B981';
+                                return (
+                                    <button
+                                        key={r.id}
+                                        id={`reel-btn-${r.id}`}
+                                        onClick={() => setActiveReelIdx(i)}
+                                        className={`w-full text-left p-3 rounded-xl transition-all border flex flex-col gap-1.5 ${isSel ? 'bg-neutral-900 text-white shadow-xl' : 'bg-neutral-800/80 text-neutral-300 border-neutral-700/60 hover:bg-neutral-700'}`}
+                                        style={{
+                                            borderColor: isSel ? brandAccent : undefined,
+                                            boxShadow: isSel ? `0 0 16px -2px ${brandAccent}66` : undefined
+                                        }}>
+                                        <div className="flex items-center justify-between gap-1">
+                                            <div className="flex items-center gap-2 text-xs font-bold truncate">
+                                                <span style={{ width: 8, height: 8, borderRadius: 2, background: brandAccent, flexShrink: 0 }} />
+                                                <span className="truncate">{r.title}</span>
+                                            </div>
+                                            <span className="text-[9px] font-mono px-1.5 py-0.5 rounded uppercase font-bold"
+                                                style={{ backgroundColor: `${brandAccent}26`, color: brandAccent }}>
+                                                {r.accountId?.toUpperCase() || 'MOTION'}
+                                            </span>
+                                        </div>
+                                        <div className={`text-[11px] truncate ${isSel ? 'text-neutral-200' : 'text-neutral-400'}`}>{r.subtitle}</div>
+                                        <div className="flex items-center gap-2 mt-0.5 text-[10px] font-mono">
+                                            <span className="px-1.5 py-0.5 rounded font-bold bg-neutral-950 text-neutral-300">
+                                                {Math.round((r.duration_ms || 7000) / 1000)}s · {r.beats ? r.beats.length : 5} beats
+                                            </span>
+                                            <span className="font-bold" style={{ color: brandAccent }}>
+                                                60 FPS MOTION
+                                            </span>
+                                        </div>
+                                    </button>
+                                );
+                            })}
+                            {availableReels.length > 3 && (
+                                <div className="pt-2 pb-6 flex items-center justify-center gap-2 text-[10px] font-mono text-cyan-400/80 bg-neutral-950/60 rounded-lg py-2 border border-cyan-500/10">
+                                    <i className="fa-solid fa-arrow-down-short-wide text-cyan-400"></i>
+                                    <span>{availableReels.length} videos disponibles · Desplaza la barra</span>
+                                </div>
+                            )}
+                        </div>
+                    ) : (
+                        /* Lista de Carruseles Filtrados */
+                        (() => {
+                            const filtered = videos.map((v, i) => ({ v, i })).filter(({ v }) => {
+                                if (selectedAccount === 'all') return true;
+                                return window.getAccountForVideo(v).id === selectedAccount;
+                            });
+                            const groups = [...new Set(filtered.map((item) => item.v.group))];
+                            return groups.map((grpName) => {
+                                const list = filtered.filter((item) => item.v.group === grpName);
+                                return (
+                                    <div key={grpName} className="mb-3">
+                                        <div className="flex items-center justify-between text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1.5">
+                                            <span>{grpName}</span>
+                                            <span className="font-mono text-[9px] bg-neutral-800 px-1.5 py-0.5 rounded text-neutral-400">{list.length}</span>
+                                        </div>
+                                        {list.map(({ v, i }) => {
+                                            const vAcc = window.getAccountForVideo(v);
+                                            return (
+                                                <div key={v.id} className="mb-1.5">
+                                                    <button
+                                                        id={`video-btn-${v.id}`}
+                                                        onClick={() => { setVIdx(i); setSIdx(0); }}
+                                                        className={`w-full text-left p-2.5 rounded-lg transition-all ${vIdx === i ? 'bg-white text-black font-semibold shadow' : 'bg-neutral-800/80 text-neutral-300 hover:bg-neutral-700'}`}>
+                                                        <div className="flex items-center justify-between gap-1">
+                                                            <div className="flex items-center gap-2 text-xs font-bold truncate">
+                                                                <span style={{ width: 8, height: 8, borderRadius: 2, background: window.THEMES[v.theme].accent, flexShrink: 0 }} />
+                                                                <span className="truncate">{v.title}</span>
+                                                            </div>
+                                                            <span className={`text-[9px] font-mono px-1 rounded ${vIdx === i ? 'bg-neutral-200 text-neutral-800' : 'text-neutral-400 bg-neutral-900'}`}>{vAcc.handle}</span>
+                                                        </div>
+                                                        <div className={`text-[10.5px] mt-0.5 truncate ${vIdx === i ? 'text-neutral-600' : 'text-neutral-400'}`}>{v.subtitle}</div>
+                                                    </button>
+
+                                                    {/* Diapositivas expandidas directamente bajo el video activo */}
+                                                    {vIdx === i && (
+                                                        <div className="mt-1.5 mb-2 pl-3 border-l-2 flex flex-col gap-1" style={{ borderColor: window.THEMES[v.theme].accent }}>
+                                                            {v.slides.map((s, idx) => (
+                                                                <button
+                                                                    key={idx}
+                                                                    id={`slide-btn-${idx + 1}`}
+                                                                    onClick={() => setSIdx(idx)}
+                                                                    className={`w-full text-left px-2.5 py-1.5 rounded-md text-[11.5px] font-semibold transition-all flex items-center gap-2 ${sIdx === idx ? 'bg-neutral-800 text-white font-bold ring-1 ring-neutral-600' : 'text-neutral-400 hover:text-white hover:bg-neutral-800/50'}`}>
+                                                                    <span className="w-4 h-4 rounded flex items-center justify-center text-[10px] font-mono shrink-0"
+                                                                        style={{ background: sIdx === idx ? theme.accent : '#333', color: sIdx === idx ? theme.ink : '#bbb' }}>{idx + 1}</span>
+                                                                    <span className="truncate flex-1">{(s.title || s.quote || s.number || '').replace(/\*/g, '')}</span>
+                                                                </button>
+                                                            ))}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                );
+                            });
+                        })()
+                    )}
                 </div>
 
                 {/* Botonera fija inferior en la barra lateral */}
                 <div className="p-3.5 bg-neutral-900 border-t border-neutral-800 flex flex-col gap-2 shrink-0 shadow-2xl">
-                    {editorMode && (
+                    {editorMode && viewMode === 'slides' && (
                         <button
                             onClick={() => setSyncModalOpen(true)}
                             className="w-full py-2.5 rounded-xl font-bold text-xs bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white flex items-center justify-center gap-2 shadow-lg transition-all active:scale-[0.98]">
@@ -1162,22 +1316,33 @@ const App = () => {
                             <span>Guardar en GitHub & Vercel</span>
                         </button>
                     )}
-                    <button
-                        id="download-one"
-                        onClick={downloadOne}
-                        disabled={busy}
-                        className={`w-full py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all ${busy ? 'bg-neutral-600 cursor-not-allowed text-neutral-300' : 'bg-white text-black hover:bg-neutral-200 shadow'}`}>
-                        <i className={`fa-solid ${busy ? 'fa-spinner fa-spin' : 'fa-download'}`}></i>
-                        <span>{busy ? progressText : `Descargar slide (${format === 'instagram' ? '1080×1350' : '1080×1920'})`}</span>
-                    </button>
-                    <button
-                        id="download-all"
-                        onClick={downloadAll}
-                        disabled={busy}
-                        className="w-full py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all border border-neutral-700 text-neutral-200 hover:bg-neutral-800">
-                        <i className={`fa-solid ${busy ? 'fa-spinner fa-spin' : 'fa-images'}`}></i>
-                        <span>{busy ? progressText : `Descargar todo el carrusel (${format.toUpperCase()})`}</span>
-                    </button>
+                    {viewMode === 'reels' ? (
+                        <button
+                            onClick={() => setPostKitOpen(true)}
+                            className="w-full py-2.5 rounded-xl font-bold text-xs bg-gradient-to-r from-purple-900 to-indigo-900 hover:from-purple-800 hover:to-indigo-800 text-white flex items-center justify-center gap-2 shadow-lg transition-all active:scale-[0.98]">
+                            <i className="fa-solid fa-clipboard-list text-purple-300"></i>
+                            <span>Ver Copy, Guión & Hashtags</span>
+                        </button>
+                    ) : (
+                        <>
+                            <button
+                                id="download-one"
+                                onClick={downloadOne}
+                                disabled={busy}
+                                className={`w-full py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all ${busy ? 'bg-neutral-600 cursor-not-allowed text-neutral-300' : 'bg-white text-black hover:bg-neutral-200 shadow'}`}>
+                                <i className={`fa-solid ${busy ? 'fa-spinner fa-spin' : 'fa-download'}`}></i>
+                                <span>{busy ? progressText : `Descargar slide (${format === 'instagram' ? '1080×1350' : '1080×1920'})`}</span>
+                            </button>
+                            <button
+                                id="download-all"
+                                onClick={downloadAll}
+                                disabled={busy}
+                                className="w-full py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all border border-neutral-700 text-neutral-200 hover:bg-neutral-800">
+                                <i className={`fa-solid ${busy ? 'fa-spinner fa-spin' : 'fa-images'}`}></i>
+                                <span>{busy ? progressText : `Descargar todo el carrusel (${format.toUpperCase()})`}</span>
+                            </button>
+                        </>
+                    )}
                 </div>
             </aside>
 
@@ -1255,137 +1420,191 @@ const App = () => {
                     </div>
                 )}
 
-                {/* Barra de control superior de la diapositiva (formato + navegación + zoom) */}
-                <div
-                    className={`flex items-center justify-between text-xs px-1 w-full shrink-0 ${canvaMode ? 'text-neutral-700' : 'text-neutral-400'}`}
-                    style={{ maxWidth: Math.max(scaledW, 360) }}>
-                    <div className="flex items-center gap-2 font-mono text-[11px]">
-                        <span className={`w-2 h-2 rounded-full ${format === 'instagram' ? 'bg-rose-500' : 'bg-cyan-400'}`}></span>
-                        <span className={`font-bold uppercase ${canvaMode ? 'text-neutral-900' : 'text-white'}`}>{format}</span>
-                        <span className={canvaMode ? 'text-neutral-500' : 'text-neutral-500'}>· {format === 'instagram' ? '1080×1350' : '1080×1920'}</span>
-                    </div>
+                {viewMode === 'reels' ? (
+                    <div className="w-full flex-1 flex flex-col items-center justify-start p-2 md:p-4">
+                        {/* Barra de Control de Videos Motion Graphics y Píldoras */}
+                        <div className="flex flex-col gap-2 max-w-4xl w-full mb-3 px-1">
+                            <div className="flex items-center justify-between gap-2 flex-wrap">
+                                <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-neutral-900 border border-neutral-800 text-xs font-bold text-neutral-200 shadow-sm">
+                                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                    <span className="font-mono text-emerald-400 font-bold">60 FPS</span>
+                                    <span className="text-neutral-400">· Estudio Motion Graphics</span>
+                                </div>
 
-                    {/* Controles de vista y slides en escritorio */}
-                    <div className="flex items-center gap-2">
-                        {/* Selector rápido de slides en escritorio */}
-                        <div className={`hidden md:flex items-center gap-1 border rounded-lg p-0.5 ${canvaMode ? 'bg-white/90 border-neutral-300 shadow-sm' : 'bg-neutral-900 border-neutral-800'}`}>
-                            {video.slides.map((_, idx) => (
                                 <button
-                                    key={idx}
-                                    onClick={() => setSIdx(idx)}
-                                    className={`w-5 h-5 rounded text-[10px] font-mono font-bold flex items-center justify-center transition-all ${sIdx === idx ? (canvaMode ? 'bg-neutral-900 text-white shadow' : 'bg-white text-black') : (canvaMode ? 'text-neutral-600 hover:text-black' : 'text-neutral-400 hover:text-white')}`}>
-                                    {idx + 1}
+                                    id="btn-create-reel"
+                                    onClick={() => setIsReelCreatorOpen(true)}
+                                    className="px-3 py-1.5 rounded-xl text-xs font-bold bg-gradient-to-r from-amber-600 to-rose-600 hover:from-amber-500 hover:to-rose-500 text-white shadow-lg active:scale-95 transition-all flex items-center gap-1.5 border border-amber-400/30">
+                                    <i className="fa-solid fa-wand-magic-sparkles text-[11px]"></i>
+                                    <span>+ Nuevo Video</span>
                                 </button>
-                            ))}
+                            </div>
+
+                            {/* Píldoras de selección de Reels */}
+                            <div className="flex items-center gap-2 overflow-x-auto hide-scrollbar py-1">
+                                {availableReels.map((r, i) => {
+                                    const isSel = activeReelIdx === i;
+                                    const brandAccent = r.accentColor || '#10B981';
+                                    return (
+                                        <button
+                                            key={r.id}
+                                            id={`motion-pill-${r.id}`}
+                                            onClick={() => setActiveReelIdx(i)}
+                                            className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 border transition-all flex items-center gap-2 ${isSel ? 'text-white shadow-lg' : 'bg-neutral-900 text-neutral-300 border-neutral-800 hover:bg-neutral-800'}`}
+                                            style={{
+                                                backgroundColor: isSel ? brandAccent : undefined,
+                                                borderColor: isSel ? brandAccent : undefined
+                                            }}>
+                                            <span className="w-2 h-2 rounded-full bg-white opacity-90"></span>
+                                            <span className="truncate max-w-[200px]">{r.title}</span>
+                                            <span className="font-mono text-[10px] opacity-80">({Math.round((r.duration_ms || 7000) / 1000)}s)</span>
+                                        </button>
+                                    );
+                                })}
+                            </div>
                         </div>
 
-                        {/* Toggle de ajuste a pantalla (Fit) vs 100% */}
-                        <div className={`hidden md:flex border rounded-lg p-0.5 text-[10px] font-mono ${canvaMode ? 'bg-white/90 border-neutral-300 shadow-sm' : 'bg-neutral-900 border-neutral-800'}`}>
+                        {/* Reproductor Activo Unificado en Motion Graphics 60 FPS */}
+                        <window.MotionReelPlayer
+                            reel={activeReel}
+                            onOpenPostKit={() => setPostKitOpen(true)}
+                        />
+                    </div>
+                ) : (
+                    <>
+                        {/* Barra de control superior de la diapositiva (formato + navegación + zoom) */}
+                        <div
+                            className={`flex items-center justify-between text-xs px-1 w-full shrink-0 ${canvaMode ? 'text-neutral-700' : 'text-neutral-400'}`}
+                            style={{ maxWidth: Math.max(scaledW, 360) }}>
+                            <div className="flex items-center gap-2 font-mono text-[11px]">
+                                <span className={`w-2 h-2 rounded-full ${format === 'instagram' ? 'bg-rose-500' : 'bg-cyan-400'}`}></span>
+                                <span className={`font-bold uppercase ${canvaMode ? 'text-neutral-900' : 'text-white'}`}>{format}</span>
+                                <span className={canvaMode ? 'text-neutral-500' : 'text-neutral-500'}>· {format === 'instagram' ? '1080×1350' : '1080×1920'}</span>
+                            </div>
+
+                            {/* Controles de vista y slides en escritorio */}
+                            <div className="flex items-center gap-2">
+                                {/* Selector rápido de slides en escritorio */}
+                                <div className={`hidden md:flex items-center gap-1 border rounded-lg p-0.5 ${canvaMode ? 'bg-white/90 border-neutral-300 shadow-sm' : 'bg-neutral-900 border-neutral-800'}`}>
+                                    {video.slides.map((_, idx) => (
+                                        <button
+                                            key={idx}
+                                            onClick={() => setSIdx(idx)}
+                                            className={`w-5 h-5 rounded text-[10px] font-mono font-bold flex items-center justify-center transition-all ${sIdx === idx ? (canvaMode ? 'bg-neutral-900 text-white shadow' : 'bg-white text-black') : (canvaMode ? 'text-neutral-600 hover:text-black' : 'text-neutral-400 hover:text-white')}`}>
+                                            {idx + 1}
+                                        </button>
+                                    ))}
+                                </div>
+
+                                {/* Toggle de ajuste a pantalla (Fit) vs 100% */}
+                                <div className={`hidden md:flex border rounded-lg p-0.5 text-[10px] font-mono ${canvaMode ? 'bg-white/90 border-neutral-300 shadow-sm' : 'bg-neutral-900 border-neutral-800'}`}>
+                                    <button
+                                        onClick={() => setFitView(true)}
+                                        className={`px-2 py-0.5 rounded font-bold transition-all ${fitView ? (canvaMode ? 'bg-neutral-900 text-white' : 'bg-neutral-700 text-white') : (canvaMode ? 'text-neutral-600 hover:text-black' : 'text-neutral-400 hover:text-white')}`}
+                                        title="Ajusta la diapositiva completa a la altura visible de la pantalla">
+                                        Ajustar
+                                    </button>
+                                    <button
+                                        onClick={() => setFitView(false)}
+                                        className={`px-2 py-0.5 rounded font-bold transition-all ${!fitView ? (canvaMode ? 'bg-neutral-900 text-white' : 'bg-neutral-700 text-white') : (canvaMode ? 'text-neutral-600 hover:text-black' : 'text-neutral-400 hover:text-white')}`}
+                                        title="Tamaño natural 100%">
+                                        100%
+                                    </button>
+                                </div>
+
+                                {/* Botón rápido para alternar mesa Canva si editorMode está inactivo */}
+                                {!editorMode && (
+                                    <button
+                                        onClick={() => setCanvaMode(!canvaMode)}
+                                        className={`hidden md:flex px-2 py-1 rounded-lg text-xs font-bold items-center gap-1.5 transition-all border ${canvaMode ? 'bg-white text-neutral-800 border-neutral-300 shadow-sm hover:bg-neutral-50' : 'bg-neutral-900 text-neutral-300 border-neutral-800 hover:text-white'}`}
+                                        title="Alternar entre Mesa Canva (Fondo Blanco) y Modo Oscuro">
+                                        <i className={`fa-solid ${canvaMode ? 'fa-palette text-amber-500' : 'fa-moon text-blue-400'}`}></i>
+                                        <span>{canvaMode ? 'Canva' : 'Dark'}</span>
+                                    </button>
+                                )}
+
+                                {/* Botón Kit de Publicación en el encabezado del lienzo */}
+                                <button
+                                    id="header-btn-postkit"
+                                    onClick={() => setPostKitOpen(true)}
+                                    className="hidden md:flex bg-neutral-900 hover:bg-neutral-800 border border-purple-500/40 text-purple-300 hover:text-white px-2.5 py-1 rounded-lg text-xs font-bold items-center gap-1.5 transition-all shadow-sm">
+                                    <i className="fa-solid fa-hashtag text-purple-400 text-[10px]"></i>
+                                    <span>Kit de Post</span>
+                                </button>
+
+                                <span className="md:hidden bg-neutral-800/80 px-2 py-0.5 rounded text-neutral-300 font-mono text-[11px]">
+                                    {sIdx + 1}/{video.slides.length}
+                                </span>
+                            </div>
+                        </div>
+
+                        {/* Contenedor con escalado responsivo proporcional (shrink-0 garantiza que flexbox jamás recorte la diapositiva) */}
+                        <div
+                            id="slide-scaler-outer"
+                            className="slide-scaler-outer mx-auto shrink-0"
+                            style={{
+                                width: scaledW,
+                                height: scaledH,
+                            }}>
+                            <div
+                                id="slide-scaler-inner"
+                                className="slide-scaler-inner"
+                                style={{
+                                    transform: `scale(${currentScale})`,
+                                    transformOrigin: 'top left',
+                                    width: baseW,
+                                    height: baseH,
+                                }}>
+                                <window.Slide video={video} d={slide} index={sIdx} format={format} />
+                            </div>
+                        </div>
+
+                        {/* Controles de navegación táctil para móvil (< 768px) */}
+                        <div
+                            className="md:hidden flex items-center justify-between gap-2 w-full mt-1 shrink-0"
+                            style={{ maxWidth: scaledW }}>
                             <button
-                                onClick={() => setFitView(true)}
-                                className={`px-2 py-0.5 rounded font-bold transition-all ${fitView ? (canvaMode ? 'bg-neutral-900 text-white' : 'bg-neutral-700 text-white') : (canvaMode ? 'text-neutral-600 hover:text-black' : 'text-neutral-400 hover:text-white')}`}
-                                title="Ajusta la diapositiva completa a la altura visible de la pantalla">
-                                Ajustar
+                                id="mobile-nav-prev"
+                                onClick={() => setSIdx((i) => Math.max(0, i - 1))}
+                                disabled={sIdx === 0}
+                                className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold border flex items-center justify-center gap-1.5 transition-all ${sIdx === 0 ? 'border-neutral-900 text-neutral-600 bg-neutral-950/40 cursor-not-allowed' : 'border-neutral-800 bg-neutral-900 text-white hover:bg-neutral-800 active:scale-95'}`}>
+                                <i className="fa-solid fa-chevron-left text-[10px]"></i>
+                                <span>Anterior</span>
                             </button>
+                            <span className="font-mono text-xs text-neutral-500 px-1 font-semibold shrink-0">
+                                {sIdx + 1} / {video.slides.length}
+                            </span>
                             <button
-                                onClick={() => setFitView(false)}
-                                className={`px-2 py-0.5 rounded font-bold transition-all ${!fitView ? (canvaMode ? 'bg-neutral-900 text-white' : 'bg-neutral-700 text-white') : (canvaMode ? 'text-neutral-600 hover:text-black' : 'text-neutral-400 hover:text-white')}`}
-                                title="Tamaño natural 100%">
-                                100%
+                                id="mobile-nav-next"
+                                onClick={() => setSIdx((i) => Math.min(video.slides.length - 1, i + 1))}
+                                disabled={sIdx === video.slides.length - 1}
+                                className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold border flex items-center justify-center gap-1.5 transition-all ${sIdx === video.slides.length - 1 ? 'border-neutral-900 text-neutral-600 bg-neutral-950/40 cursor-not-allowed' : 'border-neutral-800 bg-neutral-900 text-white hover:bg-neutral-800 active:scale-95'}`}>
+                                <span>Siguiente</span>
+                                <i className="fa-solid fa-chevron-right text-[10px]"></i>
                             </button>
                         </div>
 
-                        {/* Botón rápido para alternar mesa Canva si editorMode está inactivo */}
-                        {!editorMode && (
-                            <button
-                                onClick={() => setCanvaMode(!canvaMode)}
-                                className={`hidden md:flex px-2 py-1 rounded-lg text-xs font-bold items-center gap-1.5 transition-all border ${canvaMode ? 'bg-white text-neutral-800 border-neutral-300 shadow-sm hover:bg-neutral-50' : 'bg-neutral-900 text-neutral-300 border-neutral-800 hover:text-white'}`}
-                                title="Alternar entre Mesa Canva (Fondo Blanco) y Modo Oscuro">
-                                <i className={`fa-solid ${canvaMode ? 'fa-palette text-amber-500' : 'fa-moon text-blue-400'}`}></i>
-                                <span>{canvaMode ? 'Canva' : 'Dark'}</span>
-                            </button>
+                        {/* Metadatos y notas de producción */}
+                        <div
+                            className={`text-[11px] font-mono flex justify-between px-1 w-full shrink-0 ${canvaMode ? 'text-neutral-600' : 'text-neutral-500'}`}
+                            style={{ maxWidth: Math.max(scaledW, 360) }}>
+                            <span>{isMova ? '@mova.app · Rompiendo el silencio' : `${slide.type} · ${slide.layout} · ${slide.tone || 'white'}`}</span>
+                            <span className="hidden md:inline">← → para navegar</span>
+                            <span className="md:hidden text-neutral-600">Desliza el dedo ↔</span>
+                        </div>
+
+                        {slide.prod && (
+                            <div
+                                className="rounded-xl p-3 text-[11.5px] leading-snug bg-neutral-900/90 border border-neutral-800/80 text-neutral-300 w-full shrink-0"
+                                style={{ maxWidth: Math.max(scaledW, 360) }}>
+                                <div className="flex items-center gap-1.5 text-neutral-400 font-bold mb-1 text-[11px] uppercase tracking-wider">
+                                    <i className="fa-solid fa-wand-magic-sparkles text-[10px]" style={{ color: theme.accent }}></i>
+                                    <span>Nota creativa:</span>
+                                </div>
+                                <p>{slide.prod}</p>
+                            </div>
                         )}
-
-                        {/* Botón Kit de Publicación en el encabezado del lienzo */}
-                        <button
-                            id="header-btn-postkit"
-                            onClick={() => setPostKitOpen(true)}
-                            className="hidden md:flex bg-neutral-900 hover:bg-neutral-800 border border-purple-500/40 text-purple-300 hover:text-white px-2.5 py-1 rounded-lg text-xs font-bold items-center gap-1.5 transition-all shadow-sm">
-                            <i className="fa-solid fa-hashtag text-purple-400 text-[10px]"></i>
-                            <span>Kit de Post</span>
-                        </button>
-
-                        <span className="md:hidden bg-neutral-800/80 px-2 py-0.5 rounded text-neutral-300 font-mono text-[11px]">
-                            {sIdx + 1}/{video.slides.length}
-                        </span>
-                    </div>
-                </div>
-
-                {/* Contenedor con escalado responsivo proporcional (shrink-0 garantiza que flexbox jamás recorte la diapositiva) */}
-                <div
-                    id="slide-scaler-outer"
-                    className="slide-scaler-outer mx-auto shrink-0"
-                    style={{
-                        width: scaledW,
-                        height: scaledH,
-                    }}>
-                    <div
-                        id="slide-scaler-inner"
-                        className="slide-scaler-inner"
-                        style={{
-                            transform: `scale(${currentScale})`,
-                            transformOrigin: 'top left',
-                            width: baseW,
-                            height: baseH,
-                        }}>
-                        <window.Slide video={video} d={slide} index={sIdx} format={format} />
-                    </div>
-                </div>
-
-                {/* Controles de navegación táctil para móvil (< 768px) */}
-                <div
-                    className="md:hidden flex items-center justify-between gap-2 w-full mt-1 shrink-0"
-                    style={{ maxWidth: scaledW }}>
-                    <button
-                        id="mobile-nav-prev"
-                        onClick={() => setSIdx((i) => Math.max(0, i - 1))}
-                        disabled={sIdx === 0}
-                        className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold border flex items-center justify-center gap-1.5 transition-all ${sIdx === 0 ? 'border-neutral-900 text-neutral-600 bg-neutral-950/40 cursor-not-allowed' : 'border-neutral-800 bg-neutral-900 text-white hover:bg-neutral-800 active:scale-95'}`}>
-                        <i className="fa-solid fa-chevron-left text-[10px]"></i>
-                        <span>Anterior</span>
-                    </button>
-                    <span className="font-mono text-xs text-neutral-500 px-1 font-semibold shrink-0">
-                        {sIdx + 1} / {video.slides.length}
-                    </span>
-                    <button
-                        id="mobile-nav-next"
-                        onClick={() => setSIdx((i) => Math.min(video.slides.length - 1, i + 1))}
-                        disabled={sIdx === video.slides.length - 1}
-                        className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold border flex items-center justify-center gap-1.5 transition-all ${sIdx === video.slides.length - 1 ? 'border-neutral-900 text-neutral-600 bg-neutral-950/40 cursor-not-allowed' : 'border-neutral-800 bg-neutral-900 text-white hover:bg-neutral-800 active:scale-95'}`}>
-                        <span>Siguiente</span>
-                        <i className="fa-solid fa-chevron-right text-[10px]"></i>
-                    </button>
-                </div>
-
-                {/* Metadatos y notas de producción */}
-                <div
-                    className={`text-[11px] font-mono flex justify-between px-1 w-full shrink-0 ${canvaMode ? 'text-neutral-600' : 'text-neutral-500'}`}
-                    style={{ maxWidth: Math.max(scaledW, 360) }}>
-                    <span>{isMova ? '@mova.app · Rompiendo el silencio' : `${slide.type} · ${slide.layout} · ${slide.tone || 'white'}`}</span>
-                    <span className="hidden md:inline">← → para navegar</span>
-                    <span className="md:hidden text-neutral-600">Desliza el dedo ↔</span>
-                </div>
-
-                {slide.prod && (
-                    <div
-                        className="rounded-xl p-3 text-[11.5px] leading-snug bg-neutral-900/90 border border-neutral-800/80 text-neutral-300 w-full shrink-0"
-                        style={{ maxWidth: Math.max(scaledW, 360) }}>
-                        <div className="flex items-center gap-1.5 text-neutral-400 font-bold mb-1 text-[11px] uppercase tracking-wider">
-                            <i className="fa-solid fa-wand-magic-sparkles text-[10px]" style={{ color: theme.accent }}></i>
-                            <span>Nota creativa:</span>
-                        </div>
-                        <p>{slide.prod}</p>
-                    </div>
+                    </>
                 )}
 
                 {/* Espacio de reserva para que el contenido no quede tapado por la botonera fija inferior en móvil */}
@@ -1448,26 +1667,43 @@ const App = () => {
             {/* ============================================================== */}
             {/* BOTONERA FIJA INFERIOR PARA MÓVIL (< 768px)                    */}
             {/* ============================================================== */}
-            <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-neutral-950/95 backdrop-blur-md border-t border-neutral-800 p-2.5 shadow-2xl flex items-center gap-2">
-                <button
-                    id="mobile-download-one"
-                    onClick={downloadOne}
-                    disabled={busy}
-                    className={`flex-1 py-3 px-3 rounded-xl font-black text-xs flex items-center justify-center gap-2 transition-all shadow-lg active:scale-[0.98] ${busy ? 'bg-neutral-700 text-neutral-300 cursor-not-allowed' : 'bg-white text-black hover:bg-neutral-200'}`}>
-                    <i className={`fa-solid ${busy ? 'fa-spinner fa-spin' : 'fa-arrow-down-to-bracket'} text-sm`}></i>
-                    <span className="truncate">{busy ? progressText : `Descargar Slide (${format.toUpperCase()})`}</span>
-                </button>
+            {viewMode === 'reels' ? (
+                <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-neutral-950/95 backdrop-blur-md border-t border-neutral-800 p-2.5 shadow-2xl flex items-center gap-2">
+                    <button
+                        onClick={() => setIsReelCreatorOpen(true)}
+                        className="py-3 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 bg-neutral-800 text-neutral-200 border border-neutral-700 active:scale-95 shrink-0">
+                        <i className="fa-solid fa-wand-magic-sparkles text-sky-400"></i>
+                        <span>+ Nuevo</span>
+                    </button>
+                    <button
+                        onClick={() => setPostKitOpen(true)}
+                        className="flex-1 py-3 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 bg-gradient-to-r from-purple-900 to-indigo-900 text-white shadow-lg active:scale-95">
+                        <i className="fa-solid fa-clipboard-list text-purple-300"></i>
+                        <span>Ver Copy, Guión & Tags</span>
+                    </button>
+                </div>
+            ) : (
+                <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-neutral-950/95 backdrop-blur-md border-t border-neutral-800 p-2.5 shadow-2xl flex items-center gap-2">
+                    <button
+                        id="mobile-download-one"
+                        onClick={downloadOne}
+                        disabled={busy}
+                        className={`flex-1 py-3 px-3 rounded-xl font-black text-xs flex items-center justify-center gap-2 transition-all shadow-lg active:scale-[0.98] ${busy ? 'bg-neutral-700 text-neutral-300 cursor-not-allowed' : 'bg-white text-black hover:bg-neutral-200'}`}>
+                        <i className={`fa-solid ${busy ? 'fa-spinner fa-spin' : 'fa-arrow-down-to-bracket'} text-sm`}></i>
+                        <span className="truncate">{busy ? progressText : `Descargar Slide (${format.toUpperCase()})`}</span>
+                    </button>
 
-                <button
-                    id="mobile-download-all"
-                    onClick={downloadAll}
-                    disabled={busy}
-                    title="Descargar todo el carrusel"
-                    className="py-3 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all border border-neutral-700 bg-neutral-900 text-white hover:bg-neutral-800 active:scale-[0.98] shrink-0">
-                    <i className={`fa-solid ${busy ? 'fa-spinner fa-spin' : 'fa-images'}`}></i>
-                    <span>Todo</span>
-                </button>
-            </div>
+                    <button
+                        id="mobile-download-all"
+                        onClick={downloadAll}
+                        disabled={busy}
+                        title="Descargar todo el carrusel"
+                        className="py-3 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all border border-neutral-700 bg-neutral-900 text-white hover:bg-neutral-800 active:scale-[0.98] shrink-0">
+                        <i className={`fa-solid ${busy ? 'fa-spinner fa-spin' : 'fa-images'}`}></i>
+                        <span>Todo</span>
+                    </button>
+                </div>
+            )}
 
             {/* ============================================================== */}
             {/* MODALES MODULARIZADOS Y DESACOPLADOS (js/modals.js)            */}
@@ -1496,7 +1732,7 @@ const App = () => {
             <window.PostKitModal
                 postKitOpen={postKitOpen}
                 setPostKitOpen={setPostKitOpen}
-                activeVideo={video}
+                activeVideo={viewMode === 'reels' ? activeReel : video}
                 copiedKey={copiedKey}
                 onCopy={handleCopy}
             />
@@ -1513,6 +1749,15 @@ const App = () => {
                 ghMessage={ghMessage}
                 onSyncToGitHub={handleSyncToGitHub}
             />
+
+            {window.ReelCreatorModal && (
+                <window.ReelCreatorModal
+                    isOpen={isReelCreatorOpen}
+                    onClose={() => setIsReelCreatorOpen(false)}
+                    onReelCreated={handleReelCreated}
+                    currentAccount={selectedAccount === 'all' ? 'santidev' : selectedAccount}
+                />
+            )}
         </div>
     );
 };

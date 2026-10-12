@@ -1807,3 +1807,974 @@ window.Slide = ({ video, d, index, format = 'tiktok' }) => {
     );
 };
 
+/**
+ * =====================================================================
+ * SANTI.DEV · COMPONENTES DETERMINISTAS PARA VIDEOS Y MOTION REELS
+ * =====================================================================
+ * Módulo de renderizado cinético basado 100% en tiempo virtual (currentMs).
+ * Erradica transiciones CSS para garantizar exportación determinista
+ * fotograma a fotograma a 1080×1920 @ 60 FPS sin saltos ni desenfoque.
+ * =====================================================================
+ */
+
+// Palabra con máscara invisible (overflow: hidden)
+const MaskedWord = ({ text, isAccent, progress }) => {
+    const engine = window.MotionEngine || {};
+    const translateY = engine.getTranslateY ? engine.getTranslateY(progress, 60) : (1 - progress) * 60;
+    const opacity = engine.getOpacity ? engine.getOpacity(progress) : progress;
+
+    return (
+        <span style={{ display: "inline-block", overflow: "hidden", verticalAlign: "bottom", marginRight: "0.28em" }}>
+            <span
+                style={{
+                    display: "inline-block",
+                    transform: `translate3d(0, ${translateY}px, 0)`,
+                    opacity: opacity,
+                    color: isAccent ? "#D97757" : "#F3F3F3",
+                    fontFamily: "'Space Grotesk', -apple-system, sans-serif",
+                    fontWeight: 700,
+                    letterSpacing: "-0.03em"
+                }}
+            >
+                {text}
+            </span>
+        </span>
+    );
+};
+
+// Escena de Título Cinético (Estilo Anthropic)
+const KineticTitleScene = ({ scene, currentMs }) => {
+    const engine = window.MotionEngine || {};
+    const getProgress = engine.getProgress || ((c, s, d) => c <= s ? 0 : c >= s + d ? 1 : (c - s) / d);
+    const getTranslateY = engine.getTranslateY || ((p, o = 48) => (1 - p) * o);
+
+    return (
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100%", padding: "0 60px", textAlign: "center" }}>
+            <div style={{ fontSize: "76px", lineHeight: "1.1", marginBottom: "24px" }}>
+                {scene.words.map((word, i) => {
+                    const wordStart = scene.start_ms + (i * (scene.stagger_ms || 120));
+                    const progress = getProgress(currentMs, wordStart, scene.reveal_duration_ms || 600);
+                    const isAccent = (scene.accent_indices || []).includes(i);
+                    return <MaskedWord key={i} text={word} isAccent={isAccent} progress={progress} />;
+                })}
+            </div>
+            {scene.subtitle && (
+                <p
+                    style={{
+                        color: "rgba(243, 243, 243, 0.55)",
+                        fontSize: "26px",
+                        fontFamily: "'Inter', sans-serif",
+                        opacity: getProgress(currentMs, scene.start_ms + 400, 600),
+                        transform: `translate3d(0, ${getTranslateY(getProgress(currentMs, scene.start_ms + 400, 600), 20)}px, 0)`
+                    }}
+                >
+                    {scene.subtitle}
+                </p>
+            )}
+        </div>
+    );
+};
+
+// Escena de Métrica Única (Anti-Slop: Un Solo Elemento Masivo Central, Cero Rejillas)
+const CardGridScene = ({ scene, currentMs }) => {
+    if (!scene || !scene.cards || scene.cards.length === 0) return null;
+    const duration = Math.max(1, (scene.end_ms || 3000) - (scene.start_ms || 0));
+    const cardDuration = duration / scene.cards.length;
+    const activeIdx = Math.min(scene.cards.length - 1, Math.max(0, Math.floor((currentMs - (scene.start_ms || 0)) / cardDuration)));
+    const activeCard = scene.cards[activeIdx] || scene.cards[0];
+
+    const beatEquivalent = [{
+        start_ms: scene.start_ms,
+        end_ms: scene.end_ms,
+        text: `${activeCard.metric || ''} ${activeCard.label || ''}`.trim(),
+        accent: activeCard.metric || '',
+        size: "text-8xl"
+    }];
+    return <FastReelFrame beats={beatEquivalent} currentMs={currentMs} />;
+};
+
+// Escena de Paso Único Activo (Anti-Slop: Un Solo Paso Masivo por Beat, Cero Pipelines de 4 Cajas)
+const StepListScene = ({ scene, currentMs }) => {
+    if (!scene || !scene.steps || scene.steps.length === 0) return null;
+    const duration = Math.max(1, (scene.end_ms || 3000) - (scene.start_ms || 0));
+    const stepDuration = duration / scene.steps.length;
+    const activeIdx = Math.min(scene.steps.length - 1, Math.max(0, Math.floor((currentMs - (scene.start_ms || 0)) / stepDuration)));
+    const activeStep = scene.steps[activeIdx] || scene.steps[0];
+    const stepText = (typeof activeStep === 'string' ? activeStep : (activeStep.label || activeStep.text || '')).toUpperCase();
+    const words = stepText.split(/\s+/);
+    const accentWord = words[words.length - 1] || '';
+
+    const beatEquivalent = [{
+        start_ms: scene.start_ms,
+        end_ms: scene.end_ms,
+        type: 'points',
+        title: stepText,
+        sub: scene.kicker || 'ARQUITECTURA ÁGIL',
+        badge: scene.kicker || 'PASO CLAVE',
+        points: [{ icon: 'fa-check', label: stepText, desc: 'Paso esencial del flujo.' }]
+    }];
+    return <FastReelFrame beats={beatEquivalent} currentMs={currentMs} />;
+};
+
+// Contenedor Cinematográfico Motion Graphics: Alta Retención, Tipografía Abierta y Cero Cajas Genéricas
+const renderReelRichText = (text, accentColor) => {
+    if (!text) return null;
+    if (typeof text !== 'string') return text;
+    if (!text.includes('*')) return text;
+    const parts = text.split('*');
+    return parts.map((part, i) => {
+        if (i % 2 === 1) {
+            return (
+                <span key={i} style={{ color: accentColor, textShadow: `0 0 35px ${accentColor}88`, fontWeight: 900 }}>
+                    {part}
+                </span>
+            );
+        }
+        return <span key={i}>{part}</span>;
+    });
+};
+
+const FastReelFrame = ({ beats, currentMs, reelData }) => {
+    const rawBeats = (reelData?.beats && Array.isArray(reelData.beats) && reelData.beats.length > 0)
+        ? reelData.beats
+        : (beats || []);
+
+    if (!rawBeats || rawBeats.length === 0) {
+        return <div style={{ backgroundColor: "#061A14", height: "100%", width: "100%" }} />;
+    }
+
+    // 1. Identificar el beat activo en el milisegundo exacto
+    const activeBeat = rawBeats.find(b => currentMs >= b.start_ms && currentMs < b.end_ms)
+        || (currentMs >= rawBeats[rawBeats.length - 1].end_ms ? rawBeats[rawBeats.length - 1] : rawBeats[0]);
+
+    if (!activeBeat) return <div style={{ backgroundColor: "#061A14", height: "100%", width: "100%" }} />;
+
+    const beatIndex = rawBeats.findIndex(b => b === activeBeat || b.id === activeBeat.id);
+    const totalBeats = rawBeats.length;
+    const beatDuration = Math.max(1, ((activeBeat.end_ms || 2500) - (activeBeat.start_ms || 0)));
+    const progressInBeat = Math.min(1, Math.max(0, (currentMs - (activeBeat.start_ms || 0)) / beatDuration));
+    const totalDuration = reelData?.duration_ms || reelData?.total_ms || 12500;
+    const overallProgress = Math.min(1, Math.max(0, currentMs / totalDuration));
+
+    // 2. Paletas de Color Estandarizadas y Luminosas (Idénticas a los Primeros Slides)
+    const accId = reelData?.accountId || 'santidev';
+    let brandAccent = '#00DF8F';       // Verde Cyber Mint Santi.Dev
+    let brandSecondary = '#38BDF8';    // Azul Sky
+    let brandHandle = '@santi.dev';
+    let kickerText = reelData?.kicker || 'SANTI.DEV · INGENIERÍA AGÉNTICA';
+    let bgGradient = 'linear-gradient(165deg, #072e23 0%, #031c15 45%, #05120e 100%)';
+    let auraColor = 'rgba(0, 223, 143, 0.35)';
+    let defaultKeyword = 'STACK';
+
+    if (accId === 'mova') {
+        brandAccent = '#3B82F6';       // Azul Eléctrico Mova
+        brandSecondary = '#4ECCA3';    // Menta Articulaciones MediaPipe
+        brandHandle = '@mova.app';
+        kickerText = reelData?.kicker || 'MOVA · ACCESIBILIDAD 21D';
+        bgGradient = 'linear-gradient(165deg, #0c2b64 0%, #06183d 45%, #030d22 100%)';
+        auraColor = 'rgba(59, 130, 246, 0.38)';
+        defaultKeyword = 'MOVA';
+    } else if (accId === 'endo') {
+        brandAccent = '#EE6A3E';       // Coral Retro Arcade Endo
+        brandSecondary = '#F59E0B';    // Amarillo Oro Arcade
+        brandHandle = '@endo.dev';
+        kickerText = reelData?.kicker || 'THE LAST ENDO · 60 FPS';
+        bgGradient = 'linear-gradient(165deg, #501526 0%, #290814 45%, #130309 100%)';
+        auraColor = 'rgba(238, 106, 62, 0.38)';
+        defaultKeyword = '60FPS';
+    } else if (accId === 'girastock') {
+        brandAccent = '#EDB828';       // Ámbar Oro Cálido GiraStock
+        brandSecondary = '#10B981';    // Verde Éxito SQLite
+        brandHandle = '@girastock';
+        kickerText = reelData?.kicker || 'GIRASTOCK · OFFLINE FIRST';
+        bgGradient = 'linear-gradient(165deg, #4d2a09 0%, #261404 45%, #120902 100%)';
+        auraColor = 'rgba(237, 184, 40, 0.35)';
+        defaultKeyword = 'OFFLINE';
+    }
+
+    // 3. Easing & Movimiento Cinematográfico 60 FPS
+    const enterProgress = Math.min(1, progressInBeat / 0.14);
+    const enterEase = 1 - Math.pow(1 - enterProgress, 3);
+    const enterY = (1 - enterEase) * 32;
+    const enterOpacity = Math.min(1, progressInBeat / 0.08);
+    const cameraScale = 1 + (progressInBeat * 0.02);
+
+    // Resplandor ambiental flotante en movimiento
+    const orbX = Math.sin(currentMs * 0.0018) * 85;
+    const orbY = Math.cos(currentMs * 0.0022) * 70;
+
+    // Normalización de datos del beat
+    const beatType = activeBeat.type || 'hero';
+    const badgeLabel = activeBeat.badge || activeBeat.kicker || kickerText;
+    const ctaKeyword = activeBeat.ctaData?.keyword || defaultKeyword;
+
+    return (
+        <div style={{
+            background: bgGradient,
+            height: "1920px",
+            width: "1080px",
+            position: "relative",
+            overflow: "hidden",
+            boxSizing: "border-box",
+            padding: "160px 80px 170px 80px", // Márgenes Seguros Estrictos TikTok/Reels
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            alignItems: "center",
+            userSelect: "none"
+        }}>
+            {/* LUZ AMBIENTAL RADIANTE CINEMÁTICA */}
+            <div style={{
+                position: "absolute",
+                width: "800px",
+                height: "800px",
+                borderRadius: "50%",
+                background: `radial-gradient(circle, ${auraColor} 0%, transparent 68%)`,
+                filter: "blur(110px)",
+                pointerEvents: "none",
+                top: `${400 + orbY}px`,
+                left: `${140 + orbX}px`,
+                transform: "translate3d(0, 0, 0)",
+                willChange: "transform"
+            }} />
+
+
+            {/* BANDA SUPERIOR (HEADER CINÉTICO) */}
+            <div style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                zIndex: 20
+            }}>
+                <div style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "12px",
+                    padding: "10px 24px",
+                    borderRadius: "999px",
+                    backgroundColor: "rgba(0, 0, 0, 0.45)",
+                    border: `1.5px solid ${brandAccent}55`,
+                    backdropFilter: "blur(20px)",
+                    boxShadow: `0 8px 30px -4px ${brandAccent}26`
+                }}>
+                    <span style={{
+                        width: "10px",
+                        height: "10px",
+                        borderRadius: "50%",
+                        backgroundColor: brandAccent,
+                        boxShadow: `0 0 12px ${brandAccent}`,
+                        display: "inline-block"
+                    }} />
+                    <span style={{
+                        fontFamily: "'Space Grotesk', -apple-system, sans-serif",
+                        fontSize: "19px",
+                        fontWeight: 700,
+                        letterSpacing: "0.10em",
+                        textTransform: "uppercase",
+                        color: "#FFFFFF"
+                    }}>
+                        {badgeLabel}
+                    </span>
+                </div>
+
+                <div style={{
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: "17px",
+                    fontWeight: 800,
+                    color: brandAccent,
+                    backgroundColor: "rgba(0, 0, 0, 0.5)",
+                    padding: "9px 20px",
+                    borderRadius: "14px",
+                    border: "1px solid rgba(255, 255, 255, 0.12)",
+                    backdropFilter: "blur(20px)"
+                }}>
+                    {brandHandle}
+                </div>
+            </div>
+
+            {/* CONTENIDO CENTRAL CINÉTICO (EDUCATIVO, ELEGANTE, SIN CAJAS GENÉRICAS) */}
+            <div style={{
+                flex: 1,
+                width: "100%",
+                maxWidth: "920px",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                position: "relative",
+                zIndex: 10,
+                transform: `scale(${cameraScale})`,
+                transformOrigin: "center center"
+            }}>
+                {/* ======================================================== */}
+                {/* 1. HERO (HOOK DE APERTURA: TITULAR MASIVO + BENEFICIO)   */}
+                {/* ======================================================== */}
+                {beatType === 'hero' && (
+                    <div style={{
+                        transform: `translate3d(0, ${enterY}px, 0)`,
+                        opacity: enterOpacity,
+                        textAlign: "center",
+                        width: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        gap: "30px"
+                    }}>
+                        {/* Kicker Tag */}
+                        <div style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "10px",
+                            padding: "8px 22px",
+                            borderRadius: "12px",
+                            backgroundColor: `${brandAccent}20`,
+                            border: `1.5px solid ${brandAccent}`,
+                            color: brandAccent,
+                            fontSize: "17px",
+                            fontFamily: "'JetBrains Mono', monospace",
+                            fontWeight: 800,
+                            letterSpacing: "0.12em",
+                            textTransform: "uppercase"
+                        }}>
+                            <span style={{ width: 8, height: 8, borderRadius: "50%", background: brandAccent }} />
+                            <span>{activeBeat.kicker || 'ESTRATEGIA TÉCNICA'}</span>
+                        </div>
+
+                        {/* Titular Cinético con Énfasis */}
+                        <h1 style={{
+                            color: "#FFFFFF",
+                            fontFamily: "'Space Grotesk', -apple-system, sans-serif",
+                            fontSize: "76px",
+                            fontWeight: 900,
+                            lineHeight: 1.08,
+                            letterSpacing: "-0.04em",
+                            margin: 0,
+                            maxWidth: "900px"
+                        }}>
+                            {renderReelRichText(activeBeat.title, brandAccent)}
+                        </h1>
+
+                        {/* Subtítulo Informativo Denso */}
+                        <p style={{
+                            fontSize: "27px",
+                            color: "rgba(255, 255, 255, 0.84)",
+                            fontFamily: "'Space Grotesk', sans-serif",
+                            fontWeight: 600,
+                            maxWidth: "800px",
+                            margin: 0,
+                            lineHeight: 1.35
+                        }}>
+                            {activeBeat.sub}
+                        </p>
+
+                        {/* Píldoras de Valor Flotantes */}
+                        <div style={{ display: "flex", gap: "16px", marginTop: "12px", flexWrap: "wrap", justifyContent: "center" }}>
+                            <div style={{
+                                padding: "10px 20px",
+                                borderRadius: "14px",
+                                backgroundColor: "rgba(255, 255, 255, 0.08)",
+                                border: "1px solid rgba(255, 255, 255, 0.18)",
+                                backdropFilter: "blur(14px)",
+                                color: "#FFF",
+                                fontSize: "16px",
+                                fontWeight: 700,
+                                fontFamily: "'Space Grotesk', sans-serif",
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "8px"
+                            }}>
+                                <i className="fa-solid fa-bolt" style={{ color: brandAccent }} />
+                                <span>100% Sin Sintaxis Pesada</span>
+                            </div>
+                            <div style={{
+                                padding: "10px 20px",
+                                borderRadius: "14px",
+                                backgroundColor: "rgba(255, 255, 255, 0.08)",
+                                border: "1px solid rgba(255, 255, 255, 0.18)",
+                                backdropFilter: "blur(14px)",
+                                color: "#FFF",
+                                fontSize: "16px",
+                                fontWeight: 700,
+                                fontFamily: "'Space Grotesk', sans-serif",
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "8px"
+                            }}>
+                                <i className="fa-solid fa-clock" style={{ color: brandSecondary }} />
+                                <span>Prototipo en Horas</span>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* ======================================================== */}
+                {/* 2. POINTS (PASOS CLAVE: FILAS FLOTANTES SIN CAJAS)       */}
+                {/* ======================================================== */}
+                {beatType === 'points' && (
+                    <div style={{
+                        transform: `translate3d(0, ${enterY}px, 0)`,
+                        opacity: enterOpacity,
+                        width: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "28px"
+                    }}>
+                        <div style={{ textAlign: "center" }}>
+                            <h2 style={{
+                                color: "#FFFFFF",
+                                fontFamily: "'Space Grotesk', -apple-system, sans-serif",
+                                fontSize: "60px",
+                                fontWeight: 900,
+                                lineHeight: 1.1,
+                                letterSpacing: "-0.03em",
+                                margin: "0 0 12px 0"
+                            }}>
+                                {renderReelRichText(activeBeat.title, brandAccent)}
+                            </h2>
+                            <p style={{
+                                fontSize: "23px",
+                                color: "rgba(255, 255, 255, 0.8)",
+                                fontFamily: "'Space Grotesk', sans-serif",
+                                fontWeight: 600,
+                                margin: 0,
+                                lineHeight: 1.3
+                            }}>
+                                {activeBeat.sub}
+                            </p>
+                        </div>
+
+                        {/* Filas Educativas Escalonadas (Staggered Kinetic Entrance) */}
+                        <div style={{ display: "flex", flexDirection: "column", gap: "18px", width: "100%", marginTop: "10px" }}>
+                            {(activeBeat.points || []).map((p, idx) => {
+                                const itemEnter = Math.min(1, Math.max(0, (progressInBeat - (0.08 + idx * 0.10)) / 0.12));
+                                const itemEase = 1 - Math.pow(1 - itemEnter, 3);
+                                const itemY = (1 - itemEase) * 24;
+                                const itemOp = itemEnter;
+
+                                return (
+                                    <div
+                                        key={idx}
+                                        style={{
+                                            transform: `translate3d(0, ${itemY}px, 0)`,
+                                            opacity: itemOp,
+                                            display: "flex",
+                                            alignItems: "flex-start",
+                                            gap: "22px",
+                                            padding: "20px 24px",
+                                            borderBottom: "1px solid rgba(255, 255, 255, 0.10)",
+                                            backgroundColor: idx === 0 ? "rgba(255, 255, 255, 0.04)" : "transparent",
+                                            borderRadius: "18px"
+                                        }}
+                                    >
+                                        <div style={{
+                                            width: "56px",
+                                            height: "56px",
+                                            borderRadius: "16px",
+                                            backgroundColor: `${brandAccent}22`,
+                                            border: `1.5px solid ${brandAccent}88`,
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            color: brandAccent,
+                                            fontSize: "24px",
+                                            flexShrink: 0,
+                                            boxShadow: `0 0 20px ${brandAccent}33`
+                                        }}>
+                                            <i className={`fa-solid ${p.icon || 'fa-check'}`} />
+                                        </div>
+                                        <div style={{ flex: 1 }}>
+                                            <div style={{
+                                                color: "#FFFFFF",
+                                                fontFamily: "'Space Grotesk', sans-serif",
+                                                fontSize: "27px",
+                                                fontWeight: 800,
+                                                marginBottom: "6px"
+                                            }}>
+                                                {p.label}
+                                            </div>
+                                            <div style={{
+                                                color: "rgba(255, 255, 255, 0.82)",
+                                                fontFamily: "'Space Grotesk', sans-serif",
+                                                fontSize: "20px",
+                                                fontWeight: 500,
+                                                lineHeight: 1.35
+                                            }}>
+                                                {p.desc}
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                )}
+
+                {/* ======================================================== */}
+                {/* 3. CODE (TERMINAL REAL CON REVELADO PROGRESIVO DE LÍNEAS) */}
+                {/* ======================================================== */}
+                {beatType === 'code' && (
+                    <div style={{
+                        transform: `translate3d(0, ${enterY}px, 0)`,
+                        opacity: enterOpacity,
+                        width: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "24px"
+                    }}>
+                        <div style={{ textAlign: "center" }}>
+                            <h2 style={{
+                                color: "#FFFFFF",
+                                fontFamily: "'Space Grotesk', -apple-system, sans-serif",
+                                fontSize: "56px",
+                                fontWeight: 900,
+                                lineHeight: 1.1,
+                                letterSpacing: "-0.03em",
+                                margin: "0 0 10px 0"
+                            }}>
+                                {renderReelRichText(activeBeat.title, brandAccent)}
+                            </h2>
+                            <p style={{
+                                fontSize: "22px",
+                                color: "rgba(255, 255, 255, 0.8)",
+                                fontFamily: "'Space Grotesk', sans-serif",
+                                fontWeight: 600,
+                                margin: 0
+                            }}>
+                                {activeBeat.sub}
+                            </p>
+                        </div>
+
+                        {/* Terminal Window Mac Real */}
+                        <div style={{
+                            width: "100%",
+                            borderRadius: "22px",
+                            overflow: "hidden",
+                            backgroundColor: "rgba(4, 10, 14, 0.92)",
+                            border: `2px solid ${brandAccent}66`,
+                            boxShadow: `0 24px 60px -15px rgba(0, 0, 0, 0.8), 0 0 40px ${brandAccent}26`,
+                            backdropFilter: "blur(24px)"
+                        }}>
+                            {/* Cabecera Terminal Mac */}
+                            <div style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                                padding: "14px 22px",
+                                borderBottom: "1px solid rgba(255, 255, 255, 0.10)",
+                                backgroundColor: "rgba(0, 0, 0, 0.4)"
+                            }}>
+                                <div style={{ display: "flex", gap: "8px" }}>
+                                    <span style={{ width: "13px", height: "13px", borderRadius: "50%", backgroundColor: "#FF5F56", display: "inline-block" }} />
+                                    <span style={{ width: "13px", height: "13px", borderRadius: "50%", backgroundColor: "#FFBD2E", display: "inline-block" }} />
+                                    <span style={{ width: "13px", height: "13px", borderRadius: "50%", backgroundColor: "#27C93F", display: "inline-block" }} />
+                                </div>
+                                <div style={{
+                                    fontFamily: "'JetBrains Mono', monospace",
+                                    fontSize: "15px",
+                                    fontWeight: 700,
+                                    color: "rgba(255, 255, 255, 0.65)"
+                                }}>
+                                    {activeBeat.codeSnippet?.file || 'terminal ~ bash'}
+                                </div>
+                                <div style={{ width: "45px" }} />
+                            </div>
+
+                            {/* Cuerpo de Código con Revelado Dinámico */}
+                            <div style={{
+                                padding: "26px 28px",
+                                fontFamily: "'JetBrains Mono', monospace",
+                                fontSize: "19px",
+                                lineHeight: 1.65,
+                                color: "#F8FAFC"
+                            }}>
+                                {(() => {
+                                    const lines = activeBeat.codeSnippet?.lines || [];
+                                    const visibleCount = Math.min(lines.length, Math.max(1, Math.floor(progressInBeat * lines.length * 1.35)));
+
+                                    return lines.slice(0, visibleCount).map((line, idx) => {
+                                        const isComment = line.trim().startsWith('#');
+                                        const isCommand = line.trim().startsWith('$');
+                                        const isSuccess = line.trim().startsWith('✓');
+
+                                        let color = '#E2E8F0';
+                                        let fontWeight = 500;
+                                        if (isComment) {
+                                            color = '#64748B';
+                                        } else if (isCommand) {
+                                            color = '#FFFFFF';
+                                            fontWeight = 700;
+                                        } else if (isSuccess) {
+                                            color = brandAccent;
+                                            fontWeight = 800;
+                                        }
+
+                                        return (
+                                            <div key={idx} style={{ color, fontWeight, display: "flex", gap: "14px" }}>
+                                                <span style={{ color: "rgba(255, 255, 255, 0.25)", userSelect: "none", width: "24px", textAlign: "right" }}>
+                                                    {idx + 1}
+                                                </span>
+                                                <span style={{ flex: 1 }}>{line}</span>
+                                            </div>
+                                        );
+                                    });
+                                })()}
+                            </div>
+                        </div>
+
+                        {/* Nota Pedagógica al Pie */}
+                        <div style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "12px",
+                            padding: "12px 20px",
+                            borderRadius: "14px",
+                            backgroundColor: "rgba(255, 255, 255, 0.05)",
+                            border: "1px solid rgba(255, 255, 255, 0.12)"
+                        }}>
+                            <i className="fa-solid fa-lightbulb" style={{ color: brandSecondary, fontSize: "18px" }} />
+                            <span style={{ color: "rgba(255, 255, 255, 0.85)", fontSize: "17px", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>
+                                Regla de Oro: Menos contexto disperso = Máxima precisión y cero alucinaciones de IA.
+                            </span>
+                        </div>
+                    </div>
+                )}
+
+                {/* ======================================================== */}
+                {/* 4. COMPARE (CONTRASTE ANTES VS DESPUÉS / ARQUITECTURA)   */}
+                {/* ======================================================== */}
+                {beatType === 'compare' && (
+                    <div style={{
+                        transform: `translate3d(0, ${enterY}px, 0)`,
+                        opacity: enterOpacity,
+                        width: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "24px"
+                    }}>
+                        <div style={{ textAlign: "center" }}>
+                            <h2 style={{
+                                color: "#FFFFFF",
+                                fontFamily: "'Space Grotesk', -apple-system, sans-serif",
+                                fontSize: "56px",
+                                fontWeight: 900,
+                                lineHeight: 1.1,
+                                letterSpacing: "-0.03em",
+                                margin: "0 0 10px 0"
+                            }}>
+                                {renderReelRichText(activeBeat.title, brandAccent)}
+                            </h2>
+                            <p style={{
+                                fontSize: "22px",
+                                color: "rgba(255, 255, 255, 0.8)",
+                                fontFamily: "'Space Grotesk', sans-serif",
+                                fontWeight: 600,
+                                margin: 0
+                            }}>
+                                {activeBeat.sub}
+                            </p>
+                        </div>
+
+                        {/* Sección 1: El Error Común */}
+                        <div style={{
+                            padding: "24px 28px",
+                            borderRadius: "20px",
+                            backgroundColor: "rgba(239, 68, 68, 0.10)",
+                            border: "1.5px solid rgba(239, 68, 68, 0.45)",
+                            backdropFilter: "blur(16px)"
+                        }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
+                                <span style={{ padding: "4px 10px", borderRadius: "8px", backgroundColor: "#EF4444", color: "#FFF", fontSize: "13px", fontWeight: 800, fontFamily: "'JetBrains Mono', monospace" }}>
+                                    ❌ EL ERROR
+                                </span>
+                                <span style={{ color: "rgba(255, 255, 255, 0.7)", fontSize: "15px", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700 }}>
+                                    Saturación & Alucinación
+                                </span>
+                            </div>
+                            <div style={{ color: "#FFF", fontSize: "28px", fontWeight: 800, fontFamily: "'Space Grotesk', sans-serif", marginBottom: "6px" }}>
+                                {activeBeat.compareData?.bad?.title || 'Contexto Saturado (20 Archivos)'}
+                            </div>
+                            <div style={{ color: "rgba(255, 255, 255, 0.8)", fontSize: "19px", lineHeight: 1.35, fontFamily: "'Space Grotesk', sans-serif" }}>
+                                {activeBeat.compareData?.bad?.desc || 'Sobrecargar al modelo provoca loops infinitos, errores de sintaxis y desperdicio de tokens.'}
+                            </div>
+                        </div>
+
+                        {/* Separador Flotante VS */}
+                        <div style={{
+                            alignSelf: "center",
+                            width: "48px",
+                            height: "48px",
+                            borderRadius: "50%",
+                            backgroundColor: "#111",
+                            border: `2px solid ${brandAccent}`,
+                            boxShadow: `0 0 20px ${brandAccent}`,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            color: brandAccent,
+                            fontSize: "18px",
+                            fontWeight: 900,
+                            fontFamily: "'Space Grotesk', sans-serif"
+                        }}>
+                            ⚡
+                        </div>
+
+                        {/* Sección 2: La Solución Determinista */}
+                        <div style={{
+                            padding: "24px 28px",
+                            borderRadius: "20px",
+                            backgroundColor: `${brandAccent}15`,
+                            border: `2px solid ${brandAccent}`,
+                            backdropFilter: "blur(16px)",
+                            boxShadow: `0 16px 40px -10px ${brandAccent}33`
+                        }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
+                                <span style={{ padding: "4px 10px", borderRadius: "8px", backgroundColor: brandAccent, color: "#000", fontSize: "13px", fontWeight: 800, fontFamily: "'JetBrains Mono', monospace" }}>
+                                    ⚡ LA TÉCNICA PRO
+                                </span>
+                                <span style={{ color: "rgba(255, 255, 255, 0.8)", fontSize: "15px", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700 }}>
+                                    Enfoque Atómico
+                                </span>
+                            </div>
+                            <div style={{ color: "#FFF", fontSize: "28px", fontWeight: 800, fontFamily: "'Space Grotesk', sans-serif", marginBottom: "6px" }}>
+                                {activeBeat.compareData?.good?.title || '1 Sola Tarea Atómica'}
+                            </div>
+                            <div style={{ color: "rgba(255, 255, 255, 0.9)", fontSize: "19px", lineHeight: 1.35, fontFamily: "'Space Grotesk', sans-serif" }}>
+                                {activeBeat.compareData?.good?.desc || 'Un solo archivo, un prompt estricto y pruebas inmediatas: código limpio en el primer intento.'}
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* ======================================================== */}
+                {/* 5. CTA (COMUNIDAD, ACCIÓN DETERMINISTA Y CIERRE)         */}
+                {/* ======================================================== */}
+                {beatType === 'cta' && (
+                    <div style={{
+                        transform: `translate3d(0, ${enterY}px, 0)`,
+                        opacity: enterOpacity,
+                        width: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        textAlign: "center",
+                        gap: "28px"
+                    }}>
+                        <div style={{
+                            width: "74px",
+                            height: "74px",
+                            borderRadius: "24px",
+                            backgroundColor: `${brandAccent}26`,
+                            border: `2px solid ${brandAccent}`,
+                            boxShadow: `0 0 35px ${brandAccent}44`,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            color: brandAccent,
+                            fontSize: "32px"
+                        }}>
+                            <i className="fa-solid fa-code-fork" />
+                        </div>
+
+                        <h2 style={{
+                            color: "#FFFFFF",
+                            fontFamily: "'Space Grotesk', -apple-system, sans-serif",
+                            fontSize: "64px",
+                            fontWeight: 900,
+                            lineHeight: 1.1,
+                            letterSpacing: "-0.04em",
+                            margin: 0
+                        }}>
+                            {renderReelRichText(activeBeat.title, brandAccent)}
+                        </h2>
+
+                        <div style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "12px",
+                            padding: "16px 36px",
+                            borderRadius: "20px",
+                            backgroundColor: "rgba(0, 0, 0, 0.5)",
+                            border: `2px solid ${brandAccent}`,
+                            boxShadow: `0 0 35px ${brandAccent}33`
+                        }}>
+                            <span style={{ color: "rgba(255, 255, 255, 0.8)", fontSize: "28px", fontWeight: 700, fontFamily: "'Space Grotesk', sans-serif" }}>
+                                Comenta
+                            </span>
+                            <span style={{ color: brandAccent, fontSize: "36px", fontWeight: 900, fontFamily: "'JetBrains Mono', monospace", letterSpacing: "0.06em" }}>
+                                "{ctaKeyword}"
+                            </span>
+                        </div>
+
+                        <p style={{
+                            fontSize: "23px",
+                            color: "rgba(255, 255, 255, 0.82)",
+                            fontFamily: "'Space Grotesk', sans-serif",
+                            fontWeight: 600,
+                            maxWidth: "760px",
+                            margin: 0,
+                            lineHeight: 1.35
+                        }}>
+                            {activeBeat.ctaData?.line || activeBeat.sub || 'Te comparto el repositorio con la arquitectura completa y el flujo listo para clonar.'}
+                        </p>
+
+                        {/* Botones de Acción Comunitaria */}
+                        <div style={{ display: "flex", gap: "16px", width: "100%", maxWidth: "700px", marginTop: "12px" }}>
+                            <div style={{
+                                flex: 1,
+                                padding: "18px 24px",
+                                borderRadius: "18px",
+                                backgroundColor: brandAccent,
+                                color: "#000",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                gap: "10px",
+                                fontSize: "19px",
+                                fontWeight: 900,
+                                fontFamily: "'Space Grotesk', sans-serif",
+                                boxShadow: `0 8px 30px ${brandAccent}44`
+                            }}>
+                                <i className="fa-solid fa-user-plus" />
+                                <span>Seguir {brandHandle}</span>
+                            </div>
+                            <div style={{
+                                flex: 1,
+                                padding: "18px 24px",
+                                borderRadius: "18px",
+                                backgroundColor: "rgba(255, 255, 255, 0.10)",
+                                color: "#FFF",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                gap: "10px",
+                                fontSize: "19px",
+                                fontWeight: 800,
+                                fontFamily: "'Space Grotesk', sans-serif",
+                                border: "1.5px solid rgba(255, 255, 255, 0.2)"
+                            }}>
+                                <i className="fa-solid fa-bookmark" style={{ color: brandSecondary }} />
+                                <span>Guardar Video</span>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+
+            {/* BANDA INFERIOR (TELEPROMPTER DE VOZ EN OFF + PROGRESO DETERMINISTA) */}
+            <div style={{
+                width: "100%",
+                maxWidth: "920px",
+                zIndex: 20,
+                display: "flex",
+                flexDirection: "column",
+                gap: "16px"
+            }}>
+                {/* Banner de Teleprompter para superponer con voz en off */}
+                <div style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "14px",
+                    padding: "14px 22px",
+                    borderRadius: "18px",
+                    backgroundColor: "rgba(0, 0, 0, 0.55)",
+                    border: `1.5px solid ${brandAccent}40`,
+                    backdropFilter: "blur(20px)",
+                    boxShadow: "0 8px 30px rgba(0, 0, 0, 0.5)"
+                }}>
+                    <span style={{
+                        padding: "5px 12px",
+                        borderRadius: "8px",
+                        backgroundColor: `${brandAccent}26`,
+                        color: brandAccent,
+                        fontSize: "13px",
+                        fontWeight: 800,
+                        fontFamily: "'JetBrains Mono', monospace",
+                        letterSpacing: "0.08em",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "6px",
+                        flexShrink: 0
+                    }}>
+                        <i className="fa-solid fa-microphone" />
+                        <span>VOZ EN OFF</span>
+                    </span>
+                    <span style={{
+                        color: "rgba(255, 255, 255, 0.95)",
+                        fontSize: "17px",
+                        fontWeight: 600,
+                        fontFamily: "'Space Grotesk', sans-serif",
+                        fontStyle: "italic",
+                        lineHeight: 1.3,
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                        flex: 1
+                    }}>
+                        "{activeBeat.vo || activeBeat.sub || activeBeat.title}"
+                    </span>
+                </div>
+
+            </div>
+        </div>
+    );
+};
+
+// Retrocompatibilidad con ReelCanvasClean
+const ReelCanvasClean = ({ activeBeat, progressInBeat, reelData }) => {
+    return <FastReelFrame beats={[activeBeat]} currentMs={activeBeat?.start_ms || 0} reelData={reelData} />;
+};
+
+// Contenedor Maestro de Fotograma 1080×1920 Cinemático (Sin Barras Antiguas, Margen Seguro y Objetos en Movimiento)
+const MotionReelFrame = ({ reelData, currentMs, scale = 1, id = "motion-render-frame" }) => {
+    if (!reelData) return null;
+
+    // Preserva la estructura rica completa de beats (title, sub, points, codeSnippet, compareData, ctaData, vo)
+    const beatsToRender = (reelData.beats && Array.isArray(reelData.beats) && reelData.beats.length > 0)
+        ? reelData.beats
+        : [
+            {
+                id: 1,
+                start_ms: 0,
+                end_ms: reelData.duration_ms || 7000,
+                type: 'hero',
+                title: reelData.title || 'SANTI.DEV',
+                sub: reelData.subtitle || 'Ingeniería agéntica y desarrollo acelerado',
+                badge: reelData.kicker || '60 FPS MOTION',
+                vo: reelData.subtitle || 'Bienvenido a Santi.Dev'
+            }
+        ];
+
+    return (
+        <div
+            id={id}
+            data-current-ms={currentMs}
+            style={{
+                width: "1080px",
+                height: "1920px",
+                backgroundColor: "transparent",
+                position: "relative",
+                overflow: "hidden",
+                transform: scale !== 1 ? `scale(${scale})` : "none",
+                transformOrigin: "top left",
+                boxSizing: "border-box",
+                userSelect: "none"
+            }}
+        >
+            <FastReelFrame beats={beatsToRender} currentMs={currentMs} reelData={reelData} />
+        </div>
+    );
+};
+
+// Exposición en window para entorno navegador
+if (typeof window !== "undefined") {
+    window.MaskedWord = MaskedWord;
+    window.KineticTitleScene = KineticTitleScene;
+    window.CardGridScene = CardGridScene;
+    window.StepListScene = StepListScene;
+    window.FastReelFrame = FastReelFrame;
+    window.ReelCanvasClean = ReelCanvasClean;
+    window.MotionReelFrame = MotionReelFrame;
+}
+
+

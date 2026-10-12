@@ -168,18 +168,77 @@ Abre en tu navegador:
 - [http://localhost:3333/?account=mova](http://localhost:3333/?account=mova) (Suite Mova)
 - [http://localhost:3333/?account=santidev](http://localhost:3333/?account=santidev) (Santi.Dev)
 - [http://localhost:3333/?edit=1](http://localhost:3333/?edit=1) (Modo Studio Editor)
+- [http://localhost:3333/?mode=reels](http://localhost:3333/?mode=reels) (Modo Reproductor de Reels 60 FPS)
 
 ### ⌨️ Atajos de Teclado y Parámetros de URL
-- **Navegación**: Teclas `←` y `→` para cambiar de diapositiva.
-- **Selección de Video**: `?v=mova_idea` o `?v=agy_power`
+- **Modo de Visualización**: `?mode=reels` (Reels de Código 60 FPS) o `?mode=slides` (Carruseles HD).
+- **Navegación**: Teclas `←` y `→` para cambiar de diapositiva o saltar de Beat en videos.
+- **Selección de Video/Reel**: `?v=mova_idea` o `?v=agy_power`
 - **Selección de Slide**: `&s=0` (Slide 1), `&s=4` (Slide 5)
 - **Forzar Formato**: `&fmt=instagram` (4:5) o `&fmt=tiktok` (9:16)
 - **Modo Solo (Slide Pura sin UI)**: `?solo=1&v=mova&s=0&fmt=instagram` (Ideal para grabaciones de pantalla)
 
 ---
 
+---
+
+## 🎬 Motor Cinético Continuo de Videos 60 FPS (Estilo Anthropic / Claude)
+
+Para erradicar cualquier desenfoque, caída de frames o sensación de diapositiva lenta tipo "Historias de Instagram / WhatsApp", el sistema implementa un **motor 100% determinista y continuo**:
+- **Cero Barras de Navegación ni Indicadores de Progreso:** La pantalla está 100% limpia de borde a borde (`#000000` puro), sin dots, cabeceras ni pasos.
+- **Micro-movimiento Continuo (Cero Frames Muertos):**
+  1. *Snap de entrada (primer 20% del beat)*: `translateY: 40px -> 0px`.
+  2. *Deriva continua (Drift)*: `scale(1.0) -> scale(1.04)` constante mientras se lee, eliminando cualquier sensación de fotograma congelado.
+  3. *Corte Seco (Hard Cut)*: Transición directa e instantánea entre beats sin desvanecimientos lentos.
+- **Ritmo Acelerado:** Beats de 800ms a 1100ms con 1 a 3 palabras gigantes de alto impacto.
+
+### 🧩 Arquitectura en 4 Módulos
+
+1. **`js/ai_skills.js` (`SKILL_CLEAN_MOTION_REEL`)**:
+   - Prompt maestro anti-slop y anti-status: prohíbe explícitamente barras superiores, números de paso ("Paso 1"), diagramas o listas.
+   - Genera secuencias de beats rápidos con palabras coloreadas (`#FFFFFF` base, `#D97757` acento).
+   - Catálogo de reels continuos: *Menos Código · Más Velocidad (6.5s)*, *Mova · Romper el Silencio (6.0s)* y *The Last Endo · Retro Punch (5.5s)*.
+
+2. **`js/motion_engine.js` (Interpolación Matemática Pura)**:
+   - `easeOutCubic(t)`: Curva cúbica para inicio rápido y frenado ultrasuave sin vibraciones.
+   - `getProgress(currentMs, startMs, durationMs)`: Progreso normalizado de 0.0 a 1.0.
+   - `getTranslateY(progress, startOffsetPx)`: Desplazamiento en píxeles para Mask Reveals.
+   - `getOpacity(progress)`: Rampa acelerada de opacidad.
+
+3. **`js/components.js` (`ReelCanvasClean` y Componentes Deterministas)**:
+   - `ReelCanvasClean`: Viewport puro `#000000` con micro-escala continua (`1 + progressInBeat * 0.04`) y snap suave (`entryY`).
+   - `MotionReelFrame`: Contenedor maestro 1080×1920 nativo sin barras superiores ni marcas de agua.
+   - `MaskedWord`, `KineticTitleScene`, `CardGridScene`, `StepListScene`: Componentes deterministas puros.
+
+4. **`js/motion_player.js` (Orquestador de Cuadro y Renderizado Offline)**:
+   - `exportReelVideo(reelData, containerDomNode, onProgress)`: Ciclo de renderizado offline cuadro a cuadro (un fotograma cada 16.66 ms para 60 FPS).
+   - Captura determinista a 1080×1920 nativo con `modern-screenshot` sobre `#000000`.
+   - Purga inmediata del búfer GPU (`canvas.width = 0; canvas.height = 0`) para eliminar saturación de memoria WebKit.
+   - Empaquetado automático en ZIP (`reel_frames_60fps.zip`) con todas las capturas JPEG numeradas listas para producción.
+   - `MotionReelPlayer`: Interfaz de reproducción con scrubber milimétrico, avance/retroceso cuadro a cuadro y botón de exportación determinista.
+
+### 🛡️ Preservación Total de Diapositivas Clásicas
+* **Las diapositivas y carruseles originales de Santi.Dev, Mova y Endo en `js/videos.js` se mantienen 100% intactos**.
+* La vista por defecto de la aplicación (`/`) muestra los carruseles estáticos originales en alta definición, con su selector de formato (TikTok 9:16 / Instagram 4:5) e inspector en vivo.
+
+---
+
 ## 📄 Registro de Versiones Recientes
 
-- **v11.0 (2026-10-09)**: Solución definitiva al fallo de descarga en últimas slides (purga de memoria GPU canvas, fallback `toDataURL` binario, guardado masivo en Fotos para iPhone con `navigator.share`, navegación individual interactiva en modal y reintentos con backoff progresivo).
+- **v14.0 (2026-10-09)**: **Motor Cinemático Motion Graphics & Narrativa Humana**:
+  - **Recreación desde Cero de los Videos**: 6 nuevos Reels ultra rápidos (6.8s–7.2s) basados en psicología de retención y ganchos humanos directos (`reel_context_collapse`, `reel_mova_silence`, `reel_speed_production`, `reel_endo_physics`, `reel_girastock_offline`, `reel_tokens_saver`).
+  - **Erradicación Total del Bash**: Eliminación de ventanas de terminal repetitivas con semáforos; reemplazado por tarjetas cinemáticas de motion graphics en tiempo real.
+  - **Márgenes Seguros Estrictos (Safe Zones)**: Respeto absoluto del contenedor vertical 9:16 (`padding: 200px 80px 220px 80px`) para evitar solapamientos con la interfaz de TikTok/Instagram Reels.
+  - **Paletas Cromáticas Estandarizadas y Luminosas**: Alto contraste con colores identitarios de cada marca (`#10B981` Esmeralda, `#3B82F6` Azul Eléctrico, `#EE6A3E` Coral Retro, `#F59E0B` Ámbar Dorado, `#FFFFFF` blanco puro sobre fondo obsidiana).
+  - **Objetos Cinéticos en Movimiento**: Badge flotante con overshoot, respiración tipográfica continua (`scale 1.0 -> 1.04`), orbe de luz ambiental orgánica a la deriva con `currentMs`, tarjeta de impacto con barras de ritmo/espectro activas y corchetes de visor técnico `[  ]`.
+  - **Panel Compañero de Retención**: Integración de visor de beats, textos en pantalla y locución (VO) en `MotionReelPlayer` con salto instantáneo entre golpes de ritmo.
+- **v13.5 (2026-10-09)**: **Erradicación Anti-Slop & Anti-Diapositivas**:
+  - Reemplazo total de vistas de pipelines/diagramas de flujo de 4 cajas apiladas por `FastReelFrame` (`js/components.js`), mostrando **un solo elemento visual de impacto central por beat** (1 a 3 palabras gigantes o métrica masiva en 68px/88px).
+  - Normalización inteligente de datos: desglosa cualquier escena heredada con `steps` o `cards` en golpes rápidos independientes de 800ms a 1200ms.
+  - Actualización del Prompt Maestro `SKILL_FAST_KINETIC` (`js/ai_skills.js`, `js/modals.js`) prohibiendo diagramas, listas o sombras neón, forzando fondo negro puro `#000000`, texto blanco `#FFFFFF` y acento terracota `#D97757`.
+  - Transformación de `renderArchitectureFlowScene` (`js/reels_engine.js`) para mostrar una sola métrica masiva con micro-movimiento en lugar de cajas conectadas.
+- **v13.0 (2026-10-09)**: Motor Cinético Determinista (Estilo Anthropic / Claude) con renderizado offline cuadro a cuadro a 1080×1920 @ 60 FPS (`js/ai_skills.js`, `js/motion_engine.js`, `js/motion_player.js`), empaquetado ZIP sin fugas de GPU y preservación íntegra de todos los carruseles clásicos.
+- **v12.0 (2026-10-09)**: Introducción de la tecnología de Reels animados por código a 60 FPS (`js/reels.js`, `js/reels_engine.js`) y modal de creación interactiva.
+- **v11.0 (2026-10-09)**: Solución definitiva al fallo de descarga en últimas slides (purga de memoria GPU canvas, fallback `toDataURL` binario, guardado masivo en Fotos para iPhone con `navigator.share`).
 - **v10.0 (2026-10-08)**: Rediseño Mova Full-Bleed 4:5 en Instagram Feed, eliminación de tarjetas genéricas para Mova, incorporación de logos limpios en `assets/` y kit de publicación interactivo (PostKit).
 - **v4.0 (2026-10-08)**: Hub Multi-Marca (`js/accounts.js`), Modo Studio Editor con inspector en vivo y GitOps GitHub REST API.

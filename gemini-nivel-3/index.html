@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>Google Gemini · Nivel 3 (Avanzado)</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: #050814;
+        color: #F8FAFC;
+        font-family: system-ui, -apple-system, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        overflow: hidden;
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #050814;
+      }
+      .bg-radial {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 50% 35%, rgba(37, 99, 235, 0.25) 0%, rgba(5, 8, 20, 0.98) 75%);
+        pointer-events: none;
+      }
+      .bg-grid {
+        position: absolute;
+        inset: 0;
+        background-image: linear-gradient(rgba(37, 99, 235, 0.08) 1px, transparent 1px),
+                          linear-gradient(90deg, rgba(37, 99, 235, 0.08) 1px, transparent 1px);
+        background-size: 60px 60px;
+        opacity: 0.7;
+        pointer-events: none;
+      }
+      .clip-scene {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 80px 60px;
+        box-sizing: border-box;
+      }
+      .top-brand {
+        position: absolute;
+        top: 70px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .gemini-icon {
+        width: 48px;
+        height: 48px;
+        filter: drop-shadow(0 0 20px rgba(37, 99, 235, 0.75));
+      }
+      .brand-title {
+        font-family: monospace;
+        font-size: 24px;
+        font-weight: 800;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: #93C5FD;
+      }
+      .badge {
+        font-family: monospace;
+        font-size: 24px;
+        font-weight: 800;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #38BDF8;
+        background: rgba(37, 99, 235, 0.16);
+        border: 1px solid rgba(56, 189, 248, 0.4);
+        padding: 10px 28px;
+        border-radius: 9999px;
+        margin-bottom: 28px;
+      }
+      .hero-title {
+        font-size: 94px;
+        font-weight: 900;
+        line-height: 1.05;
+        letter-spacing: -0.04em;
+        text-align: center;
+        margin: 0;
+        max-width: 960px;
+      }
+      .text-accent {
+        color: #38BDF8;
+      }
+      .hero-sub {
+        font-size: 36px;
+        font-weight: 500;
+        color: #CBD5E1;
+        margin-top: 32px;
+        text-align: center;
+        max-width: 860px;
+        line-height: 1.35;
+      }
+      .card-box {
+        width: 940px;
+        background: rgba(10, 15, 30, 0.9);
+        border: 1px solid rgba(37, 99, 235, 0.32);
+        border-radius: 32px;
+        padding: 42px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 50px rgba(37, 99, 235, 0.15);
+      }
+      .card-header {
+        font-size: 42px;
+        font-weight: 800;
+        color: #F8FAFC;
+        letter-spacing: -0.02em;
+      }
+      .step-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+        background: rgba(15, 23, 42, 0.75);
+        border: 1px solid rgba(56, 189, 248, 0.2);
+        border-radius: 20px;
+        padding: 20px 26px;
+      }
+      .step-num {
+        font-family: monospace;
+        font-size: 28px;
+        font-weight: 900;
+        color: #38BDF8;
+        background: rgba(37, 99, 235, 0.22);
+        padding: 6px 14px;
+        border-radius: 12px;
+      }
+      .step-text {
+        font-size: 26px;
+        line-height: 1.35;
+        color: #CBD5E1;
+      }
+      .step-text strong {
+        color: #FFFFFF;
+      }
+      .image-preview-container {
+        width: 940px;
+        height: 480px;
+        border-radius: 24px;
+        overflow: hidden;
+        border: 1px solid rgba(56, 189, 248, 0.4);
+        margin-top: 8px;
+        position: relative;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+      }
+      .image-preview {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .image-overlay-badge {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        background: rgba(5, 8, 20, 0.9);
+        border: 1px solid rgba(56, 189, 248, 0.5);
+        padding: 8px 20px;
+        border-radius: 12px;
+        font-family: monospace;
+        font-size: 20px;
+        color: #38BDF8;
+        font-weight: 800;
+      }
+      .matrix-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 16px;
+        width: 100%;
+        margin-top: 10px;
+      }
+      .matrix-pill {
+        background: rgba(15, 23, 42, 0.85);
+        border: 1px solid rgba(56, 189, 248, 0.25);
+        border-radius: 16px;
+        padding: 16px;
+        text-align: center;
+      }
+      .matrix-k {
+        font-family: monospace;
+        font-size: 18px;
+        color: #94A3B8;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+      }
+      .matrix-v {
+        font-size: 22px;
+        font-weight: 800;
+        color: #38BDF8;
+      }
+      .footer-cta {
+        position: absolute;
+        bottom: 75px;
+        font-family: monospace;
+        font-size: 22px;
+        color: #94A3B8;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-width="1080"
+      data-height="1920"
+      data-duration="17.0"
+    >
+      <div class="bg-radial"></div>
+      <div class="bg-grid"></div>
+
+      <!-- Marca Superior Compartida -->
+      <div class="top-brand">
+        <img class="gemini-icon" src="assets/gemini_logo.svg" alt="Gemini" />
+        <span class="brand-title">GOOGLE GEMINI · NIVEL 3 SISTEMAS</span>
+      </div>
+
+      <!-- BEAT 1: HOOK (0.0s a 3.8s) -->
+      <section id="b1-hook" class="clip clip-scene" data-start="0" data-duration="3.8">
+        <div id="b1-badge" class="badge">NIVEL 3: SISTEMAS Y AUTOMATIZACIÓN</div>
+        <h1 id="b1-title" class="hero-title">
+          <div>Deja de ejecutar tareas:</div>
+          <div class="text-accent">¡Construye Sistemas!</div>
+        </h1>
+        <p id="b1-sub" class="hero-sub">
+          Paso definitivo de prompts manuales a agentes que estandarizan métodos y operan de forma autónoma.
+        </p>
+      </section>
+
+      <!-- BEAT 2: GEMS PERSONALIZADOS (3.8s a 8.4s) -->
+      <section id="b2-gems" class="clip clip-scene" data-start="3.8" data-duration="4.6">
+        <div id="b2-badge" class="badge">3.1 · ESTANDARIZACIÓN DEL MÉTODO</div>
+        <div id="b2-card" class="card-box">
+          <div class="card-header">
+            <span>Gems: Reglas Permanentes</span>
+          </div>
+          <div class="step-item">
+            <span class="step-num">01</span>
+            <div class="step-text">
+              <strong>El CÓMO:</strong> Un Gem almacena las instrucciones y reglas metodológicas para siempre sin reescribir prompts.
+            </div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">02</span>
+            <div class="step-text">
+              <strong>Consultoría Automática:</strong> Sube una reunión y el Gem genera diagnósticos, fases y protocolos de seguridad.
+            </div>
+          </div>
+          <div class="image-preview-container">
+            <img class="image-preview" src="assets/level3_automation.jpg" alt="Sistemas Autónomos" />
+            <div class="image-overlay-badge">SISTEMAS AUTÓNOMOS · GEMS & PIPELINES</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BEAT 3: ACCIONES PROGRAMADAS (8.4s a 12.8s) -->
+      <section id="b3-scheduled" class="clip clip-scene" data-start="8.4" data-duration="4.4">
+        <div id="b3-badge" class="badge">3.2 · OPERACIÓN POR HORARIO</div>
+        <div id="b2-card-b3" class="card-box">
+          <div class="card-header">
+            <span>Acciones Programadas Autónomas</span>
+          </div>
+          <div class="step-item">
+            <span class="step-num">03</span>
+            <div class="step-text">
+              <strong>El CUÁNDO:</strong> Define frecuencia y hora fija para que Gemini investigue y opere sin tu intervención.
+            </div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">04</span>
+            <div class="step-text">
+              <strong>Monitoreo Semanal:</strong> Escanea lanzamientos y competidores periódicamente y te envía el informe al móvil.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BEAT 4: WORKSPACE STUDIO & CTA (12.8s a 17.0s) -->
+      <section id="b4-studio" class="clip clip-scene" data-start="12.8" data-duration="4.2">
+        <div id="b4-badge" class="badge">3.3 · ECOSISTEMA CONECTADO & CIERRE</div>
+        <h2 id="b4-title" class="hero-title">
+          <div>Workspace Studio</div>
+          <div class="text-accent">Piloto Automático</div>
+        </h2>
+        <p id="b4-sub" class="hero-sub">
+          Triggers entre llamadas, Chat, Drive y Sheets conectados sin código.
+        </p>
+        <div id="b4-box" class="card-box" style="margin-top: 24px; text-align: center; align-items: center;">
+          <div class="matrix-grid">
+            <div class="matrix-pill">
+              <div class="matrix-k">Gems</div>
+              <div class="matrix-v">El CÓMO</div>
+            </div>
+            <div class="matrix-pill">
+              <div class="matrix-k">Programadas</div>
+              <div class="matrix-v">El CUÁNDO</div>
+            </div>
+            <div class="matrix-pill">
+              <div class="matrix-k">Studio</div>
+              <div class="matrix-v">El ECOSISTEMA</div>
+            </div>
+          </div>
+          <div style="font-size: 28px; font-weight: 800; color: #38BDF8; margin-top: 14px;">
+            👉 Comenta "GEMINI PRO" para enviarte la arquitectura de automatización.
+          </div>
+        </div>
+      </section>
+
+      <div class="footer-cta">SANTI.DEV · GOOGLE GEMINI GUÍA INTEGRAL</div>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+
+      // ==========================================
+      // BEAT 1: HOOK (0.0s - 3.8s)
+      // ==========================================
+      tl.fromTo("#b1-badge", 
+        { y: -30, opacity: 0, scale: 0.9 }, 
+        { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: "power3.out" }, 
+        0.1
+      );
+      tl.fromTo("#b1-title", 
+        { y: 40, opacity: 0 }, 
+        { y: 0, opacity: 1, duration: 0.65, ease: "power3.out" }, 
+        0.25
+      );
+      tl.fromTo("#b1-sub", 
+        { y: 24, opacity: 0 }, 
+        { y: 0, opacity: 1, duration: 0.55, ease: "power3.out" }, 
+        0.55
+      );
+      // Salida Beat 1
+      tl.to(["#b1-badge", "#b1-title", "#b1-sub"], 
+        { y: -35, opacity: 0, duration: 0.4, ease: "power3.in", stagger: 0.04 }, 
+        3.4
+      );
+
+      // ==========================================
+      // BEAT 2: GEMS (3.8s - 8.4s)
+      // ==========================================
+      tl.fromTo("#b2-badge", 
+        { y: -30, opacity: 0 }, 
+        { y: 0, opacity: 1, duration: 0.45, ease: "power3.out" }, 
+        3.9
+      );
+      tl.fromTo("#b2-card", 
+        { y: 60, opacity: 0, scale: 0.96 }, 
+        { y: 0, opacity: 1, scale: 1, duration: 0.65, ease: "power3.out" }, 
+        4.05
+      );
+      // Salida Beat 2
+      tl.to(["#b2-badge", "#b2-card"], 
+        { y: -35, opacity: 0, duration: 0.4, ease: "power3.in", stagger: 0.05 }, 
+        8.0
+      );
+
+      // ==========================================
+      // BEAT 3: SCHEDULED (8.4s - 12.8s)
+      // ==========================================
+      tl.fromTo("#b3-badge", 
+        { y: -30, opacity: 0 }, 
+        { y: 0, opacity: 1, duration: 0.45, ease: "power3.out" }, 
+        8.5
+      );
+      tl.fromTo("#b2-card-b3", 
+        { y: 60, opacity: 0, scale: 0.96 }, 
+        { y: 0, opacity: 1, scale: 1, duration: 0.65, ease: "power3.out" }, 
+        8.65
+      );
+      // Salida Beat 3
+      tl.to(["#b3-badge", "#b2-card-b3"], 
+        { y: -35, opacity: 0, duration: 0.4, ease: "power3.in", stagger: 0.05 }, 
+        12.4
+      );
+
+      // ==========================================
+      // BEAT 4: STUDIO & CTA (12.8s - 17.0s)
+      // ==========================================
+      tl.fromTo("#b4-badge", 
+        { y: -30, opacity: 0 }, 
+        { y: 0, opacity: 1, duration: 0.45, ease: "power3.out" }, 
+        12.9
+      );
+      tl.fromTo("#b4-title", 
+        { y: 40, opacity: 0 }, 
+        { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, 
+        13.05
+      );
+      tl.fromTo("#b4-sub", 
+        { y: 24, opacity: 0 }, 
+        { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 
+        13.3
+      );
+      tl.fromTo("#b4-box", 
+        { y: 30, opacity: 0, scale: 0.95 }, 
+        { y: 0, opacity: 1, scale: 1, duration: 0.55, ease: "power3.out" }, 
+        13.55
+      );
+      // Cierre
+      tl.to(["#b4-badge", "#b4-title", "#b4-sub", "#b4-box"], 
+        { opacity: 0, duration: 0.35, ease: "power2.in" }, 
+        16.6
+      );
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

@@ -1,0 +1,518 @@
+/**
+ * =====================================================================
+ * SANTI.DEV · ORQUESTADOR DETERMINISTA Y EXPORTADOR DE FOTOGRAMAS 60 FPS
+ * =====================================================================
+ * Controla el reloj virtual paso a paso a 60 FPS exactos (16.66ms por frame).
+ * Espera a que el navegador dibuje el DOM antes de capturar a 1080×1920 nativo
+ * con modern-screenshot y destruye el buffer de GPU (canvas.width = 0)
+ * inmediatamente para prevenir saturación de memoria en WebKit e iOS.
+ * =====================================================================
+ */
+
+/**
+ * Renderizado y exportación determinista fotograma a fotograma (Offline Rendering)
+ * @param {Object} reelData - Datos del reel (duration_ms, scenes, etc.)
+ * @param {HTMLElement} containerDomNode - Nodo DOM que contiene MotionReelFrame
+ * @param {Function} onProgress - Callback de porcentaje (0 - 100)
+ * @param {Function} setVirtualTime - Función para actualizar el milisegundo virtual en React
+ * @param {number} fps - Fotogramas por segundo (default 60)
+ */
+async function exportReelVideo(reelData, containerDomNode, onProgress, setVirtualTime, fps = 60) {
+    if (!reelData || !containerDomNode) {
+        throw new Error('Datos de reel o nodo DOM no especificados.');
+    }
+
+    // 1. Asegurar que todas las fuentes estén 100% cargadas antes del primer fotograma
+    try {
+        await Promise.race([
+            document.fonts.ready,
+            new Promise((resolve) => setTimeout(resolve, 2500))
+        ]);
+    } catch (e) {
+        console.warn('[ExportMotion] document.fonts.ready aviso:', e);
+    }
+
+    const FPS = fps || 60;
+    const frameDurationMs = 1000 / FPS;
+    const durationMs = reelData.total_ms || reelData.duration_ms || 6500;
+    const totalFrames = Math.ceil(durationMs / frameDurationMs);
+    const zip = new window.JSZip();
+
+    console.log(`[ExportMotion] Iniciando renderizado determinista de ${totalFrames} frames a ${FPS} FPS...`);
+
+    const updateTime = setVirtualTime || window.setReelCurrentTime;
+
+    for (let frameIndex = 0; frameIndex <= totalFrames; frameIndex++) {
+        const currentMs = frameIndex * frameDurationMs;
+
+        // 1. Sincronizar el estado de React con el tiempo exacto del fotograma
+        if (typeof updateTime === 'function') {
+            updateTime(currentMs);
+        }
+
+        // 2. Esperar al ciclo de repintado del motor gráfico
+        await new Promise((resolve) => requestAnimationFrame(() => setTimeout(resolve, 16)));
+
+        // 3. Captura determinista con modern-screenshot a 1080×1920
+        const screenshotLib = window.modernScreenshot || {};
+        let canvas = null;
+
+        if (screenshotLib.domToCanvas) {
+            canvas = await screenshotLib.domToCanvas(containerDomNode, {
+                width: 1080,
+                height: 1920,
+                scale: 1, // 1080p exacto para evitar interpolación borrosa
+                backgroundColor: null
+            });
+        } else if (window.html2canvas) {
+            canvas = await window.html2canvas(containerDomNode, {
+                width: 1080,
+                height: 1920,
+                scale: 1,
+                backgroundColor: null
+            });
+        }
+
+        if (!canvas) {
+            throw new Error('No se pudo inicializar el motor de captura de canvas.');
+        }
+
+        // 4. Extracción binaria directa a Base64 / JPEG
+        const dataUrl = canvas.toDataURL("image/jpeg", 0.95);
+        const base64Data = dataUrl.replace(/^data:image\/jpeg;base64,/, "");
+        const fileName = `frame_${String(frameIndex).padStart(5, "0")}.jpg`;
+        zip.file(fileName, base64Data, { base64: true });
+
+        // 5. Destrucción inmediata del buffer de GPU (Fix WebKit Ceiling)
+        canvas.width = 0;
+        canvas.height = 0;
+
+        // 6. Reportar progreso a la interfaz
+        if (onProgress) {
+            const pct = Math.round((frameIndex / totalFrames) * 100);
+            onProgress(pct, frameIndex, totalFrames);
+        }
+    }
+
+    // 7. Empaquetado y descarga del paquete completo listo para FFmpeg / Premiere / WebCodecs
+    const zipName = `${(reelData.id || 'reel_motion')}_60fps_frames.zip`;
+    const content = await zip.generateAsync({ type: "blob" });
+    const downloadLink = document.createElement("a");
+    downloadLink.href = URL.createObjectURL(content);
+    downloadLink.download = zipName;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+    URL.revokeObjectURL(downloadLink.href);
+
+    console.log(`[ExportMotion] Exportación completada con éxito: ${zipName}`);
+    return content;
+}
+
+/**
+ * Componente Interactivo de Reproducción y Renderizado de Motion Reels
+ */
+const MotionReelPlayer = ({ reel, onOpenPostKit }) => {
+    const [currentMs, setCurrentMs] = React.useState(0);
+    const [isPlaying, setIsPlaying] = React.useState(false);
+    const [isExporting, setIsExporting] = React.useState(false);
+    const [exportProgress, setExportProgress] = React.useState(0);
+    const [exportFrameInfo, setExportFrameInfo] = React.useState('');
+    const frameRef = React.useRef(null);
+    const animIdRef = React.useRef(null);
+    const lastTimeRef = React.useRef(null);
+
+    const durationMs = reel?.total_ms || reel?.duration_ms || 6500;
+
+    const [playMode, setPlayMode] = React.useState(reel?.videoUrl ? 'video' : 'canvas');
+
+    // Resetear al cambiar de reel
+    React.useEffect(() => {
+        setCurrentMs(0);
+        setIsPlaying(false);
+        if (reel?.videoUrl) setPlayMode('video');
+    }, [reel?.id, reel?.videoUrl]);
+
+    // Conectar el setter global para que el exportador pueda mover el reloj virtual
+    React.useEffect(() => {
+        window.setReelCurrentTime = (ms) => setCurrentMs(ms);
+    }, []);
+
+    // Bucle de reproducción en tiempo virtual
+    React.useEffect(() => {
+        if (!isPlaying) {
+            if (animIdRef.current) cancelAnimationFrame(animIdRef.current);
+            lastTimeRef.current = null;
+            return;
+        }
+
+        const loop = (timestamp) => {
+            if (!lastTimeRef.current) lastTimeRef.current = timestamp;
+            const delta = timestamp - lastTimeRef.current;
+            lastTimeRef.current = timestamp;
+
+            setCurrentMs((prev) => {
+                const next = prev + delta;
+                if (next >= durationMs) {
+                    setIsPlaying(false);
+                    return 0;
+                }
+                return next;
+            });
+
+            animIdRef.current = requestAnimationFrame(loop);
+        };
+
+        animIdRef.current = requestAnimationFrame(loop);
+        return () => {
+            if (animIdRef.current) cancelAnimationFrame(animIdRef.current);
+        };
+    }, [isPlaying, durationMs]);
+
+    // Cálculo del factor de escala para que 1080×1920 quepa en pantalla
+    const [scale, setScale] = React.useState(0.35);
+    React.useEffect(() => {
+        const updateScale = () => {
+            const availH = window.innerHeight - 200;
+            const s = Math.min(0.42, Math.max(0.25, availH / 1920));
+            setScale(s);
+        };
+        updateScale();
+        window.addEventListener('resize', updateScale);
+        return () => window.removeEventListener('resize', updateScale);
+    }, []);
+
+    // Lanzar renderizado determinista fotograma a fotograma
+    const handleStartExport = async () => {
+        if (isExporting) return;
+        setIsPlaying(false);
+        setIsExporting(true);
+        setExportProgress(0);
+        setExportFrameInfo('Preparando fuentes y búfer de renderizado...');
+
+        try {
+            const targetEl = document.getElementById('motion-render-frame');
+            if (!targetEl) throw new Error('No se encontró el marco #motion-render-frame');
+
+            await exportReelVideo(
+                reel,
+                targetEl,
+                (pct, frameIdx, total) => {
+                    setExportProgress(pct);
+                    setExportFrameInfo(`Renderizando fotograma ${frameIdx} de ${total} (${pct}%)`);
+                },
+                (ms) => setCurrentMs(ms),
+                60
+            );
+            setExportFrameInfo('¡Renderizado completado con éxito! Archivo ZIP descargado.');
+            setTimeout(() => {
+                setIsExporting(false);
+                setExportProgress(0);
+            }, 3000);
+        } catch (err) {
+            console.error('[Export Error]:', err);
+            alert(`Error durante el renderizado determinista: ${err.message || err}`);
+            setIsExporting(false);
+        }
+    };
+
+    const scaledW = Math.round(1080 * scale);
+    const scaledH = Math.round(1920 * scale);
+
+    return (
+        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center gap-6 w-full max-w-6xl">
+            {/* Columna Izquierda: Viewport 9:16 + Controles */}
+            <div className="flex flex-col items-center gap-3">
+                {/* Selector de Modo: Video Renderizado 60 FPS vs Lienzo Interactivo */}
+                {reel?.videoUrl && (
+                    <div className="flex items-center justify-between w-full px-1" style={{ maxWidth: Math.max(scaledW, 440) }}>
+                        <div className="flex items-center gap-1.5 p-1 bg-neutral-900 rounded-xl border border-neutral-800">
+                            <button
+                                onClick={() => setPlayMode('video')}
+                                className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${playMode === 'video' ? 'bg-emerald-500 text-black shadow' : 'text-neutral-400 hover:text-white'}`}
+                            >
+                                <i className="fa-solid fa-film text-[10px]" />
+                                <span>Video 60 FPS Estable</span>
+                            </button>
+                            <button
+                                onClick={() => setPlayMode('canvas')}
+                                className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${playMode === 'canvas' ? 'bg-neutral-700 text-white shadow' : 'text-neutral-400 hover:text-white'}`}
+                            >
+                                <i className="fa-solid fa-code text-[10px]" />
+                                <span>Lienzo en Vivo</span>
+                            </button>
+                        </div>
+                        <span className="text-[10px] font-mono text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                            60 FPS NATIVO
+                        </span>
+                    </div>
+                )}
+
+                {/* Contenedor del Lienzo Escala Real */}
+                <div
+                    className="relative rounded-2xl overflow-hidden shadow-2xl border border-neutral-800 bg-[#0D0D0E] flex items-center justify-center"
+                    style={{ width: scaledW, height: scaledH }}
+                >
+                    {playMode === 'video' && reel?.videoUrl ? (
+                        <video
+                            key={reel.videoUrl}
+                            src={reel.videoUrl}
+                            controls
+                            autoPlay
+                            loop
+                            playsInline
+                            className="w-full h-full object-contain rounded-2xl bg-black"
+                        />
+                    ) : (
+                        <>
+                            {/* Marco de renderizado 1080×1920 nativo */}
+                            <div
+                                style={{
+                                    width: '1080px',
+                                    height: '1920px',
+                                    transform: `scale(${scale})`,
+                                    transformOrigin: 'top left',
+                                    position: 'absolute',
+                                    top: 0,
+                                    left: 0
+                                }}
+                            >
+                                <window.MotionReelFrame
+                                    reelData={reel}
+                                    currentMs={currentMs}
+                                    scale={1}
+                                    id="motion-render-frame"
+                                />
+                            </div>
+
+                            {/* Overlay durante exportación determinista */}
+                            {isExporting && (
+                                <div className="absolute inset-0 bg-black/90 backdrop-blur-md z-50 flex flex-col items-center justify-center p-6 text-center">
+                                    <div className="w-12 h-12 rounded-full border-4 border-amber-500/20 border-t-amber-500 animate-spin mb-4" />
+                                    <h4 className="text-white font-bold text-sm mb-1">Renderizado Determinista Offline</h4>
+                                    <p className="text-amber-400 font-mono text-xs font-bold mb-3">{exportFrameInfo}</p>
+                                    <div className="w-48 h-2 bg-neutral-800 rounded-full overflow-hidden border border-neutral-700">
+                                        <div className="h-full bg-amber-500 transition-all duration-75" style={{ width: `${exportProgress}%` }} />
+                                    </div>
+                                    <span className="text-neutral-400 font-mono text-[11px] mt-2">1080×1920 @ 60 FPS · 0% saltos</span>
+                                </div>
+                            )}
+                        </>
+                    )}
+                </div>
+
+                {/* Controles de Línea de Tiempo y Reloj Virtual */}
+                <div
+                    className="w-full flex flex-col gap-2 p-3 bg-neutral-900/90 rounded-2xl border border-neutral-800"
+                    style={{ maxWidth: Math.max(scaledW, 440) }}
+                >
+                    {/* Scrubber de milisegundos */}
+                    <div className="flex items-center gap-2">
+                        <span className="font-mono text-[11px] text-neutral-400 w-12 text-left">
+                            {(currentMs / 1000).toFixed(2)}s
+                        </span>
+                        <input
+                            type="range"
+                            min="0"
+                            max={durationMs}
+                            step="16.66"
+                            value={currentMs}
+                            onChange={(e) => {
+                                setIsPlaying(false);
+                                setCurrentMs(Number(e.target.value));
+                            }}
+                            className="flex-1 accent-emerald-500 h-1.5 bg-neutral-800 rounded-lg cursor-pointer"
+                        />
+                        <span className="font-mono text-[11px] text-neutral-400 w-12 text-right">
+                            {(durationMs / 1000).toFixed(1)}s
+                        </span>
+                    </div>
+
+                    {/* Botonera de reproducción, avance por frame y exportación */}
+                    <div className="flex items-center justify-between gap-2 pt-1">
+                        <div className="flex items-center gap-1.5">
+                            <button
+                                onClick={() => setIsPlaying(!isPlaying)}
+                                disabled={isExporting}
+                                className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm transition-all shadow ${isPlaying ? 'bg-emerald-400 text-black' : 'bg-white text-black hover:bg-neutral-200'}`}
+                                title={isPlaying ? 'Pausar' : 'Reproducir'}
+                            >
+                                <i className={`fa-solid ${isPlaying ? 'fa-pause' : 'fa-play'}`}></i>
+                            </button>
+
+                            <button
+                                onClick={() => setCurrentMs((prev) => Math.max(0, prev - (1000 / 60)))}
+                                disabled={isExporting}
+                                title="Retroceder 1 fotograma (16.66ms)"
+                                className="w-8 h-8 rounded-lg bg-neutral-800 text-neutral-300 hover:text-white flex items-center justify-center text-xs"
+                            >
+                                <i className="fa-solid fa-backward-step"></i>
+                            </button>
+
+                            <button
+                                onClick={() => setCurrentMs((prev) => Math.min(durationMs, prev + (1000 / 60)))}
+                                disabled={isExporting}
+                                title="Avanzar 1 fotograma (16.66ms)"
+                                className="w-8 h-8 rounded-lg bg-neutral-800 text-neutral-300 hover:text-white flex items-center justify-center text-xs"
+                            >
+                                <i className="fa-solid fa-forward-step"></i>
+                            </button>
+
+                            <span className="text-[10px] font-mono text-neutral-500 px-1">
+                                F: {Math.round(currentMs / (1000 / 60))}
+                            </span>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                            {onOpenPostKit && (
+                                <button
+                                    onClick={onOpenPostKit}
+                                    title="Ver guión, copy y hashtags"
+                                    className="px-2.5 py-1.5 rounded-xl text-xs font-bold bg-neutral-800 text-neutral-300 hover:text-white flex items-center gap-1 border border-neutral-700"
+                                >
+                                    <i className="fa-solid fa-clipboard-list text-purple-400"></i>
+                                    <span>Copy</span>
+                                </button>
+                            )}
+
+                            <button
+                                onClick={handleStartExport}
+                                disabled={isExporting}
+                                className="px-3.5 py-1.5 rounded-xl text-xs font-black bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-lg active:scale-95 transition-all flex items-center gap-1.5"
+                                title="Renderizar deterministamente a 1080×1920 @ 60 FPS y descargar ZIP"
+                            >
+                                <i className="fa-solid fa-film"></i>
+                                <span>Exportar 60 FPS (ZIP)</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Columna Derecha: Panel de Estructura de Retención & Guión del Beat Activo */}
+            {reel && (
+                <div className="flex flex-col gap-4 w-full max-w-md bg-[#0D111A] border border-white/10 rounded-2xl p-5 shadow-2xl text-left">
+                    {/* Cabecera del Reel */}
+                    <div className="flex items-start justify-between border-b border-white/10 pb-3">
+                        <div>
+                            <span className="text-xs font-mono font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-full border"
+                                style={{
+                                    color: reel.accentColor || '#10B981',
+                                    borderColor: `${reel.accentColor || '#10B981'}66`,
+                                    backgroundColor: `${reel.accentColor || '#10B981'}1a`
+                                }}>
+                                {reel.kicker || '60 FPS MOTION'}
+                            </span>
+                            <h2 className="text-lg font-black text-white mt-2 leading-tight">{reel.title}</h2>
+                            <p className="text-xs text-white/60 mt-1">{reel.subtitle}</p>
+                        </div>
+                    </div>
+
+                    {/* Selector y Marcador de Beats */}
+                    <div>
+                        <h3 className="text-xs font-mono font-bold text-white/50 uppercase tracking-wider mb-2 flex items-center justify-between">
+                            <span>Estructura de Retención ({(reel.beats || []).length} Beats)</span>
+                            <span className="text-[10px] text-emerald-400 font-bold">100% Determinista</span>
+                        </h3>
+                        <div className="grid grid-cols-2 gap-2">
+                            {(reel.beats || []).map((b, idx) => {
+                                const startMs = typeof b.start_ms === 'number' ? b.start_ms : (b.start * 1000 || 0);
+                                const endMs = typeof b.end_ms === 'number' ? b.end_ms : (b.end * 1000 || 1200);
+                                const isActive = currentMs >= startMs && currentMs < endMs;
+                                const brandColor = reel.accentColor || '#10B981';
+                                return (
+                                    <button
+                                        key={idx}
+                                        onClick={() => {
+                                            setIsPlaying(false);
+                                            setCurrentMs(startMs);
+                                        }}
+                                        className={`p-2.5 rounded-xl text-left border transition-all ${
+                                            isActive
+                                                ? 'border-white/30 text-white shadow-lg'
+                                                : 'border-white/10 bg-white/5 text-white/70 hover:bg-white/10'
+                                        }`}
+                                        style={{
+                                            backgroundColor: isActive ? `${brandColor}24` : undefined,
+                                            borderColor: isActive ? brandColor : undefined
+                                        }}
+                                    >
+                                        <div className="flex items-center justify-between text-xs font-mono mb-1">
+                                            <span className="font-bold" style={{ color: isActive ? brandColor : 'inherit' }}>
+                                                Beat 0{idx + 1}
+                                            </span>
+                                            <span className="opacity-60 text-[10px]">{(startMs / 1000).toFixed(1)}s</span>
+                                        </div>
+                                        <div className="text-xs font-bold truncate text-white">
+                                            {b.name || b.accent || (b.text ? b.text.slice(0, 15) : `Escena ${idx + 1}`)}
+                                        </div>
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </div>
+
+                    {/* Guión y On-Screen Text del Beat Activo */}
+                    {(() => {
+                        const beats = reel.beats || [];
+                        const activeBeat = beats.find(b => {
+                            const s = typeof b.start_ms === 'number' ? b.start_ms : (b.start * 1000 || 0);
+                            const e = typeof b.end_ms === 'number' ? b.end_ms : (b.end * 1000 || 1200);
+                            return currentMs >= s && currentMs < e;
+                        }) || beats[0];
+
+                        if (!activeBeat) return null;
+                        const brandColor = reel.accentColor || '#10B981';
+
+                        return (
+                            <div className="bg-black/50 border border-white/10 rounded-xl p-4 flex flex-col gap-2.5">
+                                <div className="flex items-center justify-between text-xs font-mono text-white/50">
+                                    <span>BEAT ACTIVO:</span>
+                                    <span style={{ color: brandColor }} className="font-bold">
+                                        {activeBeat.badge || activeBeat.name || 'Escena'}
+                                    </span>
+                                </div>
+                                <div className="text-sm font-black text-white leading-snug">
+                                    {(activeBeat.title || activeBeat.text || '').replace(/\*/g, '')}
+                                </div>
+                                {activeBeat.sub && (
+                                    <div className="text-xs text-white/70 leading-relaxed">
+                                        {activeBeat.sub}
+                                    </div>
+                                )}
+                                {activeBeat.vo && (
+                                    <div className="border-t border-white/10 mt-1 pt-2">
+                                        <div className="text-[11px] font-mono text-emerald-400 font-bold mb-1 flex items-center gap-1.5">
+                                            <i className="fa-solid fa-microphone text-xs" />
+                                            <span>GUIÓN PARA LOCUCIÓN (VO):</span>
+                                        </div>
+                                        <div className="text-xs text-emerald-100 italic leading-relaxed bg-emerald-950/30 p-2 rounded-lg border border-emerald-500/20">
+                                            "{activeBeat.vo}"
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })()}
+
+                    {/* Botón rápido para abrir Post Kit con Guión & Hashtags */}
+                    {onOpenPostKit && (
+                        <button
+                            onClick={onOpenPostKit}
+                            className="w-full py-2.5 rounded-xl font-bold text-xs bg-gradient-to-r from-purple-900/60 to-indigo-900/60 hover:from-purple-800 hover:to-indigo-800 text-white border border-purple-500/30 flex items-center justify-center gap-2 shadow-lg transition-all"
+                        >
+                            <i className="fa-solid fa-copy text-purple-300"></i>
+                            <span>Ver Kit de Publicación (Copy & Tags)</span>
+                        </button>
+                    )}
+                </div>
+            )}
+        </div>
+    );
+};
+
+// Exposición global
+if (typeof window !== "undefined") {
+    window.exportReelVideo = exportReelVideo;
+    window.MotionReelPlayer = MotionReelPlayer;
+}
