@@ -1317,12 +1317,25 @@ const App = () => {
                         </button>
                     )}
                     {viewMode === 'reels' ? (
-                        <button
-                            onClick={() => setPostKitOpen(true)}
-                            className="w-full py-2.5 rounded-xl font-bold text-xs bg-gradient-to-r from-purple-900 to-indigo-900 hover:from-purple-800 hover:to-indigo-800 text-white flex items-center justify-center gap-2 shadow-lg transition-all active:scale-[0.98]">
-                            <i className="fa-solid fa-clipboard-list text-purple-300"></i>
-                            <span>Ver Copy, Guión & Hashtags</span>
-                        </button>
+                        <>
+                            {availableReels[activeReelIdx]?.videoUrl && (
+                                <a
+                                    href={availableReels[activeReelIdx].videoUrl}
+                                    download={`${availableReels[activeReelIdx].id || 'reel'}.mp4`}
+                                    className="w-full py-2.5 rounded-xl font-bold text-xs bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white flex items-center justify-center gap-2 shadow-lg transition-all active:scale-[0.98] no-underline"
+                                    title="Descargar video MP4 listo para publicar en TikTok/Reels"
+                                >
+                                    <i className="fa-solid fa-download"></i>
+                                    <span>Descargar Video (.MP4)</span>
+                                </a>
+                            )}
+                            <button
+                                onClick={() => setPostKitOpen(true)}
+                                className="w-full py-2.5 rounded-xl font-bold text-xs bg-gradient-to-r from-purple-900 to-indigo-900 hover:from-purple-800 hover:to-indigo-800 text-white flex items-center justify-center gap-2 shadow-lg transition-all active:scale-[0.98]">
+                                <i className="fa-solid fa-clipboard-list text-purple-300"></i>
+                                <span>Ver Copy, Guión & Hashtags</span>
+                            </button>
+                        </>
                     ) : (
                         <>
                             <button

@@ -55,6 +55,16 @@ export const Reel: React.FC<ReelProps> = ({ brand, kicker, scenes, showVoiceover
         total={total}
         showVoiceover={showVoiceover}
       />
+      {/* Música de fondo (BGM) continua como cama auditiva para complementar los SFX */}
+      <Audio
+        src={staticFile("bgm/tech_ambient_bed.mp3")}
+        volume={(f) => {
+          const fadeIn = Math.min(1, f / (fps * 0.5));
+          const fadeOut = Math.min(1, (total - f) / (fps * 0.5));
+          return 0.13 * Math.max(0, fadeIn) * Math.max(0, fadeOut);
+        }}
+        loop
+      />
       {scenes.map((s, i) => (
         <Sequence
           key={i}

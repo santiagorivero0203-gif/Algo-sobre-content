@@ -375,14 +375,30 @@ const MotionReelPlayer = ({ reel, onOpenPostKit }) => {
                                 </button>
                             )}
 
+                            {reel?.videoUrl && (
+                                <a
+                                    href={reel.videoUrl}
+                                    download={`${reel.id || 'reel_video'}.mp4`}
+                                    className="px-3.5 py-1.5 rounded-xl text-xs font-black bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-lg active:scale-95 transition-all flex items-center gap-1.5 no-underline cursor-pointer"
+                                    title="Descargar video MP4 completo a 1080×1920 con audio y SFX"
+                                >
+                                    <i className="fa-solid fa-download"></i>
+                                    <span>Descargar MP4</span>
+                                </a>
+                            )}
+
                             <button
                                 onClick={handleStartExport}
                                 disabled={isExporting}
-                                className="px-3.5 py-1.5 rounded-xl text-xs font-black bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-lg active:scale-95 transition-all flex items-center gap-1.5"
-                                title="Renderizar deterministamente a 1080×1920 @ 60 FPS y descargar ZIP"
+                                className={`px-2.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all border ${
+                                    reel?.videoUrl
+                                        ? 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700 border-neutral-700'
+                                        : 'bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 text-white shadow-lg active:scale-95'
+                                }`}
+                                title="Exportar fotogramas 1080×1920 @ 60 FPS en archivo comprimido ZIP"
                             >
-                                <i className="fa-solid fa-film"></i>
-                                <span>Exportar 60 FPS (ZIP)</span>
+                                <i className="fa-solid fa-file-zipper text-amber-400"></i>
+                                <span>Frames (ZIP)</span>
                             </button>
                         </div>
                     </div>
