@@ -23,7 +23,7 @@ export const geminiNivel1Data: ReelProps = {
       kicker: "CERO CONFIGURACIÓN",
       title: "¿Usas Gemini como *un buscador*?",
       sub: "Estás desaprovechando el 90% de su capacidad.",
-      vo: "¿Usas Gemini solo como buscador? Estás desaprovechando el noventa por ciento de su poder.",
+      vo: "¿Usas Gemini solo como buscador? Mira esto.",
       showLogo: true,
       logoMode: "full",
       durationFrames: 195, // 3.25s
@@ -39,7 +39,7 @@ export const geminiNivel1Data: ReelProps = {
         { label: "Cero revisión manual", desc: "De horas leyendo PDFs a un roadmap accionable." },
       ],
       icons: ["assets/drive_icon.svg", "assets/docs_icon.svg"],
-      vo: "Sube tus notas y PDFs juntos para cruzarlos, o toma foto a una pizarra y crea un roadmap.",
+      vo: "Cruza documentos y pasa fotos a tareas.",
       durationFrames: 215, // 3.58s
     },
     {
@@ -51,7 +51,7 @@ export const geminiNivel1Data: ReelProps = {
       imageCaption: "Reconocimiento de esquemas, flechas y tareas manuscritas",
       icons: ["assets/sheets_icon.svg"],
       showLogo: true,
-      vo: "Convierte cualquier boceto o pizarra desordenada en una tabla estructurada con tareas.",
+      vo: "Convierte bocetos en tablas de tareas.",
       durationFrames: 215, // 3.58s
     },
     {
@@ -66,7 +66,7 @@ export const geminiNivel1Data: ReelProps = {
       ],
       icons: ["assets/gemini_notebook_logo.svg"],
       showLogo: true,
-      vo: "Practica reuniones con Gemini Live para recibir feedback por voz, o audita videos con un enlace.",
+      vo: "Practica reuniones por voz y analiza videos.",
       durationFrames: 215, // 3.58s
     },
     {
@@ -75,7 +75,7 @@ export const geminiNivel1Data: ReelProps = {
       title: "Guarda *este video*",
       keyword: "GEMINI",
       line: "Guarda este video para dominar todas las funciones de Gemini.",
-      vo: "Conecta todas tus fuentes en NotebookLM sin alucinaciones. Guarda el video y sígueme para más.",
+      vo: "NotebookLM conecta todo sin inventar nada. Guarda el video.",
       durationFrames: 195, // 3.25s
     },
   ],

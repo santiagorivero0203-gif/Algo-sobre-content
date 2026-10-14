@@ -23,7 +23,7 @@ export const geminiNivel3Data: ReelProps = {
       kicker: "SISTEMAS & AUTOMATIZACIÓN",
       title: "Deja de escribir prompts: *¡Crea Sistemas!*",
       sub: "De prompts manuales a agentes que estandarizan métodos y operan de forma autónoma.",
-      vo: "Deja de escribir prompts a mano todos los días: aprende a crear flujos autónomos que trabajen por ti.",
+      vo: "Deja de escribir prompts: crea sistemas automáticos.",
       showLogo: true,
       logoMode: "full",
       durationFrames: 195, // 3.25s
@@ -36,7 +36,7 @@ export const geminiNivel3Data: ReelProps = {
       image: "assets/gemini_gems_real.jpg",
       imageCaption: "Custom Gems: Reglas perennes y marco de análisis",
       showLogo: true,
-      vo: "Crea tus propios Gems con reglas fijas: subes una llamada y te genera la propuesta sin pedir contexto.",
+      vo: "Crea Gems con tus reglas fijas de trabajo.",
       durationFrames: 220, // 3.66s
     },
     {
@@ -50,7 +50,7 @@ export const geminiNivel3Data: ReelProps = {
         { label: "Notificación push al móvil", desc: "El informe te espera listo cada lunes en tu bandeja." },
       ],
       showLogo: true,
-      vo: "Programa acciones automáticas por horario: Gemini investiga novedades de tu mercado y te envía el informe al móvil.",
+      vo: "Programa análisis que te avisen al móvil.",
       durationFrames: 215, // 3.58s
     },
     {
@@ -65,7 +65,7 @@ export const geminiNivel3Data: ReelProps = {
       ],
       icons: ["assets/meet_icon.svg", "assets/drive_icon.svg", "assets/sheets_icon.svg"],
       showLogo: true,
-      vo: "Conecta disparadores entre tus aplicaciones con Workspace Studio. Comenta SISTEMAS y te paso mis automatizaciones listas.",
+      vo: "Conecta tus herramientas en piloto automático.",
       durationFrames: 220, // 3.66s
     },
     {
@@ -74,7 +74,7 @@ export const geminiNivel3Data: ReelProps = {
       title: "Guarda *este video*",
       keyword: "SISTEMAS",
       line: "Comenta SISTEMAS y te comparto la plantilla de automatización.",
-      vo: "Comenta SISTEMAS y te paso mis automatizaciones listas para clonar. Guarda el video y sígueme para más.",
+      vo: "Comenta SISTEMAS y te paso la plantilla.",
       durationFrames: 195, // 3.25s
     },
   ],

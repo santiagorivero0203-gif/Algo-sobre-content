@@ -21,7 +21,7 @@ export const tokensProData: ReelProps = {
       kicker: "OPTIMIZACIÓN DE TOKENS",
       title: "Tu IA colapsa *por esto*",
       sub: "Saturaste su ventana de atención con 20 archivos irrelevantes.",
-      vo: "¿Tu IA borra funciones? Saturaste su contexto.",
+      vo: "¿Tu IA empieza bien y luego falla?",
       durationFrames: 195, // 3.25s
     },
     {
@@ -34,7 +34,7 @@ export const tokensProData: ReelProps = {
         { label: "Aísla el archivo activo", desc: "Cierra los 19 archivos que no tocan esa función." },
         { label: "100% de precisión", desc: "Sin ruido que confunda el árbol sintáctico." },
       ],
-      vo: "La regla clave: una tarea y un archivo.",
+      vo: "Abre solo un archivo por tarea.",
       durationFrames: 215, // 3.58s
     },
     {
@@ -50,7 +50,7 @@ export const tokensProData: ReelProps = {
         "✓ Contexto: 45,000 → 1,200 tokens",
         "✓ Respuesta 10x más rápida",
       ],
-      vo: "Con Graphify AST reduces miles de tokens.",
+      vo: "Filtra el código para no saturarla.",
       durationFrames: 240, // 4.0s
     },
     {
@@ -69,7 +69,7 @@ export const tokensProData: ReelProps = {
         desc: "Compila a la primera.",
       },
       metric: { from: 20000, to: 4000, unit: "TOKENS" },
-      vo: "Ahorras ochenta por ciento y compila siempre.",
+      vo: "Ahorras tokens y eliminas errores.",
       durationFrames: 215, // 3.58s
     },
     {
@@ -78,7 +78,7 @@ export const tokensProData: ReelProps = {
       title: "Domina el *contexto*",
       keyword: "CONTEXTO",
       line: "Coméntala y te envío mi guía agéntica por DM.",
-      vo: "Comenta CONTEXTO y te envío la guía.",
+      vo: "Comenta CONTEXTO y te paso la guía.",
       durationFrames: 195, // 3.25s
     },
   ],

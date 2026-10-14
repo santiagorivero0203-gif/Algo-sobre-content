@@ -57,7 +57,7 @@ En este video te revelo el stack técnico exacto que uso para pasar de una idea 
                 title: '¿Juegos y webs *sin saber programar*?',
                 sub: 'Te enseño mi stack técnico secreto para pasar de la idea al código hoy mismo.',
                 kicker: 'DE LA IDEA AL CÓDIGO',
-                vo: '¿Quieres crear juegos y webs sin atascarte en código? Te enseño mi stack secreto.'
+                vo: 'Crea juegos y apps sin saber programar.'
             },
             {
                 id: 2,
@@ -73,7 +73,7 @@ En este video te revelo el stack técnico exacto que uso para pasar de una idea 
                     { icon: 'fa-eye', label: 'Elimina lo innecesario', desc: 'Quédate solo con la regla esencial sin reinventar la rueda.' },
                     { icon: 'fa-wand-magic-sparkles', label: 'Añade tu toque propio', desc: 'Combina dos conceptos distintos para lograr una propuesta fresca.' }
                 ],
-                vo: 'Paso uno: roba como un artista. Analiza mecánicas de productos que amas y combínalas.'
+                vo: 'Combina ideas que ya funcionan.'
             },
             {
                 id: 3,
@@ -95,7 +95,7 @@ En este video te revelo el stack técnico exacto que uso para pasar de una idea 
                         '✓ 0 errores sintaxis · 1,200 tokens ahorrados'
                     ]
                 },
-                vo: 'Usa Antigravity para la arquitectura pesada y Opencode para pulir tokens y sintaxis.'
+                vo: 'Deja el código a la IA.'
             },
             {
                 id: 4,
@@ -111,7 +111,7 @@ En este video te revelo el stack técnico exacto que uso para pasar de una idea 
                     { icon: 'fa-scissors', label: 'Remove BG en 1 Clic', desc: 'Fondo transparente instantáneo listo para Canvas o CSS.' },
                     { icon: 'fa-bolt', label: 'Listo para Producción', desc: 'Cero photoshop manual: importación directa a tu código.' }
                 ],
-                vo: 'Genera sprites con Nano Banana y usa Remove BG para dejarlos transparentes en código.'
+                vo: 'Genera el arte en segundos.'
             },
             {
                 id: 5,
@@ -127,7 +127,7 @@ En este video te revelo el stack técnico exacto que uso para pasar de una idea 
                     line: 'Comenta "PARTE 2" y te paso la plantilla completa por mensaje directo.',
                     handle: '@santi.dev'
                 },
-                vo: 'Guarda este video y comenta STACK para enviarte la plantilla completa por privado.'
+                vo: 'Comenta STACK y te paso todo.'
             }
         ]
     },
@@ -174,7 +174,7 @@ En este video te revelo el stack técnico exacto que uso para pasar de una idea 
                 title: 'Automatiza tu código *como un pro*',
                 sub: 'Olvida subir archivos a mano. Te presento el poder de las herramientas MCP.',
                 kicker: 'WORKFLOW MODERNO 2026',
-                vo: 'Deja de subir archivos a mano: así automatizo todo con servidores MCP.'
+                vo: 'Deja de programar tareas repetitivas.'
             },
             {
                 id: 2,
@@ -190,7 +190,7 @@ En este video te revelo el stack técnico exacto que uso para pasar de una idea 
                     { icon: 'fa-code', label: 'Componentes Limpios', desc: 'Convierte prototipos visuales en código modular sin desalinear.' },
                     { icon: 'fa-layer-group', label: '0 Copiar y Pegar', desc: 'Sincronización bidireccional entre la IA y tu interfaz.' }
                 ],
-                vo: 'Stitch MCP conecta tu diseño de Figma directo al código sin cambiar de ventana.'
+                vo: 'Pasa tu diseño directo al editor.'
             },
             {
                 id: 3,
@@ -211,7 +211,7 @@ En este video te revelo el stack técnico exacto que uso para pasar de una idea 
                         '✓ RLS habilitado y tipos TypeScript generados'
                     ]
                 },
-                vo: 'Supabase MCP genera tablas y esquemas SQL en la nube pidiéndolo en texto.'
+                vo: 'Crea bases de datos al instante.'
             },
             {
                 id: 4,
@@ -227,7 +227,7 @@ En este video te revelo el stack técnico exacto que uso para pasar de una idea 
                     { icon: 'fa-cloud-arrow-up', label: 'Push Automático', desc: 'Despliegues en Vercel disparados con cada checkpoint.' },
                     { icon: 'fa-shield-halved', label: 'Seguridad Total', desc: 'Revierte cualquier error en un solo clic sin perder avances.' }
                 ],
-                vo: 'Git MCP sincroniza ramas y commits a GitHub automáticamente sin romper nada.'
+                vo: 'Y respalda tu código sin errores.'
             },
             {
                 id: 5,
@@ -243,7 +243,7 @@ En este video te revelo el stack técnico exacto que uso para pasar de una idea 
                     line: 'Comenta "MCP" y te mando mi archivo de configuración completo.',
                     handle: '@santi.dev'
                 },
-                vo: 'Comenta MCP y te envío mi archivo de configuración con los tres servidores.'
+                vo: 'Comenta MCP y te paso la plantilla.'
             }
         ]
     },
@@ -290,7 +290,7 @@ Mova convierte gestos en voz y subtítulos al instante.
                 title: '70 Millones *sin comunicación*',
                 sub: 'Cómo usamos visión artificial en el teléfono para romper barreras invisibles.',
                 kicker: 'INCLUSIÓN REAL SIN NUBE',
-                vo: 'Setenta millones de personas sordas incomunicadas: así usamos visión artificial en el móvil.'
+                vo: 'Setenta millones de personas necesitan esto.'
             },
             {
                 id: 2,
@@ -306,7 +306,7 @@ Mova convierte gestos en voz y subtítulos al instante.
                     { icon: 'fa-gauge-high', label: '60 FPS Continuos', desc: 'Cálculo de vector espacial sin tirones en cualquier smartphone.' },
                     { icon: 'fa-microchip', label: 'Sin GPU Dedicada', desc: 'Optimizado en WebAssembly para correr en teléfonos modestos.' }
                 ],
-                vo: 'MediaPipe Hands rastrea veintiún puntos de la articulación a sesenta cuadros por segundo.'
+                vo: 'Leemos cada gesto de la mano.'
             },
             {
                 id: 3,
@@ -328,7 +328,7 @@ Mova convierte gestos en voz y subtítulos al instante.
                         '}'
                     ]
                 },
-                vo: 'Convertimos cada gesto en voz audible y subtítulos en menos de dieciséis milisegundos.'
+                vo: 'Y lo convertimos en voz al instante.'
             },
             {
                 id: 4,
@@ -343,7 +343,7 @@ Mova convierte gestos en voz y subtítulos al instante.
                     bad: { tag: 'MODELOS CLOUD', title: '800ms de Retraso', desc: 'Requiere internet, sube video a la nube y consume datos móviles.' },
                     good: { tag: 'MOVA OFFLINE', title: '0ms y Privacidad Total', desc: 'Corre en el procesador local, cero datos compartidos, siempre listo.' }
                 },
-                vo: 'Todo corre en el procesador local: cero internet, cero latencia y privacidad total.'
+                vo: 'Sin internet y con total privacidad.'
             },
             {
                 id: 5,
@@ -359,7 +359,7 @@ Mova convierte gestos en voz y subtítulos al instante.
                     line: 'Comenta "MOVA" para probar la beta libre y ayudarnos a validar más señas.',
                     handle: '@mova.app'
                 },
-                vo: 'Comenta MOVA para unirte a la beta gratuita y ayudarnos a validar más señas.'
+                vo: 'Comenta MOVA para probar la beta.'
             }
         ]
     },
@@ -405,7 +405,7 @@ Mova convierte gestos en voz y subtítulos al instante.
                 title: 'Elimina el lag en *Canvas 2D*',
                 sub: 'El secreto del ciclo de físicas determinista para juegos fluidos en la web.',
                 kicker: 'PITCH GANADOR 1ST PLACE',
-                vo: '¿Tu juego web tiene lag? Este es el secreto para lograr sesenta fotogramas estables.'
+                vo: '¿Tu juego tiene lag? Soluciónalo así.'
             },
             {
                 id: 2,
@@ -421,7 +421,7 @@ Mova convierte gestos en voz y subtítulos al instante.
                     { icon: 'fa-shield-halved', label: 'Sin Saltos Fantasma', desc: 'Si el monitor corre a 144Hz o 60Hz, la velocidad es idéntica.' },
                     { icon: 'fa-crosshairs', label: 'Colisiones Perfectas', desc: 'Cero objetos atravesando paredes por microtirones de CPU.' }
                 ],
-                vo: 'Usa Delta Time fijo: desacopla físicas y velocidad sin importar la pantalla del jugador.'
+                vo: 'Usa Delta Time para físicas suaves.'
             },
             {
                 id: 3,
@@ -443,7 +443,7 @@ Mova convierte gestos en voz y subtítulos al instante.
                         '}'
                     ]
                 },
-                vo: 'Limpia buffers de GPU en cada fotograma para evitar fugas de memoria en WebKit.'
+                vo: 'Limpia la memoria en cada cuadro.'
             },
             {
                 id: 4,
@@ -459,7 +459,7 @@ Mova convierte gestos en voz y subtítulos al instante.
                     { icon: 'fa-mobile-screen', label: 'Cero Batería Drenada', desc: 'Consumo de CPU un 60% menor que frameworks pesados.' },
                     { icon: 'fa-gamepad', label: '100% Web Nativo', desc: 'Sin descargas de 500MB: arranca en 1 segundo en el navegador.' }
                 ],
-                vo: 'Así ganamos el primer lugar: físicas deterministas, cero librerías y respuesta inmediata al control.'
+                vo: 'Así ganamos el primer lugar.'
             },
             {
                 id: 5,
@@ -475,7 +475,7 @@ Mova convierte gestos en voz y subtítulos al instante.
                     line: 'Comenta "ENDO" y te comparto el repositorio con la plantilla limpia.',
                     handle: '@endo.dev'
                 },
-                vo: 'Comenta ENDO y te comparto el repositorio con la plantilla limpia para tu juego.'
+                vo: 'Comenta ENDO para clonar el motor.'
             }
         ]
     },
@@ -522,7 +522,7 @@ Diseñamos GiraStock con arquitectura 100% Offline-First:
                 title: 'Tu cliente no puede *frenar ventas*',
                 sub: 'Cómo construí un sistema comercial que sigue cobrando aunque se corte internet.',
                 kicker: 'SOLUCIONES PARA NEGOCIOS',
-                vo: 'Tu cliente no puede frenar ventas si se cae internet: así resolví este negocio.'
+                vo: 'No pierdas ventas si cae internet.'
             },
             {
                 id: 2,
@@ -538,7 +538,7 @@ Diseñamos GiraStock con arquitectura 100% Offline-First:
                     { icon: 'fa-receipt', label: 'Cobros Ininterrumpidos', desc: 'Genera tickets y recibos sin depender de la red.' },
                     { icon: 'fa-wifi', label: 'Tolerancia Total a Cortes', desc: 'El cajero ni siquiera se entera si se fue la señal.' }
                 ],
-                vo: 'Registramos cada cobro en SQLite local con respuesta en cero milisegundos en el dispositivo.'
+                vo: 'Guarda cada cobro en el dispositivo.'
             },
             {
                 id: 3,
@@ -559,7 +559,7 @@ Diseñamos GiraStock con arquitectura 100% Offline-First:
                         '});'
                     ]
                 },
-                vo: 'Al volver la conexión, una cola transaccional sube las ventas sin duplicar datos.'
+                vo: 'Al volver la red, sincroniza solo.'
             },
             {
                 id: 4,
@@ -575,7 +575,7 @@ Diseñamos GiraStock con arquitectura 100% Offline-First:
                     { icon: 'fa-server', label: 'Cero Costes de Servidor', desc: 'Desplegado en Vercel con base de datos serverless.' },
                     { icon: 'fa-money-bill-wave', label: 'Cliente Feliz y Facturando', desc: 'Ahorro de 40 horas al mes en soporte técnico.' }
                 ],
-                vo: 'Instalable como PWA en tablets y laptops en quince minutos sin pagar servidores.'
+                vo: 'Instálalo en tablets sin pagar servidores.'
             },
             {
                 id: 5,
@@ -591,7 +591,7 @@ Diseñamos GiraStock con arquitectura 100% Offline-First:
                     line: 'Comenta "STOCK" y te paso la estructura de sincronización local.',
                     handle: '@girastock'
                 },
-                vo: 'Comenta STOCK y te paso la arquitectura completa para tus clientes comerciales.'
+                vo: 'Comenta STOCK y te paso el sistema.'
             }
         ]
     },
@@ -641,7 +641,7 @@ Resultado: 80% menos tokens quemados y cero alucinaciones en producción.
                 title: 'Tu IA colapsa *por esto*',
                 sub: 'El error fatal de saturar la ventana de atención con 20 archivos irrelevantes.',
                 kicker: 'OPTIMIZACIÓN DE TOKENS',
-                vo: '¿Tu IA empieza brillante y luego rompe código? Saturaste su contexto con archivos innecesarios.'
+                vo: '¿Tu IA empieza bien y luego falla?'
             },
             {
                 id: 2,
@@ -657,7 +657,7 @@ Resultado: 80% menos tokens quemados y cero alucinaciones en producción.
                     { icon: 'fa-file-code', label: 'Aísla el Archivo Activo', desc: 'Cierra los 19 archivos que no tocan esa función.' },
                     { icon: 'fa-check-double', label: '100% Precisión', desc: 'El modelo no tiene ruido que confunda el árbol sintáctico.' }
                 ],
-                vo: 'Aplica la regla atómica: una sola tarea y un solo archivo abierto para eliminar el ruido.'
+                vo: 'Abre solo un archivo por tarea.'
             },
             {
                 id: 3,
@@ -678,7 +678,7 @@ Resultado: 80% menos tokens quemados y cero alucinaciones en producción.
                         '✓ Respuesta 10x más rápida con 0 alucinaciones'
                     ]
                 },
-                vo: 'Usa un grafo AST como Graphify: pasas de cuarenta mil tokens a mil en un segundo.'
+                vo: 'Filtra el código para no saturarla.'
             },
             {
                 id: 4,
@@ -693,7 +693,7 @@ Resultado: 80% menos tokens quemados y cero alucinaciones en producción.
                     bad: { tag: 'SIN PLANIFICAR', title: '60,000 Tokens Quemados', desc: 'Alucinaciones, imports rotos y código que no compila.' },
                     good: { tag: 'WORKFLOW PRO', title: '4,000 Tokens y 0 Errores', desc: 'Ejecución atómica precisa y validada en el primer intento.' }
                 },
-                vo: 'El resultado: ochenta por ciento menos consumo, diez veces más velocidad y código que compila.'
+                vo: 'Ahorras tokens y eliminas errores.'
             },
             {
                 id: 5,
@@ -709,7 +709,7 @@ Resultado: 80% menos tokens quemados y cero alucinaciones en producción.
                     line: 'Comenta "CONTEXTO" para enviarte la guía de ingeniería agéntica por DM.',
                     handle: '@santi.dev'
                 },
-                vo: 'Comenta CONTEXTO y te envío mi guía para optimizar tu entorno en Antigravity y Cursor.'
+                vo: 'Comenta CONTEXTO y te paso la guía.'
             }
         ]
     },
@@ -758,7 +758,7 @@ Resultado: 80% menos tokens quemados y cero alucinaciones en producción.
                 title: '¿Usas Gemini como *un buscador*?',
                 sub: 'Estás desperdiciando el 90% de su capacidad en la interfaz gratuita.',
                 kicker: 'CERO CONFIGURACIÓN',
-                vo: '¿Usas Gemini solo como buscador? Estás desaprovechando el noventa por ciento de su poder.'
+                vo: '¿Usas Gemini solo como buscador? Mira esto.'
             },
             {
                 id: 2,
@@ -773,7 +773,7 @@ Resultado: 80% menos tokens quemados y cero alucinaciones en producción.
                     { num: '01', title: 'Cruce de Archivos', desc: 'Notas + Specs técnicas = Plan de acción sin leer manuales.' },
                     { num: '02', title: 'Foto a Pizarra', desc: 'Boceto a mano alzada → Sheet y Roadmap por fases.' }
                 ],
-                vo: 'Sube tus notas y PDFs juntos para cruzarlos, o toma foto a una pizarra y crea un roadmap.'
+                vo: 'Cruza documentos y pasa fotos a tareas.'
             },
             {
                 id: 3,
@@ -788,7 +788,7 @@ Resultado: 80% menos tokens quemados y cero alucinaciones en producción.
                     { num: '03', title: 'Gemini Live', desc: 'Simula reuniones de venta con evaluación crítica al terminar.' },
                     { num: '04', title: 'Auditoría Video', desc: 'Pega un enlace y examina ritmo, lenguaje y retención.' }
                 ],
-                vo: 'Practica reuniones con Gemini Live para recibir feedback por voz, o audita videos con un enlace.'
+                vo: 'Practica reuniones por voz y analiza videos.'
             },
             {
                 id: 4,
@@ -804,7 +804,7 @@ Resultado: 80% menos tokens quemados y cero alucinaciones en producción.
                     line: 'Guarda este video para dominar todas las funciones de Gemini.',
                     handle: '@santi.dev'
                 },
-                vo: 'Conecta todas tus fuentes en NotebookLM sin alucinaciones. Guarda el video y sígueme para más.'
+                vo: 'NotebookLM conecta todo sin inventar nada. Guarda el video.'
             }
         ]
     },
@@ -853,7 +853,7 @@ Resultado: 80% menos tokens quemados y cero alucinaciones en producción.
                 title: 'Gemini integrado en *tu flujo de trabajo*',
                 sub: 'Integración nativa dentro de Gmail, Meet, Sheets y Docs + Creación multimedia.',
                 kicker: 'WORKSPACE & MULTIMEDIA',
-                vo: 'Deja de abrir pestañas para chatear: el verdadero truco es usar la IA integrada donde trabajas.'
+                vo: 'Usa la IA dentro de tus programas diarios.'
             },
             {
                 id: 2,
@@ -868,7 +868,7 @@ Resultado: 80% menos tokens quemados y cero alucinaciones en producción.
                     { num: '01', title: 'Gmail & Meet', desc: 'Sintetiza hilos de meses y toma notas en videollamadas directo a Drive.' },
                     { num: '02', title: 'Sheets & Slides', desc: 'Fórmulas y gráficos con lenguaje natural y diapositivas en 1 clic.' }
                 ],
-                vo: 'Resume meses de correos en Gmail, toma minutas automáticas en Meet y genera fórmulas en Sheets sin memorizarlas.'
+                vo: 'Resume correos y genera fórmulas sin memorizarlas.'
             },
             {
                 id: 3,
@@ -883,7 +883,7 @@ Resultado: 80% menos tokens quemados y cero alucinaciones en producción.
                     { num: '03', title: 'Deep Research', desc: 'Informes estratégicos multifuente validados antes de buscar.' },
                     { num: '04', title: 'Canvas & Tutor', desc: 'De informes densos a infografías interactivas y tutor socrático.' }
                 ],
-                vo: 'Activa Deep Research para crear informes con fuentes reales, y usa Canvas para convertirlos en diagramas interactivos.'
+                vo: 'Investiga a fondo y crea esquemas interactivos.'
             },
             {
                 id: 4,
@@ -899,7 +899,7 @@ Resultado: 80% menos tokens quemados y cero alucinaciones en producción.
                     line: 'Guarda este video para transformar tu forma de trabajar con Google Workspace.',
                     handle: '@santi.dev'
                 },
-                vo: 'Genera video y música en el mismo flujo. Guarda esto y sígueme para automatizarlo todo con agentes.'
+                vo: 'Genera video y música integrada. Guarda este video.'
             }
         ]
     },
@@ -951,7 +951,7 @@ Resultado: 80% menos tokens quemados y cero alucinaciones en producción.
                 title: 'Deja de escribir prompts: *¡Crea Sistemas!*',
                 sub: 'De prompts manuales a agentes que estandarizan métodos y operan de forma autónoma.',
                 kicker: 'SISTEMAS & AUTOMATIZACIÓN',
-                vo: 'Deja de escribir prompts a mano todos los días: aprende a crear flujos autónomos que trabajen por ti.'
+                vo: 'Deja de escribir prompts: crea sistemas automáticos.'
             },
             {
                 id: 2,
@@ -966,7 +966,7 @@ Resultado: 80% menos tokens quemados y cero alucinaciones en producción.
                     { num: '01', title: 'El CÓMO', desc: 'Instrucciones permanentes y marco metodológico reutilizable.' },
                     { num: '02', title: 'Diagnóstico Auto', desc: 'Sube reuniones y genera diagnósticos, fases y protocolos de seguridad.' }
                 ],
-                vo: 'Crea tus propios Gems con reglas fijas: subes una llamada y te genera la propuesta sin pedir contexto.'
+                vo: 'Crea Gems con tus reglas fijas de trabajo.'
             },
             {
                 id: 3,
@@ -981,7 +981,7 @@ Resultado: 80% menos tokens quemados y cero alucinaciones en producción.
                     { num: '03', title: 'El CUÁNDO', desc: 'Configura día, hora y frecuencia para ejecutar tareas en segundo plano.' },
                     { num: '04', title: 'Reportes al Móvil', desc: 'Gemini escanea el sector semanalmente y te notifica.' }
                 ],
-                vo: 'Programa acciones automáticas por horario: Gemini investiga novedades de tu mercado y te envía el informe al móvil.'
+                vo: 'Programa análisis que te avisen al móvil.'
             },
             {
                 id: 4,
@@ -997,7 +997,7 @@ Resultado: 80% menos tokens quemados y cero alucinaciones en producción.
                     line: 'Comenta "SISTEMAS" para enviarte la plantilla de automatización.',
                     handle: '@santi.dev'
                 },
-                vo: 'Conecta disparadores entre tus aplicaciones con Workspace Studio. Comenta SISTEMAS y te paso mis automatizaciones listas.'
+                vo: 'Conecta tus herramientas. Comenta SISTEMAS y te paso la plantilla.'
             }
         ]
     }

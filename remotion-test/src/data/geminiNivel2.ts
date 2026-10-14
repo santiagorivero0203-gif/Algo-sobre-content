@@ -23,7 +23,7 @@ export const geminiNivel2Data: ReelProps = {
       kicker: "WORKSPACE INTEGRADO",
       title: "Gemini integrado en *tu trabajo*",
       sub: "Sin cambiar de pestaña: Gmail, Meet, Sheets y Deep Research integrados.",
-      vo: "Deja de abrir pestañas para chatear: el verdadero truco es usar la IA integrada donde trabajas.",
+      vo: "Usa la IA dentro de tus programas diarios.",
       showLogo: true,
       logoMode: "full",
       durationFrames: 195, // 3.25s
@@ -37,7 +37,7 @@ export const geminiNivel2Data: ReelProps = {
       imageCaption: "Gemini activo en el panel lateral de Google Workspace",
       icons: ["assets/gmail_icon.svg", "assets/meet_icon.svg", "assets/docs_icon.svg"],
       showLogo: true,
-      vo: "Resume meses de correos en Gmail, toma minutas automáticas en Meet y genera fórmulas en Sheets sin memorizarlas.",
+      vo: "Resume correos y minutas de llamadas.",
       durationFrames: 220, // 3.66s
     },
     {
@@ -52,7 +52,7 @@ export const geminiNivel2Data: ReelProps = {
       ],
       icons: ["assets/sheets_icon.svg", "assets/slides_icon.svg"],
       showLogo: true,
-      vo: "En Sheets no necesitas memorizar fórmulas complejas: escribe lo que necesitas y te genera tablas dinámicas al vuelo.",
+      vo: "Genera fórmulas en Sheets sin memorizarlas.",
       durationFrames: 215, // 3.58s
     },
     {
@@ -67,7 +67,7 @@ export const geminiNivel2Data: ReelProps = {
       ],
       icons: ["assets/gemini_notebook_logo.svg"],
       showLogo: true,
-      vo: "Activa Deep Research para crear informes con fuentes reales, y usa Canvas para convertirlos en diagramas interactivos.",
+      vo: "Investiga a fondo y crea esquemas interactivos.",
       durationFrames: 220, // 3.66s
     },
     {
@@ -76,7 +76,7 @@ export const geminiNivel2Data: ReelProps = {
       title: "Guarda *este video*",
       keyword: "WORKSPACE",
       line: "Guarda este video para transformar tu forma de trabajar con Google Workspace.",
-      vo: "Genera video y música en el mismo flujo. Guarda esto y sígueme para automatizarlo todo con agentes.",
+      vo: "Genera video y música integrada. Guarda este video.",
       durationFrames: 195, // 3.25s
     },
   ],
