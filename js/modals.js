@@ -488,6 +488,14 @@ window.PostKitModal = ({
     const bestTime = post?.bestTime || post?.schedule || '18:00 - 21:00';
     const sound = post?.sound || 'Audio en tendencia / Instrumental inspirador';
 
+    // Guión de voz unificado para reels
+    const reelBeats = activeVideo.beats || [];
+    const fullScriptVO = reelBeats
+        .map(b => b.vo ? b.vo.trim() : '')
+        .filter(Boolean)
+        .join(' ');
+    const voWords = fullScriptVO ? fullScriptVO.split(/\s+/).filter(Boolean).length : 0;
+
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/85 backdrop-blur-md animate-fadeIn">
             <div className="bg-neutral-900 border border-neutral-700 rounded-2xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
@@ -511,6 +519,27 @@ window.PostKitModal = ({
 
                 {/* Contenido con scroll */}
                 <div className="p-4 overflow-y-auto hide-scrollbar flex flex-col gap-4 text-xs select-text">
+                    {/* Guión Completo de Voz (VO) para Grabación */}
+                    {fullScriptVO && (
+                        <div className="flex flex-col gap-1.5 bg-gradient-to-r from-emerald-950/40 to-teal-950/40 p-3 rounded-xl border border-emerald-500/30">
+                            <div className="flex items-center justify-between">
+                                <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                                    <i className="fa-solid fa-microphone-lines text-emerald-400 text-xs"></i>
+                                    <span>Guión Completo para Locución ({voWords} palabras)</span>
+                                </span>
+                                <button
+                                    onClick={() => onCopy('vo_full', fullScriptVO)}
+                                    className="text-emerald-400 hover:underline font-mono text-[11px] flex items-center gap-1 active:scale-95">
+                                    <i className={`fa-solid ${copiedKey === 'vo_full' ? 'fa-check text-emerald-400' : 'fa-copy'}`}></i>
+                                    <span>{copiedKey === 'vo_full' ? '¡Copiado!' : 'Copiar Guión Entero'}</span>
+                                </button>
+                            </div>
+                            <div className="p-2.5 bg-black/60 rounded-lg border border-emerald-500/20 text-emerald-100/90 leading-relaxed font-sans text-xs italic select-text">
+                                "{fullScriptVO}"
+                            </div>
+                        </div>
+                    )}
+
                     {post && (hookText || captionText) ? (
                         <>
                             {/* Gancho */}

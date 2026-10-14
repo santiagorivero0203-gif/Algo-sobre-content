@@ -19,29 +19,29 @@ export const geminiNivel3Data: ReelProps = {
   scenes: [
     {
       type: "hero",
-      badge: "NIVEL 3 · PROFESIONAL",
-      kicker: "INGENIERÍA DE SISTEMAS",
-      title: "¿Prompting o *sistemas autónomos*?",
-      sub: "Deja de escribir prompts: crea infraestructura que opera sola.",
-      vo: "El nivel experto en Gemini no consiste en escribir mejores prompts. Consiste en construir sistemas que se ejecutan por horario y conectan todo tu ecosistema.",
+      badge: "DE PROMPTS A SISTEMAS",
+      kicker: "SISTEMAS & AUTOMATIZACIÓN",
+      title: "Deja de escribir prompts: *¡Crea Sistemas!*",
+      sub: "De prompts manuales a agentes que estandarizan métodos y operan de forma autónoma.",
+      vo: "Deja de escribir prompts a mano todos los días: aprende a crear flujos autónomos que trabajen por ti.",
       showLogo: true,
       logoMode: "full",
       durationFrames: 195, // 3.25s
     },
     {
       type: "showcase",
-      badge: "3.1 · GEMS PERSONALIZADOS",
+      badge: "GEMS PERSONALIZADOS",
       title: "Estandariza *el CÓMO*",
       sub: "Un Gem almacena tus reglas y metodologías fijas para siempre.",
       image: "assets/gemini_gems_real.jpg",
       imageCaption: "Custom Gems: Reglas perennes y marco de análisis",
       showLogo: true,
-      vo: "Un Gem guarda tus reglas de trabajo para siempre. Al subir la minuta de una reunión, aplica tu diagnóstico formal, detecta cuellos de botella y crea la propuesta sin pedir contexto.",
+      vo: "Crea tus propios Gems con reglas fijas: subes una llamada y te genera la propuesta sin pedir contexto.",
       durationFrames: 220, // 3.66s
     },
     {
       type: "points",
-      badge: "3.2 · EJECUCIÓN POR HORARIO",
+      badge: "ACCIONES POR HORARIO",
       title: "Gemini trabaja *mientras duermes*",
       sub: "Acciones programadas a horas fijas con alertas directas al móvil.",
       points: [
@@ -50,12 +50,12 @@ export const geminiNivel3Data: ReelProps = {
         { label: "Notificación push al móvil", desc: "El informe te espera listo cada lunes en tu bandeja." },
       ],
       showLogo: true,
-      vo: "Las acciones programadas definen cuándo correr de forma autónoma. Cada lunes a las ocho recopila lanzamientos de tu sector y te envía el resumen listo al teléfono.",
+      vo: "Programa acciones automáticas por horario: Gemini investiga novedades de tu mercado y te envía el informe al móvil.",
       durationFrames: 215, // 3.58s
     },
     {
       type: "points",
-      badge: "3.3 · WORKSPACE STUDIO",
+      badge: "PILOTO AUTOMÁTICO TOTAL",
       title: "Orquestación entre *todas las apps*",
       sub: "Disparadores y acciones enlazadas entre Meet, Drive, Sheets y Chat.",
       points: [
@@ -65,7 +65,7 @@ export const geminiNivel3Data: ReelProps = {
       ],
       icons: ["assets/meet_icon.svg", "assets/drive_icon.svg", "assets/sheets_icon.svg"],
       showLogo: true,
-      vo: "Y con Workspace Studio conectas disparadores entre servicios: termina tu videollamada, Gemini extrae los acuerdos y los publica al instante en tu Google Chat.",
+      vo: "Conecta disparadores entre tus aplicaciones con Workspace Studio. Comenta SISTEMAS y te paso mis automatizaciones listas.",
       durationFrames: 220, // 3.66s
     },
     {
@@ -73,8 +73,8 @@ export const geminiNivel3Data: ReelProps = {
       badge: "ARQUITECTURA COMPLETA",
       title: "Guarda *este video*",
       keyword: "SISTEMAS",
-      line: "Comenta SISTEMAS y te comparto mis 5 Gems de automatización empresarial.",
-      vo: "Deja de ser un usuario pasivo y construye sistemas. Comenta SISTEMAS y te paso mis cinco Gems listos para clonar. Guarda este video y sígueme para más.",
+      line: "Comenta SISTEMAS y te comparto la plantilla de automatización.",
+      vo: "Comenta SISTEMAS y te paso mis automatizaciones listas para clonar. Guarda el video y sígueme para más.",
       durationFrames: 195, // 3.25s
     },
   ],

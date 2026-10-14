@@ -24,7 +24,7 @@ export const stackSecretoData: ReelProps = {
       kicker: "DE LA IDEA AL CÓDIGO",
       title: "¿Juegos y webs *sin programar*?",
       sub: "El stack técnico secreto para pasar de la idea al código hoy mismo.",
-      vo: "¿Te imaginas crear tus propios videojuegos y aplicaciones web sin pasar meses atascado en la sintaxis? Te enseño mi stack secreto.",
+      vo: "Crea juegos y webs sin atascarte en código. Mi stack secreto.",
       durationFrames: 195, // 3.25s
     },
     {
@@ -37,7 +37,7 @@ export const stackSecretoData: ReelProps = {
         { label: "Elimina lo innecesario", desc: "Quédate con la regla esencial sin reinventar la rueda." },
         { label: "Añade tu toque propio", desc: "Combina dos conceptos distintos para una propuesta fresca." },
       ],
-      vo: "Primer paso: roba como un artista. Analiza las mecánicas de las aplicaciones que amas y combínalas con tu toque personal.",
+      vo: "Roba como un artista: fusiona mecánicas y añade tu estilo.",
       durationFrames: 215, // 3.58s
     },
     {
@@ -54,7 +54,7 @@ export const stackSecretoData: ReelProps = {
         "$ opencode optimize --save-tokens",
         "✓ 0 errores sintaxis · 1,200 tokens ahorrados",
       ],
-      vo: "Para la lógica combino Google Antigravity para el ochenta y cinco por ciento de la arquitectura y Opencode para pulir tokens y sintaxis.",
+      vo: "Antigravity crea la arquitectura y Opencode pule cada detalle.",
       durationFrames: 240, // 4.0s
     },
     {
@@ -67,7 +67,7 @@ export const stackSecretoData: ReelProps = {
         { label: "Remove BG en 1 Clic", desc: "Fondo transparente instantáneo listo para Canvas o CSS." },
         { label: "Listo para Producción", desc: "Cero diseño manual: importación directa a tu código." },
       ],
-      vo: "Para el arte uso Nano Banana para generar sprites con IA y Remove BG para dejarlos transparentes y listos para el código en un clic.",
+      vo: "Nano Banana genera sprites y Remove BG limpia fondos.",
       durationFrames: 215, // 3.58s
     },
     {
@@ -76,7 +76,7 @@ export const stackSecretoData: ReelProps = {
       title: "Guarda *este video*",
       keyword: "PARTE 2",
       line: "Comenta PARTE 2 y te envío la guía de bases de datos y GitHub por DM.",
-      vo: "Guarda este video. En la parte dos te enseño cómo automatizo bases de datos y GitHub con MCP. Comenta PARTE 2.",
+      vo: "Guarda el video y comenta PARTE 2 para la guía.",
       durationFrames: 195, // 3.25s
     },
   ],

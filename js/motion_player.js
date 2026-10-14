@@ -125,11 +125,50 @@ const MotionReelPlayer = ({ reel, onOpenPostKit }) => {
     const durationMs = reel?.total_ms || reel?.duration_ms || 6500;
 
     const [playMode, setPlayMode] = React.useState(reel?.videoUrl ? 'video' : 'canvas');
+    const [scriptViewMode, setScriptViewMode] = React.useState('continuous'); // 'continuous' | 'timed'
+    const [isScriptCopied, setIsScriptCopied] = React.useState(false);
+
+    // Guión continuo unificado y métricas de locución
+    const allBeats = reel?.beats || [];
+    const continuousScript = React.useMemo(() => {
+        return allBeats
+            .map(b => b.vo ? b.vo.trim() : '')
+            .filter(Boolean)
+            .join(' ');
+    }, [allBeats]);
+
+    const totalWords = React.useMemo(() => {
+        return continuousScript ? continuousScript.split(/\s+/).filter(Boolean).length : 0;
+    }, [continuousScript]);
+
+    const durationSec = (durationMs / 1000) || 12.5;
+    const cadenceWps = durationSec > 0 ? (totalWords / durationSec).toFixed(1) : '0.0';
+
+    const handleCopyFullScript = async () => {
+        if (!continuousScript) return;
+        try {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                await navigator.clipboard.writeText(continuousScript);
+            } else {
+                const ta = document.createElement('textarea');
+                ta.value = continuousScript;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+            }
+            setIsScriptCopied(true);
+            setTimeout(() => setIsScriptCopied(false), 2200);
+        } catch (e) {
+            console.error('Error al copiar guión:', e);
+        }
+    };
 
     // Resetear al cambiar de reel
     React.useEffect(() => {
         setCurrentMs(0);
         setIsPlaying(false);
+        setIsScriptCopied(false);
         if (reel?.videoUrl) setPlayMode('video');
     }, [reel?.id, reel?.videoUrl]);
 
@@ -510,6 +549,107 @@ const MotionReelPlayer = ({ reel, onOpenPostKit }) => {
                             </div>
                         );
                     })()}
+
+                    {/* SECCIÓN DEDICADA: GUIÓN COMPLETO PARA LOCUCIÓN (TELEPROMPTER / GRABACIÓN) */}
+                    {continuousScript && (
+                        <div className="bg-gradient-to-b from-neutral-900/90 to-black/85 border border-emerald-500/30 rounded-2xl p-4 flex flex-col gap-3 shadow-xl">
+                            {/* Cabecera del Guión con métricas y botón de copia */}
+                            <div className="flex items-center justify-between border-b border-emerald-500/20 pb-2.5">
+                                <div className="flex items-center gap-2">
+                                    <div className="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs shrink-0">
+                                        <i className="fa-solid fa-microphone-lines" />
+                                    </div>
+                                    <div>
+                                        <h4 className="text-xs font-black text-white uppercase tracking-wider flex items-center gap-1.5">
+                                            <span>Guión Completo para Locución</span>
+                                        </h4>
+                                        <p className="text-[10px] text-emerald-400 font-mono">
+                                            {totalWords} palabras · {durationSec.toFixed(1)}s · {cadenceWps} pal/seg
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <button
+                                    onClick={handleCopyFullScript}
+                                    title="Copiar todo el guión corrido para leer al micrófono"
+                                    className={`px-3 py-1.5 rounded-lg text-xs font-bold font-mono transition-all flex items-center gap-1.5 border active:scale-95 shadow ${
+                                        isScriptCopied
+                                            ? 'bg-emerald-500 text-black border-emerald-400'
+                                            : 'bg-emerald-950/70 text-emerald-300 border-emerald-500/40 hover:bg-emerald-900/80 hover:text-white'
+                                    }`}
+                                >
+                                    <i className={`fa-solid ${isScriptCopied ? 'fa-check' : 'fa-copy'}`} />
+                                    <span>{isScriptCopied ? '¡Copiado!' : 'Copiar Todo'}</span>
+                                </button>
+                            </div>
+
+                            {/* Selector de Vista: Párrafo Corrido vs Por Escenas */}
+                            <div className="flex items-center gap-1 p-1 bg-black/60 rounded-xl border border-white/5">
+                                <button
+                                    onClick={() => setScriptViewMode('continuous')}
+                                    className={`flex-1 py-1 rounded-lg text-[10px] font-bold transition-all flex items-center justify-center gap-1.5 ${
+                                        scriptViewMode === 'continuous'
+                                            ? 'bg-neutral-800 text-white shadow'
+                                            : 'text-neutral-400 hover:text-white'
+                                    }`}
+                                >
+                                    <i className="fa-solid fa-align-left text-[9px]" />
+                                    <span>Texto Corrido (Teleprompter)</span>
+                                </button>
+                                <button
+                                    onClick={() => setScriptViewMode('timed')}
+                                    className={`flex-1 py-1 rounded-lg text-[10px] font-bold transition-all flex items-center justify-center gap-1.5 ${
+                                        scriptViewMode === 'timed'
+                                            ? 'bg-neutral-800 text-white shadow'
+                                            : 'text-neutral-400 hover:text-white'
+                                    }`}
+                                >
+                                    <i className="fa-solid fa-stopwatch text-[9px]" />
+                                    <span>Por Tiempos ({allBeats.length} beats)</span>
+                                </button>
+                            </div>
+
+                            {/* Contenedor del texto */}
+                            {scriptViewMode === 'continuous' ? (
+                                <div className="bg-black/75 border border-emerald-500/20 rounded-xl p-3 text-xs text-emerald-100/90 font-medium leading-relaxed max-h-44 overflow-y-auto hide-scrollbar select-text">
+                                    "{continuousScript}"
+                                </div>
+                            ) : (
+                                <div className="flex flex-col gap-2 max-h-48 overflow-y-auto hide-scrollbar select-text pr-1">
+                                    {allBeats.map((b, bIdx) => {
+                                        const s = typeof b.start_ms === 'number' ? b.start_ms : (b.start * 1000 || 0);
+                                        const e = typeof b.end_ms === 'number' ? b.end_ms : (b.end * 1000 || 2500);
+                                        const dur = ((e - s) / 1000).toFixed(1);
+                                        const beatWords = b.vo ? b.vo.split(/\s+/).filter(Boolean).length : 0;
+                                        return (
+                                            <div key={bIdx} className="bg-black/70 border border-neutral-800 rounded-lg p-2 flex flex-col gap-1 text-[11px]">
+                                                <div className="flex items-center justify-between text-[10px] font-mono">
+                                                    <span className="font-bold text-emerald-400">
+                                                        Beat 0{bIdx + 1}: {b.name || `Escena ${bIdx + 1}`}
+                                                    </span>
+                                                    <span className="text-neutral-400">
+                                                        {(s / 1000).toFixed(1)}s - {(e / 1000).toFixed(1)}s · {dur}s ({beatWords} pal)
+                                                    </span>
+                                                </div>
+                                                <div className="text-neutral-200 italic font-medium leading-snug">
+                                                    "{b.vo || '—'}"
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            )}
+
+                            {/* Barra informativa de cadencia */}
+                            <div className="flex items-center justify-between text-[10px] text-neutral-400 pt-1 border-t border-white/5 font-mono">
+                                <span className="flex items-center gap-1 text-emerald-400">
+                                    <i className="fa-solid fa-circle-check text-[9px]" />
+                                    <span>Cadencia calibrada para tiempos cortos</span>
+                                </span>
+                                <span className="text-neutral-300 font-bold">~{cadenceWps} pal/s</span>
+                            </div>
+                        </div>
+                    )}
 
                     {/* Botón rápido para abrir Post Kit con Guión & Hashtags */}
                     {onOpenPostKit && (
