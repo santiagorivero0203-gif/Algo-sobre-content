@@ -1319,15 +1319,30 @@ const App = () => {
                     {viewMode === 'reels' ? (
                         <>
                             {availableReels[activeReelIdx]?.videoUrl && (
-                                <a
-                                    href={availableReels[activeReelIdx].videoUrl}
-                                    download={`${availableReels[activeReelIdx].id || 'reel'}.mp4`}
-                                    className="w-full py-2.5 rounded-xl font-bold text-xs bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white flex items-center justify-center gap-2 shadow-lg transition-all active:scale-[0.98] no-underline"
-                                    title="Descargar video MP4 listo para publicar en TikTok/Reels"
+                                <button
+                                    onClick={() => {
+                                        const r = availableReels[activeReelIdx];
+                                        if (window.saveVideoToGallery) {
+                                            window.saveVideoToGallery({
+                                                videoUrl: r.videoUrl,
+                                                title: r.title,
+                                                filename: `${r.id || 'reel'}.mp4`
+                                            });
+                                        } else {
+                                            const a = document.createElement('a');
+                                            a.href = r.videoUrl;
+                                            a.download = `${r.id || 'reel'}.mp4`;
+                                            document.body.appendChild(a);
+                                            a.click();
+                                            document.body.removeChild(a);
+                                        }
+                                    }}
+                                    className="w-full py-2.5 rounded-xl font-bold text-xs bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white flex items-center justify-center gap-2 shadow-lg transition-all active:scale-[0.98]"
+                                    title="Guardar video directamente en la Galería de Fotos de tu iPhone o descargar MP4"
                                 >
-                                    <i className="fa-solid fa-download"></i>
-                                    <span>Descargar Video (.MP4)</span>
-                                </a>
+                                    <i className="fa-solid fa-photo-film text-emerald-200"></i>
+                                    <span>Guardar en Galería (iPhone / MP4)</span>
+                                </button>
                             )}
                             <button
                                 onClick={() => setPostKitOpen(true)}
@@ -1682,17 +1697,35 @@ const App = () => {
             {/* ============================================================== */}
             {viewMode === 'reels' ? (
                 <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-neutral-950/95 backdrop-blur-md border-t border-neutral-800 p-2.5 shadow-2xl flex items-center gap-2">
-                    <button
-                        onClick={() => setIsReelCreatorOpen(true)}
-                        className="py-3 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 bg-neutral-800 text-neutral-200 border border-neutral-700 active:scale-95 shrink-0">
-                        <i className="fa-solid fa-wand-magic-sparkles text-sky-400"></i>
-                        <span>+ Nuevo</span>
-                    </button>
+                    {availableReels[activeReelIdx]?.videoUrl ? (
+                        <button
+                            onClick={() => {
+                                const r = availableReels[activeReelIdx];
+                                if (window.saveVideoToGallery) {
+                                    window.saveVideoToGallery({
+                                        videoUrl: r.videoUrl,
+                                        title: r.title,
+                                        filename: `${r.id || 'reel'}.mp4`
+                                    });
+                                }
+                            }}
+                            className="flex-1 py-3 px-3 rounded-xl font-black text-xs flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg active:scale-95">
+                            <i className="fa-solid fa-photo-film text-emerald-200"></i>
+                            <span>Guardar en Fotos (iPhone)</span>
+                        </button>
+                    ) : (
+                        <button
+                            onClick={() => setIsReelCreatorOpen(true)}
+                            className="flex-1 py-3 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 bg-neutral-800 text-neutral-200 border border-neutral-700 active:scale-95 shrink-0">
+                            <i className="fa-solid fa-wand-magic-sparkles text-sky-400"></i>
+                            <span>+ Nuevo Reel</span>
+                        </button>
+                    )}
                     <button
                         onClick={() => setPostKitOpen(true)}
-                        className="flex-1 py-3 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 bg-gradient-to-r from-purple-900 to-indigo-900 text-white shadow-lg active:scale-95">
+                        className="py-3 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 bg-gradient-to-r from-purple-900 to-indigo-900 text-white shadow-lg active:scale-95 shrink-0">
                         <i className="fa-solid fa-clipboard-list text-purple-300"></i>
-                        <span>Ver Copy, Guión & Tags</span>
+                        <span>Copy</span>
                     </button>
                 </div>
             ) : (

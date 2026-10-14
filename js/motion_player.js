@@ -110,6 +110,69 @@ async function exportReelVideo(reelData, containerDomNode, onProgress, setVirtua
 }
 
 /**
+ * Guarda un video MP4 directamente en la app Fotos / Galería de iPhone
+ * utilizando la Web Share API nativa (hoja de compartir de iOS) o descarga directa.
+ */
+window.saveVideoToGallery = async function({ videoUrl, filename, title, onStatus }) {
+    if (!videoUrl) {
+        alert('Este video aún no tiene archivo MP4 renderizado.');
+        return { success: false, error: 'no_video_url' };
+    }
+
+    try {
+        if (onStatus) onStatus('Descargando...');
+
+        // 1. Obtener el archivo binario del video
+        const response = await fetch(videoUrl);
+        if (!response.ok) throw new Error(`HTTP ${response.status} al cargar video`);
+        const blob = await response.blob();
+
+        const cleanFilename = filename || (videoUrl.split('/').pop() || 'video.mp4');
+        const file = new File([blob], cleanFilename, { type: 'video/mp4' });
+
+        // 2. Si el dispositivo soporta Web Share con archivos (iPhone / iOS Safari nativo)
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            if (onStatus) onStatus('Abre menú...');
+            await navigator.share({
+                files: [file],
+                title: title || 'Video Reel',
+                text: 'Guarda este video en la app Fotos de tu iPhone'
+            });
+            if (onStatus) onStatus('¡Listo!');
+            return { success: true, method: 'share' };
+        } else {
+            // 3. Fallback: descarga directa en escritorio o navegadores sin canShare
+            if (onStatus) onStatus('Descargando...');
+            const blobUrl = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = blobUrl;
+            a.download = cleanFilename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(() => URL.revokeObjectURL(blobUrl), 2000);
+            if (onStatus) onStatus('¡Descargado!');
+            return { success: true, method: 'download' };
+        }
+    } catch (err) {
+        if (err.name === 'AbortError') {
+            console.log('[saveVideoToGallery] Usuario canceló el menú de compartir');
+            return { success: false, aborted: true };
+        }
+        console.warn('[saveVideoToGallery] Falló Web Share, recurriendo a descarga tradicional:', err);
+        // Fallback a enlace normal
+        const a = document.createElement('a');
+        a.href = videoUrl;
+        a.download = filename || 'video.mp4';
+        a.target = '_blank';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        return { success: false, error: err };
+    }
+};
+
+/**
  * Componente Interactivo de Reproducción y Renderizado de Motion Reels
  */
 const MotionReelPlayer = ({ reel, onOpenPostKit }) => {
@@ -118,6 +181,9 @@ const MotionReelPlayer = ({ reel, onOpenPostKit }) => {
     const [isExporting, setIsExporting] = React.useState(false);
     const [exportProgress, setExportProgress] = React.useState(0);
     const [exportFrameInfo, setExportFrameInfo] = React.useState('');
+    const [isSavingVideo, setIsSavingVideo] = React.useState(false);
+    const [saveVideoStatus, setSaveVideoStatus] = React.useState('');
+    const [iosTipOpen, setIosTipOpen] = React.useState(false);
     const frameRef = React.useRef(null);
     const animIdRef = React.useRef(null);
     const lastTimeRef = React.useRef(null);
@@ -161,6 +227,25 @@ const MotionReelPlayer = ({ reel, onOpenPostKit }) => {
             setTimeout(() => setIsScriptCopied(false), 2200);
         } catch (e) {
             console.error('Error al copiar guión:', e);
+        }
+    };
+
+    const handleSaveToGallery = async () => {
+        if (!reel?.videoUrl) return;
+        setIsSavingVideo(true);
+        setSaveVideoStatus('Preparando...');
+        try {
+            await window.saveVideoToGallery({
+                videoUrl: reel.videoUrl,
+                filename: `${reel.slug || reel.id || 'reel'}.mp4`,
+                title: reel.title,
+                onStatus: (st) => setSaveVideoStatus(st)
+            });
+            setTimeout(() => setSaveVideoStatus(''), 2500);
+        } catch (e) {
+            console.error('[handleSaveToGallery Error]:', e);
+        } finally {
+            setIsSavingVideo(false);
         }
     };
 
@@ -415,14 +500,41 @@ const MotionReelPlayer = ({ reel, onOpenPostKit }) => {
                             )}
 
                             {reel?.videoUrl && (
+                                <button
+                                    onClick={handleSaveToGallery}
+                                    disabled={isSavingVideo}
+                                    className="px-3 py-1.5 rounded-xl text-xs font-black bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-lg active:scale-95 transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-60"
+                                    title="Guardar video directamente en la Galería / Fotos de tu iPhone"
+                                >
+                                    <i className={`fa-solid ${isSavingVideo ? 'fa-spinner fa-spin' : 'fa-photo-film'} text-emerald-200`}></i>
+                                    <span>{isSavingVideo ? (saveVideoStatus || 'Guardando...') : 'Guardar en Galería'}</span>
+                                </button>
+                            )}
+
+                            {reel?.videoUrl && (
+                                <button
+                                    onClick={() => setIosTipOpen(prev => !prev)}
+                                    title="Instrucciones para guardar en Fotos de iPhone"
+                                    className={`px-2 py-1.5 rounded-xl text-xs font-bold border transition-all flex items-center gap-1 ${
+                                        iosTipOpen 
+                                            ? 'bg-emerald-950/80 text-emerald-300 border-emerald-600' 
+                                            : 'bg-neutral-800 text-neutral-300 hover:text-white border-neutral-700'
+                                    }`}
+                                >
+                                    <i className="fa-brands fa-apple text-neutral-300"></i>
+                                    <i className="fa-solid fa-circle-question text-[10px] text-sky-400"></i>
+                                </button>
+                            )}
+
+                            {reel?.videoUrl && (
                                 <a
                                     href={reel.videoUrl}
                                     download={`${reel.id || 'reel_video'}.mp4`}
-                                    className="px-3.5 py-1.5 rounded-xl text-xs font-black bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-lg active:scale-95 transition-all flex items-center gap-1.5 no-underline cursor-pointer"
-                                    title="Descargar video MP4 completo a 1080×1920 con audio y SFX"
+                                    className="hidden sm:flex px-2.5 py-1.5 rounded-xl text-xs font-bold bg-neutral-800 text-neutral-300 hover:text-white border border-neutral-700 active:scale-95 transition-all items-center gap-1.5 no-underline cursor-pointer"
+                                    title="Descargar archivo MP4 a la computadora"
                                 >
-                                    <i className="fa-solid fa-download"></i>
-                                    <span>Descargar MP4</span>
+                                    <i className="fa-solid fa-download text-neutral-400"></i>
+                                    <span>MP4</span>
                                 </a>
                             )}
 
@@ -434,13 +546,31 @@ const MotionReelPlayer = ({ reel, onOpenPostKit }) => {
                                         ? 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700 border-neutral-700'
                                         : 'bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 text-white shadow-lg active:scale-95'
                                 }`}
-                                title="Exportar fotogramas 1080×1920 @ 60 FPS en archivo comprimido ZIP"
+                                title="Exportar fotogramas para editores de video (After Effects/Premiere) en ZIP"
                             >
                                 <i className="fa-solid fa-file-zipper text-amber-400"></i>
                                 <span>Frames (ZIP)</span>
                             </button>
                         </div>
                     </div>
+
+                    {/* Banner explicativo para iPhone cuando se activa la ayuda */}
+                    {iosTipOpen && (
+                        <div className="mt-2.5 p-3 bg-neutral-900 border border-emerald-500/40 rounded-xl text-left text-xs text-neutral-200 shadow-xl flex items-start gap-2.5">
+                            <i className="fa-brands fa-apple text-emerald-400 text-lg mt-0.5 shrink-0"></i>
+                            <div className="flex-1">
+                                <p className="font-bold text-white text-xs mb-1">Cómo guardar en Fotos de tu iPhone:</p>
+                                <ol className="list-decimal list-inside space-y-1 text-neutral-300 text-[11px]">
+                                    <li>Toca el botón verde <strong>"Guardar en Galería"</strong>.</li>
+                                    <li>En el menú que abre iOS, pulsa <strong>"Guardar video"</strong> (con el ícono de Fotos).</li>
+                                    <li>¡Listo! El video queda automáticamente en tu <strong>Carrete / Galería de Fotos</strong>.</li>
+                                </ol>
+                            </div>
+                            <button onClick={() => setIosTipOpen(false)} className="text-neutral-400 hover:text-white p-1">
+                                <i className="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
 
