@@ -6,11 +6,13 @@ import { geminiNivel2Data } from "./data/geminiNivel2";
 import { geminiNivel3Data } from "./data/geminiNivel3";
 import { stackSecretoData } from "./data/stackSecreto";
 import { tokensProData } from "./data/tokensPro";
+import { mafeTeoriaDisenoData } from "./data/mafeTeoriaDiseno";
 import { ReelPropsSchema, type ReelProps } from "./lib/schema";
 import { buildTimeline, totalDuration } from "./lib/timeline";
 
 /**
  * Raíz de composiciones de Remotion para Santi.Dev (1080×1920 @ 60 FPS).
+ *  - MafeTeoriaDisenoReel → Teoría del Diseño, Semiótica y Usabilidad (UCAB).
  *  - GeminiNivel1Reel → Nivel 1 Básico (Sin configuración previa, multimodal, Live).
  *  - GeminiNivel2Reel → Nivel 2 Intermedio (Integración Workspace, Deep Research, Canvas).
  *  - GeminiNivel3Reel → Nivel 3 Avanzado (Gems, Acciones programadas, Workspace Studio).
@@ -21,6 +23,19 @@ import { buildTimeline, totalDuration } from "./lib/timeline";
 export const RemotionRoot = () => {
   return (
     <>
+      <Composition
+        id="MafeTeoriaDisenoReel"
+        component={Reel}
+        schema={ReelPropsSchema}
+        defaultProps={mafeTeoriaDisenoData}
+        durationInFrames={1060}
+        fps={60}
+        width={1080}
+        height={1920}
+        calculateMetadata={({ props }: { props: ReelProps }) => ({
+          durationInFrames: totalDuration(buildTimeline(props.scenes, 60)),
+        })}
+      />
       <Composition
         id="GeminiNivel1Reel"
         component={Reel}

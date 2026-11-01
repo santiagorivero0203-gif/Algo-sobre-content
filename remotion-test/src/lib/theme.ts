@@ -92,6 +92,14 @@ export const THEMES: Record<string, BrandTheme> = {
     secondary: "#A855F7",
     aura: "rgba(99, 102, 241, 0.50)",
   },
+  mafe_diseno: {
+    id: "mafe_diseno",
+    handle: "@mafe.diseno · UCAB DISEÑO",
+    bg: ["#1E1B4B", "#0F172A", "#030712"],
+    accent: "#38BDF8",
+    secondary: "#F43F5E",
+    aura: "rgba(56, 189, 248, 0.44)",
+  },
 };
 
 export const COLORS = {
