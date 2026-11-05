@@ -9,7 +9,6 @@
 import React from "react";
 import {
   Img,
-  interpolate,
   spring,
   staticFile,
   useCurrentFrame,

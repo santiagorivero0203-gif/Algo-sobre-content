@@ -4,7 +4,7 @@
  * =====================================================================
  * De hacer preguntas a diseñar infraestructura autónoma:
  *  - Hook: No pidas prompts, construye sistemas
- *  - 3.1: Gems personalizados (Estandarización del método · El CÓMO)
+ *  - 3.1: Gemini Spark (Estandarización del método · El CÓMO)
  *  - 3.2: Acciones Programadas (Ejecución horaria autónoma · El CUÁNDO)
  *  - 3.3: Workspace Studio (Conexión integral entre servicios)
  *  - CTA: Comenta SISTEMAS
@@ -30,13 +30,13 @@ export const geminiNivel3Data: ReelProps = {
     },
     {
       type: "showcase",
-      badge: "GEMS PERSONALIZADOS",
+      badge: "GEMINI SPARK",
       title: "Estandariza *el CÓMO*",
-      sub: "Un Gem almacena tus reglas y metodologías fijas para siempre.",
+      sub: "Gemini Spark almacena tus reglas y metodologías fijas para siempre.",
       image: "assets/gemini_gems_real.jpg",
-      imageCaption: "Custom Gems: Reglas perennes y marco de análisis",
+      imageCaption: "Gemini Spark: Reglas perennes y marco de análisis",
       showLogo: true,
-      vo: "Crea Gems con tus reglas fijas de trabajo.",
+      vo: "Usa Gemini Spark con tus reglas fijas de trabajo.",
       durationFrames: 220, // 3.66s
     },
     {
@@ -46,7 +46,7 @@ export const geminiNivel3Data: ReelProps = {
       sub: "Acciones programadas a horas fijas con alertas directas al móvil.",
       points: [
         { label: "Disparadores por hora", desc: "Define qué día y hora exacta debe correr el análisis." },
-        { label: "Scraping y síntesis semanal", desc: "Recopila novedades del sector sin intervención." },
+        { label: "Rastreo y síntesis semanal", desc: "Recopila novedades del sector sin intervención." },
         { label: "Notificación push al móvil", desc: "El informe te espera listo cada lunes en tu bandeja." },
       ],
       showLogo: true,
@@ -59,9 +59,9 @@ export const geminiNivel3Data: ReelProps = {
       title: "Orquestación entre *todas las apps*",
       sub: "Disparadores y acciones enlazadas entre Meet, Drive, Sheets y Chat.",
       points: [
-        { label: "Termina videollamada Meet", desc: "Gemini extrae tareas y las publica directo en Google Chat." },
-        { label: "Emails con adjuntos", desc: "Guarda archivos en Drive y registra filas en Google Sheets." },
-        { label: "Ecosistema conectado", desc: "Gems fijan el cómo, horarios el cuándo y Studio el flujo." },
+        { label: "Termina videollamada en Meet", desc: "Gemini extrae tareas y las publica directo en Google Chat." },
+        { label: "Correos con adjuntos", desc: "Guarda archivos en Drive y registra filas en Google Sheets." },
+        { label: "Ecosistema conectado", desc: "Spark fija el cómo, los horarios el cuándo y Studio el flujo." },
       ],
       icons: ["assets/meet_icon.svg", "assets/drive_icon.svg", "assets/sheets_icon.svg"],
       showLogo: true,

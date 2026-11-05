@@ -7,6 +7,7 @@ import { geminiNivel3Data } from "./data/geminiNivel3";
 import { stackSecretoData } from "./data/stackSecreto";
 import { tokensProData } from "./data/tokensPro";
 import { mafeTeoriaDisenoData } from "./data/mafeTeoriaDiseno";
+import { PyQuestEp01 } from "./pyquest/episodes/ep01/Ep01";
 import { ReelPropsSchema, type ReelProps } from "./lib/schema";
 import { buildTimeline, totalDuration } from "./lib/timeline";
 
@@ -15,7 +16,7 @@ import { buildTimeline, totalDuration } from "./lib/timeline";
  *  - MafeTeoriaDisenoReel → Teoría del Diseño, Semiótica y Usabilidad (UCAB).
  *  - GeminiNivel1Reel → Nivel 1 Básico (Sin configuración previa, multimodal, Live).
  *  - GeminiNivel2Reel → Nivel 2 Intermedio (Integración Workspace, Deep Research, Canvas).
- *  - GeminiNivel3Reel → Nivel 3 Avanzado (Gems, Acciones programadas, Workspace Studio).
+ *  - GeminiNivel3Reel → Nivel 3 Avanzado (Gemini Spark, Acciones programadas, Workspace Studio).
  *  - StackSecretoReel → Contenido del primer video (Trilogía Parte 1: Stack Secreto).
  *  - TokensProReel    → Contenido de ingeniería agéntica y optimización de contexto.
  *  - KineticReel      → Prueba cinética inicial.
@@ -105,6 +106,15 @@ export const RemotionRoot = () => {
         id="KineticReel"
         component={FastKineticReel}
         durationInFrames={180}
+        fps={60}
+        width={1080}
+        height={1920}
+      />
+      {/* Nueva saga educativa: Python desde Cero · PyQuest (72s @ 60 FPS) */}
+      <Composition
+        id="PyQuestEp01Reel"
+        component={PyQuestEp01}
+        durationInFrames={4320}
         fps={60}
         width={1080}
         height={1920}

@@ -413,7 +413,7 @@ Programar con agentes de IA no se trata de quemar cuota a lo loco, sino de orque
 5️⃣ Multi-cuentas gratis sin bloqueos: A diferencia de Cursor (que te rastrea el hardware y te bloquea al cambiar de cuenta), Antigravity te permite alternar cuentas de Google oficiales legalmente con cuota diaria regenerativa.
 6️⃣ Todas las ventajas de Gemini AI Pro:
    • 2M Tokens & Multimodal (repositorios y libros enteros en 1 prompt).
-   • Gems personalizados & Deep Research autónomo en la web.
+   • Gemini Spark & Deep Research autónomo en la web.
    • Python Sandbox interactivo en vivo para depurar scripts.
    • Integración nativa en Google Workspace (Docs, Gmail, Sheets, Meet, Drive).
    • 2 TB a 5 TB de almacenamiento en la nube para proyectos y datasets.

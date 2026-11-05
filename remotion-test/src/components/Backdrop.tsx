@@ -53,7 +53,7 @@ export const Backdrop: React.FC<{
   timeline: TimelineEntry[];
   total: number;
   showVoiceover: boolean;
-}> = ({ theme, kicker, timeline, total, showVoiceover }) => {
+}> = ({ theme, kicker, timeline, showVoiceover }) => {
   const frame = useCurrentFrame();
   const activeIdx = Math.max(
     0,
