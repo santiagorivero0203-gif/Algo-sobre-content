@@ -6,9 +6,21 @@
  * con paleta semántica estricta que asocia tipos de datos con colores.
  * =====================================================================
  */
-import { FONT_MONO, FONT_SANS } from "../lib/theme";
+import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
+import { loadFont as loadJetBrainsMono } from "@remotion/google-fonts/JetBrainsMono";
 
-export { FONT_MONO, FONT_SANS };
+// Tipografías oficiales de nivel estudio: Inter para títulos/UI y JetBrains Mono para código
+const inter = loadInter("normal", {
+  weights: ["400", "600", "700", "800", "900"],
+  subsets: ["latin"],
+});
+const mono = loadJetBrainsMono("normal", {
+  weights: ["500", "700", "800"],
+  subsets: ["latin"],
+});
+
+export const FONT_SANS = `${inter.fontFamily}, 'Inter', system-ui, sans-serif`;
+export const FONT_MONO = `${mono.fontFamily}, 'JetBrains Mono', monospace`;
 
 export const PYQUEST_THEME = {
   // Lienzo plano (cero textura de pizarra, cero cuadrículas)

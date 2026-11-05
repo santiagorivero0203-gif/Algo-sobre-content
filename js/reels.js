@@ -14,6 +14,116 @@
 
 window.REELS = [
     // =====================================================================
+    // REEL DESTACADO: PYQUEST EP. 1 · ¿POR QUÉ PYTHON ES TU MEJOR INICIO? (72s @ 60 FPS)
+    // =====================================================================
+    {
+        id: 'reel_pyquest_ep01',
+        accountId: 'santidev',
+        slug: 'pyquest_ep01_por_que_python',
+        theme: 'stack1',
+        title: 'PyQuest Ep. 1: ¿Por qué Python?',
+        subtitle: 'El mejor lenguaje para empezar a programar sin frustración',
+        duration_ms: 72000,
+        duration: 72.0,
+        fps: 60,
+        kicker: 'PYQUEST · PYTHON DESDE CERO',
+        brandIcon: 'fa-gamepad',
+        accentColor: '#3B82F6',
+        secondaryColor: '#10B981',
+        videoUrl: 'videos/pyquest_ep01_por_que_python.mp4',
+        post: {
+            hook: '¿Por qué la mayoría abandona la programación en dos semanas? 👇',
+            caption: `La mayoría de personas que intentan aprender a programar abandonan en las primeras dos semanas. Y casi nunca es por falta de lógica: es porque eligieron el lenguaje equivocado para empezar.
+
+En este primer episodio de PyQuest (nuestra serie donde construimos el motor lógico de un RPG en Python desde cero) te explico:
+
+1️⃣ Carga cognitiva vs. Lógica: Cómo la sintaxis estricta te frustra antes de crear algo divertido.
+2️⃣ Pseudocódigo ejecutable: Por qué Python se lee casi como hablar en español.
+3️⃣ Escalabilidad real: La misma sintaxis que aprende un novato impulsa la IA, el backend de gigantes como Instagram y la ciencia de datos.
+
+💾 Guarda este video para tu ruta de aprendizaje.
+👉 Sígueme para el Episodio 2: Variables y Tipos de Datos (el ADN de nuestro héroe).`,
+            hashtags: ['#python', '#programacion', '#aprenderaprogramar', '#pyquest', '#desarrolloweb', '#ia', '#gamedev'],
+            bestTime: '18:00 - 21:00',
+            sound: 'Tech Ambient Bed'
+        },
+        beats: [
+            {
+                id: 1,
+                name: 'El Choque de Sintaxis',
+                start_ms: 0,
+                end_ms: 8000,
+                type: 'hero',
+                badge: 'EL ERROR INICIAL',
+                title: '¿Por qué abandonas la *programación*?',
+                sub: 'Casi nunca es por falta de lógica: es por elegir el lenguaje equivocado.',
+                kicker: 'EPISODIO 1 · PYQUEST',
+                vo: 'La mayoría que intenta aprender abandona por el lenguaje equivocado.'
+            },
+            {
+                id: 2,
+                name: 'Carga Cognitiva vs Lógica',
+                start_ms: 8000,
+                end_ms: 24000,
+                type: 'points',
+                badge: 'SINTAXIS LIMPIA',
+                title: 'Python elimina *el ruido*',
+                sub: 'Enfócate en resolver problemas en vez de memorizar símbolos raros.',
+                points: [
+                    { num: '01', title: 'Cero Boilerplate', desc: 'Sin clases obligatorias ni puntos y comas para un Hola Mundo.' },
+                    { num: '02', title: 'Foco en Lógica', desc: 'Aprende a pensar paso a paso desde el primer minuto.' }
+                ],
+                vo: 'Python quita las reglas complejas para que te enfoques en la lógica.'
+            },
+            {
+                id: 3,
+                name: 'Pseudocódigo Ejecutable',
+                start_ms: 24000,
+                end_ms: 42000,
+                type: 'showcase',
+                badge: 'MOTOR RPG',
+                title: 'Se lee casi como *español*',
+                sub: 'if vida <= 0: fin_del_juego(). Lógica pura sin fricción técnica.',
+                points: [
+                    { num: '03', title: 'Regla 1 del RPG', desc: 'Si la vida llega a cero, el juego termina.' },
+                    { num: '04', title: 'Aria en vivo', desc: 'Estado del héroe y barra de vida conectada.' }
+                ],
+                vo: 'Aunque nunca hayas programado, lo entiendes: es lógica pura.'
+            },
+            {
+                id: 4,
+                name: 'Escalabilidad Real',
+                start_ms: 42000,
+                end_ms: 58000,
+                type: 'points',
+                badge: 'TODA LA INDUSTRIA',
+                title: 'Una sola base, *todo el mercado*',
+                sub: 'La misma sintaxis mueve la Inteligencia Artificial, Backend y Ciencia de Datos.',
+                points: [
+                    { num: '05', title: 'IA y Modelos', desc: 'PyTorch, OpenAI y visión por computadora.' },
+                    { num: '06', title: 'Grandes Plataformas', desc: 'El backend de Instagram, Spotify y miles de APIs.' }
+                ],
+                vo: 'Esta misma base mueve la IA y los servidores más grandes del mundo.'
+            },
+            {
+                id: 5,
+                name: 'Cierre y CTA',
+                start_ms: 58000,
+                end_ms: 72000,
+                type: 'cta',
+                badge: 'SERIE COMPLETA',
+                title: 'Construyamos juntos *PyQuest*',
+                sub: 'Episodio 1 Completado · Próximo: Variables y Tipos de Datos.',
+                ctaData: {
+                    keyword: 'PYTHON',
+                    line: 'Guarda este video y sígueme para el Episodio 2.',
+                    handle: '@santi.dev'
+                },
+                vo: 'Guarda este video y sígueme para el episodio dos.'
+            }
+        ]
+    },
+    // =====================================================================
     // REEL 1: SANTI.DEV · PARTE 1: STACK SECRETO (JUEGOS Y WEBS SIN PROGRAMAR)
     // =====================================================================
     {
@@ -998,116 +1108,6 @@ Resultado: 80% menos tokens quemados y cero alucinaciones en producción.
                     handle: '@santi.dev'
                 },
                 vo: 'Conecta tus herramientas. Comenta SISTEMAS y te paso la plantilla.'
-            }
-        ]
-    },
-    // =====================================================================
-    // REEL: PYQUEST EP. 1 · ¿POR QUÉ PYTHON ES TU MEJOR INICIO? (72s @ 60 FPS)
-    // =====================================================================
-    {
-        id: 'reel_pyquest_ep01',
-        accountId: 'santidev',
-        slug: 'pyquest_ep01_por_que_python',
-        theme: 'stack1',
-        title: 'PyQuest Ep. 1: ¿Por qué Python?',
-        subtitle: 'El mejor lenguaje para empezar a programar sin frustración',
-        duration_ms: 72000,
-        duration: 72.0,
-        fps: 60,
-        kicker: 'PYQUEST · PYTHON DESDE CERO',
-        brandIcon: 'fa-gamepad',
-        accentColor: '#3B82F6',
-        secondaryColor: '#10B981',
-        videoUrl: 'videos/pyquest_ep01_por_que_python.mp4',
-        post: {
-            hook: '¿Por qué la mayoría abandona la programación en dos semanas? 👇',
-            caption: `La mayoría de personas que intentan aprender a programar abandonan en las primeras dos semanas. Y casi nunca es por falta de lógica: es porque eligieron el lenguaje equivocado para empezar.
-
-En este primer episodio de PyQuest (nuestra serie donde construimos el motor lógico de un RPG en Python desde cero) te explico:
-
-1️⃣ Carga cognitiva vs. Lógica: Cómo la sintaxis estricta te frustra antes de crear algo divertido.
-2️⃣ Pseudocódigo ejecutable: Por qué Python se lee casi como hablar en español.
-3️⃣ Escalabilidad real: La misma sintaxis que aprende un novato impulsa la IA, el backend de gigantes como Instagram y la ciencia de datos.
-
-💾 Guarda este video para tu ruta de aprendizaje.
-👉 Sígueme para el Episodio 2: Variables y Tipos de Datos (el ADN de nuestro héroe).`,
-            hashtags: ['#python', '#programacion', '#aprenderaprogramar', '#pyquest', '#desarrolloweb', '#ia', '#gamedev'],
-            bestTime: '18:00 - 21:00',
-            sound: 'Tech Ambient Bed'
-        },
-        beats: [
-            {
-                id: 1,
-                name: 'El Choque de Sintaxis',
-                start_ms: 0,
-                end_ms: 8000,
-                type: 'hero',
-                badge: 'EL ERROR INICIAL',
-                title: '¿Por qué abandonas la *programación*?',
-                sub: 'Casi nunca es por falta de lógica: es por elegir el lenguaje equivocado.',
-                kicker: 'EPISODIO 1 · PYQUEST',
-                vo: 'La mayoría que intenta aprender abandona por el lenguaje equivocado.'
-            },
-            {
-                id: 2,
-                name: 'Carga Cognitiva vs Lógica',
-                start_ms: 8000,
-                end_ms: 24000,
-                type: 'points',
-                badge: 'SINTAXIS LIMPIA',
-                title: 'Python elimina *el ruido*',
-                sub: 'Enfócate en resolver problemas en vez de memorizar símbolos raros.',
-                points: [
-                    { num: '01', title: 'Cero Boilerplate', desc: 'Sin clases obligatorias ni puntos y comas para un Hola Mundo.' },
-                    { num: '02', title: 'Foco en Lógica', desc: 'Aprende a pensar paso a paso desde el primer minuto.' }
-                ],
-                vo: 'Python quita las reglas complejas para que te enfoques en la lógica.'
-            },
-            {
-                id: 3,
-                name: 'Pseudocódigo Ejecutable',
-                start_ms: 24000,
-                end_ms: 42000,
-                type: 'showcase',
-                badge: 'MOTOR RPG',
-                title: 'Se lee casi como *español*',
-                sub: 'if vida <= 0: fin_del_juego(). Lógica pura sin fricción técnica.',
-                points: [
-                    { num: '03', title: 'Regla 1 del RPG', desc: 'Si la vida llega a cero, el juego termina.' },
-                    { num: '04', title: 'Aria en vivo', desc: 'Estado del héroe y barra de vida conectada.' }
-                ],
-                vo: 'Aunque nunca hayas programado, lo entiendes: es lógica pura.'
-            },
-            {
-                id: 4,
-                name: 'Escalabilidad Real',
-                start_ms: 42000,
-                end_ms: 58000,
-                type: 'points',
-                badge: 'TODA LA INDUSTRIA',
-                title: 'Una sola base, *todo el mercado*',
-                sub: 'La misma sintaxis mueve la Inteligencia Artificial, Backend y Ciencia de Datos.',
-                points: [
-                    { num: '05', title: 'IA y Modelos', desc: 'PyTorch, OpenAI y visión por computadora.' },
-                    { num: '06', title: 'Grandes Plataformas', desc: 'El backend de Instagram, Spotify y miles de APIs.' }
-                ],
-                vo: 'Esta misma base mueve la IA y los servidores más grandes del mundo.'
-            },
-            {
-                id: 5,
-                name: 'Cierre y CTA',
-                start_ms: 58000,
-                end_ms: 72000,
-                type: 'cta',
-                badge: 'SERIE COMPLETA',
-                title: 'Construyamos juntos *PyQuest*',
-                sub: 'Episodio 1 Completado · Próximo: Variables y Tipos de Datos.',
-                ctaData: {
-                    keyword: 'PYTHON',
-                    line: 'Guarda este video y sígueme para el Episodio 2.',
-                    handle: '@santi.dev'
-                },
-                vo: 'Guarda este video y sígueme para el episodio dos.'
             }
         ]
     }
