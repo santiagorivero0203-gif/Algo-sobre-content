@@ -30,7 +30,7 @@ window.REELS = [
         brandIcon: 'fa-gamepad',
         accentColor: '#3B82F6',
         secondaryColor: '#10B981',
-        videoUrl: 'videos/pyquest_ep01_por_que_python.mp4',
+        videoUrl: 'videos/pyquest_ep01_por_que_python.mp4?v=2',
         post: {
             hook: '¿Por qué la mayoría abandona la programación en dos semanas? 👇',
             caption: `La mayoría de personas que intentan aprender a programar abandonan en las primeras dos semanas. Y casi nunca es por falta de lógica: es porque eligieron el lenguaje equivocado para empezar.
