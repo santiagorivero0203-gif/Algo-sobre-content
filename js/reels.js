@@ -227,6 +227,90 @@ En este Episodio 2 de PyQuest le damos vida a las estadísticas de Aria y explor
         ]
     },
     // =====================================================================
+    // REEL DESTACADO: PYQUEST EP. 3 · CONDICIONALES Y COMBATE: LAS REGLAS DE LA VIDA (74s @ 60 FPS)
+    // =====================================================================
+    {
+        id: 'reel_pyquest_ep03',
+        accountId: 'santidev',
+        slug: 'pyquest_ep03_condicionales_y_combate',
+        theme: 'stack1',
+        title: 'PyQuest Ep. 3: Condicionales y Combate',
+        subtitle: 'Las reglas de la vida y cómo evitar que tu héroe tenga vida negativa',
+        duration_ms: 74000,
+        duration: 74.0,
+        fps: 60,
+        kicker: 'PYQUEST · EPISODIO 3',
+        brandIcon: 'fa-shield-halved',
+        tags: ['Python', 'Condicionales', 'PyQuest', 'RPG', 'GameDev', 'AprenderAProgramar'],
+        sound: {
+            title: 'Ambient Tech Bed · PyQuest S3',
+            author: 'Santi.Dev Sound Lab',
+            badge: 'AUDIO ORIGINAL'
+        },
+        beats: [
+            {
+                id: 1,
+                name: 'El Absurdo de Vida Negativa',
+                start_ms: 0,
+                end_ms: 8000,
+                type: 'hook',
+                badge: 'FALLA DE LÓGICA',
+                title: '¿Tu héroe puede tener *-20 de vida*?',
+                sub: 'Sin condicionales no hay reglas de juego: el personaje muere pero la partida sigue.',
+                vo: 'Si un programa no evalúa condiciones, Aria tiene menos veinte de vida y el motor no se entera.'
+            },
+            {
+                id: 2,
+                name: 'La Regla if y los 4 Espacios',
+                start_ms: 8000,
+                end_ms: 26000,
+                type: 'code',
+                badge: 'INSTRUCCIÓN IF',
+                title: 'Evaluando *decisiones*',
+                sub: 'if vida <= 0: print("GAME OVER"). 4 espacios de indentación definen el bloque.',
+                vo: 'La palabra clave if evalúa una pregunta: si es verdadera, ejecuta el bloque indentado.'
+            },
+            {
+                id: 3,
+                name: 'Árbol Lógico Completo',
+                start_ms: 26000,
+                end_ms: 48000,
+                type: 'code',
+                badge: 'IF / ELIF / ELSE',
+                title: 'Tres caminos *en 6 líneas*',
+                sub: 'Derrotado, Peligro Crítico o Listo para la batalla con if, elif y else.',
+                vo: 'Con elif cubrimos estados intermedios como peligro crítico, y con else el estado normal.'
+            },
+            {
+                id: 4,
+                name: 'Combate Boss Goblin',
+                start_ms: 48000,
+                end_ms: 64000,
+                type: 'compare',
+                badge: 'COMBATE EN VIVO',
+                title: 'El código detiene *la partida*',
+                sub: 'El Goblin es derrotado y la regla detiene el juego en el instante exacto.',
+                vo: 'Ahora el juego responde a la perfección y la partida se detiene cuando la salud se agota.'
+            },
+            {
+                id: 5,
+                name: 'Cliffhanger de Botín y CTA',
+                start_ms: 64000,
+                end_ms: 74000,
+                type: 'cta',
+                badge: 'PRÓXIMO CAPÍTULO',
+                title: '10 objetos de botín *¿10 variables?*',
+                sub: 'Episodio 4: Agruparemos el inventario con Listas y Diccionarios.',
+                ctaData: {
+                    keyword: 'INVENTARIO',
+                    line: 'Comenta INVENTARIO y sígueme para aprender Listas en el Episodio 4.',
+                    handle: '@santi.dev'
+                },
+                vo: 'El jefe soltó diez recompensas. En el próximo episodio aprenderemos Listas y Diccionarios.'
+            }
+        ]
+    },
+    // =====================================================================
     // REEL 1: SANTI.DEV · PARTE 1: STACK SECRETO (JUEGOS Y WEBS SIN PROGRAMAR)
     // =====================================================================
     {

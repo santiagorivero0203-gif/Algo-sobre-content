@@ -28,6 +28,26 @@ import {
 } from "remotion";
 import { FONT_MONO, FONT_SANS, PYQUEST_THEME } from "../../theme";
 import { PyQuestSfx } from "../../sfx";
+import {
+  IconArrowRight,
+  IconBolt,
+  IconBox,
+  IconBrain,
+  IconCheck,
+  IconComment,
+  IconCrash,
+  IconDna,
+  IconHeart,
+  IconMap,
+  IconPlus,
+  IconProhibited,
+  IconShield,
+  IconSparkles,
+  IconSwords,
+  IconTag,
+  IconWarning,
+} from "../../components/PyQuestIcons";
+import { TypewriterText } from "../../components/TypewriterText";
 
 // =====================================================================
 // COMPONENTE 1: ATMÓSFERA Y FONDO REACTIVO DINÁMICO (2.5D)
@@ -339,11 +359,14 @@ export const PyQuestEp02: React.FC = () => {
                     borderRadius: 999,
                     textTransform: "uppercase",
                     letterSpacing: "0.08em",
-                    display: "inline-block",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 10,
                     marginBottom: 16,
                   }}
                 >
-                  ⚠️ Error Crítico de Principiante
+                  <IconWarning size={24} color="#BE123C" />
+                  <span>Error Crítico de Principiante</span>
                 </span>
 
                 <div
@@ -446,34 +469,75 @@ export const PyQuestEp02: React.FC = () => {
                   </span>
                 </div>
 
-                {/* Líneas de código con énfasis visual */}
+                {/* Líneas de código con escritura Typewriter en tiempo real */}
                 <div style={{ fontFamily: FONT_MONO, fontSize: 34, lineHeight: 1.6, color: "#F8FAFC" }}>
-                  <div>
-                    <span style={{ color: "#F8FAFC" }}>vida = </span>
-                    {/* El error: "100" como string */}
-                    <span
-                      style={{
-                        color: "#F59E0B",
-                        background: "rgba(245, 158, 11, 0.2)",
-                        padding: "2px 10px",
-                        borderRadius: 8,
-                        border: "2px dashed #F59E0B",
-                        fontWeight: 800,
-                      }}
-                    >
-                      "100"
-                    </span>
-                    <span style={{ color: "#EF4444", marginLeft: 16, fontSize: 26 }}>
-                      👈 ¡Comillas = Texto!
-                    </span>
-                  </div>
+                  {frame >= 50 && (
+                    <div>
+                      {frame < 95 ? (
+                        <TypewriterText
+                          text='vida = "100"'
+                          frame={frame}
+                          startFrame={50}
+                          durationFrames={40}
+                          cursorColor="#F59E0B"
+                        />
+                      ) : (
+                        <>
+                          <span style={{ color: "#F8FAFC" }}>vida = </span>
+                          <span
+                            style={{
+                              color: "#F59E0B",
+                              background: "rgba(245, 158, 11, 0.2)",
+                              padding: "2px 10px",
+                              borderRadius: 8,
+                              border: "2px dashed #F59E0B",
+                              fontWeight: 800,
+                            }}
+                          >
+                            "100"
+                          </span>
+                          <span
+                            style={{
+                              color: "#EF4444",
+                              marginLeft: 16,
+                              fontSize: 26,
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: 6,
+                            }}
+                          >
+                            <IconArrowRight
+                              size={22}
+                              color="#EF4444"
+                              style={{ transform: "rotate(180deg)" }}
+                            />
+                            <span>¡Comillas = Texto!</span>
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  )}
 
-                  <div style={{ marginTop: 8 }}>
-                    <span style={{ color: "#F8FAFC" }}>vida = vida - 20</span>
-                    <span style={{ color: "#64748B", marginLeft: 16, fontSize: 24 }}>
-                      # Daño del Goblin
-                    </span>
-                  </div>
+                  {frame >= 105 && (
+                    <div style={{ marginTop: 8 }}>
+                      {frame < 155 ? (
+                        <TypewriterText
+                          text="vida = vida - 20"
+                          frame={frame}
+                          startFrame={105}
+                          durationFrames={45}
+                          cursorColor="#38BDF8"
+                        />
+                      ) : (
+                        <>
+                          <span style={{ color: "#F8FAFC" }}>vida = vida - 20</span>
+                          <span style={{ color: "#94A3B8", marginLeft: 16, fontSize: 24 }}>
+                            # Daño del Goblin
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             );
@@ -520,7 +584,8 @@ export const PyQuestEp02: React.FC = () => {
                       marginBottom: 14,
                     }}
                   >
-                    <span>💥 TypeError: Excepción no controlada</span>
+                    <IconCrash size={26} color="#DC2626" />
+                    <span>TypeError: Excepción no controlada</span>
                   </div>
 
                   <div
@@ -544,9 +609,13 @@ export const PyQuestEp02: React.FC = () => {
                       fontSize: 26,
                       fontWeight: 700,
                       color: "#7F1D1D",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 10,
                     }}
                   >
-                    🚫 Python no puede restar matemáticas a un texto ("100" - 20).
+                    <IconProhibited size={26} color="#DC2626" />
+                    <span>Python no puede restar matemáticas a un texto ("100" - 20).</span>
                   </div>
                 </div>
               );
@@ -658,11 +727,14 @@ export const PyQuestEp02: React.FC = () => {
                     borderRadius: 999,
                     textTransform: "uppercase",
                     letterSpacing: "0.08em",
-                    display: "inline-block",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 10,
                     marginBottom: 16,
                   }}
                 >
-                  🧠 ¿Qué es una Variable en Realidad?
+                  <IconBrain size={24} color="#0369A1" />
+                  <span>¿Qué es una Variable en Realidad?</span>
                 </span>
 
                 <div
@@ -754,9 +826,18 @@ export const PyQuestEp02: React.FC = () => {
                 >
                   <div>
                     <span style={{ fontFamily: FONT_MONO, fontSize: 24, color: "#94A3B8" }}>Instrucción: </span>
-                    <span style={{ fontFamily: FONT_MONO, fontSize: 32, color: "#38BDF8", fontWeight: 800 }}>
-                      nombre = "Aria"
-                    </span>
+                    {frame >= 580 ? (
+                      <TypewriterText
+                        text='nombre = "Aria"'
+                        frame={frame}
+                        startFrame={580}
+                        durationFrames={45}
+                        cursorColor="#38BDF8"
+                        style={{ fontFamily: FONT_MONO, fontSize: 32, color: "#38BDF8", fontWeight: 800 }}
+                      />
+                    ) : (
+                      <span style={{ fontFamily: FONT_MONO, fontSize: 32, color: "#64748B" }}>...</span>
+                    )}
                   </div>
 
                   <span
@@ -853,11 +934,10 @@ export const PyQuestEp02: React.FC = () => {
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      fontSize: 34,
                       flexShrink: 0,
                     }}
                   >
-                    📦
+                    <IconBox size={36} color="#0284C7" />
                   </div>
 
                   <div>
@@ -918,11 +998,14 @@ export const PyQuestEp02: React.FC = () => {
                     borderRadius: 999,
                     textTransform: "uppercase",
                     letterSpacing: "0.08em",
-                    display: "inline-block",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 10,
                     marginBottom: 12,
                   }}
                 >
-                  🧬 El ADN de PyQuest
+                  <IconDna size={24} color="#6D28D9" />
+                  <span>El ADN de PyQuest</span>
                 </span>
 
                 <div
@@ -971,7 +1054,7 @@ export const PyQuestEp02: React.FC = () => {
                 type: "str (String)",
                 code: 'heroe = "Aria"',
                 purpose: "Texto entre comillas: Nombres, diálogos y lore",
-                icon: "🏷️",
+                icon: <IconTag size={28} color="#F59E0B" />,
                 color: "#F59E0B",
                 delay: 1470,
               },
@@ -979,7 +1062,7 @@ export const PyQuestEp02: React.FC = () => {
                 type: "int (Integer)",
                 code: "vida = 100",
                 purpose: "Números enteros: Vida, maná, nivel y oro",
-                icon: "❤️",
+                icon: <IconHeart size={28} color="#EF4444" />,
                 color: "#10B981",
                 delay: 1540,
               },
@@ -987,7 +1070,7 @@ export const PyQuestEp02: React.FC = () => {
                 type: "float (Decimal)",
                 code: "critico = 1.75",
                 purpose: "Decimales con punto: Multiplicadores y velocidades",
-                icon: "⚡",
+                icon: <IconBolt size={28} color="#3B82F6" />,
                 color: "#3B82F6",
                 delay: 1610,
               },
@@ -995,7 +1078,7 @@ export const PyQuestEp02: React.FC = () => {
                 type: "bool (Boolean)",
                 code: "esta_viva = True",
                 purpose: "Interruptor binario: Solo True o False",
-                icon: "🛡️",
+                icon: <IconShield size={28} color="#8B5CF6" />,
                 color: "#8B5CF6",
                 delay: 1680,
               },
@@ -1033,7 +1116,6 @@ export const PyQuestEp02: React.FC = () => {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        fontSize: 30,
                         flexShrink: 0,
                       }}
                     >
@@ -1058,13 +1140,29 @@ export const PyQuestEp02: React.FC = () => {
                       background: "#181C28",
                       borderRadius: 12,
                       padding: "10px 18px",
-                      fontFamily: FONT_MONO,
-                      fontSize: 26,
-                      color: "#F8FAFC",
-                      fontWeight: 700,
+                      minWidth: 220,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
                     }}
                   >
-                    {item.code}
+                    {frame >= item.delay ? (
+                      <TypewriterText
+                        text={item.code}
+                        frame={frame}
+                        startFrame={item.delay + 6}
+                        durationFrames={30}
+                        cursorColor={item.color}
+                        style={{
+                          fontFamily: FONT_MONO,
+                          fontSize: 26,
+                          color: "#F8FAFC",
+                          fontWeight: 700,
+                        }}
+                      />
+                    ) : (
+                      <span style={{ fontFamily: FONT_MONO, fontSize: 26, color: "#475569" }}>...</span>
+                    )}
                   </div>
                 </div>
               );
@@ -1161,7 +1259,7 @@ export const PyQuestEp02: React.FC = () => {
                   width: 920,
                   textAlign: "center",
                   opacity: enterTitle,
-                  transform: `translateY(${(1 - enterTitle) * 25}px)`,
+                  transform: `translateY(${(1 - enterTitle) * 20}px)`,
                 }}
               >
                 <span
@@ -1176,11 +1274,14 @@ export const PyQuestEp02: React.FC = () => {
                     borderRadius: 999,
                     textTransform: "uppercase",
                     letterSpacing: "0.08em",
-                    display: "inline-block",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 10,
                     marginBottom: 16,
                   }}
                 >
-                  ⚔️ ¡El Bug Ha Sido Eliminado!
+                  <IconSwords size={24} color="#047857" />
+                  <span>¡El Bug Ha Sido Eliminado!</span>
                 </span>
 
                 <div
@@ -1211,7 +1312,7 @@ export const PyQuestEp02: React.FC = () => {
             );
           })()}
 
-          {/* CÓDIGO LIMPIO SIN COMILLAS */}
+          {/* CÓDIGO LIMPIO SIN COMILLAS CON ESCRITURA EN VIVO */}
           {(() => {
             const enterCode = spring({
               frame: frame - 2820,
@@ -1269,32 +1370,107 @@ export const PyQuestEp02: React.FC = () => {
                       background: "rgba(16, 185, 129, 0.2)",
                       padding: "4px 12px",
                       borderRadius: 8,
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 6,
                     }}
                   >
-                    ✓ VÁLIDO
+                    <IconCheck size={18} color="#10B981" />
+                    <span>VÁLIDO</span>
                   </span>
                 </div>
 
+                {/* Líneas de código que se van escribiendo paso a paso */}
                 <div style={{ fontFamily: FONT_MONO, fontSize: 34, lineHeight: 1.6, color: "#F8FAFC" }}>
-                  <div>
-                    <span style={{ color: "#F8FAFC" }}>heroe = </span>
-                    <span style={{ color: "#F59E0B" }}>"Aria"</span>
-                  </div>
-                  <div>
-                    <span style={{ color: "#F8FAFC" }}>vida = </span>
-                    <span style={{ color: "#10B981", fontWeight: 800 }}>100</span>
-                    <span style={{ color: "#94A3B8", marginLeft: 16, fontSize: 24 }}># Entero puro</span>
-                  </div>
-                  <div>
-                    <span style={{ color: "#F8FAFC" }}>daño = </span>
-                    <span style={{ color: "#EF4444", fontWeight: 800 }}>20</span>
-                  </div>
-                  <div style={{ marginTop: 6, borderTop: "1px dashed rgba(255,255,255,0.15)", paddingTop: 8 }}>
-                    <span style={{ color: "#F8FAFC" }}>vida = vida - daño</span>
-                    <span style={{ color: "#34D399", marginLeft: 16, fontSize: 26, fontWeight: 800 }}>
-                      👉 80 HP
-                    </span>
-                  </div>
+                  {frame >= 2830 && (
+                    <div>
+                      {frame < 2865 ? (
+                        <TypewriterText
+                          text='heroe = "Aria"'
+                          frame={frame}
+                          startFrame={2830}
+                          durationFrames={30}
+                          cursorColor="#F59E0B"
+                        />
+                      ) : (
+                        <>
+                          <span style={{ color: "#F8FAFC" }}>heroe = </span>
+                          <span style={{ color: "#F59E0B" }}>"Aria"</span>
+                        </>
+                      )}
+                    </div>
+                  )}
+
+                  {frame >= 2865 && (
+                    <div>
+                      {frame < 2895 ? (
+                        <TypewriterText
+                          text="vida = 100"
+                          frame={frame}
+                          startFrame={2865}
+                          durationFrames={25}
+                          cursorColor="#10B981"
+                        />
+                      ) : (
+                        <>
+                          <span style={{ color: "#F8FAFC" }}>vida = </span>
+                          <span style={{ color: "#10B981", fontWeight: 800 }}>100</span>
+                          <span style={{ color: "#94A3B8", marginLeft: 16, fontSize: 24 }}># Entero puro</span>
+                        </>
+                      )}
+                    </div>
+                  )}
+
+                  {frame >= 2900 && (
+                    <div>
+                      {frame < 2925 ? (
+                        <TypewriterText
+                          text="daño = 20"
+                          frame={frame}
+                          startFrame={2900}
+                          durationFrames={20}
+                          cursorColor="#EF4444"
+                        />
+                      ) : (
+                        <>
+                          <span style={{ color: "#F8FAFC" }}>daño = </span>
+                          <span style={{ color: "#EF4444", fontWeight: 800 }}>20</span>
+                        </>
+                      )}
+                    </div>
+                  )}
+
+                  {frame >= 2930 && (
+                    <div style={{ marginTop: 6, borderTop: "1px dashed rgba(255,255,255,0.15)", paddingTop: 8 }}>
+                      {frame < 2975 ? (
+                        <TypewriterText
+                          text="vida = vida - daño"
+                          frame={frame}
+                          startFrame={2930}
+                          durationFrames={35}
+                          cursorColor="#34D399"
+                        />
+                      ) : (
+                        <>
+                          <span style={{ color: "#F8FAFC" }}>vida = vida - daño</span>
+                          <span
+                            style={{
+                              color: "#34D399",
+                              marginLeft: 16,
+                              fontSize: 26,
+                              fontWeight: 800,
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: 6,
+                            }}
+                          >
+                            <IconArrowRight size={22} color="#34D399" />
+                            <span>80 HP</span>
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             );
@@ -1505,9 +1681,13 @@ export const PyQuestEp02: React.FC = () => {
                       color: "#D97706",
                       letterSpacing: "0.08em",
                       textTransform: "uppercase",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 10,
                     }}
                   >
-                    🗺️ PyQuest · Hoja de Ruta Oficial
+                    <IconMap size={26} color="#D97706" />
+                    <span>PyQuest · Hoja de Ruta Oficial</span>
                   </span>
                 </div>
 
@@ -1554,9 +1734,20 @@ export const PyQuestEp02: React.FC = () => {
                               ? `scale(${1 + Math.sin(frame / 6) * 0.05})`
                               : "none",
                             boxShadow: isLvl3Unlocked ? "0 4px 15px rgba(245, 158, 11, 0.4)" : "none",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: 8,
                           }}
                         >
-                          {isLvl3Unlocked ? "★ ¡LVL. 3 DESBLOQUEADO! ★" : "LVL. 2"}
+                          {isLvl3Unlocked ? (
+                            <>
+                              <IconSparkles size={18} color="#FFFFFF" />
+                              <span>¡LVL. 3 DESBLOQUEADO!</span>
+                              <IconSparkles size={18} color="#FFFFFF" />
+                            </>
+                          ) : (
+                            <span>LVL. 2</span>
+                          )}
                         </span>
                       </div>
 
@@ -1610,8 +1801,8 @@ export const PyQuestEp02: React.FC = () => {
                   }}
                 >
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                      <span style={{ fontSize: 36 }}>⚡</span>
+                    <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                      <IconBolt size={34} color="#2563EB" />
                       <div>
                         <div style={{ fontFamily: FONT_SANS, fontSize: 32, fontWeight: 900, color: "#1E3A8A" }}>
                           El Misterio del Episodio 3
@@ -1655,7 +1846,7 @@ export const PyQuestEp02: React.FC = () => {
                       gap: 12,
                     }}
                   >
-                    <span style={{ fontSize: 28, color: "#10B981" }}>✓</span>
+                    <IconCheck size={26} color="#10B981" />
                     <div>
                       <div style={{ fontFamily: FONT_MONO, fontSize: 20, color: "#10B981", fontWeight: 800 }}>
                         EPISODIO 1 & 2
@@ -1677,7 +1868,7 @@ export const PyQuestEp02: React.FC = () => {
                       gap: 12,
                     }}
                   >
-                    <span style={{ fontSize: 28 }}>⚔️</span>
+                    <IconSwords size={26} color="#3B82F6" />
                     <div>
                       <div style={{ fontFamily: FONT_MONO, fontSize: 20, color: "#3B82F6", fontWeight: 800 }}>
                         EPISODIO 3 (MAÑANA)
@@ -1731,7 +1922,7 @@ export const PyQuestEp02: React.FC = () => {
                         transform: `scale(${1 + Math.sin(frame / 12) * 0.03})`,
                       }}
                     >
-                      <span>💬</span>
+                      <IconComment size={24} color="#1D4ED8" />
                       <span>Comentar</span>
                     </div>
 
@@ -1751,7 +1942,7 @@ export const PyQuestEp02: React.FC = () => {
                         transform: `scale(${1 + Math.cos(frame / 12) * 0.03})`,
                       }}
                     >
-                      <span>➕</span>
+                      <IconPlus size={24} color="#FFFFFF" />
                       <span>Seguir</span>
                     </div>
                   </div>

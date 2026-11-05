@@ -32,6 +32,20 @@ import {
 } from "remotion";
 import { FONT_MONO, FONT_SANS, PYQUEST_THEME } from "../../theme";
 import { PyQuestSfx } from "../../sfx";
+import {
+  IconBackpack,
+  IconBolt,
+  IconBookmark,
+  IconCrash,
+  IconLoop,
+  IconMap,
+  IconPlus,
+  IconShield,
+  IconSparkles,
+  IconSwords,
+  IconWarning,
+} from "../../components/PyQuestIcons";
+import { TypewriterText } from "../../components/TypewriterText";
 
 // =====================================================================
 // COMPONENTE 1: ATMÓSFERA Y FONDO REACTIVO DINÁMICO (2.5D)
@@ -776,7 +790,7 @@ export const PyQuestEp01: React.FC = () => {
                       paddingBottom: 8,
                     }}
                   >
-                    <span>⚠️</span>
+                    <IconWarning size={28} color="#DC2626" />
                     <span>COMPILATION ERROR: javac App.java</span>
                   </div>
 
@@ -858,11 +872,10 @@ export const PyQuestEp01: React.FC = () => {
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
-                          fontSize: 30,
                           flexShrink: 0,
                         }}
                       >
-                        💥
+                        <IconCrash size={32} color="#DC2626" />
                       </div>
 
                       <div
@@ -902,9 +915,14 @@ export const PyQuestEp01: React.FC = () => {
                         fontSize: 24,
                         fontWeight: 700,
                         color: "#475569",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 10,
                       }}
                     >
-                      💡 El abandono ocurre por la <span style={{ color: "#EF4444" }}>fricción de sintaxis</span>, no por tu capacidad de pensar.
+                      <IconSparkles size={24} color="#D97706" />
+                      <span>El abandono ocurre por la <span style={{ color: "#EF4444" }}>fricción de sintaxis</span>, no por tu capacidad de pensar.</span>
                     </div>
                   </div>
                 </>
@@ -1324,8 +1342,19 @@ export const PyQuestEp01: React.FC = () => {
                         marginBottom: 10,
                       }}
                     >
-                      <span style={{ fontFamily: FONT_SANS, fontSize: 26, fontWeight: 800, color: "#1E1B4B" }}>
-                        ⚡ Enfoque en Lógica del Juego
+                      <span
+                        style={{
+                          fontFamily: FONT_SANS,
+                          fontSize: 26,
+                          fontWeight: 800,
+                          color: "#1E1B4B",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: 8,
+                        }}
+                      >
+                        <IconBolt size={24} color="#4F46E5" />
+                        <span>Enfoque en Lógica del Juego</span>
                       </span>
                       <span
                         style={{
@@ -1480,7 +1509,7 @@ export const PyQuestEp01: React.FC = () => {
 
             return (
               <>
-                {/* 1. TARJETA DE CÓDIGO (pyquest.py): Arriba */}
+                {/* 1. TARJETA DE CÓDIGO (pyquest.py): Arriba CON ESCRITURA EN VIVO */}
                 <div
                   style={{
                     position: "absolute",
@@ -1524,7 +1553,7 @@ export const PyQuestEp01: React.FC = () => {
                     </div>
 
                     <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                      <span style={{ fontSize: 28 }}>⚔️</span>
+                      <IconSwords size={28} color="#60A5FA" />
                       <span
                         style={{
                           fontFamily: FONT_MONO,
@@ -1568,12 +1597,22 @@ export const PyQuestEp01: React.FC = () => {
                         borderRadius: 8,
                       }}
                     >
-                      <div>
-                        <span style={{ color: "#60A5FA", fontWeight: 800 }}>if </span>
-                        <span style={{ color: "#F8FAFC" }}>vida &lt;= </span>
-                        <span style={{ color: "#10B981", fontWeight: 700 }}>0</span>
-                        <span style={{ color: "#94A3B8" }}>:</span>
-                      </div>
+                      {frame < 1430 ? (
+                        <TypewriterText
+                          text="if vida <= 0:"
+                          frame={frame}
+                          startFrame={1390}
+                          durationFrames={30}
+                          cursorColor="#60A5FA"
+                        />
+                      ) : (
+                        <div>
+                          <span style={{ color: "#60A5FA", fontWeight: 800 }}>if </span>
+                          <span style={{ color: "#F8FAFC" }}>vida &lt;= </span>
+                          <span style={{ color: "#10B981", fontWeight: 700 }}>0</span>
+                          <span style={{ color: "#94A3B8" }}>:</span>
+                        </div>
+                      )}
 
                       {frame >= 1760 && (
                         <span
@@ -1586,9 +1625,19 @@ export const PyQuestEp01: React.FC = () => {
                             background: isDead ? "#EF4444" : "#8B5CF6",
                             color: "#FFFFFF",
                             boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: 6,
                           }}
                         >
-                          {isDead ? "0 <= 0 ➔ True ⚡" : `${currentHp} <= 0 ➔ False`}
+                          {isDead ? (
+                            <>
+                              <span>0 &lt;= 0 ➔ True</span>
+                              <IconBolt size={20} color="#FFFFFF" />
+                            </>
+                          ) : (
+                            <span>{`${currentHp} <= 0 ➔ False`}</span>
+                          )}
                         </span>
                       )}
                     </div>
@@ -1603,10 +1652,22 @@ export const PyQuestEp01: React.FC = () => {
                         borderRadius: 8,
                       }}
                     >
-                      <span style={{ color: isDead ? "#EF4444" : "#34D399", fontWeight: 800 }}>
-                        fin_del_juego
-                      </span>
-                      <span style={{ color: "#94A3B8" }}>()</span>
+                      {frame < 1475 ? (
+                        <TypewriterText
+                          text="fin_del_juego()"
+                          frame={frame}
+                          startFrame={1430}
+                          durationFrames={30}
+                          cursorColor="#34D399"
+                        />
+                      ) : (
+                        <>
+                          <span style={{ color: isDead ? "#EF4444" : "#34D399", fontWeight: 800 }}>
+                            fin_del_juego
+                          </span>
+                          <span style={{ color: "#94A3B8" }}>()</span>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -1798,12 +1859,23 @@ export const PyQuestEp01: React.FC = () => {
                           color: isDead ? "#EF4444" : "#64748B",
                         }}
                       >
-                        <span>
-                          {isDead
-                            ? "💀 ¡Aria ha sido derrotada!"
-                            : isHit1
-                            ? "⚠️ ¡Aria recibió daño!"
-                            : "🛡️ En combate contra enemigo"}
+                        <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                          {isDead ? (
+                            <>
+                              <IconCrash size={24} color="#EF4444" />
+                              <span>¡Aria ha sido derrotada!</span>
+                            </>
+                          ) : isHit1 ? (
+                            <>
+                              <IconWarning size={24} color="#F59E0B" />
+                              <span>¡Aria recibió daño!</span>
+                            </>
+                          ) : (
+                            <>
+                              <IconShield size={24} color="#3B82F6" />
+                              <span>En combate contra enemigo</span>
+                            </>
+                          )}
                         </span>
                         <span style={{ fontFamily: FONT_MONO, fontSize: 26, fontWeight: 700 }}>
                           DEF: 8 · ATK: 12
@@ -1827,9 +1899,13 @@ export const PyQuestEp01: React.FC = () => {
                         borderRadius: 14,
                         boxShadow: "0 10px 25px rgba(239, 68, 68, 0.4)",
                         transform: `translateY(${Math.sin((frame - 1750) / 4) * 6}px) rotate(4deg)`,
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 8,
                       }}
                     >
-                      💥 -45 HP
+                      <IconCrash size={22} color="#FFFFFF" />
+                      <span>-45 HP</span>
                     </div>
                   )}
 
@@ -1849,9 +1925,13 @@ export const PyQuestEp01: React.FC = () => {
                         borderRadius: 16,
                         boxShadow: "0 12px 30px rgba(239, 68, 68, 0.5)",
                         transform: `scale(${1 + Math.sin(frame / 6) * 0.05}) rotate(-3deg)`,
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 8,
                       }}
                     >
-                      ☠️ ¡CRÍTICO: -55 HP!
+                      <IconCrash size={24} color="#FFFFFF" />
+                      <span>¡CRÍTICO: -55 HP!</span>
                     </div>
                   )}
                 </div>
@@ -1935,11 +2015,24 @@ export const PyQuestEp01: React.FC = () => {
                           color: "#475569",
                         }}
                       >
-                        {frame < 1750
-                          ? "⚔️ Preparando emboscada contra Aria..."
-                          : frame < 1980
-                          ? "💥 ¡Ataque exitoso! Daño: 45 infligido"
-                          : "⚡ ¡Impacto crítico final desatado!"}
+                        <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                          {frame < 1750 ? (
+                            <>
+                              <IconSwords size={22} color="#15803D" />
+                              <span>Preparando emboscada contra Aria...</span>
+                            </>
+                          ) : frame < 1980 ? (
+                            <>
+                              <IconCrash size={22} color="#DC2626" />
+                              <span>¡Ataque exitoso! Daño: 45 infligido</span>
+                            </>
+                          ) : (
+                            <>
+                              <IconBolt size={22} color="#EF4444" />
+                              <span>¡Impacto crítico final desatado!</span>
+                            </>
+                          )}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -1986,9 +2079,9 @@ export const PyQuestEp01: React.FC = () => {
                             gap: 16,
                           }}
                         >
-                          <span>⚡</span>
+                          <IconBolt size={42} color="#EF4444" />
                           <span>GAME OVER</span>
-                          <span>⚡</span>
+                          <IconBolt size={42} color="#EF4444" />
                         </div>
 
                         <div
@@ -2163,11 +2256,10 @@ export const PyQuestEp01: React.FC = () => {
                     <div
                       style={{
                         transform: `rotate(${frame * 4}deg)`,
-                        fontSize: 26,
                         display: "inline-block",
                       }}
                     >
-                      ⚙️
+                      <IconLoop size={24} color="#F59E0B" />
                     </div>
                     <span style={{ fontFamily: FONT_MONO, fontSize: 24, color: "#F59E0B", fontWeight: 700 }}>
                       Scripts en Segundo Plano
@@ -2397,9 +2489,13 @@ export const PyQuestEp01: React.FC = () => {
                       color: "#3B82F6",
                       letterSpacing: "0.08em",
                       textTransform: "uppercase",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 10,
                     }}
                   >
-                    🗺️ PyQuest · Hoja de Ruta Oficial
+                    <IconMap size={26} color="#3B82F6" />
+                    <span>PyQuest · Hoja de Ruta Oficial</span>
                   </span>
                 </div>
 
@@ -2448,7 +2544,14 @@ export const PyQuestEp01: React.FC = () => {
                             boxShadow: isLvl2Unlocked ? "0 4px 15px rgba(245, 158, 11, 0.4)" : "none",
                           }}
                         >
-                          {isLvl2Unlocked ? "★ ¡LVL. 2 DESBLOQUEADO! ★" : "LVL. 1"}
+                          {isLvl2Unlocked ? (
+                            <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                              <IconSparkles size={20} color="#FFFFFF" />
+                              <span>¡LVL. 2 DESBLOQUEADO!</span>
+                            </span>
+                          ) : (
+                            "LVL. 1"
+                          )}
                         </span>
                       </div>
 
@@ -2569,7 +2672,7 @@ export const PyQuestEp01: React.FC = () => {
                     >
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
                         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-                          <span style={{ fontSize: 36 }}>⚡</span>
+                          <IconBolt size={36} color="#2563EB" />
                           <div>
                             <div style={{ fontFamily: FONT_SANS, fontSize: 34, fontWeight: 900, color: "#1E3A8A" }}>
                               Episodio 2: Variables y Tipos
@@ -2607,19 +2710,55 @@ export const PyQuestEp01: React.FC = () => {
                         }}
                       >
                         <div>
-                          <span style={{ color: "#F8FAFC" }}>vida = </span>
-                          <span style={{ color: "#10B981", fontWeight: 700 }}>100</span>
-                          <span style={{ color: "#94A3B8", marginLeft: 16 }}># Entero (int)</span>
+                          {frame < 3800 ? (
+                            <TypewriterText
+                              text="vida = 100"
+                              frame={frame}
+                              startFrame={3770}
+                              durationFrames={25}
+                              cursorColor="#10B981"
+                            />
+                          ) : (
+                            <>
+                              <span style={{ color: "#F8FAFC" }}>vida = </span>
+                              <span style={{ color: "#10B981", fontWeight: 700 }}>100</span>
+                              <span style={{ color: "#94A3B8", marginLeft: 16 }}># Entero (int)</span>
+                            </>
+                          )}
                         </div>
                         <div>
-                          <span style={{ color: "#F8FAFC" }}>heroe = </span>
-                          <span style={{ color: "#F59E0B" }}>"Aria"</span>
-                          <span style={{ color: "#94A3B8", marginLeft: 16 }}># Texto (str)</span>
+                          {frame < 3830 ? (
+                            <TypewriterText
+                              text='heroe = "Aria"'
+                              frame={frame}
+                              startFrame={3800}
+                              durationFrames={25}
+                              cursorColor="#F59E0B"
+                            />
+                          ) : (
+                            <>
+                              <span style={{ color: "#F8FAFC" }}>heroe = </span>
+                              <span style={{ color: "#F59E0B" }}>"Aria"</span>
+                              <span style={{ color: "#94A3B8", marginLeft: 16 }}># Texto (str)</span>
+                            </>
+                          )}
                         </div>
                         <div>
-                          <span style={{ color: "#F8FAFC" }}>vivo = </span>
-                          <span style={{ color: "#A78BFA", fontWeight: 700 }}>True</span>
-                          <span style={{ color: "#94A3B8", marginLeft: 16 }}># Booleano (bool)</span>
+                          {frame < 3860 ? (
+                            <TypewriterText
+                              text="vivo = True"
+                              frame={frame}
+                              startFrame={3830}
+                              durationFrames={25}
+                              cursorColor="#A78BFA"
+                            />
+                          ) : (
+                            <>
+                              <span style={{ color: "#F8FAFC" }}>vivo = </span>
+                              <span style={{ color: "#A78BFA", fontWeight: 700 }}>True</span>
+                              <span style={{ color: "#94A3B8", marginLeft: 16 }}># Booleano (bool)</span>
+                            </>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -2635,10 +2774,10 @@ export const PyQuestEp01: React.FC = () => {
                   }}
                 >
                   {[
-                    { ep: "EPISODIO 3", title: "Operadores & Combate", icon: "⚔️", color: "#3B82F6" },
-                    { ep: "EPISODIO 4", title: "Listas & Inventario", icon: "🎒", color: "#10B981" },
-                    { ep: "EPISODIO 5", title: "Bucles & Oleadas", icon: "🔄", color: "#F59E0B" },
-                    { ep: "EPISODIO 6", title: "Funciones & Poderes", icon: "✨", color: "#8B5CF6" },
+                    { ep: "EPISODIO 3", title: "Operadores & Combate", icon: <IconSwords size={28} color="#3B82F6" />, color: "#3B82F6" },
+                    { ep: "EPISODIO 4", title: "Listas & Inventario", icon: <IconBackpack size={28} color="#10B981" />, color: "#10B981" },
+                    { ep: "EPISODIO 5", title: "Bucles & Oleadas", icon: <IconLoop size={28} color="#F59E0B" />, color: "#F59E0B" },
+                    { ep: "EPISODIO 6", title: "Funciones & Poderes", icon: <IconSparkles size={28} color="#8B5CF6" />, color: "#8B5CF6" },
                   ].map((item, idx) => (
                     <div
                       key={idx}
@@ -2653,7 +2792,7 @@ export const PyQuestEp01: React.FC = () => {
                         gap: 12,
                       }}
                     >
-                      <span style={{ fontSize: 32 }}>{item.icon}</span>
+                      {item.icon}
                       <div>
                         <div style={{ fontFamily: FONT_MONO, fontSize: 22, color: item.color, fontWeight: 800 }}>
                           {item.ep}
@@ -2711,7 +2850,7 @@ export const PyQuestEp01: React.FC = () => {
                         transform: `scale(${1 + Math.sin(frame / 12) * 0.03})`,
                       }}
                     >
-                      <span>🔖</span>
+                      <IconBookmark size={24} color="#1D4ED8" />
                       <span>Guardar</span>
                     </div>
 
@@ -2731,7 +2870,7 @@ export const PyQuestEp01: React.FC = () => {
                         transform: `scale(${1 + Math.cos(frame / 12) * 0.03})`,
                       }}
                     >
-                      <span>➕</span>
+                      <IconPlus size={24} color="#FFFFFF" />
                       <span>Seguir</span>
                     </div>
                   </div>
