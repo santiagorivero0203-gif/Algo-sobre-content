@@ -8,6 +8,7 @@ import { stackSecretoData } from "./data/stackSecreto";
 import { tokensProData } from "./data/tokensPro";
 import { mafeTeoriaDisenoData } from "./data/mafeTeoriaDiseno";
 import { PyQuestEp01 } from "./pyquest/episodes/ep01/Ep01";
+import { PyQuestEp02 } from "./pyquest/episodes/ep02/Ep02";
 import { ReelPropsSchema, type ReelProps } from "./lib/schema";
 import { buildTimeline, totalDuration } from "./lib/timeline";
 
@@ -115,6 +116,15 @@ export const RemotionRoot = () => {
         id="PyQuestEp01Reel"
         component={PyQuestEp01}
         durationInFrames={4320}
+        fps={60}
+        width={1080}
+        height={1920}
+      />
+      {/* Episodio 2: Variables y Tipos de Datos: El ADN de tu Héroe (75s @ 60 FPS = 4500 frames) */}
+      <Composition
+        id="PyQuestEp02Reel"
+        component={PyQuestEp02}
+        durationInFrames={4500}
         fps={60}
         width={1080}
         height={1920}

@@ -124,6 +124,109 @@ En este primer episodio de PyQuest (nuestra serie donde construimos el motor ló
         ]
     },
     // =====================================================================
+    // REEL DESTACADO: PYQUEST EP. 2 · VARIABLES Y TIPOS DE DATOS: EL ADN DE TU HÉROE (75s @ 60 FPS)
+    // =====================================================================
+    {
+        id: 'reel_pyquest_ep02',
+        accountId: 'santidev',
+        slug: 'pyquest_ep02_variables_y_tipos',
+        theme: 'stack1',
+        title: 'PyQuest Ep. 2: Variables y Tipos de Datos',
+        subtitle: 'El ADN de tu héroe y por qué las comillas congelan tu juego',
+        duration_ms: 75000,
+        duration: 75.0,
+        fps: 60,
+        kicker: 'PYQUEST · EPISODIO 2',
+        brandIcon: 'fa-cube',
+        accentColor: '#38BDF8',
+        secondaryColor: '#8B5CF6',
+        videoUrl: 'videos/pyquest_ep02_variables_y_tipos.mp4',
+        post: {
+            hook: 'El error que comete el 90% de los novatos al programar su primer juego 👇',
+            caption: `Poner números entre comillas es el error #1 que congela los juegos de quienes están aprendiendo a programar.
+
+En este Episodio 2 de PyQuest le damos vida a las estadísticas de Aria y exploramos:
+
+1️⃣ Anatomía de la RAM: Una variable no es texto mágico, es una cajita etiquetada en la memoria física de tu PC.
+2️⃣ Los 4 Tipos Primitivos: str (texto), int (enteros), float (decimales) y bool (interruptores lógicos True/False).
+3️⃣ Resolución del bug: Cómo restarle daño real a la vida de Aria cuando el Goblin de la mazmorra ataca.
+4️⃣ El misterio del Episodio 3: ¿Qué pasa si el goblin nos pega con 100 de daño y la vida queda en -20? (Condicionales).
+
+💾 Guarda este video para tu ruta de aprendizaje en Python.
+👉 Sígueme para el Episodio 3: Condicionales y Lógica de Combate.`,
+            hashtags: ['#python', '#programacion', '#pyquest', '#variables', '#aprenderaprogramar', '#desarrollodesoftware', '#gamedev'],
+            bestTime: '18:00 - 21:00',
+            sound: 'Tech Cyber Ambient'
+        },
+        beats: [
+            {
+                id: 1,
+                name: 'El Error Crítico',
+                start_ms: 0,
+                end_ms: 8000,
+                type: 'hero',
+                badge: 'ERROR COMÚN',
+                title: 'Comillas que *rompen tu juego*',
+                sub: 'vida = "100" vs vida = 100. La diferencia entre texto y números.',
+                kicker: 'EPISODIO 2 · PYQUEST',
+                vo: 'El noventa por ciento comete este error: poner números entre comillas.'
+            },
+            {
+                id: 2,
+                name: 'Anatomía de la RAM',
+                start_ms: 8000,
+                end_ms: 24000,
+                type: 'points',
+                badge: 'MEMORIA FÍSICA',
+                title: 'Cajas etiquetadas *en la RAM*',
+                sub: 'El signo igual guarda el dato en una dirección física del computador.',
+                points: [
+                    { num: '01', title: 'Identificador', desc: 'La etiqueta que usas para llamar al dato (ej: nombre).' },
+                    { num: '02', title: 'Operador Asignar', desc: 'El signo = no es igualdad matemática, es almacenamiento.' }
+                ],
+                vo: 'Una variable es una caja etiquetada en la memoria física de tu computador.'
+            },
+            {
+                id: 3,
+                name: 'Los 4 Tipos Primitivos',
+                start_ms: 24000,
+                end_ms: 46000,
+                type: 'code',
+                badge: 'TIPOS DE DATOS',
+                title: 'El ADN *de Aria*',
+                sub: 'String, Integer, Float y Boolean controlan el estado del personaje.',
+                vo: 'Cuatro tipos de datos controlan a tu personaje: texto, enteros, decimales y booleanos.'
+            },
+            {
+                id: 4,
+                name: 'Combate y Resolución',
+                start_ms: 46000,
+                end_ms: 62000,
+                type: 'compare',
+                badge: 'ATAQUE EN VIVO',
+                title: 'Matemáticas *que funcionan*',
+                sub: 'vida = 100 - 20 = 80 HP. Barra de salud reactiva en tiempo real.',
+                vo: 'Con números reales, las operaciones funcionan y Aria absorbe el impacto.'
+            },
+            {
+                id: 5,
+                name: 'Cliffhanger y CTA',
+                start_ms: 62000,
+                end_ms: 75000,
+                type: 'cta',
+                badge: 'PRÓXIMO CAPÍTULO',
+                title: '¿Vida negativa? *Episodio 3*',
+                sub: 'Aprenderemos condicionales para evitar que la vida baje de cero.',
+                ctaData: {
+                    keyword: 'PYQUEST',
+                    line: 'Comenta PYQUEST para el código fuente y sígueme para el Episodio 3.',
+                    handle: '@santi.dev'
+                },
+                vo: 'Comenta PYQUEST para el código y sígueme para el episodio tres.'
+            }
+        ]
+    },
+    // =====================================================================
     // REEL 1: SANTI.DEV · PARTE 1: STACK SECRETO (JUEGOS Y WEBS SIN PROGRAMAR)
     // =====================================================================
     {

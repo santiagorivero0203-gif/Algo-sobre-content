@@ -34,81 +34,106 @@ import { FONT_MONO, FONT_SANS, PYQUEST_THEME } from "../../theme";
 import { PyQuestSfx } from "../../sfx";
 
 // =====================================================================
-// COMPONENTE 1: ATMÓSFERA Y FONDO REACTIVO (2.5D)
+// COMPONENTE 1: ATMÓSFERA Y FONDO REACTIVO DINÁMICO (2.5D)
 // =====================================================================
 const AtmosphereBackground: React.FC<{ frame: number }> = ({ frame }) => {
-  // Interpolación de color ambiental según las fases dramáticas del guion
-  const bgColor = interpolateColors(
+  // 1. Color de base dominante: Transiciones marcadas, visibles y ricas por escena
+  const bgBase = interpolateColors(
     frame,
     [0, 210, 240, 540, 600, 1380, 1440, 1750, 1800, 1980, 2040, 2520, 2600, 3480, 3600, 4320],
     [
-      "#F3F4F8", // f0 - f210: Gris perla profundo (Gancho)
-      "#F3F4F8",
-      "#FFF1F2", // f240 - f540: Carmesí pálido (Error en Java)
-      "#FFF1F2",
-      "#ECFDF5", // f600 - f1380: Verde menta/esmeralda (Alivio en Python)
-      "#ECFDF5",
-      "#EEF2FF", // f1440 - f1750: Azul eléctrico (Lógica RPG viva)
-      "#EEF2FF",
-      "#FFFBEB", // f1800 - f1980: Ámbar de alerta (Daño intermedio)
-      "#FFFBEB",
-      "#FEF2F2", // f2040 - f2520: Rojo crítico (Game Over / HP a cero)
-      "#FEF2F2",
-      "#F5F3FF", // f2600 - f3480: Lavanda/Violeta suave (Industria)
-      "#F5F3FF",
-      "#FAFAF9", // f3600 - f4320: Blanco cálido luminoso (Roadmap & Cierre)
-      "#FFFFFF",
+      "#CBD5E1", // f0 - f210: Slate técnico visible (Gancho inicial)
+      "#CBD5E1",
+      "#FECDD3", // f240 - f540: Rose / Alerta carmesí intensa (Error en Java)
+      "#FECDD3",
+      "#A7F3D0", // f600 - f1380: Esmeralda / Menta fresca vibrante (Alivio en Python)
+      "#A7F3D0",
+      "#BFDBFE", // f1440 - f1750: Azul mazmorra RPG enérgico (Lógica viva)
+      "#BFDBFE",
+      "#FED7AA", // f1800 - f1980: Ámbar impacto (Daño de Goblin)
+      "#FED7AA",
+      "#FCA5A5", // f2040 - f2520: Rojo crítico palpitante (Game Over)
+      "#FCA5A5",
+      "#DDD6FE", // f2600 - f3480: Lavanda / Violeta industrial dinámico
+      "#DDD6FE",
+      "#FEF3C7", // f3600 - f4320: Dorado / Ámbar de celebración (Roadmap y Aria Nivel 2)
+      "#E0F2FE",
     ]
   );
 
-  // Orbe 1: Dinámico primario
+  // 2. Color secundario de profundidad para gradiente reactivo
+  const bgSecond = interpolateColors(
+    frame,
+    [0, 230, 600, 1440, 1800, 2040, 2600, 3600],
+    [
+      "#94A3B8", // Slate profundo
+      "#FDA4AF", // Carmesí profundo
+      "#6EE7B7", // Esmeralda saturado
+      "#93C5FD", // Zafiro brillante
+      "#FDBA74", // Naranja advertencia
+      "#F87171", // Rojo sangre
+      "#C4B5FD", // Púrpura eléctrico
+      "#FDE68A", // Amarillo brillante
+    ]
+  );
+
+  // Orbe 1: Dinámico primario de alta visibilidad
   const orb1Color = interpolateColors(
     frame,
     [0, 230, 600, 1440, 1800, 2040, 2600, 3600],
     [
-      "rgba(99, 102, 241, 0.18)", // Índigo
-      "rgba(239, 68, 68, 0.35)",  // Rojo error
-      "rgba(16, 185, 129, 0.30)", // Verde éxito
-      "rgba(59, 130, 246, 0.28)", // Azul RPG
-      "rgba(245, 158, 11, 0.30)", // Ámbar impacto
-      "rgba(239, 68, 68, 0.40)",  // Rojo crítico Game Over
-      "rgba(139, 92, 246, 0.26)", // Violeta industria
-      "rgba(59, 130, 246, 0.22)", // Azul progreso
+      "rgba(79, 70, 229, 0.45)",  // Índigo visible
+      "rgba(220, 38, 38, 0.65)",  // Rojo error intenso
+      "rgba(5, 150, 105, 0.55)",  // Verde esmeralda rico
+      "rgba(37, 99, 235, 0.55)",  // Azul RPG potente
+      "rgba(217, 119, 6, 0.60)",  // Ámbar impacto fuego
+      "rgba(220, 38, 38, 0.70)",  // Rojo crítico Game Over
+      "rgba(124, 58, 237, 0.55)", // Violeta industria
+      "rgba(37, 99, 235, 0.50)",  // Azul progreso
     ]
   );
 
-  // Orbe 2: Dinámico secundario
+  // Orbe 2: Dinámico secundario de soporte
   const orb2Color = interpolateColors(
     frame,
     [0, 230, 600, 1440, 2040, 2600, 3600],
     [
-      "rgba(59, 130, 246, 0.16)",
-      "rgba(244, 63, 94, 0.28)",
-      "rgba(52, 211, 153, 0.24)",
-      "rgba(99, 102, 241, 0.22)",
-      "rgba(239, 68, 68, 0.32)",
-      "rgba(236, 72, 153, 0.20)",
-      "rgba(16, 185, 129, 0.20)",
+      "rgba(37, 99, 235, 0.40)",
+      "rgba(225, 29, 72, 0.60)",
+      "rgba(16, 185, 129, 0.50)",
+      "rgba(79, 70, 229, 0.50)",
+      "rgba(220, 38, 38, 0.65)",
+      "rgba(219, 39, 119, 0.45)",
+      "rgba(5, 150, 105, 0.45)",
     ]
   );
 
-  // Movimiento senoidal continuo de los orbes
-  const orb1X = Math.sin(frame / 32) * 110;
-  const orb1Y = Math.cos(frame / 40) * 90;
-  const orb2X = Math.cos(frame / 28) * -120;
-  const orb2Y = Math.sin(frame / 36) * 100;
+  // Movimiento senoidal continuo y respiración de los orbes
+  const orb1X = Math.sin(frame / 32) * 140;
+  const orb1Y = Math.cos(frame / 40) * 120;
+  const orb2X = Math.cos(frame / 28) * -150;
+  const orb2Y = Math.sin(frame / 36) * 130;
+
+  // Centro de luz dinámico que se mueve en el lienzo
+  const lightCenterX = 50 + Math.sin(frame / 45) * 20;
+  const lightCenterY = 40 + Math.cos(frame / 38) * 18;
 
   return (
-    <AbsoluteFill style={{ background: bgColor, overflow: "hidden" }}>
+    <AbsoluteFill
+      style={{
+        background: `radial-gradient(circle at ${lightCenterX}% ${lightCenterY}%, ${bgBase} 0%, ${bgSecond} 100%)`,
+        overflow: "hidden",
+      }}
+    >
       {/* Textura de puntos con paralaje continuo en diagonal */}
       <div
         style={{
           position: "absolute",
           inset: 0,
-          backgroundImage: "radial-gradient(#0f172a 1.5px, transparent 1.5px)",
+          backgroundImage: "radial-gradient(#0f172a 2px, transparent 2px)",
           backgroundSize: "38px 38px",
-          backgroundPosition: `${-frame * 0.6}px ${-frame * 0.4}px`,
-          opacity: 0.06,
+          backgroundPosition: `${-frame * 0.7}px ${-frame * 0.5}px`,
+          opacity: 0.10,
           pointerEvents: "none",
         }}
       />
@@ -119,13 +144,13 @@ const AtmosphereBackground: React.FC<{ frame: number }> = ({ frame }) => {
           position: "absolute",
           top: -150 + orb1Y,
           left: 100 + orb1X,
-          width: 850,
-          height: 850,
+          width: 950,
+          height: 950,
           borderRadius: "50%",
           background: orb1Color,
-          filter: "blur(130px)",
+          filter: "blur(110px)",
           pointerEvents: "none",
-          transform: `scale(${1 + Math.sin(frame / 45) * 0.08})`,
+          transform: `scale(${1 + Math.sin(frame / 45) * 0.12})`,
         }}
       />
 
@@ -135,13 +160,13 @@ const AtmosphereBackground: React.FC<{ frame: number }> = ({ frame }) => {
           position: "absolute",
           bottom: -180 + orb2Y,
           right: 50 + orb2X,
-          width: 800,
-          height: 800,
+          width: 900,
+          height: 900,
           borderRadius: "50%",
           background: orb2Color,
-          filter: "blur(140px)",
+          filter: "blur(120px)",
           pointerEvents: "none",
-          transform: `scale(${1 + Math.cos(frame / 38) * 0.07})`,
+          transform: `scale(${1 + Math.cos(frame / 38) * 0.10})`,
         }}
       />
 
@@ -614,14 +639,14 @@ export const PyQuestEp01: React.FC = () => {
                     <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                       <Img
                         src={staticFile("assets/logos/java.svg")}
-                        style={{ width: 22, height: 22 }}
+                        style={{ width: 28, height: 28 }}
                       />
                       <span
                         style={{
                           fontFamily: FONT_MONO,
-                          fontSize: 20,
+                          fontSize: 26,
                           fontWeight: 700,
-                          color: "rgba(255, 255, 255, 0.8)",
+                          color: "rgba(255, 255, 255, 0.9)",
                         }}
                       >
                         App.java
@@ -634,7 +659,7 @@ export const PyQuestEp01: React.FC = () => {
                   <div
                     style={{
                       fontFamily: FONT_MONO,
-                      fontSize: 28,
+                      fontSize: 32,
                       lineHeight: 1.6,
                       color: "#F8FAFC",
                     }}
@@ -743,8 +768,8 @@ export const PyQuestEp01: React.FC = () => {
                       alignItems: "center",
                       gap: 12,
                       fontFamily: FONT_MONO,
-                      fontSize: 22,
-                      fontWeight: 700,
+                      fontSize: 28,
+                      fontWeight: 800,
                       color: "#DC2626",
                       marginBottom: 12,
                       borderBottom: "1px solid rgba(239, 68, 68, 0.2)",
@@ -758,7 +783,7 @@ export const PyQuestEp01: React.FC = () => {
                   <div
                     style={{
                       fontFamily: FONT_MONO,
-                      fontSize: 26,
+                      fontSize: 30,
                       color: "#991B1B",
                       lineHeight: 1.5,
                     }}
@@ -770,7 +795,7 @@ export const PyQuestEp01: React.FC = () => {
                     <div style={{ color: "#EF4444", fontWeight: 900 }}>
                       {"                                   ^"}
                     </div>
-                    <div style={{ fontSize: 20, color: "#DC2626", marginTop: 4 }}>
+                    <div style={{ fontSize: 26, color: "#DC2626", marginTop: 6, fontWeight: 700 }}>
                       1 error · Build failed
                     </div>
                   </div>
@@ -949,12 +974,14 @@ export const PyQuestEp01: React.FC = () => {
                   para que entrenes tu{" "}
                   <span
                     style={{
-                      color: "#10B981",
-                      background: "rgba(16, 185, 129, 0.12)",
-                      padding: "2px 14px",
-                      borderRadius: 12,
+                      color: "#064E3B",
+                      background: "#FFFFFF",
+                      boxShadow: "0 4px 15px rgba(6, 78, 59, 0.15)",
+                      padding: "4px 16px",
+                      borderRadius: 14,
                       display: "inline-block",
                       transform: `rotate(${Math.sin(frame / 20) * 1.5}deg)`,
+                      fontWeight: 900,
                     }}
                   >
                     lógica real
@@ -1035,12 +1062,12 @@ export const PyQuestEp01: React.FC = () => {
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                     <Img
                       src={staticFile("assets/logos/python.svg")}
-                      style={{ width: 24, height: 24 }}
+                      style={{ width: 28, height: 28 }}
                     />
                     <span
                       style={{
                         fontFamily: FONT_MONO,
-                        fontSize: 22,
+                        fontSize: 28,
                         fontWeight: 700,
                         color: "#34D399",
                       }}
@@ -1160,7 +1187,8 @@ export const PyQuestEp01: React.FC = () => {
                         alignItems: "center",
                         gap: 12,
                         fontFamily: FONT_MONO,
-                        fontSize: 22,
+                        fontSize: 28,
+                        fontWeight: 800,
                         color: "#065F46",
                         marginBottom: 10,
                         borderBottom: "1px solid rgba(16, 185, 129, 0.2)",
@@ -1174,8 +1202,8 @@ export const PyQuestEp01: React.FC = () => {
                     <div
                       style={{
                         fontFamily: FONT_MONO,
-                        fontSize: 32,
-                        fontWeight: 800,
+                        fontSize: 36,
+                        fontWeight: 900,
                         color: "#047857",
                         display: "flex",
                         alignItems: "center",
@@ -1192,20 +1220,20 @@ export const PyQuestEp01: React.FC = () => {
           )}
 
           {/* COMPARATIVA DE CARGA COGNITIVA Y BENEFICIO EN ESPACIO COMPLETO */}
-          {frame >= 960 && (
+          {frame >= 860 && (
             (() => {
               const enterMeters = spring({
-                frame: frame - 960,
+                frame: frame - 860,
                 fps,
                 config: { damping: 14, stiffness: 110 },
               });
 
-              const syntaxNoiseP = interpolate(frame, [980, 1080], [95, 10], {
+              const syntaxNoiseP = interpolate(frame, [880, 980], [95, 10], {
                 extrapolateLeft: "clamp",
                 extrapolateRight: "clamp",
               });
 
-              const logicFocusP = interpolate(frame, [1020, 1120], [15, 100], {
+              const logicFocusP = interpolate(frame, [910, 1010], [15, 100], {
                 extrapolateLeft: "clamp",
                 extrapolateRight: "clamp",
               });
@@ -1359,8 +1387,9 @@ export const PyQuestEp01: React.FC = () => {
                       <div
                         style={{
                           fontFamily: FONT_MONO,
-                          fontSize: 20,
+                          fontSize: 26,
                           color: "#94A3B8",
+                          fontWeight: 600,
                         }}
                       >
                         Construyes funciones reales desde el primer minuto
@@ -1376,10 +1405,10 @@ export const PyQuestEp01: React.FC = () => {
                         textAlign: "center",
                       }}
                     >
-                      <div style={{ fontFamily: FONT_MONO, fontSize: 16, color: "#10B981", fontWeight: 700 }}>
+                      <div style={{ fontFamily: FONT_MONO, fontSize: 24, color: "#10B981", fontWeight: 800 }}>
                         RESULTADO
                       </div>
-                      <div style={{ fontFamily: FONT_SANS, fontSize: 26, color: "#34D399", fontWeight: 900 }}>
+                      <div style={{ fontFamily: FONT_SANS, fontSize: 30, color: "#34D399", fontWeight: 900 }}>
                         10x Más Retención
                       </div>
                     </div>
@@ -1495,11 +1524,11 @@ export const PyQuestEp01: React.FC = () => {
                     </div>
 
                     <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                      <span style={{ fontSize: 20 }}>⚔️</span>
+                      <span style={{ fontSize: 28 }}>⚔️</span>
                       <span
                         style={{
                           fontFamily: FONT_MONO,
-                          fontSize: 22,
+                          fontSize: 28,
                           fontWeight: 700,
                           color: "#60A5FA",
                         }}
@@ -1514,7 +1543,7 @@ export const PyQuestEp01: React.FC = () => {
                   <div
                     style={{
                       fontFamily: FONT_MONO,
-                      fontSize: 32,
+                      fontSize: 34,
                       lineHeight: 1.6,
                       color: "#F8FAFC",
                     }}
@@ -1535,7 +1564,7 @@ export const PyQuestEp01: React.FC = () => {
                           : isHit1
                           ? "5px solid #F59E0B"
                           : "5px solid transparent",
-                        padding: "4px 14px",
+                        padding: "6px 16px",
                         borderRadius: 8,
                       }}
                     >
@@ -1550,9 +1579,9 @@ export const PyQuestEp01: React.FC = () => {
                         <span
                           style={{
                             fontFamily: FONT_MONO,
-                            fontSize: 20,
+                            fontSize: 26,
                             fontWeight: 800,
-                            padding: "4px 12px",
+                            padding: "6px 16px",
                             borderRadius: 999,
                             background: isDead ? "#EF4444" : "#8B5CF6",
                             color: "#FFFFFF",
@@ -1570,7 +1599,7 @@ export const PyQuestEp01: React.FC = () => {
                         marginTop: 4,
                         background: isDead ? "rgba(239, 68, 68, 0.3)" : "transparent",
                         borderLeft: isDead ? "5px solid #EF4444" : "5px solid transparent",
-                        padding: "4px 14px 4px 48px",
+                        padding: "6px 16px 6px 48px",
                         borderRadius: 8,
                       }}
                     >
@@ -1605,18 +1634,18 @@ export const PyQuestEp01: React.FC = () => {
                         key={i}
                         style={{
                           flex: 1,
-                          background: "rgba(255, 255, 255, 0.94)",
+                          background: "rgba(255, 255, 255, 0.96)",
                           border: `2px solid ${item.color}`,
                           borderRadius: 16,
-                          padding: "10px 14px",
+                          padding: "14px 16px",
                           textAlign: "center",
                           boxShadow: "0 10px 25px rgba(0,0,0,0.08)",
                         }}
                       >
-                        <div style={{ fontFamily: FONT_MONO, fontSize: 17, color: item.color, fontWeight: 700 }}>
+                        <div style={{ fontFamily: FONT_MONO, fontSize: 26, color: item.color, fontWeight: 800 }}>
                           {item.word}
                         </div>
-                        <div style={{ fontFamily: FONT_SANS, fontSize: 19, color: "#1E293B", fontWeight: 800, marginTop: 4 }}>
+                        <div style={{ fontFamily: FONT_SANS, fontSize: 26, color: "#1E293B", fontWeight: 800, marginTop: 4 }}>
                           {item.trans}
                         </div>
                       </div>
@@ -1713,11 +1742,11 @@ export const PyQuestEp01: React.FC = () => {
                           <span
                             style={{
                               fontFamily: FONT_MONO,
-                              fontSize: 18,
+                              fontSize: 26,
                               fontWeight: 800,
                               color: "#3B82F6",
                               background: "#EFF6FF",
-                              padding: "4px 12px",
+                              padding: "4px 14px",
                               borderRadius: 8,
                             }}
                           >
@@ -1728,7 +1757,7 @@ export const PyQuestEp01: React.FC = () => {
                         <span
                           style={{
                             fontFamily: FONT_MONO,
-                            fontSize: 30,
+                            fontSize: 32,
                             fontWeight: 900,
                             color: hpBarColor,
                           }}
@@ -1740,7 +1769,7 @@ export const PyQuestEp01: React.FC = () => {
                       <div
                         style={{
                           width: "100%",
-                          height: 18,
+                          height: 20,
                           borderRadius: 999,
                           background: "#E2E8F0",
                           overflow: "hidden",
@@ -1763,9 +1792,9 @@ export const PyQuestEp01: React.FC = () => {
                           justifyContent: "space-between",
                           alignItems: "center",
                           marginTop: 8,
-                          fontSize: 19,
+                          fontSize: 26,
                           fontFamily: FONT_SANS,
-                          fontWeight: 700,
+                          fontWeight: 800,
                           color: isDead ? "#EF4444" : "#64748B",
                         }}
                       >
@@ -1776,7 +1805,7 @@ export const PyQuestEp01: React.FC = () => {
                             ? "⚠️ ¡Aria recibió daño!"
                             : "🛡️ En combate contra enemigo"}
                         </span>
-                        <span style={{ fontFamily: FONT_MONO, fontSize: 17 }}>
+                        <span style={{ fontFamily: FONT_MONO, fontSize: 26, fontWeight: 700 }}>
                           DEF: 8 · ATK: 12
                         </span>
                       </div>
@@ -1874,11 +1903,11 @@ export const PyQuestEp01: React.FC = () => {
                           <span
                             style={{
                               fontFamily: FONT_MONO,
-                              fontSize: 16,
+                              fontSize: 26,
                               fontWeight: 800,
                               color: "#15803D",
                               background: "#DCFCE7",
-                              padding: "4px 10px",
+                              padding: "4px 12px",
                               borderRadius: 8,
                             }}
                           >
@@ -1889,8 +1918,8 @@ export const PyQuestEp01: React.FC = () => {
                         <span
                           style={{
                             fontFamily: FONT_MONO,
-                            fontSize: 24,
-                            fontWeight: 800,
+                            fontSize: 28,
+                            fontWeight: 900,
                             color: "#DC2626",
                           }}
                         >
@@ -1901,7 +1930,7 @@ export const PyQuestEp01: React.FC = () => {
                       <div
                         style={{
                           fontFamily: FONT_SANS,
-                          fontSize: 20,
+                          fontSize: 26,
                           fontWeight: 700,
                           color: "#475569",
                         }}
@@ -2058,7 +2087,7 @@ export const PyQuestEp01: React.FC = () => {
                         }}
                       />
                     ))}
-                    <span style={{ fontFamily: FONT_MONO, fontSize: 18, color: "#8B5CF6", marginLeft: 8 }}>
+                    <span style={{ fontFamily: FONT_MONO, fontSize: 24, color: "#8B5CF6", marginLeft: 8, fontWeight: 700 }}>
                       Redes Neuronales Activas
                     </span>
                   </div>
@@ -2086,7 +2115,7 @@ export const PyQuestEp01: React.FC = () => {
                         }}
                       />
                     ))}
-                    <span style={{ fontFamily: FONT_MONO, fontSize: 18, color: "#3B82F6", marginLeft: 8 }}>
+                    <span style={{ fontFamily: FONT_MONO, fontSize: 24, color: "#3B82F6", marginLeft: 8, fontWeight: 700 }}>
                       Millones de Peticiones/seg
                     </span>
                   </div>
@@ -2114,7 +2143,7 @@ export const PyQuestEp01: React.FC = () => {
                         }}
                       />
                     ))}
-                    <span style={{ fontFamily: FONT_MONO, fontSize: 18, color: "#10B981", marginLeft: 8 }}>
+                    <span style={{ fontFamily: FONT_MONO, fontSize: 24, color: "#10B981", marginLeft: 8, fontWeight: 700 }}>
                       Modelado Predictivo
                     </span>
                   </div>
@@ -2134,13 +2163,13 @@ export const PyQuestEp01: React.FC = () => {
                     <div
                       style={{
                         transform: `rotate(${frame * 4}deg)`,
-                        fontSize: 22,
+                        fontSize: 26,
                         display: "inline-block",
                       }}
                     >
                       ⚙️
                     </div>
-                    <span style={{ fontFamily: FONT_MONO, fontSize: 18, color: "#F59E0B" }}>
+                    <span style={{ fontFamily: FONT_MONO, fontSize: 24, color: "#F59E0B", fontWeight: 700 }}>
                       Scripts en Segundo Plano
                     </span>
                   </div>
@@ -2246,9 +2275,9 @@ export const PyQuestEp01: React.FC = () => {
                             <div
                               style={{
                                 fontFamily: FONT_MONO,
-                                fontSize: 20,
+                                fontSize: 26,
                                 color: "#64748B",
-                                fontWeight: 600,
+                                fontWeight: 700,
                               }}
                             >
                               {card.subtitle}
@@ -2259,11 +2288,11 @@ export const PyQuestEp01: React.FC = () => {
                         <div
                           style={{
                             fontFamily: FONT_MONO,
-                            fontSize: 18,
+                            fontSize: 24,
                             fontWeight: 800,
                             color: card.color,
                             background: `${card.color}18`,
-                            padding: "6px 14px",
+                            padding: "6px 16px",
                             borderRadius: 999,
                           }}
                         >
@@ -2363,7 +2392,7 @@ export const PyQuestEp01: React.FC = () => {
                   <span
                     style={{
                       fontFamily: FONT_MONO,
-                      fontSize: 20,
+                      fontSize: 26,
                       fontWeight: 800,
                       color: "#3B82F6",
                       letterSpacing: "0.08em",
@@ -2399,7 +2428,7 @@ export const PyQuestEp01: React.FC = () => {
                         }}
                       >
                         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                          <span style={{ fontFamily: FONT_SANS, fontSize: 32, fontWeight: 900, color: "#0F172A" }}>
+                          <span style={{ fontFamily: FONT_SANS, fontSize: 34, fontWeight: 900, color: "#0F172A" }}>
                             Aria · PyQuest
                           </span>
                         </div>
@@ -2407,11 +2436,11 @@ export const PyQuestEp01: React.FC = () => {
                         <span
                           style={{
                             fontFamily: FONT_MONO,
-                            fontSize: 20,
+                            fontSize: 24,
                             fontWeight: 900,
                             color: isLvl2Unlocked ? "#FFFFFF" : "#3B82F6",
                             background: isLvl2Unlocked ? "#F59E0B" : "#EFF6FF",
-                            padding: "6px 14px",
+                            padding: "8px 16px",
                             borderRadius: 12,
                             transform: isLvl2Unlocked
                               ? `scale(${1 + Math.sin(frame / 6) * 0.05})`
@@ -2426,7 +2455,7 @@ export const PyQuestEp01: React.FC = () => {
                       <div
                         style={{
                           width: "100%",
-                          height: 16,
+                          height: 18,
                           borderRadius: 999,
                           background: "#E2E8F0",
                           overflow: "hidden",
@@ -2448,7 +2477,7 @@ export const PyQuestEp01: React.FC = () => {
                           justifyContent: "space-between",
                           marginTop: 8,
                           fontFamily: FONT_MONO,
-                          fontSize: 18,
+                          fontSize: 22,
                           color: "#64748B",
                           fontWeight: 700,
                         }}
@@ -2483,7 +2512,7 @@ export const PyQuestEp01: React.FC = () => {
                       }}
                     >
                       <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <svg width="44" height="44" viewBox="0 0 40 40" fill="none">
                           <rect width="40" height="40" rx="12" fill="#ECFDF5" />
                           <path
                             d="M 11 20 L 17 26 L 29 13"
@@ -2497,10 +2526,10 @@ export const PyQuestEp01: React.FC = () => {
                         </svg>
 
                         <div>
-                          <div style={{ fontFamily: FONT_SANS, fontSize: 28, fontWeight: 800, color: "#0F172A" }}>
+                          <div style={{ fontFamily: FONT_SANS, fontSize: 32, fontWeight: 800, color: "#0F172A" }}>
                             Episodio 1: ¿Por qué Python?
                           </div>
-                          <div style={{ fontFamily: FONT_MONO, fontSize: 18, color: "#10B981", fontWeight: 700 }}>
+                          <div style={{ fontFamily: FONT_MONO, fontSize: 24, color: "#10B981", fontWeight: 700 }}>
                             Fundamentos y lógica de condicionales
                           </div>
                         </div>
@@ -2509,11 +2538,11 @@ export const PyQuestEp01: React.FC = () => {
                       <span
                         style={{
                           fontFamily: FONT_MONO,
-                          fontSize: 20,
+                          fontSize: 24,
                           fontWeight: 800,
                           color: "#10B981",
                           background: "#ECFDF5",
-                          padding: "8px 18px",
+                          padding: "8px 20px",
                           borderRadius: 999,
                         }}
                       >
@@ -2540,12 +2569,12 @@ export const PyQuestEp01: React.FC = () => {
                     >
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
                         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-                          <span style={{ fontSize: 32 }}>⚡</span>
+                          <span style={{ fontSize: 36 }}>⚡</span>
                           <div>
-                            <div style={{ fontFamily: FONT_SANS, fontSize: 30, fontWeight: 900, color: "#1E3A8A" }}>
+                            <div style={{ fontFamily: FONT_SANS, fontSize: 34, fontWeight: 900, color: "#1E3A8A" }}>
                               Episodio 2: Variables y Tipos
                             </div>
-                            <div style={{ fontFamily: FONT_MONO, fontSize: 18, color: "#2563EB", fontWeight: 700 }}>
+                            <div style={{ fontFamily: FONT_MONO, fontSize: 24, color: "#2563EB", fontWeight: 700 }}>
                               Le damos vida a las estadísticas de Aria
                             </div>
                           </div>
@@ -2554,11 +2583,11 @@ export const PyQuestEp01: React.FC = () => {
                         <span
                           style={{
                             fontFamily: FONT_MONO,
-                            fontSize: 20,
+                            fontSize: 24,
                             fontWeight: 900,
                             color: "#FFFFFF",
                             background: "#2563EB",
-                            padding: "8px 20px",
+                            padding: "8px 22px",
                             borderRadius: 999,
                             boxShadow: "0 4px 14px rgba(37, 99, 235, 0.4)",
                           }}
@@ -2571,26 +2600,26 @@ export const PyQuestEp01: React.FC = () => {
                         style={{
                           background: "#181C28",
                           borderRadius: 14,
-                          padding: "16px 20px",
+                          padding: "18px 22px",
                           fontFamily: FONT_MONO,
-                          fontSize: 22,
+                          fontSize: 26,
                           lineHeight: 1.5,
                         }}
                       >
                         <div>
                           <span style={{ color: "#F8FAFC" }}>vida = </span>
                           <span style={{ color: "#10B981", fontWeight: 700 }}>100</span>
-                          <span style={{ color: "#64748B", marginLeft: 16 }}># Entero (int)</span>
+                          <span style={{ color: "#94A3B8", marginLeft: 16 }}># Entero (int)</span>
                         </div>
                         <div>
                           <span style={{ color: "#F8FAFC" }}>heroe = </span>
                           <span style={{ color: "#F59E0B" }}>"Aria"</span>
-                          <span style={{ color: "#64748B", marginLeft: 16 }}># Texto (str)</span>
+                          <span style={{ color: "#94A3B8", marginLeft: 16 }}># Texto (str)</span>
                         </div>
                         <div>
                           <span style={{ color: "#F8FAFC" }}>vivo = </span>
-                          <span style={{ color: "#8B5CF6", fontWeight: 700 }}>True</span>
-                          <span style={{ color: "#64748B", marginLeft: 16 }}># Booleano (bool)</span>
+                          <span style={{ color: "#A78BFA", fontWeight: 700 }}>True</span>
+                          <span style={{ color: "#94A3B8", marginLeft: 16 }}># Booleano (bool)</span>
                         </div>
                       </div>
                     </div>
@@ -2624,12 +2653,12 @@ export const PyQuestEp01: React.FC = () => {
                         gap: 12,
                       }}
                     >
-                      <span style={{ fontSize: 26 }}>{item.icon}</span>
+                      <span style={{ fontSize: 32 }}>{item.icon}</span>
                       <div>
-                        <div style={{ fontFamily: FONT_MONO, fontSize: 15, color: item.color, fontWeight: 800 }}>
+                        <div style={{ fontFamily: FONT_MONO, fontSize: 22, color: item.color, fontWeight: 800 }}>
                           {item.ep}
                         </div>
-                        <div style={{ fontFamily: FONT_SANS, fontSize: 18, fontWeight: 800, color: "#1E293B" }}>
+                        <div style={{ fontFamily: FONT_SANS, fontSize: 26, fontWeight: 800, color: "#1E293B" }}>
                           {item.title}
                         </div>
                       </div>
@@ -2651,7 +2680,7 @@ export const PyQuestEp01: React.FC = () => {
                   <div
                     style={{
                       fontFamily: FONT_SANS,
-                      fontSize: 30,
+                      fontSize: 34,
                       fontWeight: 900,
                       color: "#0F172A",
                       lineHeight: 1.3,
@@ -2673,7 +2702,7 @@ export const PyQuestEp01: React.FC = () => {
                         borderRadius: 14,
                         padding: "14px 30px",
                         fontFamily: FONT_SANS,
-                        fontSize: 22,
+                        fontSize: 26,
                         fontWeight: 800,
                         color: "#1D4ED8",
                         display: "flex",
@@ -2692,7 +2721,7 @@ export const PyQuestEp01: React.FC = () => {
                         borderRadius: 14,
                         padding: "14px 36px",
                         fontFamily: FONT_SANS,
-                        fontSize: 22,
+                        fontSize: 26,
                         fontWeight: 800,
                         color: "#FFFFFF",
                         display: "flex",
@@ -2713,9 +2742,9 @@ export const PyQuestEp01: React.FC = () => {
                   <span
                     style={{
                       fontFamily: FONT_MONO,
-                      fontSize: 18,
+                      fontSize: 22,
                       fontWeight: 700,
-                      color: "#94A3B8",
+                      color: "#64748B",
                     }}
                   >
                     @santi.dev · PyQuest RPG Engine · Serie Educativa
