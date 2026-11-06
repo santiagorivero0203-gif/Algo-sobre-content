@@ -10,6 +10,7 @@ import { mafeTeoriaDisenoData } from "./data/mafeTeoriaDiseno";
 import { PyQuestEp01 } from "./pyquest/episodes/ep01/Ep01";
 import { PyQuestEp02 } from "./pyquest/episodes/ep02/Ep02";
 import { PyQuestEp03 } from "./pyquest/episodes/ep03/Ep03";
+import { PyQuestEp04 } from "./pyquest/episodes/ep04/Ep04";
 import { ReelPropsSchema, type ReelProps } from "./lib/schema";
 import { buildTimeline, totalDuration } from "./lib/timeline";
 
@@ -134,6 +135,15 @@ export const RemotionRoot = () => {
       <Composition
         id="PyQuestEp03Reel"
         component={PyQuestEp03}
+        durationInFrames={4440}
+        fps={60}
+        width={1080}
+        height={1920}
+      />
+      {/* Episodio 4: Listas y Diccionarios: El Inventario del Héroe (74s @ 60 FPS = 4440 frames) */}
+      <Composition
+        id="PyQuestEp04Reel"
+        component={PyQuestEp04}
         durationInFrames={4440}
         fps={60}
         width={1080}

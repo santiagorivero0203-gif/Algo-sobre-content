@@ -2106,7 +2106,8 @@ export const PyQuestEp01: React.FC = () => {
       )}
 
       {/* ================================================================ */}
-      {/* ESCENA 4: CASCADA 2.5D DE LA INDUSTRIA (f2520 - f3480 / 0:42 - 0:58) */}
+      {/* ESCENA 4: CONSTELACIÓN RADIAL DE LA INDUSTRIA (f2510 - f3500 / 0:42 - 0:58) */}
+      {/* Salida desde Logo Central de Python hacia las 4 esquinas con Zoom In/Out */}
       {/* ================================================================ */}
       {frame >= 2510 && frame < 3500 && (
         <AbsoluteFill
@@ -2128,17 +2129,18 @@ export const PyQuestEp01: React.FC = () => {
               <div
                 style={{
                   position: "absolute",
-                  top: 170,
+                  top: 140,
                   left: PYQUEST_THEME.safe.side,
                   width: 920,
                   opacity: enterTitle,
                   transform: `translateY(${(1 - enterTitle) * 30}px)`,
+                  zIndex: 40,
                 }}
               >
                 <div
                   style={{
                     fontFamily: FONT_SANS,
-                    fontSize: 50,
+                    fontSize: 48,
                     fontWeight: 900,
                     color: "#0F172A",
                     letterSpacing: "-0.03em",
@@ -2153,195 +2155,347 @@ export const PyQuestEp01: React.FC = () => {
             );
           })()}
 
-          {/* ESCALERA DE 4 TARJETAS CON FOCO Y LOGOS OFICIALES */}
+          {/* MOTOR DE CONSTELACIÓN RADIAL Y ZOOM IN / OUT POR PROGRAMA */}
           {(() => {
-            const cards = [
+            const centerX = 540;
+            const centerY = 900;
+
+            // Entrada general de la constelación (disparo de líneas y logo)
+            const enterConstellation = spring({
+              frame: frame - 2520,
+              fps,
+              config: { damping: 15, stiffness: 100 },
+            });
+
+            // Definición de las 4 esquinas/programas principales
+            const programs = [
               {
                 id: "ai",
-                title: "Inteligencia Artificial",
+                name: "Inteligencia Artificial",
                 subtitle: "PyTorch · OpenAI · DeepSeek",
+                desc: "El 92% de la investigación en IA y modelos generativos se entrena en Python.",
                 logos: ["assets/logos/pytorch.svg", "assets/logos/openai.svg"],
                 color: "#8B5CF6",
-                startFrame: 2530,
-                baseY: 340,
-                baseX: -15,
-                microAnim: () => (
-                  <div style={{ display: "flex", gap: 8, alignItems: "center", marginTop: 10 }}>
-                    {[0, 1, 2, 3].map((node) => (
-                      <div
-                        key={node}
-                        style={{
-                          width: 14,
-                          height: 14,
-                          borderRadius: "50%",
-                          background: "#8B5CF6",
-                          transform: `scale(${1 + Math.sin(frame / 6 + node) * 0.3})`,
-                          boxShadow: "0 0 10px #8B5CF6",
-                        }}
-                      />
-                    ))}
-                    <span style={{ fontFamily: FONT_MONO, fontSize: 24, color: "#8B5CF6", marginLeft: 8, fontWeight: 700 }}>
-                      Redes Neuronales Activas
-                    </span>
-                  </div>
-                ),
+                accentLight: "#EDE9FE",
+                // Posición idle en esquina (Noroeste)
+                idleX: 80,
+                idleY: 340,
+                idleW: 430,
+                idleH: 240,
+                // Ventana de Zoom In individual
+                windowStart: 2560,
+                windowPeak: 2600,
+                windowExit: 2710,
+                windowEnd: 2740,
+                metricLabel: "PyTorch & Transformers",
+                metricValue: "Redes Neuronales Activas",
+                iconKind: "ai",
               },
               {
                 id: "backend",
-                title: "Servidores Backend",
+                name: "Servidores Backend",
                 subtitle: "Instagram · Spotify · FastAPI",
+                desc: "Mueve el backend de Instagram con más de 2 mil millones de usuarios diarios.",
                 logos: ["assets/logos/spotify.svg", "assets/logos/instagram.svg"],
                 color: "#3B82F6",
-                startFrame: 2560,
-                baseY: 630,
-                baseX: 20,
-                microAnim: () => (
-                  <div style={{ display: "flex", gap: 6, alignItems: "center", marginTop: 10 }}>
-                    {[0, 1, 2, 3, 4].map((bar) => (
-                      <div
-                        key={bar}
-                        style={{
-                          width: 8,
-                          height: 18 + Math.sin(frame / 5 + bar) * 10,
-                          borderRadius: 4,
-                          background: "#3B82F6",
-                        }}
-                      />
-                    ))}
-                    <span style={{ fontFamily: FONT_MONO, fontSize: 24, color: "#3B82F6", marginLeft: 8, fontWeight: 700 }}>
-                      Millones de Peticiones/seg
-                    </span>
-                  </div>
-                ),
+                accentLight: "#DBEAFE",
+                // Posición idle en esquina (Noreste)
+                idleX: 570,
+                idleY: 340,
+                idleW: 430,
+                idleH: 240,
+                // Ventana de Zoom In individual
+                windowStart: 2740,
+                windowPeak: 2780,
+                windowExit: 2890,
+                windowEnd: 2920,
+                metricLabel: "FastAPI & Microservicios",
+                metricValue: "+2M Peticiones / Seg",
+                iconKind: "backend",
               },
               {
                 id: "data",
-                title: "Ciencia de Datos",
-                subtitle: "Pandas · Big Data · Analytics",
+                name: "Ciencia de Datos",
+                subtitle: "Pandas · Big Data · NumPy",
+                desc: "Análisis financiero, modelado predictivo y visualización masiva en un solo script.",
                 logos: ["assets/logos/pandas.svg", "assets/logos/python.svg"],
                 color: "#10B981",
-                startFrame: 2590,
-                baseY: 920,
-                baseX: -10,
-                microAnim: () => (
-                  <div style={{ display: "flex", gap: 6, alignItems: "flex-end", marginTop: 10, height: 26 }}>
-                    {[0.4, 0.7, 0.3, 0.9, 0.6].map((h, idx) => (
-                      <div
-                        key={idx}
-                        style={{
-                          width: 12,
-                          height: 26 * h * (1 + Math.sin(frame / 8 + idx) * 0.2),
-                          borderRadius: 3,
-                          background: "#10B981",
-                        }}
-                      />
-                    ))}
-                    <span style={{ fontFamily: FONT_MONO, fontSize: 24, color: "#10B981", marginLeft: 8, fontWeight: 700 }}>
-                      Modelado Predictivo
-                    </span>
-                  </div>
-                ),
+                accentLight: "#D1FAE5",
+                // Posición idle en esquina (Suroeste)
+                idleX: 80,
+                idleY: 1180,
+                idleW: 430,
+                idleH: 240,
+                // Ventana de Zoom In individual
+                windowStart: 2920,
+                windowPeak: 2960,
+                windowExit: 3070,
+                windowEnd: 3100,
+                metricLabel: "Pandas & DataFrames",
+                metricValue: "Modelado Predictivo Real",
+                iconKind: "data",
               },
               {
                 id: "automation",
-                title: "Automatización & Bots",
-                subtitle: "Web Scraping · Bots · Scripts",
+                name: "Automatización & Bots",
+                subtitle: "Web Scraping · Scripts · Bots",
+                desc: "Desde controlar robots y telescopios de la NASA hasta automatizar tareas aburridas.",
                 logos: ["assets/logos/fastapi.svg", "assets/logos/python.svg"],
                 color: "#F59E0B",
-                startFrame: 2620,
-                baseY: 1210,
-                baseX: 25,
-                microAnim: () => (
-                  <div style={{ display: "flex", gap: 8, alignItems: "center", marginTop: 10 }}>
-                    <div
-                      style={{
-                        transform: `rotate(${frame * 4}deg)`,
-                        display: "inline-block",
-                      }}
-                    >
-                      <IconLoop size={24} color="#F59E0B" />
-                    </div>
-                    <span style={{ fontFamily: FONT_MONO, fontSize: 24, color: "#F59E0B", fontWeight: 700 }}>
-                      Scripts en Segundo Plano
-                    </span>
-                  </div>
-                ),
+                accentLight: "#FEF3C7",
+                // Posición idle en esquina (Sureste)
+                idleX: 570,
+                idleY: 1180,
+                idleW: 430,
+                idleH: 240,
+                // Ventana de Zoom In individual
+                windowStart: 3100,
+                windowPeak: 3140,
+                windowExit: 3250,
+                windowEnd: 3280,
+                metricLabel: "Scripts Asíncronos",
+                metricValue: "Cero Tareas Manuales",
+                iconKind: "automation",
               },
             ];
 
             const isGrandFinale = frame >= 3280;
 
+            // Determinar si hay un programa en foco de Zoom In actualmente
+            const activeHero = programs.find(
+              (p) => frame >= p.windowStart && frame < p.windowEnd
+            );
+
+            // Escala y atenuación del logo central durante los Zoom In
+            const centerLogoScale = isGrandFinale
+              ? 1.1 + Math.sin(frame / 12) * 0.05
+              : activeHero
+              ? 0.72
+              : 1.0 + Math.sin(frame / 16) * 0.04;
+
+            const centerLogoOpacity = isGrandFinale ? 1.0 : activeHero ? 0.45 : 1.0;
+
             return (
               <>
-                {cards.map((card, i) => {
-                  const enter = spring({
-                    frame: frame - card.startFrame,
-                    fps,
-                    config: { damping: 13, stiffness: 120 },
-                  });
+                {/* 1. LÍNEAS VECTORIALES DE FIBRA ÓPTICA DESDE EL CENTRO HACIA LAS ESQUINAS */}
+                <svg
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    width: 1080,
+                    height: 1920,
+                    pointerEvents: "none",
+                    zIndex: 10,
+                  }}
+                >
+                  <defs>
+                    <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
+                      <stop offset="0%" stopColor="#38BDF8" stopOpacity="0.4" />
+                      <stop offset="100%" stopColor="#38BDF8" stopOpacity="0" />
+                    </radialGradient>
+                  </defs>
 
-                  if (frame < card.startFrame - 10) return null;
+                  {/* Halo de energía alrededor del núcleo */}
+                  <circle
+                    cx={centerX}
+                    cy={centerY}
+                    r={180 * enterConstellation}
+                    fill="url(#centerGlow)"
+                  />
 
-                  const heroWindows: Record<string, [number, number]> = {
-                    ai: [2530, 2710],
-                    backend: [2710, 2890],
-                    data: [2890, 3070],
-                    automation: [3070, 3280],
-                  };
+                  {/* Rayos hacia cada esquina */}
+                  {programs.map((p) => {
+                    const targetX = p.idleX + p.idleW / 2;
+                    const targetY = p.idleY + p.idleH / 2;
 
-                  const [wStart, wEnd] = heroWindows[card.id] || [0, 0];
-                  const isCurrentHero = isGrandFinale || (frame >= wStart && frame < wEnd);
+                    const isThisActive = activeHero?.id === p.id || isGrandFinale;
+                    const strokeWidth = isThisActive ? 4.5 : 2;
+                    const strokeColor = isThisActive ? p.color : "rgba(148, 163, 184, 0.45)";
+                    const strokeDash = isThisActive ? "10 6" : "6 6";
 
-                  const cardScale = isCurrentHero ? 1.05 : 0.94;
-                  const cardOpacity = isCurrentHero ? 1.0 : 0.65;
-                  const cardRotateZ = isCurrentHero ? 0 : i % 2 === 0 ? -1.8 : 1.8;
+                    const currentX = centerX + (targetX - centerX) * enterConstellation;
+                    const currentY = centerY + (targetY - centerY) * enterConstellation;
+
+                    return (
+                      <g key={p.id}>
+                        <line
+                          x1={centerX}
+                          y1={centerY}
+                          x2={currentX}
+                          y2={currentY}
+                          stroke={strokeColor}
+                          strokeWidth={strokeWidth}
+                          strokeDasharray={strokeDash}
+                          strokeDashoffset={-frame * 3}
+                        />
+                        {/* Partícula de energía viajera */}
+                        {enterConstellation > 0.8 && (
+                          <circle
+                            cx={centerX + (targetX - centerX) * (((frame * 2.5 + (p.id.length * 30)) % 100) / 100)}
+                            cy={centerY + (targetY - centerY) * (((frame * 2.5 + (p.id.length * 30)) % 100) / 100)}
+                            r={isThisActive ? 6 : 4}
+                            fill={isThisActive ? p.color : "#38BDF8"}
+                          />
+                        )}
+                      </g>
+                    );
+                  })}
+                </svg>
+
+                {/* 2. NÚCLEO CENTRAL CON EL LOGO OFICIAL DE PYTHON */}
+                <div
+                  style={{
+                    position: "absolute",
+                    top: centerY - 100,
+                    left: centerX - 100,
+                    width: 200,
+                    height: 200,
+                    borderRadius: "50%",
+                    background: "linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(241, 245, 249, 0.9) 100%)",
+                    border: "3px solid #38BDF8",
+                    boxShadow: isGrandFinale
+                      ? "0 0 70px rgba(56, 189, 248, 0.6), 0 0 120px rgba(245, 158, 11, 0.4)"
+                      : "0 20px 50px rgba(15, 23, 42, 0.15), 0 0 40px rgba(56, 189, 248, 0.35)",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    zIndex: 20,
+                    transform: `scale(${enterConstellation * centerLogoScale})`,
+                    opacity: enterConstellation * centerLogoOpacity,
+                  }}
+                >
+                  <Img
+                    src={staticFile("assets/logos/python.svg")}
+                    style={{
+                      width: 90,
+                      height: 90,
+                      filter: "drop-shadow(0 8px 16px rgba(15, 23, 42, 0.18))",
+                    }}
+                  />
+                  <span
+                    style={{
+                      fontFamily: FONT_MONO,
+                      fontSize: 16,
+                      fontWeight: 900,
+                      color: "#0284C7",
+                      marginTop: 4,
+                      letterSpacing: "0.1em",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    Python Core
+                  </span>
+                </div>
+
+                {/* 3. LAS 4 TARJETAS CON ZOOM IN Y ZOOM OUT */}
+                {programs.map((prog) => {
+                  const hasEntered = frame >= prog.windowStart - 30;
+                  if (!hasEntered && enterConstellation < 0.1) return null;
+
+                  // Cálculo de Zoom In y Zoom Out
+                  let zoomProgress = 0;
+                  if (!isGrandFinale) {
+                    if (frame >= prog.windowStart && frame < prog.windowPeak) {
+                      // Fase de Zoom In
+                      zoomProgress = spring({
+                        frame: frame - prog.windowStart,
+                        fps,
+                        config: { damping: 14, stiffness: 120 },
+                      });
+                    } else if (frame >= prog.windowPeak && frame < prog.windowExit) {
+                      // Fase de mantenimiento en primer plano
+                      zoomProgress = 1;
+                    } else if (frame >= prog.windowExit && frame < prog.windowEnd) {
+                      // Fase de Zoom Out
+                      const exitSpring = spring({
+                        frame: frame - prog.windowExit,
+                        fps,
+                        config: { damping: 14, stiffness: 120 },
+                      });
+                      zoomProgress = 1 - exitSpring;
+                    }
+                  }
+
+                  const isFocused = zoomProgress > 0.05;
+                  const isOtherFocused = activeHero && activeHero.id !== prog.id;
+
+                  // Posición interpolada entre la esquina (idle) y el centro héroe (Zoom In)
+                  const heroX = PYQUEST_THEME.safe.side; // 80px (ancho completo de 920px)
+                  const heroY = 620; // En el tercio medio central
+                  const heroW = 920;
+                  const heroH = 430;
+
+                  const curX = prog.idleX + (heroX - prog.idleX) * zoomProgress;
+                  const curY = prog.idleY + (heroY - prog.idleY) * zoomProgress;
+                  const curW = prog.idleW + (heroW - prog.idleW) * zoomProgress;
+                  const curH = prog.idleH + (heroH - prog.idleH) * zoomProgress;
+
+                  const cardScale = isFocused
+                    ? 1 + zoomProgress * 0.04
+                    : isGrandFinale
+                    ? 1.02
+                    : isOtherFocused
+                    ? 0.88
+                    : 1.0;
+
+                  const cardOpacity = isFocused
+                    ? 1.0
+                    : isGrandFinale
+                    ? 1.0
+                    : isOtherFocused
+                    ? 0.35
+                    : 0.95;
+
+                  const zIndex = isFocused ? 35 : isGrandFinale ? 25 : 15;
 
                   return (
                     <div
-                      key={card.id}
+                      key={prog.id}
                       style={{
                         position: "absolute",
-                        top: card.baseY + perpetualFloatY * 0.5,
-                        left: PYQUEST_THEME.safe.side + card.baseX,
-                        width: 900,
+                        top: curY + (isFocused ? 0 : perpetualFloatY * 0.3),
+                        left: curX,
+                        width: curW,
+                        height: curH,
                         background: "#FFFFFF",
-                        borderRadius: 22,
-                        padding: "26px 32px",
+                        borderRadius: isFocused ? 26 : 20,
+                        padding: isFocused ? "32px 36px" : "22px 24px",
                         boxSizing: "border-box",
-                        boxShadow: isCurrentHero
-                          ? `0 25px 55px -10px ${card.color}40, 0 10px 20px rgba(0,0,0,0.06)`
-                          : "0 10px 25px rgba(0,0,0,0.04)",
-                        border: `2px solid ${
-                          isCurrentHero ? card.color : "rgba(0,0,0,0.06)"
-                        }`,
-                        borderLeft: `8px solid ${card.color}`,
+                        border: `2.5px solid ${isFocused ? prog.color : "rgba(15, 23, 42, 0.08)"}`,
+                        borderLeft: `${isFocused ? 12 : 8}px solid ${prog.color}`,
+                        boxShadow: isFocused
+                          ? `0 35px 80px -15px ${prog.color}55, 0 15px 30px rgba(0,0,0,0.08)`
+                          : `0 12px 30px rgba(0,0,0,0.05)`,
                         transformOrigin: "center center",
-                        transform: `rotateX(4deg) rotateZ(${cardRotateZ}deg) scale(${
-                          (0.85 + enter * 0.15) * cardScale
-                        })`,
-                        opacity: enter * cardOpacity,
-                        zIndex: isCurrentHero ? 25 : 15,
+                        transform: `scale(${cardScale})`,
+                        opacity: cardOpacity * enterConstellation,
+                        zIndex,
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "space-between",
+                        overflow: "hidden",
                       }}
                     >
-                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-                          {/* Badges de logos oficiales */}
-                          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                            {card.logos.map((logoPath, lIdx) => (
+                      {/* Cabecera con Logos Oficiales */}
+                      <div>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                            {prog.logos.map((logoPath, lIdx) => (
                               <div
                                 key={lIdx}
                                 style={{
-                                  width: 48,
-                                  height: 48,
+                                  width: isFocused ? 54 : 44,
+                                  height: isFocused ? 54 : 44,
                                   borderRadius: 14,
                                   background: "#F8FAFC",
                                   border: "1px solid rgba(15, 23, 42, 0.08)",
                                   display: "flex",
                                   alignItems: "center",
                                   justifyContent: "center",
-                                  padding: 7,
+                                  padding: 8,
                                   boxSizing: "border-box",
-                                  boxShadow: "0 4px 10px rgba(0,0,0,0.04)",
+                                  boxShadow: "0 4px 12px rgba(0,0,0,0.04)",
                                 }}
                               >
                                 <Img
@@ -2350,54 +2504,169 @@ export const PyQuestEp01: React.FC = () => {
                                 />
                               </div>
                             ))}
+
+                            <div>
+                              <div
+                                style={{
+                                  fontFamily: FONT_SANS,
+                                  fontSize: isFocused ? 36 : 26,
+                                  fontWeight: 900,
+                                  color: "#0F172A",
+                                  letterSpacing: "-0.02em",
+                                  lineHeight: 1.15,
+                                }}
+                              >
+                                {prog.name}
+                              </div>
+                              <div
+                                style={{
+                                  fontFamily: FONT_MONO,
+                                  fontSize: isFocused ? 24 : 18,
+                                  color: prog.color,
+                                  fontWeight: 800,
+                                }}
+                              >
+                                {prog.subtitle}
+                              </div>
+                            </div>
                           </div>
 
-                          <div>
-                            <div
-                              style={{
-                                fontFamily: FONT_SANS,
-                                fontSize: 32,
-                                fontWeight: 800,
-                                color: "#0F172A",
-                                marginBottom: 4,
-                              }}
-                            >
-                              {card.title}
-                            </div>
-                            <div
-                              style={{
-                                fontFamily: FONT_MONO,
-                                fontSize: 26,
-                                color: "#64748B",
-                                fontWeight: 700,
-                              }}
-                            >
-                              {card.subtitle}
-                            </div>
+                          {/* Badge de estado */}
+                          <div
+                            style={{
+                              fontFamily: FONT_MONO,
+                              fontSize: isFocused ? 22 : 16,
+                              fontWeight: 800,
+                              color: prog.color,
+                              background: prog.accentLight,
+                              padding: isFocused ? "8px 18px" : "4px 12px",
+                              borderRadius: 999,
+                            }}
+                          >
+                            {isFocused ? "EN FOCO · ZOOM IN" : "PYTHON"}
                           </div>
                         </div>
 
-                        <div
-                          style={{
-                            fontFamily: FONT_MONO,
-                            fontSize: 24,
-                            fontWeight: 800,
-                            color: card.color,
-                            background: `${card.color}18`,
-                            padding: "6px 16px",
-                            borderRadius: 999,
-                          }}
-                        >
-                          PYTHON NATIVO
-                        </div>
+                        {/* Descripción extendida revelada en Zoom In */}
+                        {isFocused && (
+                          <div
+                            style={{
+                              fontFamily: FONT_SANS,
+                              fontSize: 26,
+                              color: "#334155",
+                              lineHeight: 1.35,
+                              fontWeight: 600,
+                              marginTop: 18,
+                            }}
+                          >
+                            {prog.desc}
+                          </div>
+                        )}
                       </div>
 
-                      {card.microAnim()}
+                      {/* Microanimación de pie */}
+                      <div
+                        style={{
+                          marginTop: isFocused ? 20 : 10,
+                          paddingTop: 12,
+                          borderTop: "1px solid rgba(15, 23, 42, 0.06)",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                          {prog.iconKind === "ai" && (
+                            <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+                              {[0, 1, 2, 3].map((n) => (
+                                <div
+                                  key={n}
+                                  style={{
+                                    width: 12,
+                                    height: 12,
+                                    borderRadius: "50%",
+                                    background: prog.color,
+                                    transform: `scale(${1 + Math.sin(frame / 6 + n) * 0.35})`,
+                                    boxShadow: `0 0 10px ${prog.color}`,
+                                  }}
+                                />
+                              ))}
+                            </div>
+                          )}
+
+                          {prog.iconKind === "backend" && (
+                            <div style={{ display: "flex", gap: 5, alignItems: "center" }}>
+                              {[0, 1, 2, 3, 4].map((bar) => (
+                                <div
+                                  key={bar}
+                                  style={{
+                                    width: 7,
+                                    height: 16 + Math.sin(frame / 5 + bar) * 10,
+                                    borderRadius: 3,
+                                    background: prog.color,
+                                  }}
+                                />
+                              ))}
+                            </div>
+                          )}
+
+                          {prog.iconKind === "data" && (
+                            <div style={{ display: "flex", gap: 5, alignItems: "flex-end", height: 22 }}>
+                              {[0.4, 0.7, 0.3, 0.9, 0.6].map((h, idx) => (
+                                <div
+                                  key={idx}
+                                  style={{
+                                    width: 9,
+                                    height: 22 * h * (1 + Math.sin(frame / 8 + idx) * 0.25),
+                                    borderRadius: 3,
+                                    background: prog.color,
+                                  }}
+                                />
+                              ))}
+                            </div>
+                          )}
+
+                          {prog.iconKind === "automation" && (
+                            <div
+                              style={{
+                                transform: `rotate(${frame * 4}deg)`,
+                                display: "inline-block",
+                              }}
+                            >
+                              <IconLoop size={22} color={prog.color} />
+                            </div>
+                          )}
+
+                          <span
+                            style={{
+                              fontFamily: FONT_MONO,
+                              fontSize: isFocused ? 24 : 18,
+                              fontWeight: 800,
+                              color: prog.color,
+                            }}
+                          >
+                            {prog.metricValue}
+                          </span>
+                        </div>
+
+                        {isFocused && (
+                          <span
+                            style={{
+                              fontFamily: FONT_MONO,
+                              fontSize: 20,
+                              color: "#64748B",
+                              fontWeight: 700,
+                            }}
+                          >
+                            {prog.metricLabel}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   );
                 })}
 
-                {/* BANNER DE CIERRE DE ESCENA 4 (f3280 a f3480) */}
+                {/* 4. BANNER DE CIERRE: GRAND FINALE DE LA INDUSTRIA (f3280 a f3490) */}
                 {isGrandFinale && (
                   <div
                     style={{
@@ -2406,27 +2675,28 @@ export const PyQuestEp01: React.FC = () => {
                       left: PYQUEST_THEME.safe.side,
                       width: 920,
                       background: "linear-gradient(135deg, #1E1B4B 0%, #0F172A 100%)",
-                      borderRadius: 20,
-                      padding: "20px 28px",
+                      borderRadius: 22,
+                      padding: "24px 34px",
                       border: "2px solid #8B5CF6",
-                      boxShadow: "0 20px 45px rgba(139, 92, 246, 0.35)",
+                      boxShadow: "0 20px 50px rgba(139, 92, 246, 0.4)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      gap: 16,
-                      zIndex: 30,
+                      gap: 20,
+                      zIndex: 40,
                     }}
                   >
                     <Img
                       src={staticFile("assets/logos/python.svg")}
-                      style={{ width: 34, height: 34 }}
+                      style={{ width: 44, height: 44 }}
                     />
                     <span
                       style={{
                         fontFamily: FONT_SANS,
-                        fontSize: 24,
-                        fontWeight: 800,
+                        fontSize: 28,
+                        fontWeight: 900,
                         color: "#F8FAFC",
+                        letterSpacing: "-0.01em",
                       }}
                     >
                       Aprender Python es tu llave maestra a toda la industria

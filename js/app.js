@@ -255,12 +255,13 @@ const App = () => {
             const stored = localStorage.getItem('algo_custom_reels');
             if (stored) {
                 const list = JSON.parse(stored);
-                const hasLegacy = Array.isArray(list) && list.some(r =>
-                    r.id === 'reel_ag_terminal' || r.id === 'reel_sign_language' ||
-                    r.id === 'reel_mcp_pipeline' || r.id === 'reel_retro_game' ||
-                    r.id === 'reel_token_saver' || (r.duration && r.duration > 10) || (r.duration_ms && r.duration_ms > 10000)
+                const isOutdated = Array.isArray(list) && (
+                    !list.some(r => r.id === 'reel_pyquest_ep02') ||
+                    !list.some(r => r.id === 'reel_pyquest_ep03') ||
+                    !list.some(r => r.id === 'reel_pyquest_ep04') ||
+                    list.some(r => r.id === 'reel_ag_terminal')
                 );
-                if (hasLegacy) {
+                if (isOutdated) {
                     localStorage.removeItem('algo_custom_reels');
                     if (window.getAllReels) setAllReels(window.getAllReels());
                 }
@@ -1494,6 +1495,7 @@ const App = () => {
 
                         {/* Reproductor Activo Unificado en Motion Graphics 60 FPS */}
                         <window.MotionReelPlayer
+                            key={activeReel?.id || 'motion-player'}
                             reel={activeReel}
                             onOpenPostKit={() => setPostKitOpen(true)}
                         />

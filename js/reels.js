@@ -140,7 +140,7 @@ En este primer episodio de PyQuest (nuestra serie donde construimos el motor ló
         brandIcon: 'fa-cube',
         accentColor: '#38BDF8',
         secondaryColor: '#8B5CF6',
-        videoUrl: 'videos/pyquest_ep02_variables_y_tipos.mp4',
+        videoUrl: null, // Lienzo en vivo 60 FPS con animación reactiva
         post: {
             hook: 'El error que comete el 90% de los novatos al programar su primer juego 👇',
             caption: `Poner números entre comillas es el error #1 que congela los juegos de quienes están aprendiendo a programar.
@@ -181,8 +181,8 @@ En este Episodio 2 de PyQuest le damos vida a las estadísticas de Aria y explor
                 title: 'Cajas etiquetadas *en la RAM*',
                 sub: 'El signo igual guarda el dato en una dirección física del computador.',
                 points: [
-                    { num: '01', title: 'Identificador', desc: 'La etiqueta que usas para llamar al dato (ej: nombre).' },
-                    { num: '02', title: 'Operador Asignar', desc: 'El signo = no es igualdad matemática, es almacenamiento.' }
+                    { num: '01', label: 'Identificador', title: 'Identificador', desc: 'La etiqueta que usas para llamar al dato en memoria (ej: vida).' },
+                    { num: '02', label: 'Operador Asignar', title: 'Operador Asignar', desc: 'El signo = no es igualdad matemática: es almacenamiento físico.' }
                 ],
                 vo: 'Una variable es una caja etiquetada en la memoria física de tu computador.'
             },
@@ -195,6 +195,19 @@ En este Episodio 2 de PyQuest le damos vida a las estadísticas de Aria y explor
                 badge: 'TIPOS DE DATOS',
                 title: 'El ADN *de Aria*',
                 sub: 'String, Integer, Float y Boolean controlan el estado del personaje.',
+                codeSnippet: {
+                    file: 'hero.py ~ stats_aria',
+                    lines: [
+                        '# 1. str: Nombre (texto entre comillas)',
+                        'nombre = "Aria"',
+                        '# 2. int: Salud (entero para matemáticas)',
+                        'vida = 100',
+                        '# 3. float: Velocidad (número con decimal)',
+                        'velocidad = 4.5',
+                        '# 4. bool: Estado (interruptor binario)',
+                        'esta_viva = True'
+                    ]
+                },
                 vo: 'Cuatro tipos de datos controlan a tu personaje: texto, enteros, decimales y booleanos.'
             },
             {
@@ -206,6 +219,16 @@ En este Episodio 2 de PyQuest le damos vida a las estadísticas de Aria y explor
                 badge: 'ATAQUE EN VIVO',
                 title: 'Matemáticas *que funcionan*',
                 sub: 'vida = 100 - 20 = 80 HP. Barra de salud reactiva en tiempo real.',
+                compareData: {
+                    bad: {
+                        title: 'vida = "100" (Texto con comillas)',
+                        desc: 'Si el Goblin pega 20 de daño, "100" - 20 lanza TypeError: no puedes restar números a texto.'
+                    },
+                    good: {
+                        title: 'vida = 100 (Entero Real)',
+                        desc: 'vida = 100 - 20 da exactamente 80 HP. El motor responde y la barra disminuye con precisión.'
+                    }
+                },
                 vo: 'Con números reales, las operaciones funcionan y Aria absorbe el impacto.'
             },
             {
@@ -241,6 +264,9 @@ En este Episodio 2 de PyQuest le damos vida a las estadísticas de Aria y explor
         fps: 60,
         kicker: 'PYQUEST · EPISODIO 3',
         brandIcon: 'fa-shield-halved',
+        accentColor: '#10B981',
+        secondaryColor: '#38BDF8',
+        videoUrl: null, // Lienzo en vivo 60 FPS con animación reactiva
         tags: ['Python', 'Condicionales', 'PyQuest', 'RPG', 'GameDev', 'AprenderAProgramar'],
         sound: {
             title: 'Ambient Tech Bed · PyQuest S3',
@@ -253,10 +279,11 @@ En este Episodio 2 de PyQuest le damos vida a las estadísticas de Aria y explor
                 name: 'El Absurdo de Vida Negativa',
                 start_ms: 0,
                 end_ms: 8000,
-                type: 'hook',
+                type: 'hero',
                 badge: 'FALLA DE LÓGICA',
                 title: '¿Tu héroe puede tener *-20 de vida*?',
                 sub: 'Sin condicionales no hay reglas de juego: el personaje muere pero la partida sigue.',
+                kicker: 'EPISODIO 3 · PYQUEST',
                 vo: 'Si un programa no evalúa condiciones, Aria tiene menos veinte de vida y el motor no se entera.'
             },
             {
@@ -268,6 +295,16 @@ En este Episodio 2 de PyQuest le damos vida a las estadísticas de Aria y explor
                 badge: 'INSTRUCCIÓN IF',
                 title: 'Evaluando *decisiones*',
                 sub: 'if vida <= 0: print("GAME OVER"). 4 espacios de indentación definen el bloque.',
+                codeSnippet: {
+                    file: 'combate.py ~ regla_vida',
+                    lines: [
+                        '# Verificamos si la salud llegó al límite',
+                        'if vida <= 0:',
+                        '    print("GAME OVER")',
+                        '    juego_activo = False',
+                        '# 4 espacios de indentación definen el bloque'
+                    ]
+                },
                 vo: 'La palabra clave if evalúa una pregunta: si es verdadera, ejecuta el bloque indentado.'
             },
             {
@@ -279,6 +316,17 @@ En este Episodio 2 de PyQuest le damos vida a las estadísticas de Aria y explor
                 badge: 'IF / ELIF / ELSE',
                 title: 'Tres caminos *en 6 líneas*',
                 sub: 'Derrotado, Peligro Crítico o Listo para la batalla con if, elif y else.',
+                codeSnippet: {
+                    file: 'combate.py ~ arbol_estados',
+                    lines: [
+                        'if vida <= 0:',
+                        '    print("Aria ha caído")',
+                        'elif vida < 30:',
+                        '    print("Peligro Crítico: Bebe una poción")',
+                        'else:',
+                        '    print("Aria sigue en combate")'
+                    ]
+                },
                 vo: 'Con elif cubrimos estados intermedios como peligro crítico, y con else el estado normal.'
             },
             {
@@ -290,6 +338,16 @@ En este Episodio 2 de PyQuest le damos vida a las estadísticas de Aria y explor
                 badge: 'COMBATE EN VIVO',
                 title: 'El código detiene *la partida*',
                 sub: 'El Goblin es derrotado y la regla detiene el juego en el instante exacto.',
+                compareData: {
+                    bad: {
+                        title: 'Sin Condicionales (Falla)',
+                        desc: 'El Goblin golpea por 100 de daño: vida queda en -20 y Aria sigue caminando como zombie sin detenerse.'
+                    },
+                    good: {
+                        title: 'Con if vida <= 0 (Control)',
+                        desc: 'El motor detecta que la vida llegó a 0, congela la pantalla de batalla y muestra la animación de GAME OVER.'
+                    }
+                },
                 vo: 'Ahora el juego responde a la perfección y la partida se detiene cuando la salud se agota.'
             },
             {
@@ -307,6 +365,122 @@ En este Episodio 2 de PyQuest le damos vida a las estadísticas de Aria y explor
                     handle: '@santi.dev'
                 },
                 vo: 'El jefe soltó diez recompensas. En el próximo episodio aprenderemos Listas y Diccionarios.'
+            }
+        ]
+    },
+    // =====================================================================
+    // REEL DESTACADO: PYQUEST EP. 4 · LISTAS Y DICCIONARIOS: EL INVENTARIO DEL HÉROE (74s @ 60 FPS)
+    // =====================================================================
+    {
+        id: 'reel_pyquest_ep04',
+        accountId: 'santidev',
+        slug: 'pyquest_ep04_listas_y_diccionarios',
+        theme: 'stack1',
+        title: 'PyQuest Ep. 4: Listas y Diccionarios',
+        subtitle: 'El inventario del héroe y cómo evitar 100 variables sueltas',
+        duration_ms: 74000,
+        duration: 74.0,
+        fps: 60,
+        kicker: 'PYQUEST · EPISODIO 4',
+        brandIcon: 'fa-boxes-stacked',
+        accentColor: '#8B5CF6',
+        secondaryColor: '#10B981',
+        videoUrl: null, // Lienzo interactivo 60 FPS
+        tags: ['Python', 'Listas', 'Diccionarios', 'PyQuest', 'EstructurasDeDatos', 'GameDev'],
+        sound: {
+            title: 'Ambient Tech Bed · PyQuest S4',
+            author: 'Santi.Dev Sound Lab',
+            badge: 'AUDIO ORIGINAL'
+        },
+        beats: [
+            {
+                id: 1,
+                name: 'El Caos de Variables Sueltas',
+                start_ms: 0,
+                end_ms: 8000,
+                type: 'hero',
+                badge: 'ERROR DE ARQUITECTURA',
+                title: '¿10 variables para *10 objetos*?',
+                sub: 'Crear item1, item2, item3 hace tu juego totalmente inmantenible.',
+                kicker: 'EPISODIO 4 · PYQUEST',
+                vo: 'Crear una variable para cada objeto es la forma más rápida de arruinar tu proyecto.'
+            },
+            {
+                id: 2,
+                name: 'La Lista y los Corchetes',
+                start_ms: 8000,
+                end_ms: 26000,
+                type: 'code',
+                badge: 'ESTRUCTURA LIST',
+                title: 'Una sola variable, *todo agrupado*',
+                sub: 'inventario = ["Poción", "Espada", "Escudo"]. Indexación en base cero [0].',
+                codeSnippet: {
+                    file: 'inventario.py ~ lista_ordenada',
+                    lines: [
+                        '# Colección ordenada entre corchetes []',
+                        'inventario = ["Poción", "Espada", "Escudo"]',
+                        'print(inventario[0])  # Imprime: Poción (base cero)',
+                        'print(len(inventario))  # Cantidad: 3 objetos'
+                    ]
+                },
+                vo: 'Una lista agrupa múltiples elementos en una sola variable ordenada entre corchetes.'
+            },
+            {
+                id: 3,
+                name: 'Método .append() Dinámico',
+                start_ms: 26000,
+                end_ms: 46000,
+                type: 'code',
+                badge: 'MÉTODO .APPEND()',
+                title: 'Nuevos tesoros *al final*',
+                sub: 'inventario.append("Amuleto"). Crece dinámicamente cuando encuentras botín.',
+                codeSnippet: {
+                    file: 'inventario.py ~ nuevo_loot',
+                    lines: [
+                        '# Aria abre un cofre en la mazmorra',
+                        'inventario.append("Amuleto Mágico")',
+                        '# Ahora inventario tiene 4 elementos listos',
+                        'print(inventario[-1])  # Imprime: Amuleto Mágico'
+                    ]
+                },
+                vo: 'Con el método append agregas nuevos tesoros al final de la lista al instante.'
+            },
+            {
+                id: 4,
+                name: 'Diccionarios Clave-Valor',
+                start_ms: 46000,
+                end_ms: 64000,
+                type: 'compare',
+                badge: 'DICCIONARIOS {}',
+                title: 'Datos con *nombre real*',
+                sub: 'heroe = {"nombre": "Aria", "vida": 80}. Acceso directo por etiqueta.',
+                compareData: {
+                    bad: {
+                        title: 'Por Número de Índice',
+                        desc: 'inventario[3] no te dice qué representa el dato y te obliga a memorizar posiciones.'
+                    },
+                    good: {
+                        title: 'Por Clave en Diccionario',
+                        desc: 'heroe["vida"] es legible, seguro y claro para cualquier programador de tu equipo.'
+                    }
+                },
+                vo: 'Con diccionarios accedes a los datos por su nombre en vez de su número de orden.'
+            },
+            {
+                id: 5,
+                name: 'Cliffhanger Bucles y CTA',
+                start_ms: 64000,
+                end_ms: 74000,
+                type: 'cta',
+                badge: 'PRÓXIMO CAPÍTULO',
+                title: '¿Y si tienes 100 objetos? *Episodio 5*',
+                sub: 'Aprenderemos a recorrer listas completas con Bucles For y While.',
+                ctaData: {
+                    keyword: 'BUCLES',
+                    line: 'Comenta BUCLES y sígueme para aprender Bucles en el Episodio 5.',
+                    handle: '@santi.dev'
+                },
+                vo: '¿Y si tienes cien objetos? No vas a escribir cien líneas. Sígueme para el episodio 5: Bucles.'
             }
         ]
     },
@@ -1343,18 +1517,22 @@ window.normalizeReel = function (r) {
  * Obtener todos los reels oficiales y personalizados
  */
 window.getAllReels = function () {
+    const officialReels = (window.REELS || []).map(window.normalizeReel);
     try {
         const custom = localStorage.getItem('algo_custom_reels');
         if (custom) {
             const parsed = JSON.parse(custom);
             if (Array.isArray(parsed) && parsed.length > 0) {
-                return parsed.map(window.normalizeReel);
+                // Solo agregar custom reels cuyos IDs no coincidan con reels oficiales para no tapar los nuevos
+                const officialIds = new Set(officialReels.map(r => r.id));
+                const customOnly = parsed.filter(r => !officialIds.has(r.id)).map(window.normalizeReel);
+                return [...officialReels, ...customOnly];
             }
         }
     } catch (e) {
         console.warn('Error leyendo algo_custom_reels:', e);
     }
-    return (window.REELS || []).map(window.normalizeReel);
+    return officialReels;
 };
 
 /**

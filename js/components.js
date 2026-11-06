@@ -1992,6 +1992,14 @@ const FastReelFrame = ({ beats, currentMs, reelData }) => {
         defaultKeyword = 'OFFLINE';
     }
 
+    // Sobreescritura directa de colores definidos en el reel (ej: PyQuest Ep 2 y Ep 3)
+    if (reelData?.accentColor) {
+        brandAccent = reelData.accentColor;
+        if (reelData?.secondaryColor) brandSecondary = reelData.secondaryColor;
+        bgGradient = `linear-gradient(165deg, ${brandAccent}1A 0%, #060D14 45%, #020508 100%)`;
+        auraColor = `${brandAccent}40`;
+    }
+
     // 3. Easing & Movimiento Cinematográfico 60 FPS
     const enterProgress = Math.min(1, progressInBeat / 0.14);
     const enterEase = 1 - Math.pow(1 - enterProgress, 3);
@@ -2003,8 +2011,9 @@ const FastReelFrame = ({ beats, currentMs, reelData }) => {
     const orbX = Math.sin(currentMs * 0.0018) * 85;
     const orbY = Math.cos(currentMs * 0.0022) * 70;
 
-    // Normalización de datos del beat
-    const beatType = activeBeat.type || 'hero';
+    // Normalización de datos del beat (soportar hook como hero)
+    const rawBeatType = activeBeat.type || 'hero';
+    const beatType = rawBeatType === 'hook' ? 'hero' : rawBeatType;
     const badgeLabel = activeBeat.badge || activeBeat.kicker || kickerText;
     const ctaKeyword = activeBeat.ctaData?.keyword || defaultKeyword;
 
@@ -2277,11 +2286,17 @@ const FastReelFrame = ({ beats, currentMs, reelData }) => {
                                             alignItems: "center",
                                             justifyContent: "center",
                                             color: brandAccent,
-                                            fontSize: "24px",
+                                            fontSize: p.num ? "18px" : "24px",
+                                            fontFamily: p.num ? "'JetBrains Mono', monospace" : "inherit",
+                                            fontWeight: 800,
                                             flexShrink: 0,
                                             boxShadow: `0 0 20px ${brandAccent}33`
                                         }}>
-                                            <i className={`fa-solid ${p.icon || 'fa-check'}`} />
+                                            {p.num ? (
+                                                <span>{p.num}</span>
+                                            ) : (
+                                                <i className={`fa-solid ${p.icon || 'fa-check'}`} />
+                                            )}
                                         </div>
                                         <div style={{ flex: 1 }}>
                                             <div style={{
@@ -2291,7 +2306,7 @@ const FastReelFrame = ({ beats, currentMs, reelData }) => {
                                                 fontWeight: 800,
                                                 marginBottom: "6px"
                                             }}>
-                                                {p.label}
+                                                {p.label || p.title}
                                             </div>
                                             <div style={{
                                                 color: "rgba(255, 255, 255, 0.82)",

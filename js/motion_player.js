@@ -194,6 +194,15 @@ const MotionReelPlayer = ({ reel, onOpenPostKit }) => {
     const [scriptViewMode, setScriptViewMode] = React.useState('continuous'); // 'continuous' | 'timed'
     const [isScriptCopied, setIsScriptCopied] = React.useState(false);
 
+    // Sincronizar playMode con el reel activo (fallback automático a canvas si no tiene videoUrl)
+    React.useEffect(() => {
+        if (reel?.videoUrl) {
+            setPlayMode('video');
+        } else {
+            setPlayMode('canvas');
+        }
+    }, [reel?.id, reel?.videoUrl]);
+
     // Guión continuo unificado y métricas de locución
     const allBeats = reel?.beats || [];
     const continuousScript = React.useMemo(() => {
@@ -385,6 +394,10 @@ const MotionReelPlayer = ({ reel, onOpenPostKit }) => {
                             autoPlay
                             loop
                             playsInline
+                            onError={(e) => {
+                                console.warn('Video MP4 no disponible localmente, pasando a lienzo en vivo 60 FPS:', e);
+                                setPlayMode('canvas');
+                            }}
                             className="w-full h-full object-contain rounded-2xl bg-black"
                         />
                     ) : (
