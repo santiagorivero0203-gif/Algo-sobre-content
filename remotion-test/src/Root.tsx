@@ -8,6 +8,7 @@ import { stackSecretoData } from "./data/stackSecreto";
 import { tokensProData } from "./data/tokensPro";
 import { mafeTeoriaDisenoData } from "./data/mafeTeoriaDiseno";
 import { PyQuestEp01 } from "./pyquest/episodes/ep01/Ep01";
+import { PyQuestEp01V2 } from "./pyquest/episodes/ep01/Ep01V2";
 import { PyQuestEp02 } from "./pyquest/episodes/ep02/Ep02";
 import { PyQuestEp03 } from "./pyquest/episodes/ep03/Ep03";
 import { PyQuestEp04 } from "./pyquest/episodes/ep04/Ep04";
@@ -118,6 +119,15 @@ export const RemotionRoot = () => {
         id="PyQuestEp01Reel"
         component={PyQuestEp01}
         durationInFrames={4320}
+        fps={60}
+        width={1080}
+        height={1920}
+      />
+      {/* Episodio 1 (Versión 2 Duplicada): Rayos X 2.5D con import rotativo (66s @ 60 FPS = 3960 frames) */}
+      <Composition
+        id="PyQuestEp01V2Reel"
+        component={PyQuestEp01V2}
+        durationInFrames={3960}
         fps={60}
         width={1080}
         height={1920}
