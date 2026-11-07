@@ -1992,8 +1992,42 @@ const FastReelFrame = ({ beats, currentMs, reelData }) => {
         defaultKeyword = 'OFFLINE';
     }
 
-    // Sobreescritura directa de colores definidos en el reel (ej: PyQuest Ep 2 y Ep 3)
-    if (reelData?.accentColor) {
+    // Detección de saga PyQuest para aplicar la estética RPG Studio 2.5D
+    const isPyQuest = (reelData?.id && reelData.id.includes('pyquest')) || 
+                      (reelData?.slug && reelData.slug.includes('pyquest')) || 
+                      (reelData?.kicker && reelData.kicker.includes('PYQUEST'));
+
+    if (isPyQuest) {
+        brandHandle = '@santi.dev';
+        kickerText = reelData?.kicker || 'PYQUEST · PYTHON DESDE CERO';
+        const beatNum = activeBeat.id || 1;
+        if (beatNum === 1) {
+            bgGradient = 'radial-gradient(circle at 50% 25%, #FECDD3 0%, #FDA4AF 45%, #E11D48 100%)';
+            auraColor = 'rgba(225, 29, 72, 0.55)';
+            brandAccent = '#E11D48';
+            brandSecondary = '#BE123C';
+        } else if (beatNum === 2) {
+            bgGradient = 'radial-gradient(circle at 50% 25%, #BAE6FD 0%, #7DD3FC 45%, #0284C7 100%)';
+            auraColor = 'rgba(14, 165, 233, 0.55)';
+            brandAccent = '#0284C7';
+            brandSecondary = '#0369A1';
+        } else if (beatNum === 3) {
+            bgGradient = 'radial-gradient(circle at 50% 25%, #DDD6FE 0%, #C4B5FD 45%, #7C3AED 100%)';
+            auraColor = 'rgba(124, 58, 237, 0.55)';
+            brandAccent = '#7C3AED';
+            brandSecondary = '#6D28D9';
+        } else if (beatNum === 4) {
+            bgGradient = 'radial-gradient(circle at 50% 25%, #A7F3D0 0%, #6EE7B7 45%, #059669 100%)';
+            auraColor = 'rgba(5, 150, 105, 0.55)';
+            brandAccent = '#059669';
+            brandSecondary = '#047857';
+        } else {
+            bgGradient = 'radial-gradient(circle at 50% 25%, #FEF3C7 0%, #FDE68A 45%, #D97706 100%)';
+            auraColor = 'rgba(217, 119, 6, 0.55)';
+            brandAccent = '#D97706';
+            brandSecondary = '#B45309';
+        }
+    } else if (reelData?.accentColor) {
         brandAccent = reelData.accentColor;
         if (reelData?.secondaryColor) brandSecondary = reelData.secondaryColor;
         bgGradient = `linear-gradient(165deg, ${brandAccent}1A 0%, #060D14 45%, #020508 100%)`;
@@ -2178,42 +2212,54 @@ const FastReelFrame = ({ beats, currentMs, reelData }) => {
                         </p>
 
                         {/* Píldoras de Valor Flotantes */}
-                        <div style={{ display: "flex", gap: "16px", marginTop: "12px", flexWrap: "wrap", justifyContent: "center" }}>
-                            <div style={{
-                                padding: "10px 20px",
-                                borderRadius: "14px",
-                                backgroundColor: "rgba(255, 255, 255, 0.08)",
-                                border: "1px solid rgba(255, 255, 255, 0.18)",
-                                backdropFilter: "blur(14px)",
-                                color: "#FFF",
-                                fontSize: "16px",
-                                fontWeight: 700,
-                                fontFamily: "'Space Grotesk', sans-serif",
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "8px"
-                            }}>
-                                <i className="fa-solid fa-bolt" style={{ color: brandAccent }} />
-                                <span>100% Sin Sintaxis Pesada</span>
+                        {isPyQuest ? (
+                            <div style={{ display: "flex", alignItems: "center", gap: "16px", marginTop: "12px", background: "rgba(255, 255, 255, 0.90)", padding: "12px 28px", borderRadius: "22px", border: "1.5px solid rgba(0, 0, 0, 0.08)", backdropFilter: "blur(14px)", boxShadow: "0 10px 30px rgba(0,0,0,0.06)" }}>
+                                <div style={{ width: 44, height: 44, borderRadius: "50%", background: "linear-gradient(135deg, #38BDF8 0%, #2563EB 100%)", display: "flex", alignItems: "center", justifyContent: "center", border: "2px solid #FFF", boxShadow: "0 4px 12px rgba(37,99,235,0.3)" }}>
+                                    <i className="fa-solid fa-gamepad" style={{ color: "#FFF", fontSize: 18 }} />
+                                </div>
+                                <div style={{ textAlign: "left" }}>
+                                    <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 900, color: "#0F172A" }}>Aria · Nivel 1</div>
+                                    <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 800, color: "#059669" }}>HP 100 / 100 · Motor RPG en Python</div>
+                                </div>
                             </div>
-                            <div style={{
-                                padding: "10px 20px",
-                                borderRadius: "14px",
-                                backgroundColor: "rgba(255, 255, 255, 0.08)",
-                                border: "1px solid rgba(255, 255, 255, 0.18)",
-                                backdropFilter: "blur(14px)",
-                                color: "#FFF",
-                                fontSize: "16px",
-                                fontWeight: 700,
-                                fontFamily: "'Space Grotesk', sans-serif",
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "8px"
-                            }}>
-                                <i className="fa-solid fa-clock" style={{ color: brandSecondary }} />
-                                <span>Prototipo en Horas</span>
+                        ) : (
+                            <div style={{ display: "flex", gap: "16px", marginTop: "12px", flexWrap: "wrap", justifyContent: "center" }}>
+                                <div style={{
+                                    padding: "10px 20px",
+                                    borderRadius: "14px",
+                                    backgroundColor: "rgba(255, 255, 255, 0.08)",
+                                    border: "1px solid rgba(255, 255, 255, 0.18)",
+                                    backdropFilter: "blur(14px)",
+                                    color: "#FFF",
+                                    fontSize: "16px",
+                                    fontWeight: 700,
+                                    fontFamily: "'Space Grotesk', sans-serif",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: "8px"
+                                }}>
+                                    <i className="fa-solid fa-bolt" style={{ color: brandAccent }} />
+                                    <span>100% Sin Sintaxis Pesada</span>
+                                </div>
+                                <div style={{
+                                    padding: "10px 20px",
+                                    borderRadius: "14px",
+                                    backgroundColor: "rgba(255, 255, 255, 0.08)",
+                                    border: "1px solid rgba(255, 255, 255, 0.18)",
+                                    backdropFilter: "blur(14px)",
+                                    color: "#FFF",
+                                    fontSize: "16px",
+                                    fontWeight: 700,
+                                    fontFamily: "'Space Grotesk', sans-serif",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: "8px"
+                                }}>
+                                    <i className="fa-solid fa-clock" style={{ color: brandSecondary }} />
+                                    <span>Prototipo en Horas</span>
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </div>
                 )}
 
@@ -2444,12 +2490,14 @@ const FastReelFrame = ({ beats, currentMs, reelData }) => {
                             gap: "12px",
                             padding: "12px 20px",
                             borderRadius: "14px",
-                            backgroundColor: "rgba(255, 255, 255, 0.05)",
-                            border: "1px solid rgba(255, 255, 255, 0.12)"
+                            backgroundColor: isPyQuest ? "rgba(0, 0, 0, 0.5)" : "rgba(255, 255, 255, 0.05)",
+                            border: isPyQuest ? "1px solid rgba(255, 255, 255, 0.18)" : "1px solid rgba(255, 255, 255, 0.12)"
                         }}>
                             <i className="fa-solid fa-lightbulb" style={{ color: brandSecondary, fontSize: "18px" }} />
-                            <span style={{ color: "rgba(255, 255, 255, 0.85)", fontSize: "17px", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>
-                                Regla de Oro: Menos contexto disperso = Máxima precisión y cero alucinaciones de IA.
+                            <span style={{ color: "rgba(255, 255, 255, 0.90)", fontSize: "17px", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>
+                                {isPyQuest 
+                                    ? 'Regla PyQuest: Cada línea de código altera el estado de la memoria RAM de tu héroe en tiempo real.' 
+                                    : 'Regla de Oro: Menos contexto disperso = Máxima precisión y cero alucinaciones de IA.'}
                             </span>
                         </div>
                     </div>
@@ -2500,17 +2548,17 @@ const FastReelFrame = ({ beats, currentMs, reelData }) => {
                         }}>
                             <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
                                 <span style={{ padding: "4px 10px", borderRadius: "8px", backgroundColor: "#EF4444", color: "#FFF", fontSize: "13px", fontWeight: 800, fontFamily: "'JetBrains Mono', monospace" }}>
-                                    ❌ EL ERROR
+                                    ❌ {isPyQuest ? 'ERROR DE TIPO' : 'EL ERROR'}
                                 </span>
                                 <span style={{ color: "rgba(255, 255, 255, 0.7)", fontSize: "15px", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700 }}>
-                                    Saturación & Alucinación
+                                    {isPyQuest ? 'Sintaxis que rompe el motor' : 'Saturación & Alucinación'}
                                 </span>
                             </div>
                             <div style={{ color: "#FFF", fontSize: "28px", fontWeight: 800, fontFamily: "'Space Grotesk', sans-serif", marginBottom: "6px" }}>
-                                {activeBeat.compareData?.bad?.title || 'Contexto Saturado (20 Archivos)'}
+                                {activeBeat.compareData?.bad?.title || (isPyQuest ? 'vida = "100" (Texto entre comillas)' : 'Contexto Saturado (20 Archivos)')}
                             </div>
                             <div style={{ color: "rgba(255, 255, 255, 0.8)", fontSize: "19px", lineHeight: 1.35, fontFamily: "'Space Grotesk', sans-serif" }}>
-                                {activeBeat.compareData?.bad?.desc || 'Sobrecargar al modelo provoca loops infinitos, errores de sintaxis y desperdicio de tokens.'}
+                                {activeBeat.compareData?.bad?.desc || (isPyQuest ? 'No puedes hacer operaciones matemáticas restando daño numérico a una cadena de texto.' : 'Sobrecargar al modelo provoca loops infinitos, errores de sintaxis y desperdicio de tokens.')}
                             </div>
                         </div>
 
@@ -2544,18 +2592,18 @@ const FastReelFrame = ({ beats, currentMs, reelData }) => {
                             boxShadow: `0 16px 40px -10px ${brandAccent}33`
                         }}>
                             <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
-                                <span style={{ padding: "4px 10px", borderRadius: "8px", backgroundColor: brandAccent, color: "#000", fontSize: "13px", fontWeight: 800, fontFamily: "'JetBrains Mono', monospace" }}>
-                                    ⚡ LA TÉCNICA PRO
+                                <span style={{ padding: "4px 10px", borderRadius: "8px", backgroundColor: isPyQuest ? '#10B981' : brandAccent, color: isPyQuest ? '#FFF' : '#000', fontSize: "13px", fontWeight: 800, fontFamily: "'JetBrains Mono', monospace" }}>
+                                    ✓ {isPyQuest ? 'SOLUCIÓN CORRECTA' : 'LA TÉCNICA PRO'}
                                 </span>
                                 <span style={{ color: "rgba(255, 255, 255, 0.8)", fontSize: "15px", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700 }}>
-                                    Enfoque Atómico
+                                    {isPyQuest ? 'Entero Real (int)' : 'Enfoque Atómico'}
                                 </span>
                             </div>
                             <div style={{ color: "#FFF", fontSize: "28px", fontWeight: 800, fontFamily: "'Space Grotesk', sans-serif", marginBottom: "6px" }}>
-                                {activeBeat.compareData?.good?.title || '1 Sola Tarea Atómica'}
+                                {activeBeat.compareData?.good?.title || (isPyQuest ? 'vida = 100 (Número Entero)' : '1 Sola Tarea Atómica')}
                             </div>
                             <div style={{ color: "rgba(255, 255, 255, 0.9)", fontSize: "19px", lineHeight: 1.35, fontFamily: "'Space Grotesk', sans-serif" }}>
-                                {activeBeat.compareData?.good?.desc || 'Un solo archivo, un prompt estricto y pruebas inmediatas: código limpio en el primer intento.'}
+                                {activeBeat.compareData?.good?.desc || (isPyQuest ? 'vida = 100 - 20 ejecuta la resta exacta y actualiza la barra de salud sin errores.' : 'Un solo archivo, un prompt estricto y pruebas inmediatas: código limpio en el primer intento.')}
                             </div>
                         </div>
                     </div>

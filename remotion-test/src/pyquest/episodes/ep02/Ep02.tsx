@@ -18,6 +18,7 @@
 import React from "react";
 import {
   AbsoluteFill,
+  Audio,
   Img,
   interpolate,
   interpolateColors,
@@ -286,7 +287,7 @@ const AriaAvatar: React.FC<{ frame: number; size?: number; mood?: "normal" | "sh
 // =====================================================================
 export const PyQuestEp02: React.FC = () => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
+  const { fps, durationInFrames } = useVideoConfig();
 
   // Movimiento perpetuo de la cámara 2.5D
   const perpetualFloatY = Math.sin(frame / 20) * 10;
@@ -304,17 +305,42 @@ export const PyQuestEp02: React.FC = () => {
       {/* 1. Fondo reactivo con transiciones de color marcadas */}
       <AtmosphereBackground frame={frame} />
 
-      {/* 2. Sistema de efectos de sonido determinista */}
-      <PyQuestSfx name="whoosh-short" from={10} volume={0.4} />
-      <PyQuestSfx name="error" from={180} volume={0.5} />
-      <PyQuestSfx name="click" from={540} volume={0.35} />
+      {/* 2. Cama de música ambiental continua (BGM) */}
+      <Audio
+        src={staticFile("bgm/tech_ambient_bed.mp3")}
+        volume={(f) => {
+          const fadeIn = Math.min(1, f / (fps * 0.8));
+          const fadeOut = Math.min(1, (durationInFrames - f) / (fps * 0.8));
+          return 0.09 * Math.max(0, fadeIn) * Math.max(0, fadeOut);
+        }}
+        loop
+      />
+
+      {/* 3. Sistema de efectos de sonido determinista sincronizado */}
+      <PyQuestSfx name="whoosh-short" from={0} volume={0.35} />
+      <PyQuestSfx name="typing" from={60} volume={0.24} />
+      <PyQuestSfx name="error" from={180} volume={0.48} />
+      <PyQuestSfx name="impact-bass-1" from={182} volume={0.42} />
+
+      <PyQuestSfx name="whoosh-short" from={480} volume={0.32} />
+      <PyQuestSfx name="click-soft" from={540} volume={0.32} />
+      <PyQuestSfx name="pop" from={620} volume={0.30} />
+      <PyQuestSfx name="pop" from={840} volume={0.30} />
+      <PyQuestSfx name="chime" from={1100} volume={0.36} />
+
+      <PyQuestSfx name="whoosh-short" from={1440} volume={0.32} />
       <PyQuestSfx name="sparkle" from={1500} volume={0.35} />
       <PyQuestSfx name="sparkle" from={1680} volume={0.35} />
       <PyQuestSfx name="sparkle" from={1860} volume={0.35} />
       <PyQuestSfx name="sparkle" from={2040} volume={0.35} />
-      <PyQuestSfx name="chime" from={2820} volume={0.4} />
-      <PyQuestSfx name="impact-bass-1" from={3140} volume={0.45} />
-      <PyQuestSfx name="sparkle" from={3980} volume={0.45} />
+
+      <PyQuestSfx name="whoosh-short" from={2760} volume={0.32} />
+      <PyQuestSfx name="chime" from={2820} volume={0.40} />
+      <PyQuestSfx name="impact-bass-2" from={3140} volume={0.45} />
+
+      <PyQuestSfx name="error" from={3740} volume={0.42} />
+      <PyQuestSfx name="sparkle" from={3980} volume={0.40} />
+      <PyQuestSfx name="chime" from={4250} volume={0.38} />
 
       {/* ================================================================ */}
       {/* ESCENA 1: EL ERROR QUE DESTRUYE TU JUEGO (f0 - f480 / 0:00 - 0:08) */}

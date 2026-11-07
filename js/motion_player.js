@@ -258,11 +258,64 @@ const MotionReelPlayer = ({ reel, onOpenPostKit }) => {
         }
     };
 
-    // Resetear al cambiar de reel
+    // =========================================================================
+    // MOTOR DE AUDIO CINEMÁTICO EN VIVO (BGM Y EFECTOS DE SONIDO SFX SINCRONIZADOS)
+    // =========================================================================
+    const [isMuted, setIsMuted] = React.useState(false);
+    const bgmAudioRef = React.useRef(null);
+    const sfxCacheRef = React.useRef({});
+    const playedSfxCueRef = React.useRef(new Set());
+
+    // Inicializar BGM para el reel activo
+    React.useEffect(() => {
+        const bgmSrc = reel?.soundUrl || 'bgm/tech_ambient_bed.mp3';
+        if (!bgmAudioRef.current) {
+            bgmAudioRef.current = new Audio(bgmSrc);
+            bgmAudioRef.current.loop = true;
+        } else {
+            bgmAudioRef.current.src = bgmSrc;
+        }
+        bgmAudioRef.current.volume = isMuted ? 0 : 0.24;
+
+        return () => {
+            if (bgmAudioRef.current) {
+                bgmAudioRef.current.pause();
+            }
+        };
+    }, [reel?.id, reel?.soundUrl]);
+
+    // Actualizar volumen al mutear o desmutear
+    React.useEffect(() => {
+        if (bgmAudioRef.current) {
+            bgmAudioRef.current.volume = isMuted ? 0 : 0.24;
+        }
+    }, [isMuted]);
+
+    // Función de disparo determinista de SFX
+    const playSfx = React.useCallback((sfxName, vol = 0.45) => {
+        if (isMuted) return;
+        try {
+            if (!sfxCacheRef.current[sfxName]) {
+                sfxCacheRef.current[sfxName] = new Audio(`sfx/${sfxName}.mp3`);
+            }
+            const sound = sfxCacheRef.current[sfxName].cloneNode();
+            sound.volume = Math.min(1, vol);
+            sound.play().catch(() => {});
+        } catch (e) {
+            // Silencioso si el navegador previene reproducción
+        }
+    }, [isMuted]);
+
+    // Resetear cues al cambiar de reel
     React.useEffect(() => {
         setCurrentMs(0);
         setIsPlaying(false);
         setIsScriptCopied(false);
+        playedSfxCueRef.current.clear();
+        if (bgmAudioRef.current) {
+            bgmAudioRef.current.pause();
+            bgmAudioRef.current.currentTime = 0;
+        }
         if (reel?.videoUrl) setPlayMode('video');
     }, [reel?.id, reel?.videoUrl]);
 
@@ -270,6 +323,85 @@ const MotionReelPlayer = ({ reel, onOpenPostKit }) => {
     React.useEffect(() => {
         window.setReelCurrentTime = (ms) => setCurrentMs(ms);
     }, []);
+
+    // Sincronizar BGM y disparar SFX durante la reproducción en modo Lienzo en Vivo
+    React.useEffect(() => {
+        if (playMode !== 'canvas') {
+            if (bgmAudioRef.current && !bgmAudioRef.current.paused) {
+                bgmAudioRef.current.pause();
+            }
+            return;
+        }
+
+        if (isPlaying) {
+            if (bgmAudioRef.current && bgmAudioRef.current.paused) {
+                bgmAudioRef.current.play().catch(() => {});
+            }
+        } else {
+            if (bgmAudioRef.current && !bgmAudioRef.current.paused) {
+                bgmAudioRef.current.pause();
+            }
+        }
+
+        // Detección de cues sonoros según los beats del reel
+        if (isPlaying && allBeats && allBeats.length > 0) {
+            allBeats.forEach((b, idx) => {
+                const bStart = b.start_ms || 0;
+                const bType = b.type || 'hero';
+
+                // 1. Transición cinética al inicio de cada beat (Whoosh)
+                const cueWhoosh = `whoosh_${idx}`;
+                if (currentMs >= bStart && currentMs < bStart + 220 && !playedSfxCueRef.current.has(cueWhoosh)) {
+                    playedSfxCueRef.current.add(cueWhoosh);
+                    playSfx('whoosh-short', 0.40);
+                }
+
+                // 2. Efectos narrativos y mecánicos según el tipo de escena
+                if (bType === 'hero') {
+                    const cueHero = `hero_err_${idx}`;
+                    if (currentMs >= bStart + 1600 && currentMs < bStart + 1950 && !playedSfxCueRef.current.has(cueHero)) {
+                        playedSfxCueRef.current.add(cueHero);
+                        playSfx('error', 0.42);
+                        playSfx('impact-bass-1', 0.38);
+                    }
+                } else if (bType === 'code') {
+                    const cueCode = `code_type_${idx}`;
+                    if (currentMs >= bStart + 600 && currentMs < bStart + 900 && !playedSfxCueRef.current.has(cueCode)) {
+                        playedSfxCueRef.current.add(cueCode);
+                        playSfx('typing', 0.32);
+                    }
+                } else if (bType === 'compare') {
+                    const cueHit = `compare_hit_${idx}`;
+                    if (currentMs >= bStart + 1100 && currentMs < bStart + 1400 && !playedSfxCueRef.current.has(cueHit)) {
+                        playedSfxCueRef.current.add(cueHit);
+                        playSfx('impact-bass-1', 0.46);
+                    }
+                    const cueChime = `compare_chime_${idx}`;
+                    if (currentMs >= bStart + 2800 && currentMs < bStart + 3100 && !playedSfxCueRef.current.has(cueChime)) {
+                        playedSfxCueRef.current.add(cueChime);
+                        playSfx('chime', 0.38);
+                    }
+                } else if (bType === 'points') {
+                    const cuePop1 = `points_pop1_${idx}`;
+                    if (currentMs >= bStart + 700 && currentMs < bStart + 950 && !playedSfxCueRef.current.has(cuePop1)) {
+                        playedSfxCueRef.current.add(cuePop1);
+                        playSfx('pop', 0.32);
+                    }
+                    const cuePop2 = `points_pop2_${idx}`;
+                    if (currentMs >= bStart + 1600 && currentMs < bStart + 1900 && !playedSfxCueRef.current.has(cuePop2)) {
+                        playedSfxCueRef.current.add(cuePop2);
+                        playSfx('chime', 0.36);
+                    }
+                } else if (bType === 'cta') {
+                    const cueCta = `cta_sparkle_${idx}`;
+                    if (currentMs >= bStart + 400 && currentMs < bStart + 700 && !playedSfxCueRef.current.has(cueCta)) {
+                        playedSfxCueRef.current.add(cueCta);
+                        playSfx('sparkle', 0.42);
+                    }
+                }
+            });
+        }
+    }, [isPlaying, currentMs, playMode, allBeats, playSfx]);
 
     // Bucle de reproducción en tiempo virtual
     React.useEffect(() => {
@@ -455,8 +587,13 @@ const MotionReelPlayer = ({ reel, onOpenPostKit }) => {
                             step="16.66"
                             value={currentMs}
                             onChange={(e) => {
+                                const newMs = Number(e.target.value);
                                 setIsPlaying(false);
-                                setCurrentMs(Number(e.target.value));
+                                setCurrentMs(newMs);
+                                if (bgmAudioRef.current) {
+                                    bgmAudioRef.current.currentTime = newMs / 1000;
+                                }
+                                playedSfxCueRef.current.clear();
                             }}
                             className="flex-1 accent-emerald-500 h-1.5 bg-neutral-800 rounded-lg cursor-pointer"
                         />
@@ -493,6 +630,24 @@ const MotionReelPlayer = ({ reel, onOpenPostKit }) => {
                                 className="w-8 h-8 rounded-lg bg-neutral-800 text-neutral-300 hover:text-white flex items-center justify-center text-xs"
                             >
                                 <i className="fa-solid fa-forward-step"></i>
+                            </button>
+
+                            <button
+                                onClick={() => {
+                                    const nextMuted = !isMuted;
+                                    setIsMuted(nextMuted);
+                                    if (!nextMuted && isPlaying && playMode === 'canvas' && bgmAudioRef.current) {
+                                        bgmAudioRef.current.play().catch(() => {});
+                                    }
+                                }}
+                                title={isMuted ? 'Activar Sonido y Efectos SFX' : 'Silenciar Sonido'}
+                                className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs transition-all ${
+                                    isMuted 
+                                        ? 'bg-neutral-800 text-neutral-500 border border-neutral-700' 
+                                        : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 shadow-sm'
+                                }`}
+                            >
+                                <i className={`fa-solid ${isMuted ? 'fa-volume-xmark' : 'fa-volume-high'}`}></i>
                             </button>
 
                             <span className="text-[10px] font-mono text-neutral-500 px-1">

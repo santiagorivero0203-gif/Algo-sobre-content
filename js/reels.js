@@ -30,7 +30,8 @@ window.REELS = [
         brandIcon: 'fa-gamepad',
         accentColor: '#3B82F6',
         secondaryColor: '#10B981',
-        videoUrl: 'videos/pyquest_ep01_por_que_python.mp4?v=2',
+        videoUrl: 'videos/pyquest_ep01_por_que_python.mp4',
+        soundUrl: 'bgm/tech_ambient_bed.mp3',
         post: {
             hook: '¿Por qué la mayoría abandona la programación en dos semanas? 👇',
             caption: `La mayoría de personas que intentan aprender a programar abandonan en las primeras dos semanas. Y casi nunca es por falta de lógica: es porque eligieron el lenguaje equivocado para empezar.
@@ -140,7 +141,8 @@ En este primer episodio de PyQuest (nuestra serie donde construimos el motor ló
         brandIcon: 'fa-cube',
         accentColor: '#38BDF8',
         secondaryColor: '#8B5CF6',
-        videoUrl: null, // Lienzo en vivo 60 FPS con animación reactiva
+        videoUrl: 'videos/pyquest_ep02_variables_y_tipos.mp4',
+        soundUrl: 'bgm/tech_ambient_bed.mp3',
         post: {
             hook: 'El error que comete el 90% de los novatos al programar su primer juego 👇',
             caption: `Poner números entre comillas es el error #1 que congela los juegos de quienes están aprendiendo a programar.
@@ -266,7 +268,8 @@ En este Episodio 2 de PyQuest le damos vida a las estadísticas de Aria y explor
         brandIcon: 'fa-shield-halved',
         accentColor: '#10B981',
         secondaryColor: '#38BDF8',
-        videoUrl: null, // Lienzo en vivo 60 FPS con animación reactiva
+        videoUrl: 'videos/pyquest_ep03_condicionales_y_combate.mp4',
+        soundUrl: 'bgm/tech_ambient_bed.mp3',
         tags: ['Python', 'Condicionales', 'PyQuest', 'RPG', 'GameDev', 'AprenderAProgramar'],
         sound: {
             title: 'Ambient Tech Bed · PyQuest S3',
@@ -385,7 +388,8 @@ En este Episodio 2 de PyQuest le damos vida a las estadísticas de Aria y explor
         brandIcon: 'fa-boxes-stacked',
         accentColor: '#8B5CF6',
         secondaryColor: '#10B981',
-        videoUrl: null, // Lienzo interactivo 60 FPS
+        videoUrl: 'videos/pyquest_ep04_listas_y_diccionarios.mp4',
+        soundUrl: 'bgm/tech_ambient_bed.mp3',
         tags: ['Python', 'Listas', 'Diccionarios', 'PyQuest', 'EstructurasDeDatos', 'GameDev'],
         sound: {
             title: 'Ambient Tech Bed · PyQuest S4',

@@ -19,6 +19,7 @@
 import React from "react";
 import {
   AbsoluteFill,
+  Audio,
   Img,
   interpolateColors,
   spring,
@@ -27,6 +28,7 @@ import {
   useVideoConfig,
 } from "remotion";
 import { FONT_MONO, FONT_SANS, PYQUEST_THEME } from "../../theme";
+import { PyQuestSfx } from "../../sfx";
 import {
   IconBackpack,
   IconBookmark,
@@ -253,7 +255,7 @@ const AriaInventoryHUD: React.FC<{
 // =====================================================================
 export const PyQuestEp04: React.FC = () => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
+  const { fps, durationInFrames } = useVideoConfig();
 
   const perpetualFloatY = Math.sin(frame / 20) * 8;
 
@@ -261,6 +263,42 @@ export const PyQuestEp04: React.FC = () => {
     <AbsoluteFill style={{ overflow: "hidden" }}>
       {/* 1. Fondo Atmosférico 2.5D */}
       <AtmosphereBackground frame={frame} />
+
+      {/* 2. Cama de música ambiental continua (BGM) */}
+      <Audio
+        src={staticFile("bgm/tech_ambient_bed.mp3")}
+        volume={(f) => {
+          const fadeIn = Math.min(1, f / (fps * 0.8));
+          const fadeOut = Math.min(1, (durationInFrames - f) / (fps * 0.8));
+          return 0.09 * Math.max(0, fadeIn) * Math.max(0, fadeOut);
+        }}
+        loop
+      />
+
+      {/* 3. Disparadores de audio SFX sincronizados */}
+      <PyQuestSfx name="whoosh-short" from={0} volume={0.32} />
+      <PyQuestSfx name="error" from={120} volume={0.45} />
+      <PyQuestSfx name="pop" from={220} volume={0.30} />
+
+      <PyQuestSfx name="whoosh-short" from={480} volume={0.32} />
+      <PyQuestSfx name="typing" from={500} volume={0.25} />
+      <PyQuestSfx name="pop" from={720} volume={0.30} />
+      <PyQuestSfx name="pop" from={880} volume={0.30} />
+      <PyQuestSfx name="chime" from={1200} volume={0.36} />
+
+      <PyQuestSfx name="whoosh-short" from={1560} volume={0.32} />
+      <PyQuestSfx name="sparkle" from={1600} volume={0.38} />
+      <PyQuestSfx name="click-soft" from={1800} volume={0.30} />
+      <PyQuestSfx name="chime" from={2400} volume={0.36} />
+
+      <PyQuestSfx name="whoosh-short" from={2760} volume={0.32} />
+      <PyQuestSfx name="click-soft" from={2900} volume={0.30} />
+      <PyQuestSfx name="sparkle" from={3400} volume={0.36} />
+
+      <PyQuestSfx name="whoosh-short" from={3840} volume={0.32} />
+      <PyQuestSfx name="pop" from={3860} volume={0.32} />
+      <PyQuestSfx name="sparkle" from={4100} volume={0.38} />
+      <PyQuestSfx name="chime" from={4300} volume={0.36} />
 
       {/* 2. Badge Superior Unificado */}
       <div
