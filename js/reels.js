@@ -241,7 +241,7 @@ En esta versión V2 del Episodio 1 de PyQuest (con escenario interactivo Rayos X
         ]
     },
     // =====================================================================
-    // REEL DESTACADO: PYQUEST EP. 2 · VARIABLES Y TIPOS DE DATOS: EL ADN DE TU HÉROE (75s @ 60 FPS)
+    // REEL DESTACADO: PYQUEST EP. 2 · VARIABLES Y TIPOS DE DATOS: EL ADN DE TU HÉROE (53s @ 60 FPS)
     // =====================================================================
     {
         id: 'reel_pyquest_ep02',
@@ -249,26 +249,26 @@ En esta versión V2 del Episodio 1 de PyQuest (con escenario interactivo Rayos X
         slug: 'pyquest_ep02_variables_y_tipos',
         theme: 'stack1',
         title: 'PyQuest Ep. 2: Variables y Tipos de Datos',
-        subtitle: 'El ADN de tu héroe y por qué las comillas congelan tu juego',
-        duration_ms: 75000,
-        duration: 75.0,
+        subtitle: 'Choque físico de tipos, brazo mecánico en RAM y los 4 tipos en vivo sobre Aria',
+        duration_ms: 53000,
+        duration: 53.0,
         fps: 60,
-        kicker: 'PYQUEST · EPISODIO 2',
+        kicker: 'PYQUEST · EPISODIO 2 (INTERACTIVO)',
         brandIcon: 'fa-cube',
-        accentColor: '#38BDF8',
-        secondaryColor: '#8B5CF6',
-        videoUrl: 'videos/pyquest_ep02_variables_y_tipos.mp4',
+        accentColor: '#0284C7',
+        secondaryColor: '#10B981',
+        videoUrl: 'videos/pyquest_ep02_variables_y_tipos.mp4?v=2',
         soundUrl: 'bgm/tech_ambient_bed.mp3',
         post: {
             hook: 'El error que comete el 90% de los novatos al programar su primer juego 👇',
             caption: `Poner números entre comillas es el error #1 que congela los juegos de quienes están aprendiendo a programar.
 
-En este Episodio 2 de PyQuest le damos vida a las estadísticas de Aria y exploramos:
+En este Episodio 2 de PyQuest vemos qué hace la computadora por dentro paso a paso:
 
-1️⃣ Anatomía de la RAM: Una variable no es texto mágico, es una cajita etiquetada en la memoria física de tu PC.
-2️⃣ Los 4 Tipos Primitivos: str (texto), int (enteros), float (decimales) y bool (interruptores lógicos True/False).
-3️⃣ Resolución del bug: Cómo restarle daño real a la vida de Aria cuando el Goblin de la mazmorra ataca.
-4️⃣ El misterio del Episodio 3: ¿Qué pasa si el goblin nos pega con 100 de daño y la vida queda en -20? (Condicionales).
+1️⃣ Choque físico de tipos: Por qué las letras "100" rebotan contra el número -20 y congelan a Aria.
+2️⃣ El signo = como brazo mecánico: Cómo toma el dato de la derecha, lo mete en una ranura de RAM (0x7F01) y estampa la etiqueta en el frente.
+3️⃣ Los 4 Tipos en vivo sobre Aria: str (placa de nombre), int (barra de salud 0→100), float (multiplicador de espada x1.75) y bool (interruptor maestro ON/OFF).
+4️⃣ Cirugía de código: Arrancamos las comillas para que 100 - 20 fluya por el cable hasta dejar a Aria en 80 HP.
 
 💾 Guarda este video para tu ruta de aprendizaje en Python.
 👉 Sígueme para el Episodio 3: Condicionales y Lógica de Combate.`,
@@ -279,85 +279,81 @@ En este Episodio 2 de PyQuest le damos vida a las estadísticas de Aria y explor
         beats: [
             {
                 id: 1,
-                name: 'El Error Crítico',
+                name: 'Choque Físico: "100" vs -20',
                 start_ms: 0,
-                end_ms: 8000,
+                end_ms: 9000,
                 type: 'hero',
-                badge: 'ERROR COMÚN',
-                title: 'Comillas que *rompen tu juego*',
-                sub: 'vida = "100" vs vida = 100. La diferencia entre texto y números.',
+                badge: 'ERROR CRÍTICO',
+                title: 'Las comillas *congelan a tu héroe*',
+                sub: 'El texto "100" choca físicamente contra el número -20 y lanza TypeError.',
                 kicker: 'EPISODIO 2 · PYQUEST',
-                vo: 'El noventa por ciento comete este error: poner números entre comillas.'
+                vo: 'En vez de restar la barra de vida, las letras cien chocan contra el menos veinte y congelan a Aria.'
             },
             {
                 id: 2,
-                name: 'Anatomía de la RAM',
-                start_ms: 8000,
-                end_ms: 24000,
+                name: 'El Brazo Mecánico = en RAM',
+                start_ms: 9000,
+                end_ms: 20000,
                 type: 'points',
-                badge: 'MEMORIA FÍSICA',
-                title: 'Cajas etiquetadas *en la RAM*',
-                sub: 'El signo igual guarda el dato en una dirección física del computador.',
+                badge: 'MEMORIA RAM FÍSICA',
+                title: 'El signo = *guarda en ranuras*',
+                sub: 'Toma el bloque de la derecha, lo inserta en la RAM y estampa la etiqueta.',
                 points: [
-                    { num: '01', label: 'Identificador', title: 'Identificador', desc: 'La etiqueta que usas para llamar al dato en memoria (ej: vida).' },
-                    { num: '02', label: 'Operador Asignar', title: 'Operador Asignar', desc: 'El signo = no es igualdad matemática: es almacenamiento físico.' }
+                    { num: '01', label: 'Ranura 0x7F01', title: 'nombre = "Aria"', desc: 'El imán = deposita "Aria" y estampa la etiqueta nombre.' },
+                    { num: '02', label: 'Ranura 0x7F02', title: 'vida = 100', desc: 'Guarda el entero 100 listo para operaciones matemáticas.' }
                 ],
-                vo: 'Una variable es una caja etiquetada en la memoria física de tu computador.'
+                vo: 'El signo igual actúa como un brazo mecánico que mete el dato en una ranura de RAM.'
             },
             {
                 id: 3,
-                name: 'Los 4 Tipos Primitivos',
-                start_ms: 24000,
-                end_ms: 46000,
+                name: 'Los 4 Tipos en Vivo sobre Aria',
+                start_ms: 20000,
+                end_ms: 36000,
                 type: 'code',
-                badge: 'TIPOS DE DATOS',
-                title: 'El ADN *de Aria*',
-                sub: 'String, Integer, Float y Boolean controlan el estado del personaje.',
+                badge: '1 VARIABLE CADA 4 SEGUNDOS',
+                title: 'Construyendo a Aria *paso a paso*',
+                sub: 'Cada variable transforma en vivo la tarjeta central del personaje.',
                 codeSnippet: {
-                    file: 'hero.py ~ stats_aria',
+                    file: 'hero_live.py ~ 4_tipos',
                     lines: [
-                        '# 1. str: Nombre (texto entre comillas)',
-                        'nombre = "Aria"',
-                        '# 2. int: Salud (entero para matemáticas)',
-                        'vida = 100',
-                        '# 3. float: Velocidad (número con decimal)',
-                        'velocidad = 4.5',
-                        '# 4. bool: Estado (interruptor binario)',
-                        'esta_viva = True'
+                        'heroe = "Aria"      # 1. str -> Placa de nombre',
+                        'vida = 100          # 2. int -> Barra sube 0 a 100 HP',
+                        'critico = 1.75      # 3. float -> Espada brilla x1.75',
+                        'esta_viva = True    # 4. bool -> Interruptor OFF a ON'
                     ]
                 },
-                vo: 'Cuatro tipos de datos controlan a tu personaje: texto, enteros, decimales y booleanos.'
+                vo: 'Agregamos una variable cada cuatro segundos y vemos cómo transforma a Aria en vivo.'
             },
             {
                 id: 4,
-                name: 'Combate y Resolución',
-                start_ms: 46000,
-                end_ms: 62000,
+                name: 'Pinzas Borran las Comillas',
+                start_ms: 36000,
+                end_ms: 46000,
                 type: 'compare',
-                badge: 'ATAQUE EN VIVO',
-                title: 'Matemáticas *que funcionan*',
-                sub: 'vida = 100 - 20 = 80 HP. Barra de salud reactiva en tiempo real.',
+                badge: 'CIRUGÍA DE CÓDIGO',
+                title: 'De "100" a 100: *80 HP reales*',
+                sub: 'Arrancamos las comillas y el cálculo 100 - 20 fluye por el cable hacia Aria.',
                 compareData: {
                     bad: {
-                        title: 'vida = "100" (Texto con comillas)',
-                        desc: 'Si el Goblin pega 20 de daño, "100" - 20 lanza TypeError: no puedes restar números a texto.'
+                        title: 'vida = "100" (Bloqueado)',
+                        desc: 'Las comillas convierten el número en letras y congelan el combate.'
                     },
                     good: {
-                        title: 'vida = 100 (Entero Real)',
-                        desc: 'vida = 100 - 20 da exactamente 80 HP. El motor responde y la barra disminuye con precisión.'
+                        title: 'vida = 100 (Entero Limpio)',
+                        desc: '100 - 20 fluye por el cable y baja la barra suavemente a 80 / 100 HP.'
                     }
                 },
-                vo: 'Con números reales, las operaciones funcionan y Aria absorbe el impacto.'
+                vo: 'Quitamos las comillas y el cálculo cien menos veinte baja su barra a ochenta de vida.'
             },
             {
                 id: 5,
-                name: 'Cliffhanger y CTA',
-                start_ms: 62000,
-                end_ms: 75000,
+                name: 'Cliffhanger (-20 HP) y CTA',
+                start_ms: 46000,
+                end_ms: 53000,
                 type: 'cta',
                 badge: 'PRÓXIMO CAPÍTULO',
-                title: '¿Vida negativa? *Episodio 3*',
-                sub: 'Aprenderemos condicionales para evitar que la vida baje de cero.',
+                title: '¿Vida en *-20 HP*? Episodio 3',
+                sub: 'Usaremos condicionales if / elif / else para impedir héroes zombis.',
                 ctaData: {
                     keyword: 'PYQUEST',
                     line: 'Comenta PYQUEST para el código fuente y sígueme para el Episodio 3.',
@@ -368,7 +364,7 @@ En este Episodio 2 de PyQuest le damos vida a las estadísticas de Aria y explor
         ]
     },
     // =====================================================================
-    // REEL DESTACADO: PYQUEST EP. 3 · CONDICIONALES Y COMBATE: LAS REGLAS DE LA VIDA (74s @ 60 FPS)
+    // REEL DESTACADO: PYQUEST EP. 3 · CONDICIONALES Y COMBATE: LAS REGLAS DE LA VIDA (54s @ 60 FPS)
     // =====================================================================
     {
         id: 'reel_pyquest_ep03',
@@ -376,15 +372,15 @@ En este Episodio 2 de PyQuest le damos vida a las estadísticas de Aria y explor
         slug: 'pyquest_ep03_condicionales_y_combate',
         theme: 'stack1',
         title: 'PyQuest Ep. 3: Condicionales y Combate',
-        subtitle: 'Las reglas de la vida y cómo evitar que tu héroe tenga vida negativa',
-        duration_ms: 74000,
-        duration: 74.0,
+        subtitle: 'El bug del héroe zombi (-20 HP), indentación visual y escáner if/elif/else',
+        duration_ms: 54000,
+        duration: 54.0,
         fps: 60,
-        kicker: 'PYQUEST · EPISODIO 3',
+        kicker: 'PYQUEST · EPISODIO 3 (INTERACTIVO)',
         brandIcon: 'fa-shield-halved',
         accentColor: '#10B981',
-        secondaryColor: '#38BDF8',
-        videoUrl: 'videos/pyquest_ep03_condicionales_y_combate.mp4',
+        secondaryColor: '#4F46E5',
+        videoUrl: 'videos/pyquest_ep03_condicionales_y_combate.mp4?v=2',
         soundUrl: 'bgm/tech_ambient_bed.mp3',
         tags: ['Python', 'Condicionales', 'PyQuest', 'RPG', 'GameDev', 'AprenderAProgramar'],
         sound: {
@@ -395,95 +391,90 @@ En este Episodio 2 de PyQuest le damos vida a las estadísticas de Aria y explor
         beats: [
             {
                 id: 1,
-                name: 'El Absurdo de Vida Negativa',
+                name: 'El Bug del Héroe Zombi (-20 HP)',
                 start_ms: 0,
-                end_ms: 8000,
+                end_ms: 9000,
                 type: 'hero',
-                badge: 'FALLA DE LÓGICA',
-                title: '¿Tu héroe puede tener *-20 de vida*?',
-                sub: 'Sin condicionales no hay reglas de juego: el personaje muere pero la partida sigue.',
+                badge: 'BUG LÓGICO EN VIVO',
+                title: '¿Por qué pelea con *-20 de vida*?',
+                sub: 'Aria tiene 10 HP, recibe -30, la barra se rompe hacia la izquierda y sigue atacando como zombi.',
                 kicker: 'EPISODIO 3 · PYQUEST',
-                vo: 'Si un programa no evalúa condiciones, Aria tiene menos veinte de vida y el motor no se entera.'
+                vo: 'Aria recibe treinta de daño, su barra se rompe hasta menos veinte, pero sigue atacando como un zombi.'
             },
             {
                 id: 2,
-                name: 'La Regla if y los 4 Espacios',
-                start_ms: 8000,
-                end_ms: 26000,
+                name: 'Visualizador de Indentación [·][·][·][·]',
+                start_ms: 9000,
+                end_ms: 21000,
                 type: 'code',
-                badge: 'INSTRUCCIÓN IF',
-                title: 'Evaluando *decisiones*',
-                sub: 'if vida <= 0: print("GAME OVER"). 4 espacios de indentación definen el bloque.',
+                badge: 'LOS DOS PUNTOS Y 4 ESPACIOS',
+                title: 'La jurisdicción *del bloque if*',
+                sub: 'Los dos puntos : brillan y empujan print("GAME OVER") 4 bloques hacia la derecha.',
                 codeSnippet: {
-                    file: 'combate.py ~ regla_vida',
+                    file: 'combate.py ~ indentacion_4_espacios',
                     lines: [
-                        '# Verificamos si la salud llegó al límite',
-                        'if vida <= 0:',
-                        '    print("GAME OVER")',
-                        '    juego_activo = False',
-                        '# 4 espacios de indentación definen el bloque'
+                        'if vida <= 0:                 # : abre jurisdicción',
+                        '    print("GAME OVER")        # [·][·][·][·] 4 espacios',
+                        '    fin_del_juego()           # Conectado al bloque if'
                     ]
                 },
-                vo: 'La palabra clave if evalúa una pregunta: si es verdadera, ejecuta el bloque indentado.'
+                vo: 'Los dos puntos empujan la línea cuatro espacios para meterla dentro de la jurisdicción del if.'
             },
             {
                 id: 3,
-                name: 'Árbol Lógico Completo',
-                start_ms: 26000,
-                end_ms: 48000,
+                name: 'Escáner Línea por Línea (if / elif / else)',
+                start_ms: 21000,
+                end_ms: 39000,
                 type: 'code',
-                badge: 'IF / ELIF / ELSE',
-                title: 'Tres caminos *en 6 líneas*',
-                sub: 'Derrotado, Peligro Crítico o Listo para la batalla con if, elif y else.',
+                badge: '3 PRUEBAS EN VIVO (85, 25 Y 0 HP)',
+                title: 'El embudo *de arriba hacia abajo*',
+                sub: 'En cuanto una condición da True, Python ejecuta esa rama y tacha todas las demás.',
                 codeSnippet: {
-                    file: 'combate.py ~ arbol_estados',
+                    file: 'combate.py ~ escaner_embudo',
                     lines: [
-                        'if vida <= 0:',
-                        '    print("Aria ha caído")',
-                        'elif vida < 30:',
-                        '    print("Peligro Crítico: Bebe una poción")',
-                        'else:',
-                        '    print("Aria sigue en combate")'
+                        '# Prueba 1 (85 HP) -> cae hasta else ("Listo para luchar")',
+                        '# Prueba 2 (25 HP) -> entra en elif < 30 y TACHA el else',
+                        '# Prueba 3 (0 HP)  -> entra en if <= 0 y detiene todo'
                     ]
                 },
-                vo: 'Con elif cubrimos estados intermedios como peligro crítico, y con else el estado normal.'
+                vo: 'El escáner evalúa de arriba hacia abajo: en cuanto una condición se cumple, tacha e ignora las demás.'
             },
             {
                 id: 4,
-                name: 'Combate Boss Goblin',
-                start_ms: 48000,
-                end_ms: 64000,
+                name: 'Combate Final Coherente vs Boss Goblin',
+                start_ms: 39000,
+                end_ms: 47000,
                 type: 'compare',
-                badge: 'COMBATE EN VIVO',
-                title: 'El código detiene *la partida*',
-                sub: 'El Goblin es derrotado y la regla detiene el juego en el instante exacto.',
+                badge: 'TURNO FINAL SINCRONIZADO',
+                title: 'Golpe crítico y *victoria real*',
+                sub: 'Aria baja a 70 HP, contraataca por -35 DMG, el Goblin cae a 0 HP y recién se activa VICTORIA.',
                 compareData: {
                     bad: {
-                        title: 'Sin Condicionales (Falla)',
-                        desc: 'El Goblin golpea por 100 de daño: vida queda en -20 y Aria sigue caminando como zombie sin detenerse.'
+                        title: 'Mientras hp_goblin > 0 (35 HP)',
+                        desc: 'if hp_goblin <= 0 da False: el combate continúa sin mostrar victoria prematura.'
                     },
                     good: {
-                        title: 'Con if vida <= 0 (Control)',
-                        desc: 'El motor detecta que la vida llegó a 0, congela la pantalla de batalla y muestra la animación de GAME OVER.'
+                        title: 'Cuando hp_goblin llega a 0 HP',
+                        desc: 'if hp_goblin <= 0 cambia a True en tiempo real y desbloquea el cofre de victoria.'
                     }
                 },
-                vo: 'Ahora el juego responde a la perfección y la partida se detiene cuando la salud se agota.'
+                vo: 'Cuando el golpe crítico deja al Goblin en cero de vida, el condicional activa la victoria y suelta el cofre.'
             },
             {
                 id: 5,
                 name: 'Cliffhanger de Botín y CTA',
-                start_ms: 64000,
-                end_ms: 74000,
+                start_ms: 47000,
+                end_ms: 54000,
                 type: 'cta',
                 badge: 'PRÓXIMO CAPÍTULO',
-                title: '10 objetos de botín *¿10 variables?*',
-                sub: 'Episodio 4: Agruparemos el inventario con Listas y Diccionarios.',
+                title: '¿50 ítems = *50 variables*?',
+                sub: 'Episodio 4: Programaremos la mochila de Aria con Listas y Diccionarios.',
                 ctaData: {
                     keyword: 'INVENTARIO',
-                    line: 'Comenta INVENTARIO y sígueme para aprender Listas en el Episodio 4.',
+                    line: 'Guarda este video y sígueme para el Episodio 4: Inventario RPG.',
                     handle: '@santi.dev'
                 },
-                vo: 'El jefe soltó diez recompensas. En el próximo episodio aprenderemos Listas y Diccionarios.'
+                vo: 'Guarda este video y sígueme para programar el inventario en el episodio cuatro.'
             }
         ]
     },

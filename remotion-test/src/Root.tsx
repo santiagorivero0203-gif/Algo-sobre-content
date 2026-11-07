@@ -132,20 +132,20 @@ export const RemotionRoot = () => {
         width={1080}
         height={1920}
       />
-      {/* Episodio 2: Variables y Tipos de Datos: El ADN de tu Héroe (75s @ 60 FPS = 4500 frames) */}
+      {/* Episodio 2: Variables y Tipos de Datos: El ADN de tu Héroe (53s @ 60 FPS = 3180 frames) */}
       <Composition
         id="PyQuestEp02Reel"
         component={PyQuestEp02}
-        durationInFrames={4500}
+        durationInFrames={3180}
         fps={60}
         width={1080}
         height={1920}
       />
-      {/* Episodio 3: Condicionales y Combate: Las Reglas de la Vida (74s @ 60 FPS = 4440 frames) */}
+      {/* Episodio 3: Condicionales y Combate: Las Reglas de la Vida (54s @ 60 FPS = 3240 frames) */}
       <Composition
         id="PyQuestEp03Reel"
         component={PyQuestEp03}
-        durationInFrames={4440}
+        durationInFrames={3240}
         fps={60}
         width={1080}
         height={1920}

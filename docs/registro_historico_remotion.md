@@ -30,8 +30,8 @@ Documento de trazabilidad: qué se hizo, por qué, y cómo corregirlo o mejorarl
 | `Root.tsx` | Registra `StackSecretoReel`, `TokensProReel`, `KineticReel`, `PyQuestEp01Reel`, `PyQuestEp01V2Reel`, `PyQuestEp02Reel`, `PyQuestEp03Reel` y `PyQuestEp04Reel` |
 | `pyquest/episodes/ep01/Ep01.tsx` | Episodio 1 original de PyQuest (72s @ 60 FPS = 4320 frames) |
 | `pyquest/episodes/ep01/Ep01V2.tsx` | Episodio 1 V2 de PyQuest con Escena 4 refactorizada a sistema interactivo **Rayos X 2.5D con `import` rotativo** (66s @ 60 FPS = 3960 frames) |
-| `pyquest/episodes/ep02/Ep02.tsx` | Episodio 2 de PyQuest: Variables y Tipos de Datos (75s @ 60 FPS) |
-| `pyquest/episodes/ep03/Ep03.tsx` | Episodio 3 de PyQuest: Condicionales `if / elif / else` (75s @ 60 FPS) |
+| `pyquest/episodes/ep02/Ep02.tsx` | Episodio 2 de PyQuest (Rehecho Interactivo): Variables y Tipos de Datos con choque físico `"100"` vs `-20`, brazo mecánico `=` en RAM, los 4 tipos en vivo sobre Aria y pinzas extractoras de comillas (53s @ 60 FPS = 3180 frames) |
+| `pyquest/episodes/ep03/Ep03.tsx` | Episodio 3 de PyQuest (Rehecho Interactivo): Condicionales `if / elif / else` con bug de héroe zombi (`-20 HP` desbordado), visualizador de indentación `[·][·][·][·]` y escáner línea por línea de 3 pruebas con tachado de ramas descartadas (54s @ 60 FPS = 3240 frames) |
 | `pyquest/episodes/ep04/Ep04.tsx` | Episodio 4 de PyQuest: Operadores Lógicos `and / or / not` (75s @ 60 FPS) |
 
 ## 3. Decisiones de Diseño y Rendimiento
