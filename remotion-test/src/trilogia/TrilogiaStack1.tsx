@@ -1,28 +1,28 @@
 /**
  * =====================================================================
- * TRILOGÍA "DE LA IDEA AL CÓDIGO" · PARTE 1: STACK SECRETO (V2)
+ * TRILOGÍA "DE LA IDEA AL CÓDIGO" · PARTE 1: STACK SECRETO (V3 SFX + DYNAMIC MOTION)
  * =====================================================================
- * Refactorización completa:
- *  - Estilo visual Gemini: Hero de alto impacto, breathing line, badges flotantes.
- *  - Distribución "a lo largo" (1080x1920) sin huecos vacíos.
- *  - Paleta pastel slate (STACK1_PALETTE) suave y limpia a la vista.
- *  - Cero cuadrículas de fondo.
- *  - Objetos 3D en perspectiva con imágenes reales (the_last_endo_live.png, endo_sprite.jpg).
- *  - Cero barra superior fija.
+ * Coreografía diferenciada por beat:
+ *  - Beat 1: CardHero3D en perspectiva con the_last_endo_live.png + whoosh-cinematic & bass.
+ *  - Beat 2: CardSlideLateral (aparición de izquierda a derecha) con tokens de Figma + click & ping.
+ *  - Beat 3: CardDualSnap (terminal cae de arriba, Opencode sube de abajo) + typing & chime.
+ *  - Beat 4: CardScanReveal (escáner láser con endo_sprite.jpg) + sparkle.
+ *  - Beat 5: CardStampCTA (impacto stamp con rebote y botón magnético) + impact-bass-2.
  * =====================================================================
  */
 import React from "react";
+import { AbsoluteFill, Sequence, useCurrentFrame } from "remotion";
 import {
-  AbsoluteFill,
-  Sequence,
-  useCurrentFrame,
-} from "remotion";
-import {
-  Card3D,
+  CardDualSnap,
+  CardHero3D,
+  CardScanReveal,
+  CardSlideLateral,
+  CardStampCTA,
   FONT_MONO,
   FONT_SANS,
   MockupWindow,
   STACK1_PALETTE,
+  SoundEffect,
   TelemetryBar,
   TrilogyAtmosphere,
   TrilogyBgm,
@@ -36,37 +36,36 @@ export const TrilogiaStack1: React.FC = () => {
 
   return (
     <AbsoluteFill style={{ backgroundColor: palette.baseDeep }}>
-      {/* 1. Fondo de estudio limpio sin cuadrícula */}
+      {/* Fondo de estudio limpio sin cuadrícula */}
       <TrilogyAtmosphere palette={palette} />
 
-      {/* 2. Secuencias cinematográficas a 60 FPS */}
       {/* BEAT 1: HERO GEMINI-STYLE (0 - 4s = 240 frames) */}
       <Sequence from={0} durationInFrames={240}>
         <Beat1Hero palette={palette} />
       </Sequence>
 
-      {/* BEAT 2: FASE 1 · INSPIRACIÓN & FIGMA (4s - 8s = 240 frames) */}
+      {/* BEAT 2: FASE 1 · INSPIRACIÓN (APARICIÓN IZQUIERDA A DERECHA) (4s - 8s = 240 frames) */}
       <Sequence from={240} durationInFrames={240}>
         <Beat2Inspiracion palette={palette} />
       </Sequence>
 
-      {/* BEAT 3: FASE 2 · LÓGICA ANTIGRAVITY + OPENCODE (8s - 14s = 360 frames) */}
+      {/* BEAT 3: FASE 2 · LÓGICA (DUAL SNAP VERTICAL TOP/BOTTOM) (8s - 14s = 360 frames) */}
       <Sequence from={480} durationInFrames={360}>
         <Beat3Logica palette={palette} />
       </Sequence>
 
-      {/* BEAT 4: FASE 3 · ARTE NANO BANANA + SPRITES (14s - 19s = 300 frames) */}
+      {/* BEAT 4: FASE 3 · ARTE (ESCÁNER LÁSER & REVELADO) (14s - 19s = 300 frames) */}
       <Sequence from={840} durationInFrames={300}>
         <Beat4Arte palette={palette} />
       </Sequence>
 
-      {/* BEAT 5: CTA COMUNIDAD (19s - 24s = 300 frames) */}
+      {/* BEAT 5: CTA COMUNIDAD (IMPACTO STAMP OVERSHOOT) (19s - 24s = 300 frames) */}
       <Sequence from={1140} durationInFrames={300}>
         <Beat5Cta palette={palette} />
       </Sequence>
 
-      {/* Audio ambiental */}
-      <TrilogyBgm volume={0.24} />
+      {/* BGM de fondo suave */}
+      <TrilogyBgm volume={0.22} />
     </AbsoluteFill>
   );
 };
@@ -98,16 +97,20 @@ const Beat1Hero: React.FC<{ palette: typeof STACK1_PALETTE }> = ({ palette }) =>
         />
       }
     >
-      {/* Mockup 3D en perspectiva del juego real */}
-      <Card3D rotateX={9} rotateY={-7} glow={palette.accent} delay={10}>
+      {/* SFX Sincronizados */}
+      <SoundEffect file="whoosh-cinematic.mp3" from={0} volume={0.55} />
+      <SoundEffect file="impact-bass-1.mp3" from={12} volume={0.45} />
+      <SoundEffect file="pop.mp3" from={24} volume={0.4} />
+
+      {/* Hero 3D en perspectiva flotante (aprobado por usuario) */}
+      <CardHero3D rotateX={9} rotateY={-7} glow={palette.accent} delay={8}>
         <MockupWindow
           title="the-last-endo.vercel.app ~ live game"
           image="assets/the_last_endo_live.png"
           accent={palette.accent}
           height={460}
-          delay={12}
+          delay={10}
         />
-        {/* Badge flotante 3D */}
         <div
           style={{
             position: "absolute",
@@ -139,13 +142,13 @@ const Beat1Hero: React.FC<{ palette: typeof STACK1_PALETTE }> = ({ palette }) =>
           />
           0 LÍNEAS DE SINTAXIS MANUAL
         </div>
-      </Card3D>
+      </CardHero3D>
     </TrilogyCanvas>
   );
 };
 
 // =====================================================================
-// BEAT 2: FASE 1 · INSPIRACIÓN (240 frames / 4.0s)
+// BEAT 2: FASE 1 · APARICIÓN LATERAL DE IZQUIERDA A DERECHA (240f / 4.0s)
 // =====================================================================
 const Beat2Inspiracion: React.FC<{ palette: typeof STACK1_PALETTE }> = ({
   palette,
@@ -169,9 +172,15 @@ const Beat2Inspiracion: React.FC<{ palette: typeof STACK1_PALETTE }> = ({
         />
       }
     >
-      <Card3D rotateX={8} rotateY={-5} glow={palette.accent} delay={10}>
+      {/* SFX Sincronizados de barrido lateral y locks */}
+      <SoundEffect file="whoosh-short.mp3" from={0} volume={0.5} />
+      <SoundEffect file="click-soft.mp3" from={12} volume={0.4} />
+      <SoundEffect file="click-soft.mp3" from={20} volume={0.4} />
+      <SoundEffect file="ping.mp3" from={28} volume={0.45} />
+
+      {/* Tarjeta con revelado y traslación de izquierda a derecha */}
+      <CardSlideLateral glow={palette.accent} delay={6}>
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          {/* Header de Tokens en Figma */}
           <div
             style={{
               display: "flex",
@@ -200,7 +209,6 @@ const Beat2Inspiracion: React.FC<{ palette: typeof STACK1_PALETTE }> = ({
             </div>
           </div>
 
-          {/* 3 Bloques escalonados con micro-animaciones */}
           {[
             {
               n: "01",
@@ -221,7 +229,7 @@ const Beat2Inspiracion: React.FC<{ palette: typeof STACK1_PALETTE }> = ({
               color: "#A78BFA",
             },
           ].map((item, idx) => {
-            const enter = useEnter(12 + idx * 8);
+            const enter = useEnter(10 + idx * 8, 18, 170);
             return (
               <div
                 key={item.n}
@@ -234,7 +242,7 @@ const Beat2Inspiracion: React.FC<{ palette: typeof STACK1_PALETTE }> = ({
                   background: "rgba(255,255,255,0.04)",
                   border: `1px solid ${item.color}44`,
                   opacity: enter,
-                  transform: `translateX(${(1 - enter) * 24}px)`,
+                  transform: `translateX(${(1 - enter) * -50}px)`,
                 }}
               >
                 <div
@@ -274,17 +282,17 @@ const Beat2Inspiracion: React.FC<{ palette: typeof STACK1_PALETTE }> = ({
             );
           })}
         </div>
-      </Card3D>
+      </CardSlideLateral>
     </TrilogyCanvas>
   );
 };
 
 // =====================================================================
-// BEAT 3: FASE 2 · LÓGICA & MOTOR (360 frames / 6.0s)
+// BEAT 3: FASE 2 · DUAL SNAP VERTICAL (360 frames / 6.0s)
 // =====================================================================
 const Beat3Logica: React.FC<{ palette: typeof STACK1_PALETTE }> = ({ palette }) => {
   const frame = useCurrentFrame();
-  const tokenCount = Math.floor(clampInterp(frame, [50, 220], [0, 1200]));
+  const tokenCount = Math.floor(clampInterp(frame, [45, 200], [0, 1200]));
 
   return (
     <TrilogyCanvas
@@ -305,31 +313,32 @@ const Beat3Logica: React.FC<{ palette: typeof STACK1_PALETTE }> = ({ palette }) 
         />
       }
     >
-      <Card3D rotateX={9} rotateY={-6} glow={palette.accent} delay={10}>
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          {/* Terminal Antigravity */}
-          <div
-            style={{
-              padding: "18px 22px",
-              borderRadius: 18,
-              background: "rgba(5, 12, 20, 0.94)",
-              border: `1.5px solid ${palette.accent}66`,
-              fontFamily: FONT_MONO,
-            }}
-          >
+      {/* SFX Sincronizados de tecleo y éxito de compilación */}
+      <SoundEffect file="whoosh.mp3" from={0} volume={0.5} />
+      <SoundEffect file="typing.mp3" from={14} volume={0.35} />
+      <SoundEffect file="chime.mp3" from={65} volume={0.5} />
+      <SoundEffect file="click.mp3" from={90} volume={0.4} />
+
+      {/* Dual Snap Vertical: Terminal cae de arriba, Opencode sube de abajo */}
+      <CardDualSnap
+        glow={palette.accent}
+        delay={6}
+        topChild={
+          <div>
             <div
               style={{
                 display: "flex",
                 justifyContent: "space-between",
                 color: "#64748B",
                 fontSize: 16,
-                marginBottom: 10,
+                marginBottom: 8,
+                fontFamily: FONT_MONO,
               }}
             >
               <span>terminal ~ antigravity-cli</span>
-              <span style={{ color: palette.accent }}>● ACTIVO</span>
+              <span style={{ color: palette.accent }}>● BUILD ACTIVO</span>
             </div>
-            <div style={{ color: "#E2E8F0", fontSize: 20, lineHeight: 1.5 }}>
+            <div style={{ color: "#E2E8F0", fontSize: 20, fontFamily: FONT_MONO }}>
               <span style={{ color: palette.accent }}>$</span> agy build --mechanics="stealth" --mcp
             </div>
             <div
@@ -338,19 +347,16 @@ const Beat3Logica: React.FC<{ palette: typeof STACK1_PALETTE }> = ({ palette }) 
                 fontSize: 19,
                 fontWeight: 700,
                 marginTop: 6,
+                fontFamily: FONT_MONO,
               }}
             >
               ✓ Arquitectura base generada (85% del trabajo resuelto)
             </div>
           </div>
-
-          {/* Tarjeta Opencode Token Optimizer */}
+        }
+        bottomChild={
           <div
             style={{
-              padding: "18px 22px",
-              borderRadius: 18,
-              background: "rgba(10, 20, 32, 0.9)",
-              border: `1.5px solid ${palette.secondary}66`,
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
@@ -393,19 +399,16 @@ const Beat3Logica: React.FC<{ palette: typeof STACK1_PALETTE }> = ({ palette }) 
               -{tokenCount} TKN
             </div>
           </div>
-        </div>
-      </Card3D>
+        }
+      />
     </TrilogyCanvas>
   );
 };
 
 // =====================================================================
-// BEAT 4: FASE 3 · ARTE & SPRITES (300 frames / 5.0s)
+// BEAT 4: FASE 3 · ESCÁNER LÁSER & REVELADO (300 frames / 5.0s)
 // =====================================================================
 const Beat4Arte: React.FC<{ palette: typeof STACK1_PALETTE }> = ({ palette }) => {
-  const frame = useCurrentFrame();
-  const scanX = clampInterp(frame, [30, 220], [0, 100]);
-
   return (
     <TrilogyCanvas
       durationInFrames={300}
@@ -425,37 +428,29 @@ const Beat4Arte: React.FC<{ palette: typeof STACK1_PALETTE }> = ({ palette }) =>
         />
       }
     >
-      <Card3D rotateX={8} rotateY={-6} glow={palette.accent} delay={10}>
+      {/* SFX Sincronizados de escáner y finalización */}
+      <SoundEffect file="whoosh-short.mp3" from={0} volume={0.5} />
+      <SoundEffect file="sparkle.mp3" from={22} volume={0.45} />
+      <SoundEffect file="notification.mp3" from={70} volume={0.4} />
+
+      {/* Tarjeta con escáner láser continuo que barre la imagen */}
+      <CardScanReveal glow={palette.accent} delay={8}>
         <MockupWindow
           title="nanobanana.ai ~ sprite-generator"
           image="assets/endo_sprite.jpg"
           accent={palette.accent}
           height={430}
-          delay={12}
+          delay={10}
         />
-        {/* Línea de escaneo láser de fondo transparente */}
-        <div
-          style={{
-            position: "absolute",
-            top: 50,
-            bottom: 50,
-            left: `${scanX}%`,
-            width: 3,
-            background: palette.accent,
-            boxShadow: `0 0 15px ${palette.accent}`,
-          }}
-        />
-      </Card3D>
+      </CardScanReveal>
     </TrilogyCanvas>
   );
 };
 
 // =====================================================================
-// BEAT 5: CTA COMUNIDAD (300 frames / 5.0s)
+// BEAT 5: CTA COMUNIDAD · IMPACT STAMP (300 frames / 5.0s)
 // =====================================================================
 const Beat5Cta: React.FC<{ palette: typeof STACK1_PALETTE }> = ({ palette }) => {
-  const frame = useCurrentFrame();
-
   return (
     <TrilogyCanvas
       durationInFrames={300}
@@ -475,7 +470,12 @@ const Beat5Cta: React.FC<{ palette: typeof STACK1_PALETTE }> = ({ palette }) => 
         />
       }
     >
-      <Card3D rotateX={7} rotateY={-5} glow={palette.accent} delay={10}>
+      {/* SFX Sincronizados de impacto y brillo */}
+      <SoundEffect file="impact-bass-2.mp3" from={0} volume={0.55} />
+      <SoundEffect file="sparkle.mp3" from={18} volume={0.45} />
+
+      {/* Tarjeta Stamp con resorte de rebote y botón magnético */}
+      <CardStampCTA glow={palette.accent} delay={6}>
         <div
           style={{
             display: "flex",
@@ -499,7 +499,7 @@ const Beat5Cta: React.FC<{ palette: typeof STACK1_PALETTE }> = ({ palette }) => 
 
           <div
             style={{
-              padding: "16px 40px",
+              padding: "16px 42px",
               borderRadius: 999,
               background: palette.accent,
               color: "#050F0C",
@@ -508,7 +508,6 @@ const Beat5Cta: React.FC<{ palette: typeof STACK1_PALETTE }> = ({ palette }) => 
               fontSize: 32,
               letterSpacing: "0.1em",
               boxShadow: `0 0 40px ${palette.accent}88`,
-              transform: `scale(${1 + Math.sin(frame / 12) * 0.04})`,
             }}
           >
             COMENTA "STACK"
@@ -518,7 +517,7 @@ const Beat5Cta: React.FC<{ palette: typeof STACK1_PALETTE }> = ({ palette }) => 
             Te envío el repositorio completo por mensaje directo @santi.dev
           </div>
         </div>
-      </Card3D>
+      </CardStampCTA>
     </TrilogyCanvas>
   );
 };

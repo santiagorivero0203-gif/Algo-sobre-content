@@ -1,28 +1,27 @@
 /**
  * =====================================================================
- * TRILOGÍA "DE LA IDEA AL CÓDIGO" · PARTE 3: EL ARTE DEL PROMPT (V2)
+ * TRILOGÍA "DE LA IDEA AL CÓDIGO" · PARTE 3: EL ARTE DEL PROMPT (V3 SFX + DYNAMIC MOTION)
  * =====================================================================
- * Refactorización completa:
- *  - Estilo visual Gemini: Hero de alto impacto, breathing line, badges flotantes.
- *  - Distribución "a lo largo" (1080x1920) sin huecos vacíos.
- *  - Paleta pastel sky/indigo slate (STACK3_PALETTE) suave y limpia a la vista.
- *  - Cero cuadrículas de fondo.
- *  - Objetos 3D en perspectiva con imágenes reales (gemini_workspace_sidepanel.png).
- *  - Cero barra superior fija.
+ * Coreografía diferenciada por beat:
+ *  - Beat 1: CardHero3D en perspectiva comparativa contratos vs monolithic + whoosh-cinematic & bass.
+ *  - Beat 2: CardSlideLateral (aparición de izquierda a derecha) con antipatrón y glitch/error.
+ *  - Beat 3: CardDualSnap (Google AI Studio cae de arriba, context cache sube de abajo) + typing & chime.
+ *  - Beat 4: CardScanReveal (escáner láser con interfaces TypeScript modulares) + sparkle & ping.
+ *  - Beat 5: CardStampCTA (impacto stamp con rebote y botón magnético PROMPT) + impact-bass-2.
  * =====================================================================
  */
 import React from "react";
+import { AbsoluteFill, Sequence } from "remotion";
 import {
-  AbsoluteFill,
-  Sequence,
-  useCurrentFrame,
-} from "remotion";
-import {
-  Card3D,
+  CardDualSnap,
+  CardHero3D,
+  CardScanReveal,
+  CardSlideLateral,
+  CardStampCTA,
   FONT_MONO,
   FONT_SANS,
-  MockupWindow,
   STACK3_PALETTE,
+  SoundEffect,
   TelemetryBar,
   TrilogyAtmosphere,
   TrilogyBgm,
@@ -34,37 +33,36 @@ export const TrilogiaStack3: React.FC = () => {
 
   return (
     <AbsoluteFill style={{ backgroundColor: palette.baseDeep }}>
-      {/* 1. Fondo de estudio limpio sin cuadrícula */}
+      {/* Fondo de estudio limpio sin cuadrícula */}
       <TrilogyAtmosphere palette={palette} />
 
-      {/* 2. Secuencias cinematográficas a 60 FPS */}
       {/* BEAT 1: HERO GEMINI-STYLE (0 - 4s = 240 frames) */}
       <Sequence from={0} durationInFrames={240}>
         <Beat1Hero palette={palette} />
       </Sequence>
 
-      {/* BEAT 2: EL ANTIPATRÓN (4s - 9s = 300 frames) */}
+      {/* BEAT 2: EL ANTIPATRÓN (APARICIÓN IZQUIERDA A DERECHA) (4s - 9s = 300 frames) */}
       <Sequence from={240} durationInFrames={300}>
         <Beat2Antipatron palette={palette} />
       </Sequence>
 
-      {/* BEAT 3: GOOGLE AI STUDIO + CONTEXT CACHE (9s - 14.5s = 330 frames) */}
+      {/* BEAT 3: GOOGLE AI STUDIO (DUAL SNAP VERTICAL TOP/BOTTOM) (9s - 14.5s = 330 frames) */}
       <Sequence from={540} durationInFrames={330}>
         <Beat3AIStudio palette={palette} />
       </Sequence>
 
-      {/* BEAT 4: ARQUITECTURA POR CONTRATOS (14.5s - 20s = 330 frames) */}
+      {/* BEAT 4: ARQUITECTURA POR CONTRATOS (ESCÁNER & REVELADO) (14.5s - 20s = 330 frames) */}
       <Sequence from={870} durationInFrames={330}>
         <Beat4Contratos palette={palette} />
       </Sequence>
 
-      {/* BEAT 5: CTA COMUNIDAD (20s - 25s = 300 frames) */}
+      {/* BEAT 5: CTA COMUNIDAD (IMPACT STAMP OVERSHOOT) (20s - 25s = 300 frames) */}
       <Sequence from={1200} durationInFrames={300}>
         <Beat5Cta palette={palette} />
       </Sequence>
 
-      {/* Audio ambiental */}
-      <TrilogyBgm volume={0.24} />
+      {/* BGM de fondo suave */}
+      <TrilogyBgm volume={0.22} />
     </AbsoluteFill>
   );
 };
@@ -94,9 +92,14 @@ const Beat1Hero: React.FC<{ palette: typeof STACK3_PALETTE }> = ({ palette }) =>
         />
       }
     >
-      <Card3D rotateX={9} rotateY={-7} glow={palette.accent} delay={10}>
+      {/* SFX Sincronizados */}
+      <SoundEffect file="whoosh-cinematic.mp3" from={0} volume={0.55} />
+      <SoundEffect file="impact-bass-1.mp3" from={12} volume={0.45} />
+      <SoundEffect file="pop.mp3" from={24} volume={0.4} />
+
+      {/* Hero 3D en perspectiva con comparativa visual */}
+      <CardHero3D rotateX={9} rotateY={-7} glow={palette.accent} delay={8}>
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          {/* Comparativa 3D visual */}
           <div
             style={{
               padding: "16px 20px",
@@ -146,20 +149,15 @@ const Beat1Hero: React.FC<{ palette: typeof STACK3_PALETTE }> = ({ palette }) =>
             </span>
           </div>
         </div>
-      </Card3D>
+      </CardHero3D>
     </TrilogyCanvas>
   );
 };
 
 // =====================================================================
-// BEAT 2: EL ANTIPATRÓN (300 frames / 5.0s)
+// BEAT 2: EL ANTIPATRÓN · APARICIÓN LATERAL DE IZQUIERDA A DERECHA (300f / 5.0s)
 // =====================================================================
-const Beat2Antipatron: React.FC<{ palette: typeof STACK3_PALETTE }> = ({
-  palette,
-}) => {
-  const frame = useCurrentFrame();
-  const shake = Math.sin(frame * 1.5) * 2;
-
+const Beat2Antipatron: React.FC<{ palette: typeof STACK3_PALETTE }> = () => {
   return (
     <TrilogyCanvas
       durationInFrames={300}
@@ -179,15 +177,14 @@ const Beat2Antipatron: React.FC<{ palette: typeof STACK3_PALETTE }> = ({
         />
       }
     >
-      <Card3D rotateX={8} rotateY={-6} glow="#F87171" delay={10}>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 16,
-            transform: `translateX(${shake}px)`,
-          }}
-        >
+      {/* SFX Sincronizados de barrido y error/glitch */}
+      <SoundEffect file="whoosh-short.mp3" from={0} volume={0.5} />
+      <SoundEffect file="glitch-1.mp3" from={14} volume={0.4} />
+      <SoundEffect file="error.mp3" from={32} volume={0.45} />
+
+      {/* Tarjeta con revelado y traslación de izquierda a derecha */}
+      <CardSlideLateral glow="#F87171" delay={6}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <div
             style={{
               padding: "16px 20px",
@@ -209,7 +206,7 @@ const Beat2Antipatron: React.FC<{ palette: typeof STACK3_PALETTE }> = ({
             { label: "Sobrecarga de contexto", desc: "La IA olvida reglas dictadas párrafos antes." },
             { label: "Librerías inventadas", desc: "Genera imports que no existen en npm." },
             { label: "Código espagueti", desc: "Tipos incompatibles entre frontend y backend." },
-          ].map((item, idx) => (
+          ].map((item) => (
             <div
               key={item.label}
               style={{
@@ -230,13 +227,13 @@ const Beat2Antipatron: React.FC<{ palette: typeof STACK3_PALETTE }> = ({
             </div>
           ))}
         </div>
-      </Card3D>
+      </CardSlideLateral>
     </TrilogyCanvas>
   );
 };
 
 // =====================================================================
-// BEAT 3: GOOGLE AI STUDIO + CONTEXT CACHE (330 frames / 5.5s)
+// BEAT 3: GOOGLE AI STUDIO · DUAL SNAP VERTICAL (330 frames / 5.5s)
 // =====================================================================
 const Beat3AIStudio: React.FC<{ palette: typeof STACK3_PALETTE }> = ({
   palette,
@@ -260,39 +257,92 @@ const Beat3AIStudio: React.FC<{ palette: typeof STACK3_PALETTE }> = ({
         />
       }
     >
-      <Card3D rotateX={8} rotateY={-6} glow={palette.accent} delay={10}>
-        <MockupWindow
-          title="aistudio.google.com ~ system-prompt-lock"
-          image="assets/gemini_workspace_sidepanel.png"
-          accent={palette.accent}
-          height={430}
-          delay={12}
-        />
-        {/* Badge flotante de System Prompt Lock */}
-        <div
-          style={{
-            position: "absolute",
-            bottom: 24,
-            left: 28,
-            padding: "8px 18px",
-            borderRadius: 999,
-            background: "rgba(10, 16, 28, 0.94)",
-            border: `1.5px solid ${palette.accent}`,
-            fontFamily: FONT_MONO,
-            fontSize: 17,
-            fontWeight: 800,
-            color: palette.accent,
-          }}
-        >
-          🔒 REGLAS INMUTABLES: CONTRATO ANTES DE IMPLEMENTAR
-        </div>
-      </Card3D>
+      {/* SFX Sincronizados de tecleo y verificación de cache */}
+      <SoundEffect file="whoosh.mp3" from={0} volume={0.5} />
+      <SoundEffect file="typing.mp3" from={12} volume={0.35} />
+      <SoundEffect file="chime.mp3" from={60} volume={0.5} />
+      <SoundEffect file="click.mp3" from={85} volume={0.4} />
+
+      {/* Dual Snap Vertical */}
+      <CardDualSnap
+        glow={palette.accent}
+        delay={6}
+        topChild={
+          <div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                color: "#64748B",
+                fontSize: 16,
+                marginBottom: 6,
+                fontFamily: FONT_MONO,
+              }}
+            >
+              <span>aistudio.google.com ~ system-prompt</span>
+              <span style={{ color: palette.accent }}>🔒 BLOQUEADO</span>
+            </div>
+            <div style={{ color: "#E2E8F0", fontSize: 18, fontFamily: FONT_MONO, lineHeight: 1.4 }}>
+              rule: "Nunca escribas implementación sin contrato de tipos previo."
+            </div>
+            <div style={{ color: palette.accent, fontSize: 18, marginTop: 4, fontFamily: FONT_MONO }}>
+              ✓ Directiva inmutable inyectada en todos los turnos
+            </div>
+          </div>
+        }
+        bottomChild={
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <div>
+              <div
+                style={{
+                  fontFamily: FONT_SANS,
+                  fontWeight: 700,
+                  fontSize: 22,
+                  color: "#FFFFFF",
+                }}
+              >
+                Context Caching · Gemini 1.5 Pro
+              </div>
+              <div
+                style={{
+                  fontFamily: FONT_MONO,
+                  fontSize: 17,
+                  color: "#94A3B8",
+                  marginTop: 2,
+                }}
+              >
+                1.2M tokens cargados · Cero re-evaluación
+              </div>
+            </div>
+            <div
+              style={{
+                padding: "8px 16px",
+                borderRadius: 12,
+                background: `${palette.accent}1F`,
+                border: `1.5px solid ${palette.accent}`,
+                color: palette.accent,
+                fontFamily: FONT_MONO,
+                fontWeight: 800,
+                fontSize: 20,
+              }}
+            >
+              85% RÁPIDO
+            </div>
+          </div>
+        }
+      />
     </TrilogyCanvas>
   );
 };
 
 // =====================================================================
-// BEAT 4: ARQUITECTURA POR CONTRATOS (330 frames / 5.5s)
+// BEAT 4: ARQUITECTURA POR CONTRATOS · ESCÁNER & REVELADO (330f / 5.5s)
 // =====================================================================
 const Beat4Contratos: React.FC<{ palette: typeof STACK3_PALETTE }> = ({
   palette,
@@ -316,9 +366,14 @@ const Beat4Contratos: React.FC<{ palette: typeof STACK3_PALETTE }> = ({
         />
       }
     >
-      <Card3D rotateX={9} rotateY={-6} glow={palette.accent} delay={10}>
+      {/* SFX Sincronizados de escáner y verificación de tipos */}
+      <SoundEffect file="whoosh-short.mp3" from={0} volume={0.5} />
+      <SoundEffect file="sparkle.mp3" from={22} volume={0.45} />
+      <SoundEffect file="ping.mp3" from={65} volume={0.4} />
+
+      {/* Tarjeta Scan Reveal con contratos TypeScript */}
+      <CardScanReveal glow={palette.accent} delay={8}>
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-          {/* Bloque TypeScript Interface */}
           <div
             style={{
               padding: "16px 20px",
@@ -378,17 +433,15 @@ const Beat4Contratos: React.FC<{ palette: typeof STACK3_PALETTE }> = ({
             </div>
           </div>
         </div>
-      </Card3D>
+      </CardScanReveal>
     </TrilogyCanvas>
   );
 };
 
 // =====================================================================
-// BEAT 5: CTA COMUNIDAD (300 frames / 5.0s)
+// BEAT 5: CTA COMUNIDAD · IMPACT STAMP (300 frames / 5.0s)
 // =====================================================================
 const Beat5Cta: React.FC<{ palette: typeof STACK3_PALETTE }> = ({ palette }) => {
-  const frame = useCurrentFrame();
-
   return (
     <TrilogyCanvas
       durationInFrames={300}
@@ -408,7 +461,12 @@ const Beat5Cta: React.FC<{ palette: typeof STACK3_PALETTE }> = ({ palette }) => 
         />
       }
     >
-      <Card3D rotateX={7} rotateY={-5} glow={palette.accent} delay={10}>
+      {/* SFX Sincronizados de impacto y brillo */}
+      <SoundEffect file="impact-bass-2.mp3" from={0} volume={0.55} />
+      <SoundEffect file="sparkle.mp3" from={18} volume={0.45} />
+
+      {/* Tarjeta Stamp con resorte de rebote y botón magnético */}
+      <CardStampCTA glow={palette.accent} delay={6}>
         <div
           style={{
             display: "flex",
@@ -441,7 +499,6 @@ const Beat5Cta: React.FC<{ palette: typeof STACK3_PALETTE }> = ({ palette }) => 
               fontSize: 32,
               letterSpacing: "0.1em",
               boxShadow: `0 0 40px ${palette.accent}88`,
-              transform: `scale(${1 + Math.sin(frame / 12) * 0.04})`,
             }}
           >
             COMENTA "PROMPT"
@@ -451,7 +508,7 @@ const Beat5Cta: React.FC<{ palette: typeof STACK3_PALETTE }> = ({ palette }) => 
             Te mando las plantillas de contratos modulares completas @santi.dev
           </div>
         </div>
-      </Card3D>
+      </CardStampCTA>
     </TrilogyCanvas>
   );
 };

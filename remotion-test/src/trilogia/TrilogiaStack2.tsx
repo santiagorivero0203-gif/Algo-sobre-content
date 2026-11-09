@@ -1,30 +1,28 @@
 /**
  * =====================================================================
- * TRILOGÍA "DE LA IDEA AL CÓDIGO" · PARTE 2: AUTOMATIZACIÓN CON MCP (V2)
+ * TRILOGÍA "DE LA IDEA AL CÓDIGO" · PARTE 2: AUTOMATIZACIÓN CON MCP (V3 SFX + DYNAMIC MOTION)
  * =====================================================================
- * Refactorización completa:
- *  - Estilo visual Gemini: Hero de alto impacto, breathing line, badges flotantes.
- *  - Distribución "a lo largo" (1080x1920) sin huecos vacíos.
- *  - Paleta pastel amber/slate (STACK2_PALETTE) suave y limpia a la vista.
- *  - Cero cuadrículas de fondo.
- *  - Objetos 3D en perspectiva con imágenes reales y mockups de producción.
- *  - Cero barra superior fija.
+ * Coreografía diferenciada por beat:
+ *  - Beat 1: CardHero3D en perspectiva con hub de 3 servidores MCP + whoosh-cinematic & bass.
+ *  - Beat 2: CardSlideLateral (aparición de izquierda a derecha) con Stitch MCP + click & ping.
+ *  - Beat 3: CardDualSnap (terminal SQL cae de arriba, tabla PostgreSQL sube de abajo) + typing & chime.
+ *  - Beat 4: CardScanReveal (escáner láser con despliegue Vercel) + sparkle & notification.
+ *  - Beat 5: CardStampCTA (impacto stamp con rebote y botón magnético MCP) + impact-bass-2.
  * =====================================================================
  */
 import React from "react";
+import { AbsoluteFill, Img, Sequence, staticFile, useCurrentFrame } from "remotion";
 import {
-  AbsoluteFill,
-  Img,
-  Sequence,
-  staticFile,
-  useCurrentFrame,
-} from "remotion";
-import {
-  Card3D,
+  CardDualSnap,
+  CardHero3D,
+  CardScanReveal,
+  CardSlideLateral,
+  CardStampCTA,
   FONT_MONO,
   FONT_SANS,
   MockupWindow,
   STACK2_PALETTE,
+  SoundEffect,
   TelemetryBar,
   TrilogyAtmosphere,
   TrilogyBgm,
@@ -36,37 +34,36 @@ export const TrilogiaStack2: React.FC = () => {
 
   return (
     <AbsoluteFill style={{ backgroundColor: palette.baseDeep }}>
-      {/* 1. Fondo de estudio limpio sin cuadrícula */}
+      {/* Fondo de estudio limpio sin cuadrícula */}
       <TrilogyAtmosphere palette={palette} />
 
-      {/* 2. Secuencias cinematográficas a 60 FPS */}
       {/* BEAT 1: HERO GEMINI-STYLE (0 - 4s = 240 frames) */}
       <Sequence from={0} durationInFrames={240}>
         <Beat1Hero palette={palette} />
       </Sequence>
 
-      {/* BEAT 2: STITCH MCP (4s - 9s = 300 frames) */}
+      {/* BEAT 2: STITCH MCP (APARICIÓN IZQUIERDA A DERECHA) (4s - 9s = 300 frames) */}
       <Sequence from={240} durationInFrames={300}>
         <Beat2Stitch palette={palette} />
       </Sequence>
 
-      {/* BEAT 3: SUPABASE MCP (9s - 14s = 300 frames) */}
+      {/* BEAT 3: SUPABASE MCP (DUAL SNAP VERTICAL TOP/BOTTOM) (9s - 14s = 300 frames) */}
       <Sequence from={540} durationInFrames={300}>
         <Beat3Supabase palette={palette} />
       </Sequence>
 
-      {/* BEAT 4: GIT MCP (14s - 19s = 300 frames) */}
+      {/* BEAT 4: GIT MCP (ESCÁNER & REVELADO DEPLOYMENT) (14s - 19s = 300 frames) */}
       <Sequence from={840} durationInFrames={300}>
         <Beat4Git palette={palette} />
       </Sequence>
 
-      {/* BEAT 5: CTA COMUNIDAD (19s - 24s = 300 frames) */}
+      {/* BEAT 5: CTA COMUNIDAD (IMPACT STAMP OVERSHOOT) (19s - 24s = 300 frames) */}
       <Sequence from={1140} durationInFrames={300}>
         <Beat5Cta palette={palette} />
       </Sequence>
 
-      {/* Audio ambiental */}
-      <TrilogyBgm volume={0.24} />
+      {/* BGM de fondo suave */}
+      <TrilogyBgm volume={0.22} />
     </AbsoluteFill>
   );
 };
@@ -98,8 +95,13 @@ const Beat1Hero: React.FC<{ palette: typeof STACK2_PALETTE }> = ({ palette }) =>
         />
       }
     >
-      <Card3D rotateX={9} rotateY={-7} glow={palette.accent} delay={10}>
-        {/* Hub 3D de servidores MCP conectados */}
+      {/* SFX Sincronizados */}
+      <SoundEffect file="whoosh-cinematic.mp3" from={0} volume={0.55} />
+      <SoundEffect file="impact-bass-1.mp3" from={12} volume={0.45} />
+      <SoundEffect file="pop.mp3" from={24} volume={0.4} />
+
+      {/* Hero 3D en perspectiva con el hub de servidores */}
+      <CardHero3D rotateX={9} rotateY={-7} glow={palette.accent} delay={8}>
         <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
           <div
             style={{
@@ -128,7 +130,6 @@ const Beat1Hero: React.FC<{ palette: typeof STACK2_PALETTE }> = ({ palette }) =>
             </span>
           </div>
 
-          {/* 3 Nodos de herramientas conectadas */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 14 }}>
             {[
               { name: "Stitch MCP", tool: "Figma UI", icon: "figma.svg", c: "#38BDF8" },
@@ -146,7 +147,7 @@ const Beat1Hero: React.FC<{ palette: typeof STACK2_PALETTE }> = ({ palette }) =>
                   flexDirection: "column",
                   alignItems: "center",
                   gap: 8,
-                  transform: `translateY(${Math.sin((frame + idx * 12) / 14) * 5}px)`,
+                  transform: `translateY(${Math.sin((frame + idx * 12) / 14) * 4}px)`,
                 }}
               >
                 <Img
@@ -163,13 +164,13 @@ const Beat1Hero: React.FC<{ palette: typeof STACK2_PALETTE }> = ({ palette }) =>
             ))}
           </div>
         </div>
-      </Card3D>
+      </CardHero3D>
     </TrilogyCanvas>
   );
 };
 
 // =====================================================================
-// BEAT 2: STITCH MCP (300 frames / 5.0s)
+// BEAT 2: STITCH MCP · APARICIÓN LATERAL DE IZQUIERDA A DERECHA (300f / 5.0s)
 // =====================================================================
 const Beat2Stitch: React.FC<{ palette: typeof STACK2_PALETTE }> = ({ palette }) => {
   return (
@@ -191,15 +192,20 @@ const Beat2Stitch: React.FC<{ palette: typeof STACK2_PALETTE }> = ({ palette }) 
         />
       }
     >
-      <Card3D rotateX={8} rotateY={-6} glow={palette.accent} delay={10}>
+      {/* SFX Sincronizados de barrido lateral y locks */}
+      <SoundEffect file="whoosh-short.mp3" from={0} volume={0.5} />
+      <SoundEffect file="click-soft.mp3" from={14} volume={0.4} />
+      <SoundEffect file="ping.mp3" from={26} volume={0.45} />
+
+      {/* Tarjeta con revelado y traslación de izquierda a derecha */}
+      <CardSlideLateral glow={palette.accent} delay={6}>
         <MockupWindow
           title="stitch-mcp ~ live-canvas-sync"
           image="assets/mova_app_live.png"
           accent={palette.accent}
           height={430}
-          delay={12}
+          delay={10}
         />
-        {/* Badge flotante de componentes */}
         <div
           style={{
             position: "absolute",
@@ -217,13 +223,13 @@ const Beat2Stitch: React.FC<{ palette: typeof STACK2_PALETTE }> = ({ palette }) 
         >
           ✓ COMPONENTES REACT GENERADOS EN VIVO
         </div>
-      </Card3D>
+      </CardSlideLateral>
     </TrilogyCanvas>
   );
 };
 
 // =====================================================================
-// BEAT 3: SUPABASE MCP (300 frames / 5.0s)
+// BEAT 3: SUPABASE MCP · DUAL SNAP VERTICAL (300 frames / 5.0s)
 // =====================================================================
 const Beat3Supabase: React.FC<{ palette: typeof STACK2_PALETTE }> = ({
   palette,
@@ -247,39 +253,31 @@ const Beat3Supabase: React.FC<{ palette: typeof STACK2_PALETTE }> = ({
         />
       }
     >
-      <Card3D rotateX={9} rotateY={-6} glow={palette.accent} delay={10}>
-        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-          {/* Terminal Supabase */}
-          <div
-            style={{
-              padding: "16px 20px",
-              borderRadius: 16,
-              background: "rgba(5, 10, 16, 0.94)",
-              border: `1.5px solid ${palette.accent}66`,
-              fontFamily: FONT_MONO,
-            }}
-          >
-            <div style={{ color: "#64748B", fontSize: 16, marginBottom: 8 }}>
+      {/* SFX Sincronizados de tecleo y verificación RLS */}
+      <SoundEffect file="whoosh.mp3" from={0} volume={0.5} />
+      <SoundEffect file="typing.mp3" from={12} volume={0.35} />
+      <SoundEffect file="chime.mp3" from={55} volume={0.5} />
+      <SoundEffect file="click.mp3" from={80} volume={0.4} />
+
+      {/* Dual Snap Vertical */}
+      <CardDualSnap
+        glow={palette.accent}
+        delay={6}
+        topChild={
+          <div>
+            <div style={{ color: "#64748B", fontSize: 16, marginBottom: 8, fontFamily: FONT_MONO }}>
               terminal ~ supabase-mcp
             </div>
-            <div style={{ color: "#E2E8F0", fontSize: 19 }}>
+            <div style={{ color: "#E2E8F0", fontSize: 19, fontFamily: FONT_MONO }}>
               <span style={{ color: palette.accent }}>$</span> mcp.connect("supabase")
             </div>
-            <div style={{ color: palette.accent, fontSize: 18, marginTop: 4 }}>
+            <div style={{ color: palette.accent, fontSize: 18, marginTop: 4, fontFamily: FONT_MONO }}>
               ✓ Conexión establecida con proyecto cloud
             </div>
           </div>
-
-          {/* Tabla de base de datos animada */}
-          <div
-            style={{
-              padding: "16px 20px",
-              borderRadius: 16,
-              background: "rgba(10, 18, 28, 0.9)",
-              border: "1px solid rgba(255,255,255,0.1)",
-              fontFamily: FONT_MONO,
-            }}
-          >
+        }
+        bottomChild={
+          <div>
             <div
               style={{
                 display: "flex",
@@ -288,6 +286,7 @@ const Beat3Supabase: React.FC<{ palette: typeof STACK2_PALETTE }> = ({
                 fontSize: 16,
                 paddingBottom: 8,
                 borderBottom: "1px solid rgba(255,255,255,0.06)",
+                fontFamily: FONT_MONO,
               }}
             >
               <span>TABLA</span>
@@ -301,6 +300,7 @@ const Beat3Supabase: React.FC<{ palette: typeof STACK2_PALETTE }> = ({
                 padding: "8px 0",
                 color: "#FFFFFF",
                 fontSize: 17,
+                fontFamily: FONT_MONO,
               }}
             >
               <span style={{ color: palette.accent }}>public.users</span>
@@ -314,6 +314,7 @@ const Beat3Supabase: React.FC<{ palette: typeof STACK2_PALETTE }> = ({
                 padding: "8px 0",
                 color: "#FFFFFF",
                 fontSize: 17,
+                fontFamily: FONT_MONO,
               }}
             >
               <span style={{ color: palette.accent }}>public.orders</span>
@@ -321,14 +322,14 @@ const Beat3Supabase: React.FC<{ palette: typeof STACK2_PALETTE }> = ({
               <span style={{ color: "#34D399" }}>✓ Migrado</span>
             </div>
           </div>
-        </div>
-      </Card3D>
+        }
+      />
     </TrilogyCanvas>
   );
 };
 
 // =====================================================================
-// BEAT 4: GIT MCP (300 frames / 5.0s)
+// BEAT 4: GIT MCP · ESCÁNER & REVELADO DEPLOYMENT (300 frames / 5.0s)
 // =====================================================================
 const Beat4Git: React.FC<{ palette: typeof STACK2_PALETTE }> = ({ palette }) => {
   return (
@@ -350,15 +351,20 @@ const Beat4Git: React.FC<{ palette: typeof STACK2_PALETTE }> = ({ palette }) => 
         />
       }
     >
-      <Card3D rotateX={8} rotateY={-6} glow={palette.accent} delay={10}>
+      {/* SFX Sincronizados de escáner y verificación de despliegue */}
+      <SoundEffect file="whoosh-short.mp3" from={0} volume={0.5} />
+      <SoundEffect file="sparkle.mp3" from={22} volume={0.45} />
+      <SoundEffect file="notification.mp3" from={65} volume={0.4} />
+
+      {/* Tarjeta Scan Reveal con preview real de producción */}
+      <CardScanReveal glow={palette.accent} delay={8}>
         <MockupWindow
           title="vercel.com/deployments ~ production"
           image="assets/the_last_endo_live.png"
           accent={palette.accent}
           height={430}
-          delay={12}
+          delay={10}
         />
-        {/* Badge Vercel desplegado */}
         <div
           style={{
             position: "absolute",
@@ -376,17 +382,15 @@ const Beat4Git: React.FC<{ palette: typeof STACK2_PALETTE }> = ({ palette }) => 
         >
           ● PRODUCTION DEPLOYMENT OK (0s)
         </div>
-      </Card3D>
+      </CardScanReveal>
     </TrilogyCanvas>
   );
 };
 
 // =====================================================================
-// BEAT 5: CTA COMUNIDAD (300 frames / 5.0s)
+// BEAT 5: CTA COMUNIDAD · IMPACT STAMP (300 frames / 5.0s)
 // =====================================================================
 const Beat5Cta: React.FC<{ palette: typeof STACK2_PALETTE }> = ({ palette }) => {
-  const frame = useCurrentFrame();
-
   return (
     <TrilogyCanvas
       durationInFrames={300}
@@ -406,7 +410,12 @@ const Beat5Cta: React.FC<{ palette: typeof STACK2_PALETTE }> = ({ palette }) => 
         />
       }
     >
-      <Card3D rotateX={7} rotateY={-5} glow={palette.accent} delay={10}>
+      {/* SFX Sincronizados de impacto y brillo */}
+      <SoundEffect file="impact-bass-2.mp3" from={0} volume={0.55} />
+      <SoundEffect file="sparkle.mp3" from={18} volume={0.45} />
+
+      {/* Tarjeta Stamp con resorte de rebote y botón magnético */}
+      <CardStampCTA glow={palette.accent} delay={6}>
         <div
           style={{
             display: "flex",
@@ -439,7 +448,6 @@ const Beat5Cta: React.FC<{ palette: typeof STACK2_PALETTE }> = ({ palette }) => 
               fontSize: 32,
               letterSpacing: "0.1em",
               boxShadow: `0 0 40px ${palette.accent}88`,
-              transform: `scale(${1 + Math.sin(frame / 12) * 0.04})`,
             }}
           >
             COMENTA "MCP"
@@ -449,7 +457,7 @@ const Beat5Cta: React.FC<{ palette: typeof STACK2_PALETTE }> = ({ palette }) => 
             Te mando la plantilla con los 3 servidores configurados @santi.dev
           </div>
         </div>
-      </Card3D>
+      </CardStampCTA>
     </TrilogyCanvas>
   );
 };

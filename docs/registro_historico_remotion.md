@@ -55,6 +55,18 @@ Documento de trazabilidad: qué se hizo, por qué, y cómo corregirlo o mejorarl
 - **Ritmo de Alto Impacto**: Cada beat dura entre 4.0s y 5.5s con locución calculada a 155-165 WPM.
 - **Reproducción a 60 FPS Estable en la Web**: Para evitar caídas de fotogramas al evaluar código en vivo en el navegador, el reproductor de la app web (`MotionReelPlayer` en `js/motion_player.js`) ahora detecta videos `.mp4` en `videos/` y los reproduce con aceleración de hardware en un elemento `<video>` nativo, con interruptor a lienzo interactivo.
 
+- **Refactorización V3 Trilogía (Coreografía Visual Diferenciada por Beat + Sincronización SFX Determinista)**:
+  - **Coreografía visual con sentido por beat (eliminada la flotación idéntica)**:
+    - **Beat 1 (Hook)**: `CardHero3D` — Entrada por resorte elástico con balanceo suave en perspectiva 3D (`rotateX`, `rotateY`) y flotación senoidal continua.
+    - **Beat 2 (Fase 1 / Herramienta 1)**: `CardSlideLateral` — Entrada lateral de izquierda a derecha (`translateX: -80px -> 0`) combinada con máscara de recorte progresiva (`clipPath: inset(0 (100 - p)% 0 0 round 28px)`), dando sensación de barrido visual de lectura.
+    - **Beat 3 (Fase 2 / Herramienta 2)**: `CardDualSnap` — Doble mordaza vertical con dos bloques que convergen desde extremos opuestos (superior e inferior) con enganche magnético en el centro.
+    - **Beat 4 (Fase 3 / Regla 2)**: `CardScanReveal` — Revelación guiada por haz láser escáner que barre de arriba a abajo descubriendo los elementos técnicos y el código.
+    - **Beat 5 (CTA Final)**: `CardStampCTA` — Estampado de gran impacto con resorte de sobreimpulso (`scale: 1.14 -> 1.0`), resplandor expansivo y botón interactivo pulsante (`BreathingButton`).
+  - **Integración de Efectos de Sonido (SFX)**:
+    - Implementación de `<SoundEffect />` nativo en Remotion con wrapping determinista de `<Sequence>` y volumen configurable.
+    - Efectos sonoros integrados: impactos cinemáticos de graves (`impact-bass-1`, `impact-bass-2`), barridos de aire rápidos (`whoosh-cinematic`, `whoosh-short`), tecleo táctil (`typing`), clics mecánicos (`click-soft`) y campanas de confirmación/éxito (`chime`, `sparkle`, `ping`).
+    - Pista de fondo (`tech_ambient_bed.mp3`) mezclada suavemente al 22% de ganancia para máxima claridad de audio.
+
 ## 4. Videos Disponibles en la Aplicación Web (`http://localhost:3333`)
 1. **PyQuest Ep. 1: ¿Por qué Python?** (`videos/pyquest_ep01_por_que_python.mp4`) — Versión original de respaldo (72s).
 2. **PyQuest Ep. 1 (V2 Rayos X): ¿Por qué Python?** (`videos/pyquest_ep01_v2_xray.mp4`) — Versión duplicada con Escena 4 interactiva Rayos X 2.5D (66s).
