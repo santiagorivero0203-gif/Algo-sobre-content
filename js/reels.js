@@ -605,14 +605,14 @@ En este Episodio 2 de PyQuest vemos qué hace la computadora por dentro paso a p
         theme: 'stack1',
         title: 'Parte 1: Stack Secreto',
         subtitle: 'Juegos y webs sin saber programar paso a paso',
-        duration_ms: 12500,
-        duration: 12.5,
+        duration_ms: 24000,
+        duration: 24.0,
         fps: 60,
         kicker: 'SANTI.DEV · TRILOGÍA CREADORES',
         brandIcon: 'fa-gamepad',
         accentColor: '#2E9D63',
         secondaryColor: '#57c78d',
-        videoUrl: 'videos/stack_secreto.mp4',
+        videoUrl: 'videos/stack_secreto.mp4?v=2',
         post: {
             hook: '¿Juegos y webs sin saber programar? Te enseño mi stack secreto 👇',
             caption: `¿Te imaginas crear tus propios videojuegos y aplicaciones web sin pasar meses atascado en la sintaxis?
@@ -626,44 +626,44 @@ En este video te revelo el stack técnico exacto que uso para pasar de una idea 
 👉 Comenta "PARTE 2" para la guía de bases de datos y GitHub.`,
             hashtags: ['#programacion', '#desarrolloweb', '#gamedev', '#antigravity', '#opencode', '#ia', '#indiedev'],
             bestTime: '18:00 - 21:00',
-            sound: 'Synthwave / Lo-Fi Beats instrumental'
+            sound: 'Cyberpunk Synthwave 120BPM'
         },
         beats: [
             {
                 id: 1,
                 name: 'Hook Inicial',
                 start_ms: 0,
-                end_ms: 2500,
+                end_ms: 4000,
                 type: 'hero',
-                badge: 'TRILOGÍA CREADORES · PARTE 1',
-                title: '¿Juegos y webs *sin saber programar*?',
-                sub: 'Te enseño mi stack técnico secreto para pasar de la idea al código hoy mismo.',
+                badge: 'TRILOGÍA · PARTE 1 DE 3',
+                title: '¿Juegos y webs *sin programar*?',
+                sub: 'Te enseño el stack técnico que uso para pasar de la idea al código en minutos.',
                 kicker: 'DE LA IDEA AL CÓDIGO',
-                vo: 'Crea juegos y apps sin saber programar.'
+                vo: '¿Juegos y webs sin saber programar? Te enseño mi stack secreto.'
             },
             {
                 id: 2,
                 name: 'Inspiración',
-                start_ms: 2500,
-                end_ms: 5000,
+                start_ms: 4000,
+                end_ms: 8000,
                 type: 'points',
-                badge: 'PASO 1 · INSPIRACIÓN',
+                badge: 'FASE 1 · INSPIRACIÓN',
                 title: 'Roba como un *artista*',
-                sub: 'Analiza juegos y webs que amas para fusionar mecánicas y crear tu idea única.',
+                sub: 'Analiza mecánicas probadas y extrae tokens visuales directamente en Figma.',
                 points: [
                     { icon: 'fa-gamepad', label: 'Desglosa mecánicas top', desc: 'Identifica el bucle central de interacción que hace divertido el producto.' },
-                    { icon: 'fa-eye', label: 'Elimina lo innecesario', desc: 'Quédate solo con la regla esencial sin reinventar la rueda.' },
-                    { icon: 'fa-wand-magic-sparkles', label: 'Añade tu toque propio', desc: 'Combina dos conceptos distintos para lograr una propuesta fresca.' }
+                    { icon: 'fa-figma', label: 'Prototipo en Figma', desc: 'Define tokens de diseño, paleta y tipografía antes de tocar código.' },
+                    { icon: 'fa-wand-magic-sparkles', label: 'Tu toque único', desc: 'Combina dos conceptos distintos para lograr una propuesta fresca.' }
                 ],
-                vo: 'Combina ideas que ya funcionan.'
+                vo: 'Paso 1: Roba como un artista. Analiza juegos y webs que amas y diseña las bases en Figma.'
             },
             {
                 id: 3,
                 name: 'Lógica & Código',
-                start_ms: 5000,
-                end_ms: 7500,
+                start_ms: 8000,
+                end_ms: 14000,
                 type: 'code',
-                badge: 'PASO 2 · MOTOR DE LÓGICA',
+                badge: 'FASE 2 · LÓGICA & MOTOR',
                 title: 'Antigravity + *Opencode*',
                 sub: 'Google Antigravity genera el 85% y Opencode pule detalles finos ahorrando tokens.',
                 codeSnippet: {
@@ -677,15 +677,15 @@ En este video te revelo el stack técnico exacto que uso para pasar de una idea 
                         '✓ 0 errores sintaxis · 1,200 tokens ahorrados'
                     ]
                 },
-                vo: 'Deja el código a la IA.'
+                vo: 'Paso 2: Antigravity construye el ochenta y cinco por ciento del código y Opencode pule los detalles.'
             },
             {
                 id: 4,
                 name: 'Arte & Sprites',
-                start_ms: 7500,
-                end_ms: 10000,
+                start_ms: 14000,
+                end_ms: 19000,
                 type: 'points',
-                badge: 'PASO 3 · ASSETS VISUALES',
+                badge: 'FASE 3 · ARTE & ASSETS',
                 title: 'Nano Banana + *Remove BG*',
                 sub: 'Genera sprites y texturas con IA y déjalos transparentes en 1 clic.',
                 points: [
@@ -693,23 +693,23 @@ En este video te revelo el stack técnico exacto que uso para pasar de una idea 
                     { icon: 'fa-scissors', label: 'Remove BG en 1 Clic', desc: 'Fondo transparente instantáneo listo para Canvas o CSS.' },
                     { icon: 'fa-bolt', label: 'Listo para Producción', desc: 'Cero photoshop manual: importación directa a tu código.' }
                 ],
-                vo: 'Genera el arte en segundos.'
+                vo: 'Paso 3: Nano Banana genera sprites y arte con IA, y Remove BG los limpia en un clic.'
             },
             {
                 id: 5,
                 name: 'CTA Comunidad',
-                start_ms: 10000,
-                end_ms: 12500,
+                start_ms: 19000,
+                end_ms: 24000,
                 type: 'cta',
                 badge: 'PARTE 2 DISPONIBLE',
                 title: 'Guarda *este video*',
-                sub: 'En la parte 2: Cómo automatizo bases de datos en la nube y subo todo a GitHub.',
+                sub: 'En la parte 2: Cómo automatizo bases de datos en la nube y subo todo a GitHub con MCP.',
                 ctaData: {
-                    keyword: 'PARTE 2',
-                    line: 'Comenta "PARTE 2" y te paso la plantilla completa por mensaje directo.',
+                    keyword: 'STACK',
+                    line: 'Comenta "STACK" y te paso la plantilla completa y el prompt maestro.',
                     handle: '@santi.dev'
                 },
-                vo: 'Comenta STACK y te paso todo.'
+                vo: 'Guarda este video y comenta STACK para enviarte la plantilla completa.'
             }
         ]
     },
@@ -724,13 +724,14 @@ En este video te revelo el stack técnico exacto que uso para pasar de una idea 
         theme: 'stack2',
         title: 'Parte 2: Automatización',
         subtitle: 'El trabajo sucio resuelto con herramientas MCP',
-        duration_ms: 12500,
-        duration: 12.5,
+        duration_ms: 24000,
+        duration: 24.0,
         fps: 60,
         kicker: 'SANTI.DEV · MCP AUTOMATION',
         brandIcon: 'fa-gear',
         accentColor: '#F08A35',
         secondaryColor: '#f39e56',
+        videoUrl: 'videos/automatizacion_y_mcp.mp4?v=2',
         post: {
             hook: 'Deja de subir archivos a mano. Así automatizo todo con MCP 👇',
             caption: `Programar en 2026 no se trata de hacer tareas repetitivas a mano. Se trata de conectar herramientas inteligentes:
@@ -743,26 +744,26 @@ En este video te revelo el stack técnico exacto que uso para pasar de una idea 
 👉 Comenta "MCP" para la plantilla de configuración lista.`,
             hashtags: ['#mcp', '#antigravity', '#automatizacion', '#supabase', '#stitchmcp', '#developer', '#github'],
             bestTime: '12:00 - 15:00 o 19:00 - 22:00',
-            sound: 'Rhythm coding beat / Electronic minimal'
+            sound: 'Cyberpunk Synthwave 120BPM'
         },
         beats: [
             {
                 id: 1,
                 name: 'Hook Inicial',
                 start_ms: 0,
-                end_ms: 2500,
+                end_ms: 4000,
                 type: 'hero',
-                badge: 'TRILOGÍA CREADORES · PARTE 2',
-                title: 'Automatiza tu código *como un pro*',
-                sub: 'Olvida subir archivos a mano. Te presento el poder de las herramientas MCP.',
+                badge: 'TRILOGÍA · PARTE 2 DE 3',
+                title: 'Automatiza tu código *con MCP*',
+                sub: 'Olvida tareas repetitivas. Conecta herramientas externas directo a tu agente de IA.',
                 kicker: 'WORKFLOW MODERNO 2026',
-                vo: 'Deja de programar tareas repetitivas.'
+                vo: 'Deja de programar tareas repetitivas a mano. Te enseño a automatizar con MCP.'
             },
             {
                 id: 2,
                 name: 'Stitch MCP',
-                start_ms: 2500,
-                end_ms: 5000,
+                start_ms: 4000,
+                end_ms: 9000,
                 type: 'points',
                 badge: 'HERRAMIENTA 1 · DISEÑO A CÓDIGO',
                 title: 'Stitch MCP: *Figma directo*',
@@ -772,13 +773,13 @@ En este video te revelo el stack técnico exacto que uso para pasar de una idea 
                     { icon: 'fa-code', label: 'Componentes Limpios', desc: 'Convierte prototipos visuales en código modular sin desalinear.' },
                     { icon: 'fa-layer-group', label: '0 Copiar y Pegar', desc: 'Sincronización bidireccional entre la IA y tu interfaz.' }
                 ],
-                vo: 'Pasa tu diseño directo al editor.'
+                vo: 'Stitch MCP conecta Figma con tu editor y convierte componentes en código limpio.'
             },
             {
                 id: 3,
                 name: 'Supabase MCP',
-                start_ms: 5000,
-                end_ms: 7500,
+                start_ms: 9000,
+                end_ms: 14000,
                 type: 'code',
                 badge: 'HERRAMIENTA 2 · BACKEND SQL',
                 title: 'Supabase MCP: *SQL en vivo*',
@@ -793,13 +794,13 @@ En este video te revelo el stack técnico exacto que uso para pasar de una idea 
                         '✓ RLS habilitado y tipos TypeScript generados'
                     ]
                 },
-                vo: 'Crea bases de datos al instante.'
+                vo: 'Supabase MCP crea tus tablas de base de datos y autenticación con solo pedírselo.'
             },
             {
                 id: 4,
                 name: 'Git MCP',
-                start_ms: 7500,
-                end_ms: 10000,
+                start_ms: 14000,
+                end_ms: 19000,
                 type: 'points',
                 badge: 'HERRAMIENTA 3 · CONTROL DE VERSIONES',
                 title: 'Git MCP: *Cero conflictos*',
@@ -809,23 +810,141 @@ En este video te revelo el stack técnico exacto que uso para pasar de una idea 
                     { icon: 'fa-cloud-arrow-up', label: 'Push Automático', desc: 'Despliegues en Vercel disparados con cada checkpoint.' },
                     { icon: 'fa-shield-halved', label: 'Seguridad Total', desc: 'Revierte cualquier error en un solo clic sin perder avances.' }
                 ],
-                vo: 'Y respalda tu código sin errores.'
+                vo: 'Y Git MCP sincroniza tus ramas con GitHub y despliega en Vercel automáticamente.'
             },
             {
                 id: 5,
                 name: 'CTA Comunidad',
-                start_ms: 10000,
-                end_ms: 12500,
+                start_ms: 19000,
+                end_ms: 24000,
                 type: 'cta',
-                badge: 'COMUNIDAD DEV',
+                badge: 'PARTE 3 DISPONIBLE',
                 title: 'Automatiza *tu stack*',
-                sub: 'Te comparto la configuración exacta de mis 3 servidores MCP listos para usar.',
+                sub: 'Te comparto la configuración exacta de mis servidores MCP listos para usar.',
                 ctaData: {
                     keyword: 'MCP',
                     line: 'Comenta "MCP" y te mando mi archivo de configuración completo.',
                     handle: '@santi.dev'
                 },
-                vo: 'Comenta MCP y te paso la plantilla.'
+                vo: 'Comenta MCP para enviarte mi archivo de configuración listo para conectar.'
+            }
+        ]
+    },
+
+    // =====================================================================
+    // REEL 3: SANTI.DEV · PARTE 3: EL ARTE DEL PROMPT (CONTRATOS Y ARQUITECTURA)
+    // =====================================================================
+    {
+        id: 'reel_stack3',
+        accountId: 'santidev',
+        slug: 'el_arte_del_prompt',
+        theme: 'stack3',
+        title: 'Parte 3: El Arte del Prompt',
+        subtitle: 'De ideas vagas a contratos de código modulares sin alucinaciones',
+        duration_ms: 25000,
+        duration: 25.0,
+        fps: 60,
+        kicker: 'SANTI.DEV · INGENIERÍA DE PROMPTS',
+        brandIcon: 'fa-wand-magic-sparkles',
+        accentColor: '#38BDF8',
+        secondaryColor: '#818CF8',
+        videoUrl: 'videos/el_arte_del_prompt.mp4?v=1',
+        post: {
+            hook: '¿La IA te genera código roto? Deja de pedir "hazme una app" y usa contratos 👇',
+            caption: `El 90% de los desarrolladores fracasa usando IA porque pide todo de golpe en un solo prompt vago.
+En la parte final de la trilogía "De la Idea al Código", te muestro la técnica de Ingeniería de Prompts que usan los seniors:
+
+❌ El error: "Hazme un clon de Uber con login y pagos" (alucinaciones garantizadas).
+🧠 Google AI Studio: Ventanas de contexto gigantes y Context Caching para que el modelo nunca olvide tus reglas.
+📐 Contratos Modulares: Exige primero interfaces TypeScript y especificaciones antes de que escriba una sola línea de lógica.
+
+💾 Guarda esta trilogía completa para tu próximo proyecto.
+👉 Comenta "PROMPT" para mandarte mis plantillas de contratos modulares.`,
+            hashtags: ['#promptengineering', '#ai', '#antigravity', '#googleaistudio', '#typescript', '#desarrolloweb', '#programacion'],
+            bestTime: '18:00 - 21:00',
+            sound: 'Cyberpunk Synthwave 120BPM'
+        },
+        beats: [
+            {
+                id: 1,
+                name: 'Hook Inicial',
+                start_ms: 0,
+                end_ms: 4000,
+                type: 'hero',
+                badge: 'TRILOGÍA · PARTE 3 DE 3',
+                title: '¿La IA te da *código roto*?',
+                sub: 'El secreto no es el modelo, es cómo estructuras tus prompts y contratos.',
+                kicker: 'INGENIERÍA DE PROMPTS',
+                vo: '¿La IA te entrega código lleno de bugs? El problema no es el modelo, es tu prompt.'
+            },
+            {
+                id: 2,
+                name: 'El Antipatrón',
+                start_ms: 4000,
+                end_ms: 9000,
+                type: 'points',
+                badge: 'EL ERROR TÍPICO · ANTIPATRÓN',
+                title: 'El prompt *monolítico*',
+                sub: 'Pedir "hazme una app completa" satura la ventana de contexto y crea alucinaciones.',
+                points: [
+                    { icon: 'fa-triangle-exclamation', label: 'Sobrecarga de Contexto', desc: 'Pedir frontend, backend y base de datos en un solo mensaje rompe la atención.' },
+                    { icon: 'fa-bug', label: 'Alucinaciones Graves', desc: 'La IA inventa librerías que no existen para intentar cumplirlo todo.' },
+                    { icon: 'fa-shuffle', label: 'Código Espagueti', desc: 'Sin contratos previos, cada archivo asume tipos incompatibles.' }
+                ],
+                vo: 'Pedir una app completa en un solo mensaje satura la IA y genera alucinaciones.'
+            },
+            {
+                id: 3,
+                name: 'Google AI Studio',
+                start_ms: 9000,
+                end_ms: 14500,
+                type: 'code',
+                badge: 'ESTRATEGIA 1 · PROMPT SYSTEM',
+                title: 'Google AI Studio + *Context Cache*',
+                sub: 'Fija el contexto de arquitectura una sola vez con tokens cacheados.',
+                codeSnippet: {
+                    file: 'system-prompt.md ~ architecture-spec',
+                    lines: [
+                        '# SYSTEM DIRECTIVE · ARCHITECTURE LOCK',
+                        'context: cache_active (1.2M tokens cargados)',
+                        'rule: "Nunca escribas implementación sin contrato previo."',
+                        'rule: "Tipos TypeScript estrictos antes de cualquier componente."',
+                        '✓ Context Caching activo · 85% ahorro de latencia'
+                    ]
+                },
+                vo: 'En Google AI Studio bloqueamos las reglas del sistema y cacheamos el contexto.'
+            },
+            {
+                id: 4,
+                name: 'Arquitectura por Contratos',
+                start_ms: 14500,
+                end_ms: 20000,
+                type: 'points',
+                badge: 'ESTRATEGIA 2 · CONTRATOS MODULARES',
+                title: 'Contratos *modulares*',
+                sub: 'Divide tu app en piezas independientes con tipos TypeScript inmutables.',
+                points: [
+                    { icon: 'fa-file-code', label: 'Contratos de Tipos', desc: 'Exige interfaces estrictas antes de escribir cualquier función.' },
+                    { icon: 'fa-puzzle-piece', label: 'Módulos Aislados', desc: 'Cada prompt resuelve un solo componente respetando el contrato.' },
+                    { icon: 'fa-circle-check', label: 'Zero Bugs de Integración', desc: 'Todas las piezas encajan a la primera sin errores de tipado.' }
+                ],
+                vo: 'Exige contratos modulares con interfaces TypeScript antes de generar el código.'
+            },
+            {
+                id: 5,
+                name: 'CTA Comunidad',
+                start_ms: 20000,
+                end_ms: 25000,
+                type: 'cta',
+                badge: 'TRILOGÍA COMPLETA',
+                title: 'Domina el *Prompting*',
+                sub: 'Te comparto el repositorio con las plantillas de contratos modulares.',
+                ctaData: {
+                    keyword: 'PROMPT',
+                    line: 'Comenta "PROMPT" y te paso la plantilla maestra de prompts y contratos.',
+                    handle: '@santi.dev'
+                },
+                vo: 'Comenta PROMPT y te envío la plantilla maestra para crear tus propias apps.'
             }
         ]
     },

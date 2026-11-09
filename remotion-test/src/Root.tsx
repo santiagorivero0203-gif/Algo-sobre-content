@@ -12,6 +12,9 @@ import { PyQuestEp01V2 } from "./pyquest/episodes/ep01/Ep01V2";
 import { PyQuestEp02 } from "./pyquest/episodes/ep02/Ep02";
 import { PyQuestEp03 } from "./pyquest/episodes/ep03/Ep03";
 import { PyQuestEp04 } from "./pyquest/episodes/ep04/Ep04";
+import { TrilogiaStack1Reel } from "./trilogia/TrilogiaStack1";
+import { TrilogiaStack2Reel } from "./trilogia/TrilogiaStack2";
+import { TrilogiaStack3Reel } from "./trilogia/TrilogiaStack3";
 import { ReelPropsSchema, type ReelProps } from "./lib/schema";
 import { buildTimeline, totalDuration } from "./lib/timeline";
 
@@ -155,6 +158,34 @@ export const RemotionRoot = () => {
         id="PyQuestEp04Reel"
         component={PyQuestEp04}
         durationInFrames={4440}
+        fps={60}
+        width={1080}
+        height={1920}
+      />
+      {/* ===================================================================== */}
+      {/* TRILOGÍA RECREADA: "DE LA IDEA AL CÓDIGO" (24-25s @ 60 FPS)           */}
+      {/* Fusión técnica Gemini (editorial sobrio) + PyQuest (física centrada) */}
+      {/* ===================================================================== */}
+      <Composition
+        id="TrilogiaStack1Reel"
+        component={TrilogiaStack1Reel}
+        durationInFrames={1440}
+        fps={60}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="TrilogiaStack2Reel"
+        component={TrilogiaStack2Reel}
+        durationInFrames={1440}
+        fps={60}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="TrilogiaStack3Reel"
+        component={TrilogiaStack3Reel}
+        durationInFrames={1500}
         fps={60}
         width={1080}
         height={1920}

@@ -33,12 +33,20 @@ Documento de trazabilidad: qué se hizo, por qué, y cómo corregirlo o mejorarl
 | `pyquest/episodes/ep02/Ep02.tsx` | Episodio 2 de PyQuest (Rehecho Interactivo): Variables y Tipos de Datos con choque físico `"100"` vs `-20`, brazo mecánico `=` en RAM, los 4 tipos en vivo sobre Aria y pinzas extractoras de comillas (53s @ 60 FPS = 3180 frames) |
 | `pyquest/episodes/ep03/Ep03.tsx` | Episodio 3 de PyQuest (Rehecho Interactivo): Condicionales `if / elif / else` con bug de héroe zombi (`-20 HP` desbordado), visualizador de indentación `[·][·][·][·]` y escáner línea por línea de 3 pruebas con tachado de ramas descartadas (54s @ 60 FPS = 3240 frames) |
 | `pyquest/episodes/ep04/Ep04.tsx` | Episodio 4 de PyQuest: Operadores Lógicos `and / or / not` (75s @ 60 FPS) |
+| `trilogia/kit.tsx` | Kit compartido de la Trilogía: atmósfera neón ultra-rápida (radial gradients), SeriesHeader, TrilogyStage centrado, GlassCard 2.5D, EnergyBus SVG animado, telemetría y typed lines |
+| `trilogia/TrilogiaStack1.tsx` | Parte 1: Stack Secreto (24s / 1440f @ 60 FPS): Figma tokens, Antigravity 85%, Opencode ahorro de tokens, Nano Banana sprites y pipeline sin fricción |
+| `trilogia/TrilogiaStack2.tsx` | Parte 2: Automatización con MCP (24s / 1440f @ 60 FPS): Stitch MCP (Figma -> React), Supabase MCP (SQL en vivo con RLS) y Git MCP (checkpoints y CI/CD Vercel) |
+| `trilogia/TrilogiaStack3.tsx` | Parte 3: El Arte del Prompt (25s / 1500f @ 60 FPS): Antipatrón del prompt monolítico, Google AI Studio + Context Caching y Arquitectura por Contratos TypeScript |
 
 ## 3. Decisiones de Diseño y Rendimiento
+- **Fusión PyQuest + Gemini**:
+  - Del estilo Gemini se heredan el fondo oscuro con halos de luz neón sutiles, la tipografía dual (`Space Grotesk` para titulares y `JetBrains Mono` para código/badges), el énfasis tipográfico (`*resaltado*` de alto contraste) y la iconografía vectorial SVG oficial.
+  - Del estilo PyQuest se heredan el centrado vertical estricto (`TrilogyStage`), la eliminación total del síndrome del "medio lienzo vacío" mediante barras de telemetría inferiores dinámicas, el control determinista de transiciones con entrada y salida explícita (cero colisiones de texto entre escenas) y las micro-animaciones continuas (pulsos de cables de energía SVG, escáneres, contadores numéricos y derivas perpetuas).
+- **Optimización de Rendimiento Remotion**:
+  - Se eliminaron filtros Gaussianos pesados en CPU (`filter: blur(130px)`) sustituyéndolos por degradados radiales nativos (`radial-gradient`), permitiendo renderizar composiciones 4K/FullHD fluidamente en software rendering sin ralentizar Chromium.
 - **Eliminación de barras y corchetes**: Se retiraron las barras de progreso segmentadas del fondo y los corchetes de las esquinas. El diseño ahora es limpio, editorial y de alto contraste.
-- **Ritmo de Alto Impacto (17.6s)**: Cada beat dura entre 3.2s y 4.0s (195 a 240 frames). La terminal teclea rápido, los puntos aparecen en cascada rápida y los números se mueven con aceleración dinámica.
+- **Ritmo de Alto Impacto**: Cada beat dura entre 4.0s y 5.5s con locución calculada a 155-165 WPM.
 - **Reproducción a 60 FPS Estable en la Web**: Para evitar caídas de fotogramas al evaluar código en vivo en el navegador, el reproductor de la app web (`MotionReelPlayer` en `js/motion_player.js`) ahora detecta videos `.mp4` en `videos/` y los reproduce con aceleración de hardware en un elemento `<video>` nativo, con interruptor a lienzo interactivo.
-- **Arquitectura Rayos X 2.5D (`Ep01V2.tsx`)**: En la versión duplicada del Episodio 1 de PyQuest (`PyQuestEp01V2Reel`), la Escena 4 reemplaza las 4 tarjetas estáticas verticales por una escena de 600 frames (10s) dividida en 4 sub-fases de 150 frames (`IA #8B5CF6`, `Backend #10B981`, `Datos #3B82F6`, `Automatización #F59E0B`), conectando `<DynamicImportCard />` (`Y: 220px`) mediante `<EnergyCablesSVG />` (`Y: 370px - 620px`) hacia `<XRayInteractiveStage />` (`Y: 620px`) con doble capa en perspectiva 3D (`perspective: 1400px`, `rotateX(8deg)`, `rotateZ(-1.5deg)`).
 
 ## 4. Videos Disponibles en la Aplicación Web (`http://localhost:3333`)
 1. **PyQuest Ep. 1: ¿Por qué Python?** (`videos/pyquest_ep01_por_que_python.mp4`) — Versión original de respaldo (72s).
@@ -46,13 +54,25 @@ Documento de trazabilidad: qué se hizo, por qué, y cómo corregirlo o mejorarl
 3. **PyQuest Ep. 2: Variables y Tipos de Datos** (`videos/pyquest_ep02_variables_y_tipos.mp4`).
 4. **PyQuest Ep. 3: Condicionales `if / elif / else`** (`videos/pyquest_ep03_condicionales.mp4`).
 5. **PyQuest Ep. 4: Operadores Lógicos `and / or / not`** (`videos/pyquest_ep04_operadores_logicos.mp4`).
-6. **Parte 1: Stack Secreto** (`videos/stack_secreto.mp4`):
-   - Hook: ¿Juegos y webs sin programar?
-   - Paso 1: Inspiración (Roba como un artista)
-   - Paso 2: Lógica (Antigravity + Opencode)
-   - Paso 3: Arte (Nano Banana + Remove BG)
-   - CTA: Guarda este video · Comenta PARTE 2
-7. **Tokens Pro & Antigravity** (`videos/tokens_pro.mp4`):
+6. **Trilogía Parte 1: Stack Secreto** (`videos/stack_secreto.mp4` · 24s @ 60 FPS):
+   - Hook: ¿Juegos y webs sin saber programar?
+   - Fase 1: Inspiración & Diseño (Roba como un artista + Figma)
+   - Fase 2: Lógica & Motor (Google Antigravity 85% + Opencode fine-tune)
+   - Fase 3: Arte & Sprites (Nano Banana IA + Remove BG en 1 clic)
+   - CTA: Guarda el video · Comenta STACK
+7. **Trilogía Parte 2: Automatización con MCP** (`videos/automatizacion_y_mcp.mp4` · 24s @ 60 FPS):
+   - Hook: Automatiza tu código con MCP
+   - Herramienta 1: Stitch MCP (Figma directo al editor sin copy-paste)
+   - Herramienta 2: Supabase MCP (Tablas SQL en producción con lenguaje natural)
+   - Herramienta 3: Git MCP (Checkpoints automáticos y despliegue a Vercel)
+   - CTA: Automatiza tu stack · Comenta MCP
+8. **Trilogía Parte 3: El Arte del Prompt** (`videos/el_arte_del_prompt.mp4` · 25s @ 60 FPS):
+   - Hook: ¿La IA te entrega código roto?
+   - El Error: Prompt monolítico ("hazme una app completa" -> alucinaciones)
+   - Estrategia 1: Google AI Studio + Context Caching (fijar reglas de arquitectura)
+   - Estrategia 2: Arquitectura por Contratos (interfaces TypeScript modulares)
+   - CTA: Domina el prompting · Comenta PROMPT
+9. **Tokens Pro & Antigravity** (`videos/tokens_pro.mp4`):
    - Hook: Tu IA colapsa por esto
    - Regla 1: Foco atómico (1 tarea · 1 archivo)
    - Regla 2: Poda de contexto con Graphify AST
@@ -62,15 +82,9 @@ Documento de trazabilidad: qué se hizo, por qué, y cómo corregirlo o mejorarl
 ## 5. Cómo Renderizar Nuevos Videos
 ```bash
 cd remotion-test
-# Renderizar PyQuest Ep. 1 V2 Rayos X (3960 frames @ 60 FPS = 66.0s)
-node_modules\.bin\remotion.cmd render src/index.ts PyQuestEp01V2Reel out/pyquest_ep01_v2_xray.mp4 --concurrency=75% --crf=16
-Copy-Item "out\pyquest_ep01_v2_xray.mp4" "..\videos\pyquest_ep01_v2_xray.mp4" -Force
 
-# Renderizar Stack Secreto (1060 frames @ 60 FPS = 17.6s)
-npx remotion render src/index.ts StackSecretoReel out/stack_secreto.mp4 --concurrency=75% --crf=16
-Copy-Item "out\stack_secreto.mp4" "..\videos\stack_secreto.mp4" -Force
-
-# Renderizar Tokens Pro (1060 frames @ 60 FPS = 17.6s)
-npx remotion render src/index.ts TokensProReel out/tokens_pro.mp4 --concurrency=75% --crf=16
-Copy-Item "out\tokens_pro.mp4" "..\videos\tokens_pro.mp4" -Force
+# Renderizar Trilogía Completa "De la Idea al Código" (60 FPS)
+node_modules\.bin\remotion.cmd render src/index.ts TrilogiaStack1Reel ..\videos\stack_secreto.mp4 --concurrency=75% --crf=20
+node_modules\.bin\remotion.cmd render src/index.ts TrilogiaStack2Reel ..\videos\automatizacion_y_mcp.mp4 --concurrency=75% --crf=20
+node_modules\.bin\remotion.cmd render src/index.ts TrilogiaStack3Reel ..\videos\el_arte_del_prompt.mp4 --concurrency=75% --crf=20
 ```
