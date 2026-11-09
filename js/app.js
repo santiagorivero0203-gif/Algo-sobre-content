@@ -259,6 +259,7 @@ const App = () => {
                     !list.some(r => r.id === 'reel_pyquest_ep02') ||
                     !list.some(r => r.id === 'reel_pyquest_ep03') ||
                     !list.some(r => r.id === 'reel_pyquest_ep04') ||
+                    !list.some(r => r.id === 'reel_stack3') ||
                     list.some(r => r.id === 'reel_ag_terminal')
                 );
                 if (isOutdated) {
