@@ -39,6 +39,13 @@ Documento de trazabilidad: qué se hizo, por qué, y cómo corregirlo o mejorarl
 | `trilogia/TrilogiaStack3.tsx` | Parte 3: El Arte del Prompt (25s / 1500f @ 60 FPS): Antipatrón del prompt monolítico, Google AI Studio + Context Caching y Arquitectura por Contratos TypeScript |
 
 ## 3. Decisiones de Diseño y Rendimiento
+- **Refactorización V2 Trilogía (Gemini DNA + Objetos 3D + Sin Cuadrícula)**:
+  - **Introducción Hero Gemini**: Estructura de gancho con Badge superior flotante, Kicker en JetBrains Mono, titular de gran escala cinético y línea de acento luminosa con respiración senoidal (`BreathingLine`).
+  - **Repartición del espacio vertical "a lo largo"**: Eliminado el encajonamiento en tarjetas pequeñas. Se utiliza la totalidad del lienzo (1080x1920) distribuyendo metadatos arriba, titular en tercio superior, escenario 3D en el centro (600-750px) y telemetría abajo.
+  - **Cero cuadrícula de fondo**: Eliminada la cuadrícula técnica de fondo por degradados de estudio más orgánicos y elegantes.
+  - **Paleta pastel / slate más clara**: Se sustituyó el negro puro por fondos slate azulados (`#12261E`, `#241B13`, `#15203A`) y acentos pastel de alto contraste (`#34D399`, `#FBBF24`, `#38BDF8`) que descansan la vista.
+  - **Eliminación de barra superior fija**: Retirado el encabezado fijo (`SeriesHeader`) para otorgarle total protagonismo a la escena.
+  - **Animaciones 3D y mockups reales**: Integración de tarjetas en perspectiva (`Card3D`, `MockupWindow`) con imágenes de prueba reales (`the_last_endo_live.png`, `mova_app_live.png`, `gemini_workspace_sidepanel.png`, `endo_sprite.jpg`).
 - **Fusión PyQuest + Gemini**:
   - Del estilo Gemini se heredan el fondo oscuro con halos de luz neón sutiles, la tipografía dual (`Space Grotesk` para titulares y `JetBrains Mono` para código/badges), el énfasis tipográfico (`*resaltado*` de alto contraste) y la iconografía vectorial SVG oficial.
   - Del estilo PyQuest se heredan el centrado vertical estricto (`TrilogyStage`), la eliminación total del síndrome del "medio lienzo vacío" mediante barras de telemetría inferiores dinámicas, el control determinista de transiciones con entrada y salida explícita (cero colisiones de texto entre escenas) y las micro-animaciones continuas (pulsos de cables de energía SVG, escáneres, contadores numéricos y derivas perpetuas).

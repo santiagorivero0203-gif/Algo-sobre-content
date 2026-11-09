@@ -1,16 +1,15 @@
 /**
  * =====================================================================
- * TRILOGÍA "DE LA IDEA AL CÓDIGO" · KIT DE COMPONENTES COMPARTIDOS
+ * TRILOGÍA "DE LA IDEA AL CÓDIGO" · KIT COMPARTIDO V2 (ESTILO GEMINI)
  * =====================================================================
- * Fusión de estilos:
- *  - GEMINI: fondo oscuro editorial con halos neón difuminados, Space
- *    Grotesk + JetBrains Mono, logos oficiales SVG, badges y titulares
- *    con énfasis (*resaltado*).
- *  - PYQUEST: centrado vertical dinámico, entrada/salida explícita por
- *    escena (cero textos encimados), micro-eventos continuos y
- *    mecánicas físicas (buses de energía SVG, escáneres, contadores).
- *
- * Todo es determinista: cada valor visual es función pura del frame.
+ * Refactorización orientada a:
+ *  1. Introducción y tipografía de alto impacto estilo GEMINI (Hero grandilocuente,
+ *     kicker, línea de respiración neón y badges flotantes).
+ *  2. Repartición vertical completa ("a lo largo", 1080x1920) sin huecos vacíos.
+ *  3. Cero cuadrículas en el fondo: degradados de estudio suaves y orbes orgánicos.
+ *  4. Colores pastel/slate más claros que no cansan la vista.
+ *  5. Barra superior eliminada por completo.
+ *  6. Animaciones 3D en perspectiva (rotateX, rotateY, depth, imágenes de mockup).
  * =====================================================================
  */
 import React from "react";
@@ -28,19 +27,50 @@ import { FONT_MONO, FONT_SANS } from "../lib/theme";
 
 export { FONT_MONO, FONT_SANS };
 
-/** Paleta por episodio de la trilogía. */
+/** Paleta de colores suaves (estilo Gemini Slate) para no cansar la vista. */
 export interface TrilogyPalette {
-  /** Color base del fondo (muy oscuro). */
+  /** Color superior suave (slate). */
   base: string;
-  /** Segundo tono del degradado del fondo. */
+  /** Tono medio del degradado. */
+  baseMid: string;
+  /** Tono profundo (nunca negro puro áspero). */
   baseDeep: string;
-  /** Acento neón principal. */
+  /** Acento pastel luminoso principal. */
   accent: string;
-  /** Acento secundario. */
+  /** Acento secundario armónico. */
   secondary: string;
+  /** Halo ambiental difuso. */
+  aura: string;
 }
 
-/** Interpolación con clamp en ambos extremos (atajo seguro). */
+export const STACK1_PALETTE: TrilogyPalette = {
+  base: "#12261E",     // Sage slate suave
+  baseMid: "#0A1813",
+  baseDeep: "#050F0C",
+  accent: "#34D399",   // Menta pastel de alto contraste
+  secondary: "#38BDF8",// Cielo pastel
+  aura: "rgba(52, 211, 153, 0.28)",
+};
+
+export const STACK2_PALETTE: TrilogyPalette = {
+  base: "#241B13",     // Ámbar bronce pizarra suave
+  baseMid: "#16100B",
+  baseDeep: "#0D0906",
+  accent: "#FBBF24",   // Ámbar pastel dorado
+  secondary: "#FB923C",// Coral suave
+  aura: "rgba(251, 191, 36, 0.26)",
+};
+
+export const STACK3_PALETTE: TrilogyPalette = {
+  base: "#15203A",     // Índigo slate suave
+  baseMid: "#0E162B",
+  baseDeep: "#070C18",
+  accent: "#38BDF8",   // Azul cielo pastel
+  secondary: "#A78BFA",// Lavanda pastel
+  aura: "rgba(56, 189, 248, 0.28)",
+};
+
+/** Interpolación con clamp seguro en ambos extremos. */
 export const clampInterp = (
   frame: number,
   input: [number, number],
@@ -51,81 +81,70 @@ export const clampInterp = (
     extrapolateRight: "clamp",
   });
 
-/** Resorte estándar de entrada ágil (estilo Gemini). */
-export const useEnter = (delay = 0, damping = 15, stiffness = 150) => {
+/** Resorte ágil y suave estilo Gemini (mass 0.7, damping 20). */
+export const useEnter = (delay = 0, damping = 18, stiffness = 160) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   return spring({
     frame: frame - delay,
     fps,
-    config: { damping, stiffness, mass: 0.75 },
+    config: { damping, stiffness, mass: 0.72 },
   });
 };
 
 // =====================================================================
-// 1. FONDO ATMOSFÉRICO OSCURO CON HALOS NEÓN (blur 130px, opacidad <= 0.28)
+// 1. FONDO DE ESTUDIO LIMPIO (SIN CUADRÍCULA, SUAVE A LA VISTA)
 // =====================================================================
 export const TrilogyAtmosphere: React.FC<{ palette: TrilogyPalette }> = ({
   palette,
 }) => {
   const frame = useCurrentFrame();
-  const orb1X = Math.sin(frame / 46) * 120;
-  const orb1Y = Math.cos(frame / 54) * 90;
-  const orb2X = Math.cos(frame / 40) * -110;
-  const orb2Y = Math.sin(frame / 50) * 100;
-  const gridOffset = (frame * 0.6) % 64;
+  const orb1X = Math.sin(frame / 48) * 110;
+  const orb1Y = Math.cos(frame / 56) * 80;
+  const orb2X = Math.cos(frame / 42) * -100;
+  const orb2Y = Math.sin(frame / 52) * 90;
 
   return (
     <AbsoluteFill
       style={{
-        background: `radial-gradient(circle at 50% 30%, ${palette.base} 0%, ${palette.baseDeep} 100%)`,
+        background: `radial-gradient(130% 90% at 50% 0%, ${palette.base} 0%, ${palette.baseMid} 52%, ${palette.baseDeep} 100%)`,
         overflow: "hidden",
       }}
     >
-      {/* Rejilla técnica sutil en movimiento continuo */}
+      {/* Halo de luz superior sutil (radial gradient nativo) */}
       <div
         style={{
           position: "absolute",
-          inset: -120,
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px)",
-          backgroundSize: "64px 64px",
-          transform: `translateY(${gridOffset}px)`,
+          width: 950,
+          height: 950,
+          borderRadius: "50%",
+          background: `radial-gradient(circle, ${palette.accent} 0%, rgba(0,0,0,0) 68%)`,
+          opacity: 0.24,
+          top: -40 + orb1Y,
+          left: -180 + orb1X,
+          pointerEvents: "none",
         }}
       />
-      {/* Halo superior (acento) con radial-gradient nativo ultra-rápido */}
+      {/* Halo de luz inferior secundario suave */}
       <div
         style={{
           position: "absolute",
           width: 900,
           height: 900,
           borderRadius: "50%",
-          background: `radial-gradient(circle, ${palette.accent} 0%, rgba(0,0,0,0) 70%)`,
-          opacity: 0.35,
-          top: 30 + orb1Y,
-          left: -200 + orb1X,
+          background: `radial-gradient(circle, ${palette.secondary} 0%, rgba(0,0,0,0) 68%)`,
+          opacity: 0.18,
+          bottom: 20 + orb2Y,
+          right: -160 + orb2X,
           pointerEvents: "none",
         }}
       />
-      {/* Halo inferior (secundario) con radial-gradient nativo ultra-rápido */}
-      <div
-        style={{
-          position: "absolute",
-          width: 860,
-          height: 860,
-          borderRadius: "50%",
-          background: `radial-gradient(circle, ${palette.secondary} 0%, rgba(0,0,0,0) 70%)`,
-          opacity: 0.28,
-          bottom: 70 + orb2Y,
-          right: -200 + orb2X,
-          pointerEvents: "none",
-        }}
-      />
-      {/* Viñeta para foco central */}
+      {/* Viñeta sutil para centrar el foco */}
       <AbsoluteFill
         style={{
           background:
-            "radial-gradient(circle at 50% 50%, transparent 55%, rgba(0,0,0,0.45) 100%)",
+            "radial-gradient(ellipse at 50% 50%, transparent 45%, rgba(0,0,0,0.55) 100%)",
+          pointerEvents: "none",
         }}
       />
     </AbsoluteFill>
@@ -133,170 +152,221 @@ export const TrilogyAtmosphere: React.FC<{ palette: TrilogyPalette }> = ({
 };
 
 // =====================================================================
-// 2. CABECERA PERSISTENTE DE SERIE (marca + número de parte)
+// 2. DISPOSICIÓN VERTICAL COMPLETA ("A LO LARGO", 1080x1920)
 // =====================================================================
-export const SeriesHeader: React.FC<{
-  part: number;
-  palette: TrilogyPalette;
-}> = ({ part, palette }) => {
-  const enter = useEnter(4);
-  return (
-    <div
-      style={{
-        position: "absolute",
-        top: 92,
-        left: 0,
-        right: 0,
-        display: "flex",
-        justifyContent: "center",
-        opacity: enter,
-        transform: `translateY(${(1 - enter) * -20}px)`,
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 14,
-          padding: "10px 22px",
-          borderRadius: 999,
-          background: "rgba(255,255,255,0.06)",
-          border: "1px solid rgba(255,255,255,0.14)",
-          fontFamily: FONT_MONO,
-          fontSize: 20,
-          fontWeight: 800,
-          letterSpacing: "0.08em",
-          color: "rgba(255,255,255,0.82)",
-        }}
-      >
-        <span style={{ color: palette.accent }}>SANTI.DEV</span>
-        <span style={{ opacity: 0.4 }}>·</span>
-        <span>DE LA IDEA AL CÓDIGO</span>
-        <span
-          style={{
-            background: palette.accent,
-            color: "#05080C",
-            padding: "2px 10px",
-            borderRadius: 999,
-          }}
-        >
-          PARTE {part}/3
-        </span>
-      </div>
-    </div>
-  );
-};
-
-// =====================================================================
-// 3. ESCENARIO CENTRADO CON ENTRADA Y SALIDA EXPLÍCITA
-// =====================================================================
-export const TrilogyStage: React.FC<{
+export const TrilogyCanvas: React.FC<{
   durationInFrames: number;
+  badge: string;
+  badgeColor?: string;
+  logoFile?: string;
+  kicker?: string;
+  kickerColor?: string;
+  title: string;
+  titleSize?: number;
+  sub?: string;
   children: React.ReactNode;
-  gap?: number;
-}> = ({ durationInFrames, children, gap = 34 }) => {
+  footerTelemetry?: React.ReactNode;
+}> = ({
+  durationInFrames,
+  badge,
+  badgeColor = "#38BDF8",
+  logoFile,
+  kicker,
+  kickerColor,
+  title,
+  titleSize = 82,
+  sub,
+  children,
+  footerTelemetry,
+}) => {
   const frame = useCurrentFrame();
-  const enter = useEnter(0, 16, 140);
-  const exit = clampInterp(frame, [durationInFrames - 16, durationInFrames], [1, 0]);
-  // Deriva continua para evitar cuadros congelados (Continuous Drift)
-  const drift = clampInterp(frame, [0, durationInFrames], [1, 1.02]);
+  const enter = useEnter(0, 18, 150);
+  const exit = clampInterp(frame, [durationInFrames - 15, durationInFrames], [1, 0]);
+  const drift = clampInterp(frame, [0, durationInFrames], [1, 1.015]);
 
   return (
     <AbsoluteFill
       style={{
         display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: "150px 70px 190px",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        padding: "130px 65px 120px",
         boxSizing: "border-box",
         opacity: enter * exit,
-        transform: `translateY(${(1 - enter) * 34 + (1 - exit) * -30}px) scale(${
-          (0.96 + enter * 0.04) * drift
+        transform: `translateY(${(1 - enter) * 28 + (1 - exit) * -24}px) scale(${
+          (0.97 + enter * 0.03) * drift
         })`,
+        fontFamily: FONT_SANS,
+        color: "#FFFFFF",
       }}
     >
+      {/* 2.1 ZONA SUPERIOR: Badge a la izquierda + Logo oficial a la derecha */}
       <div
         style={{
-          width: "100%",
-          maxWidth: 940,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          minHeight: 70,
+        }}
+      >
+        <Badge text={badge} color={badgeColor} delay={2} />
+        {logoFile && (
+          <BrandLogo file={logoFile} size={54} glow={badgeColor} delay={4} />
+        )}
+      </div>
+
+      {/* 2.2 ZONA TITULAR: Kicker + Kinetic Title + Línea respiración + Sub */}
+      <div
+        style={{
           display: "flex",
           flexDirection: "column",
-          alignItems: "stretch",
-          gap,
+          gap: 12,
+          marginTop: 10,
+          marginBottom: 16,
+        }}
+      >
+        {kicker && (
+          <div
+            style={{
+              fontFamily: FONT_MONO,
+              fontWeight: 800,
+              fontSize: 24,
+              letterSpacing: "0.14em",
+              color: kickerColor || badgeColor,
+              textTransform: "uppercase",
+              opacity: useEnter(6),
+            }}
+          >
+            {kicker}
+          </div>
+        )}
+
+        <KineticTitle text={title} accent={badgeColor} fontSize={titleSize} delay={8} />
+
+        {/* Línea de acento estilo Gemini que se expande y respira */}
+        <BreathingLine color={badgeColor} secondary={kickerColor || "#38BDF8"} delay={20} />
+
+        {sub && <SubLine text={sub} delay={24} />}
+      </div>
+
+      {/* 2.3 ESCENARIO CENTRAL VISUAL (3D, MOCKUPS O CÓDIGO INTERACTIVO) */}
+      <div
+        style={{
+          flex: 1,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+          margin: "10px 0",
+          perspective: 1200,
         }}
       >
         {children}
       </div>
+
+      {/* 2.4 ZONA INFERIOR: Telemetría / Barra de Estado / Takeaway */}
+      {footerTelemetry ? (
+        <div style={{ minHeight: 65, display: "flex", alignItems: "center" }}>
+          {footerTelemetry}
+        </div>
+      ) : null}
     </AbsoluteFill>
   );
 };
 
 // =====================================================================
-// 4. TIPOGRAFÍA: BADGE + TITULAR CON ÉNFASIS *resaltado*
+// 3. LÍNEA DE RESPIRACIÓN Y BADGE ESTILO GEMINI
 // =====================================================================
+export const BreathingLine: React.FC<{
+  color: string;
+  secondary: string;
+  delay?: number;
+}> = ({ color, secondary, delay = 16 }) => {
+  const frame = useCurrentFrame();
+  const enter = useEnter(delay, 22, 110);
+  const breathe = Math.sin((frame - delay) / 14) * 8;
+
+  return (
+    <div
+      style={{
+        marginTop: 6,
+        marginBottom: 6,
+        height: 7,
+        width: `${460 * enter}px`,
+        borderRadius: 4,
+        background: `linear-gradient(90deg, ${color}, ${secondary})`,
+        boxShadow: `0 0 ${20 + breathe}px ${color}88`,
+        opacity: enter,
+      }}
+    />
+  );
+};
+
 export const Badge: React.FC<{
   text: string;
   color: string;
-  icon?: React.ReactNode;
   delay?: number;
-}> = ({ text, color, icon, delay = 0 }) => {
-  const enter = useEnter(delay);
+}> = ({ text, color, delay = 0 }) => {
+  const enter = useEnter(delay, 16, 170);
   return (
-    <div style={{ display: "flex", justifyContent: "center" }}>
-      <div
+    <div
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 10,
+        padding: "8px 20px",
+        borderRadius: 999,
+        background: `${color}18`,
+        border: `1.5px solid ${color}77`,
+        color,
+        fontFamily: FONT_MONO,
+        fontSize: 20,
+        fontWeight: 800,
+        letterSpacing: "0.08em",
+        opacity: enter,
+        transform: `translateY(${(1 - enter) * 14}px)`,
+        boxShadow: `0 0 25px -4px ${color}44`,
+      }}
+    >
+      <span
         style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 10,
-          padding: "9px 22px",
-          borderRadius: 999,
-          background: `${color}1F`,
-          border: `2px solid ${color}88`,
-          color,
-          fontFamily: FONT_MONO,
-          fontSize: 21,
-          fontWeight: 800,
-          letterSpacing: "0.06em",
-          opacity: enter,
-          transform: `scale(${0.85 + enter * 0.15})`,
+          width: 8,
+          height: 8,
+          borderRadius: 4,
+          background: color,
+          boxShadow: `0 0 10px ${color}`,
         }}
-      >
-        {icon}
-        <span>{text}</span>
-      </div>
+      />
+      {text}
     </div>
   );
 };
 
-/** Titular con revelado por máscara palabra a palabra y énfasis *x*. */
 export const KineticTitle: React.FC<{
   text: string;
-  accent: string;
-  size?: number;
+  accent?: string;
+  fontSize?: number;
   delay?: number;
-}> = ({ text, accent, size = 60, delay = 6 }) => {
+}> = ({ text, accent = "#38BDF8", fontSize = 82, delay = 8 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const parts = text.split("*");
+  const chunks = text.split("*");
   let wordIndex = 0;
 
   return (
     <div
       style={{
-        fontFamily: FONT_SANS,
-        fontSize: size,
-        fontWeight: 700,
-        lineHeight: 1.12,
-        letterSpacing: "-0.03em",
-        color: "#FFFFFF",
-        textAlign: "center",
+        fontSize,
+        lineHeight: 1.08,
+        fontWeight: 800,
+        letterSpacing: "-0.035em",
         display: "flex",
         flexWrap: "wrap",
-        justifyContent: "center",
-        columnGap: size * 0.26,
+        gap: "0.26em",
+        alignItems: "baseline",
       }}
     >
-      {parts.map((chunk, chunkIdx) =>
+      {chunks.map((chunk, chunkIdx) =>
         chunk
           .split(" ")
           .filter(Boolean)
@@ -311,14 +381,14 @@ export const KineticTitle: React.FC<{
             return (
               <span
                 key={`${chunkIdx}-${i}`}
-                style={{ overflow: "hidden", display: "inline-flex", paddingBottom: 6 }}
+                style={{ overflow: "hidden", display: "inline-flex", paddingBottom: 4 }}
               >
                 <span
                   style={{
                     display: "inline-block",
                     transform: `translateY(${(1 - p) * 105}%)`,
                     color: highlighted ? accent : "#FFFFFF",
-                    textShadow: highlighted ? `0 0 34px ${accent}66` : "none",
+                    textShadow: highlighted ? `0 0 30px ${accent}66` : "none",
                   }}
                 >
                   {word}
@@ -331,24 +401,20 @@ export const KineticTitle: React.FC<{
   );
 };
 
-/** Subtítulo corto (máx 2 líneas). */
 export const SubLine: React.FC<{ text: string; delay?: number }> = ({
   text,
-  delay = 16,
+  delay = 20,
 }) => {
-  const enter = useEnter(delay);
+  const enter = useEnter(delay, 20, 130);
   return (
     <div
       style={{
-        fontFamily: FONT_SANS,
-        fontSize: 28,
+        fontSize: 32,
+        lineHeight: 1.34,
         fontWeight: 500,
-        lineHeight: 1.35,
-        color: "rgba(255,255,255,0.78)",
-        textAlign: "center",
+        color: "#94A3B8",
         opacity: enter,
-        transform: `translateY(${(1 - enter) * 16}px)`,
-        padding: "0 20px",
+        transform: `translateY(${(1 - enter) * 18}px)`,
       }}
     >
       {text}
@@ -357,29 +423,49 @@ export const SubLine: React.FC<{ text: string; delay?: number }> = ({
 };
 
 // =====================================================================
-// 5. TARJETA DE VIDRIO OSCURO (contenedor estándar)
+// 4. CONTENEDOR 3D EN PERSPECTIVA (OBJETOS, DISPOSITIVOS, TARJETAS)
 // =====================================================================
-export const GlassCard: React.FC<{
+export const Card3D: React.FC<{
   children: React.ReactNode;
+  rotateX?: number;
+  rotateY?: number;
+  rotateZ?: number;
   glow?: string;
   delay?: number;
   style?: React.CSSProperties;
-}> = ({ children, glow, delay = 10, style }) => {
-  const enter = useEnter(delay);
+}> = ({
+  children,
+  rotateX = 8,
+  rotateY = -6,
+  rotateZ = 0,
+  glow,
+  delay = 10,
+  style,
+}) => {
+  const frame = useCurrentFrame();
+  const enter = useEnter(delay, 18, 140);
+  const float = Math.sin((frame - delay) / 18) * 8;
+  const currentRotateX = rotateX + Math.sin(frame / 22) * 2;
+  const currentRotateY = rotateY + Math.cos(frame / 26) * 2;
+
   return (
     <div
       style={{
-        background: "rgba(10, 14, 22, 0.78)",
+        width: "100%",
+        borderRadius: 28,
+        background: "rgba(18, 27, 46, 0.76)",
         border: `1.5px solid ${glow ? `${glow}66` : "rgba(255,255,255,0.12)"}`,
-        borderRadius: 30,
-        padding: "34px 34px",
+        padding: "30px 32px",
         boxShadow: glow
-          ? `0 30px 70px -20px rgba(0,0,0,0.6), 0 0 50px -12px ${glow}55`
-          : "0 30px 70px -20px rgba(0,0,0,0.6)",
+          ? `0 35px 80px -15px rgba(0,0,0,0.65), 0 0 45px -10px ${glow}44`
+          : "0 35px 80px -15px rgba(0,0,0,0.65)",
         opacity: enter,
-        transform: `translateY(${(1 - enter) * 28}px) scale(${0.97 + enter * 0.03})`,
+        transform: `translateY(${(1 - enter) * 36 + float}px) perspective(1200px) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) rotateZ(${rotateZ}deg) scale(${
+          0.96 + enter * 0.04
+        })`,
+        transformStyle: "preserve-3d",
         position: "relative",
-        overflow: "hidden",
+        boxSizing: "border-box",
         ...style,
       }}
     >
@@ -388,227 +474,183 @@ export const GlassCard: React.FC<{
   );
 };
 
-/** Barra superior estilo ventana macOS para terminales/editores. */
-export const WindowBar: React.FC<{ title: string; status?: React.ReactNode }> = ({
-  title,
-  status,
-}) => (
-  <div
-    style={{
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-      paddingBottom: 14,
-      marginBottom: 16,
-      borderBottom: "1px solid rgba(255,255,255,0.08)",
-    }}
-  >
-    <div style={{ display: "flex", gap: 9 }}>
-      {["#FF5F57", "#FEBC2E", "#28C840"].map((c) => (
-        <div key={c} style={{ width: 13, height: 13, borderRadius: "50%", background: c }} />
-      ))}
-    </div>
-    <span style={{ fontFamily: FONT_MONO, fontSize: 19, color: "#94A3B8", fontWeight: 500 }}>
-      {title}
-    </span>
-    <div style={{ minWidth: 60, display: "flex", justifyContent: "flex-end" }}>{status}</div>
-  </div>
-);
+// =====================================================================
+// 5. VENTANA / MOCKUP DE DISPOSITIVO CON IMAGEN REAL O UI
+// =====================================================================
+export const MockupWindow: React.FC<{
+  title: string;
+  image?: string;
+  children?: React.ReactNode;
+  accent?: string;
+  height?: number;
+  delay?: number;
+}> = ({ title, image, children, accent = "#38BDF8", height = 480, delay = 12 }) => {
+  const enter = useEnter(delay);
+  return (
+    <div
+      style={{
+        width: "100%",
+        height,
+        borderRadius: 22,
+        overflow: "hidden",
+        background: "rgba(10, 16, 28, 0.92)",
+        border: `1.5px solid ${accent}55`,
+        display: "flex",
+        flexDirection: "column",
+        boxShadow: `0 20px 60px rgba(0,0,0,0.6), 0 0 35px ${accent}22`,
+        opacity: enter,
+      }}
+    >
+      {/* Barra de ventana macOS */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "12px 18px",
+          background: "rgba(255,255,255,0.04)",
+          borderBottom: "1px solid rgba(255,255,255,0.08)",
+        }}
+      >
+        <div style={{ display: "flex", gap: 8 }}>
+          {["#FF5F57", "#FEBC2E", "#28C840"].map((c) => (
+            <div key={c} style={{ width: 11, height: 11, borderRadius: "50%", background: c }} />
+          ))}
+        </div>
+        <span style={{ fontFamily: FONT_MONO, fontSize: 17, color: "#94A3B8", fontWeight: 600 }}>
+          {title}
+        </span>
+        <div style={{ width: 40 }} />
+      </div>
 
-/** Píldora de estado pequeña. */
-export const StatusPill: React.FC<{ text: string; color: string; solid?: boolean }> = ({
-  text,
-  color,
-  solid = false,
-}) => (
-  <span
-    style={{
-      fontFamily: FONT_MONO,
-      fontSize: 16,
-      fontWeight: 800,
-      padding: "4px 12px",
-      borderRadius: 999,
-      background: solid ? color : `${color}22`,
-      color: solid ? "#05080C" : color,
-      border: `1px solid ${color}66`,
-      whiteSpace: "nowrap",
-    }}
-  >
-    {text}
-  </span>
-);
+      {/* Contenido: Imagen real o slot React */}
+      <div
+        style={{
+          flex: 1,
+          position: "relative",
+          overflow: "hidden",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {image ? (
+          <Img
+            src={staticFile(image)}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
+          />
+        ) : (
+          children
+        )}
+      </div>
+    </div>
+  );
+};
 
 // =====================================================================
-// 6. LOGO OFICIAL CON RESPIRACIÓN Y RESPLANDOR
+// 6. LOGO OFICIAL CON LEVITACIÓN
 // =====================================================================
 export const BrandLogo: React.FC<{
   file: string;
   size?: number;
   glow?: string;
   delay?: number;
-  active?: boolean;
-  label?: string;
-}> = ({ file, size = 64, glow, delay = 0, active = true, label }) => {
+}> = ({ file, size = 56, glow, delay = 0 }) => {
   const frame = useCurrentFrame();
-  const enter = useEnter(delay, 12, 170);
-  const breathe = Math.sin((frame + delay * 3) / 18) * 4;
+  const enter = useEnter(delay, 14, 170);
+  const breathe = Math.sin((frame + delay * 4) / 16) * 5;
+
   return (
     <div
       style={{
+        width: size * 1.5,
+        height: size * 1.5,
+        borderRadius: size * 0.42,
+        background: "rgba(255,255,255,0.07)",
+        border: `1.5px solid ${glow ? `${glow}88` : "rgba(255,255,255,0.16)"}`,
+        boxShadow: glow ? `0 0 30px -4px ${glow}66` : "none",
         display: "flex",
-        flexDirection: "column",
         alignItems: "center",
-        gap: 8,
-        opacity: enter * (active ? 1 : 0.35),
-        transform: `translateY(${breathe}px) scale(${0.6 + enter * 0.4})`,
+        justifyContent: "center",
+        opacity: enter,
+        transform: `translateY(${breathe}px) scale(${0.7 + enter * 0.3})`,
       }}
     >
-      <div
-        style={{
-          width: size * 1.6,
-          height: size * 1.6,
-          borderRadius: size * 0.42,
-          background: "rgba(255,255,255,0.06)",
-          border: `1.5px solid ${active && glow ? `${glow}AA` : "rgba(255,255,255,0.14)"}`,
-          boxShadow: active && glow ? `0 0 38px -6px ${glow}` : "none",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Img src={staticFile(`assets/trilogia/${file}`)} style={{ width: size, height: size }} />
-      </div>
-      {label && (
+      <Img
+        src={staticFile(`assets/trilogia/${file}`)}
+        style={{ width: size, height: size, objectFit: "contain" }}
+      />
+    </div>
+  );
+};
+
+// =====================================================================
+// 7. BARRA DE TELEMETRÍA INFERIOR (CERO ESPACIO VACÍO)
+// =====================================================================
+export const TelemetryBar: React.FC<{
+  label: string;
+  metric: string;
+  color?: string;
+  icon?: string;
+  delay?: number;
+}> = ({ label, metric, color = "#38BDF8", delay = 22 }) => {
+  const enter = useEnter(delay);
+  return (
+    <div
+      style={{
+        width: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "14px 24px",
+        borderRadius: 20,
+        background: "rgba(15, 23, 42, 0.72)",
+        border: `1px solid ${color}44`,
+        fontFamily: FONT_MONO,
+        opacity: enter,
+        transform: `translateY(${(1 - enter) * 20}px)`,
+        boxShadow: `0 10px 30px rgba(0,0,0,0.4), 0 0 25px -8px ${color}33`,
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
         <span
           style={{
-            fontFamily: FONT_MONO,
-            fontSize: 17,
-            fontWeight: 800,
-            color: active ? "#FFFFFF" : "rgba(255,255,255,0.5)",
-            letterSpacing: "0.04em",
+            width: 9,
+            height: 9,
+            borderRadius: 4.5,
+            background: color,
+            boxShadow: `0 0 10px ${color}`,
           }}
-        >
+        />
+        <span style={{ fontSize: 19, fontWeight: 700, color: "#94A3B8" }}>
           {label}
         </span>
-      )}
-    </div>
-  );
-};
-
-// =====================================================================
-// 7. BUS DE ENERGÍA SVG (conducto con pulsos de luz continuos)
-// =====================================================================
-export const EnergyBus: React.FC<{
-  color: string;
-  height?: number;
-  active?: boolean;
-  /** Progreso de llenado 0..1 (para "bombear" datos). */
-  fill?: number;
-}> = ({ color, height = 70, active = true, fill = 1 }) => {
-  const frame = useCurrentFrame();
-  return (
-    <div style={{ display: "flex", justifyContent: "center", margin: "-10px 0" }}>
-      <svg width={60} height={height} viewBox={`0 0 60 ${height}`}>
-        <line x1={30} y1={0} x2={30} y2={height} stroke="rgba(255,255,255,0.12)" strokeWidth={8} strokeLinecap="round" />
-        {active && (
-          <line
-            x1={30}
-            y1={0}
-            x2={30}
-            y2={height * fill}
-            stroke={color}
-            strokeWidth={8}
-            strokeLinecap="round"
-            strokeDasharray="14 18"
-            strokeDashoffset={-frame * 5}
-            style={{ filter: `drop-shadow(0 0 8px ${color})` }}
-          />
-        )}
-      </svg>
-    </div>
-  );
-};
-
-// =====================================================================
-// 8. CAMA MUSICAL CON FUNDIDOS
-// =====================================================================
-export const TrilogyBgm: React.FC<{ volume?: number }> = ({ volume = 0.11 }) => {
-  const { fps, durationInFrames } = useVideoConfig();
-  return (
-    <Audio
-      src={staticFile("bgm/tech_ambient_bed.mp3")}
-      loop
-      volume={(f) => {
-        const fadeIn = Math.min(1, f / (fps * 0.6));
-        const fadeOut = Math.min(1, (durationInFrames - f) / (fps * 0.8));
-        return volume * Math.max(0, fadeIn) * Math.max(0, fadeOut);
-      }}
-    />
-  );
-};
-
-// =====================================================================
-// 9. BOTONES CTA PULSANTES
-// =====================================================================
-export const CtaButtons: React.FC<{ keyword: string; accent: string }> = ({
-  keyword,
-  accent,
-}) => {
-  const frame = useCurrentFrame();
-  return (
-    <div style={{ display: "flex", gap: 18, justifyContent: "center" }}>
-      <div
+      </div>
+      <span
         style={{
-          padding: "16px 30px",
-          borderRadius: 18,
-          border: `2px solid ${accent}`,
-          color: accent,
-          background: `${accent}18`,
-          fontFamily: FONT_SANS,
-          fontSize: 27,
-          fontWeight: 700,
-          transform: `scale(${1 + Math.sin(frame / 9) * 0.035})`,
+          fontSize: 20,
+          fontWeight: 800,
+          color,
+          letterSpacing: "0.04em",
         }}
       >
-        Comenta “{keyword}”
-      </div>
-      <div
-        style={{
-          padding: "16px 30px",
-          borderRadius: 18,
-          background: accent,
-          color: "#05080C",
-          fontFamily: FONT_SANS,
-          fontSize: 27,
-          fontWeight: 700,
-          boxShadow: `0 0 34px -4px ${accent}`,
-          transform: `scale(${1 + Math.cos(frame / 9) * 0.035})`,
-        }}
-      >
-        + Seguir @santi.dev
-      </div>
+        {metric}
+      </span>
     </div>
   );
 };
 
-/** Texto que se escribe en vivo con cursor (determinista). */
-export const Typed: React.FC<{
-  text: string;
-  start: number;
-  cps?: number;
-  color?: string;
-  cursorColor?: string;
-}> = ({ text, start, cps = 1.2, color = "#F8FAFC", cursorColor = "#FFFFFF" }) => {
-  const frame = useCurrentFrame();
-  const count = Math.max(0, Math.min(text.length, Math.floor((frame - start) * cps)));
-  const done = count >= text.length;
-  const blink = Math.floor(frame / 15) % 2 === 0;
-  return (
-    <span style={{ color }}>
-      {text.slice(0, count)}
-      {frame >= start && (!done || blink) && (
-        <span style={{ color: cursorColor, opacity: 0.9 }}>▌</span>
-      )}
-    </span>
-  );
-};
+// =====================================================================
+// 8. AUDIO BGM SUAVE
+// =====================================================================
+export const TrilogyBgm: React.FC<{ volume?: number }> = ({ volume = 0.24 }) => (
+  <Audio
+    src={staticFile("bgm/tech_ambient_bed.mp3")}
+    volume={volume}
+    loop
+  />
+);

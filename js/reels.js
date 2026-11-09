@@ -612,7 +612,7 @@ En este Episodio 2 de PyQuest vemos qué hace la computadora por dentro paso a p
         brandIcon: 'fa-gamepad',
         accentColor: '#2E9D63',
         secondaryColor: '#57c78d',
-        videoUrl: 'videos/stack_secreto.mp4?v=2',
+        videoUrl: 'videos/stack_secreto.mp4?v=3',
         post: {
             hook: '¿Juegos y webs sin saber programar? Te enseño mi stack secreto 👇',
             caption: `¿Te imaginas crear tus propios videojuegos y aplicaciones web sin pasar meses atascado en la sintaxis?
@@ -731,7 +731,7 @@ En este video te revelo el stack técnico exacto que uso para pasar de una idea 
         brandIcon: 'fa-gear',
         accentColor: '#F08A35',
         secondaryColor: '#f39e56',
-        videoUrl: 'videos/automatizacion_y_mcp.mp4?v=2',
+        videoUrl: 'videos/automatizacion_y_mcp.mp4?v=3',
         post: {
             hook: 'Deja de subir archivos a mano. Así automatizo todo con MCP 👇',
             caption: `Programar en 2026 no se trata de hacer tareas repetitivas a mano. Se trata de conectar herramientas inteligentes:
@@ -848,7 +848,7 @@ En este video te revelo el stack técnico exacto que uso para pasar de una idea 
         brandIcon: 'fa-wand-magic-sparkles',
         accentColor: '#38BDF8',
         secondaryColor: '#818CF8',
-        videoUrl: 'videos/el_arte_del_prompt.mp4?v=1',
+        videoUrl: 'videos/el_arte_del_prompt.mp4?v=2',
         post: {
             hook: '¿La IA te genera código roto? Deja de pedir "hazme una app" y usa contratos 👇',
             caption: `El 90% de los desarrolladores fracasa usando IA porque pide todo de golpe en un solo prompt vago.
