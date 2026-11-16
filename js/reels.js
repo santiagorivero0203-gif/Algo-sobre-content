@@ -249,117 +249,121 @@ En esta versión V2 del Episodio 1 de PyQuest (con escenario interactivo Rayos X
         slug: 'pyquest_ep02_variables_y_tipos',
         theme: 'stack1',
         title: 'PyQuest Ep. 2: Variables y Tipos de Datos',
-        subtitle: 'Choque físico de tipos, brazo mecánico en RAM y los 4 tipos en vivo sobre Aria',
+        subtitle: 'Qué es una variable, los 4 tipos de datos y por qué las comillas rompen tus cálculos',
         duration_ms: 53000,
         duration: 53.0,
         fps: 60,
-        kicker: 'PYQUEST · EPISODIO 2 (INTERACTIVO)',
+        kicker: 'PYQUEST · EPISODIO 2 (PEDAGOGÍA VISUAL)',
         brandIcon: 'fa-cube',
         accentColor: '#0284C7',
         secondaryColor: '#10B981',
         videoUrl: 'videos/pyquest_ep02_variables_y_tipos.mp4?v=2',
         soundUrl: 'bgm/tech_ambient_bed.mp3',
         post: {
-            hook: 'El error que comete el 90% de los novatos al programar su primer juego 👇',
-            caption: `Poner números entre comillas es el error #1 que congela los juegos de quienes están aprendiendo a programar.
+            hook: '¿Por qué poner comillas a un número rompe tu juego por completo? 💥👇',
+            caption: `Para ti, 100 entre comillas y 100 sin comillas parecen lo mismo. Pero para Python son dos cosas completamente distintas.
 
-En este Episodio 2 de PyQuest vemos qué hace la computadora por dentro paso a paso:
+En este Episodio 2 de PyQuest (nuestra serie donde programamos un juego RPG desde cero) aprendes cómo guarda y entiende los datos tu computadora:
 
-1️⃣ Choque físico de tipos: Por qué las letras "100" rebotan contra el número -20 y congelan a Aria.
-2️⃣ El signo = como brazo mecánico: Cómo toma el dato de la derecha, lo mete en una ranura de RAM (0x7F01) y estampa la etiqueta en el frente.
-3️⃣ Los 4 Tipos en vivo sobre Aria: str (placa de nombre), int (barra de salud 0→100), float (multiplicador de espada x1.75) y bool (interruptor maestro ON/OFF).
-4️⃣ Cirugía de código: Arrancamos las comillas para que 100 - 20 fluya por el cable hasta dejar a Aria en 80 HP.
+1️⃣ Texto vs. Número (str y int): Por qué "100" entre comillas es una palabra y arroja TypeError si intentas restarle 20.
+2️⃣ Asignación en RAM: El signo = no compara valores; toma el dato de la derecha y lo guarda bajo una etiqueta en la memoria.
+3️⃣ Los 4 Tipos Básicos en vivo sobre Aria:
+   • str: Texto entre comillas ("Aria")
+   • int: Números enteros para vida y niveles (100)
+   • float: Decimales para multiplicadores de daño (1.75)
+   • bool: Interruptor lógico de verdadero o falso (True / False)
+4️⃣ La solución: Quitamos las comillas para que Python reconozca el número y calcule 100 - 20 = 80 HP.
 
-💾 Guarda este video para tu ruta de aprendizaje en Python.
+💾 Guarda este video para repasar los fundamentos de Python.
 👉 Sígueme para el Episodio 3: Condicionales y Lógica de Combate.`,
-            hashtags: ['#python', '#programacion', '#pyquest', '#variables', '#aprenderaprogramar', '#desarrollodesoftware', '#gamedev'],
+            hashtags: ['#python', '#programacion', '#pyquest', '#variables', '#tiposdedatos', '#aprenderaprogramar', '#desarrollodesoftware', '#gamedev'],
             bestTime: '18:00 - 21:00',
             sound: 'Tech Cyber Ambient'
         },
         beats: [
             {
                 id: 1,
-                name: 'Choque Físico: "100" vs -20',
+                name: 'Choque Físico: "100" vs -20 (TypeError)',
                 start_ms: 0,
                 end_ms: 9000,
                 type: 'hero',
-                badge: 'ERROR CRÍTICO',
-                title: 'Las comillas *congelan a tu héroe*',
-                sub: 'El texto "100" choca físicamente contra el número -20 y lanza TypeError.',
+                badge: 'ERROR DE TIPO (TypeError)',
+                title: 'Las comillas *congelan tu juego*',
+                sub: 'Para Python, "100" entre comillas es texto. No puedes restarle 20 a una palabra.',
                 kicker: 'EPISODIO 2 · PYQUEST',
-                vo: 'En vez de restar la barra de vida, las letras cien chocan contra el menos veinte y congelan a Aria.'
+                vo: 'Para ti, cien entre comillas y cien sin comillas parecen lo mismo. Pero en Python, las comillas convierten un número en texto. Y como no puedes restarle veinte a una palabra, el juego se congela con un error de tipo.'
             },
             {
                 id: 2,
-                name: 'El Brazo Mecánico = en RAM',
+                name: 'Asignación en Memoria RAM',
                 start_ms: 9000,
                 end_ms: 20000,
                 type: 'points',
-                badge: 'MEMORIA RAM FÍSICA',
-                title: 'El signo = *guarda en ranuras*',
-                sub: 'Toma el bloque de la derecha, lo inserta en la RAM y estampa la etiqueta.',
+                badge: 'ASIGNACIÓN EN MEMORIA RAM',
+                title: 'Una variable *apunta a un valor*',
+                sub: 'El signo = asigna: toma el dato de la derecha y lo guarda bajo la etiqueta de la izquierda.',
                 points: [
-                    { num: '01', label: 'Ranura 0x7F01', title: 'nombre = "Aria"', desc: 'El imán = deposita "Aria" y estampa la etiqueta nombre.' },
-                    { num: '02', label: 'Ranura 0x7F02', title: 'vida = 100', desc: 'Guarda el entero 100 listo para operaciones matemáticas.' }
+                    { num: '01', label: 'Identificador', title: 'nombre = "Aria"', desc: 'Es la etiqueta en tu código que apunta al espacio en memoria donde está el dato.' },
+                    { num: '02', label: 'Valor en RAM', title: 'vida = 100', desc: 'Espacio en la memoria RAM (0x7F02) que guarda el número 100 listo para calcular.' }
                 ],
-                vo: 'El signo igual actúa como un brazo mecánico que mete el dato en una ranura de RAM.'
+                vo: 'Para que nuestro juego recuerde datos, usamos variables. Una variable es una etiqueta en la memoria RAM que guarda un valor. El signo igual no compara: asigna. Toma el dato de la derecha y lo guarda bajo el nombre de la izquierda.'
             },
             {
                 id: 3,
-                name: 'Los 4 Tipos en Vivo sobre Aria',
+                name: 'Los 4 Tipos Básicos en Vivo',
                 start_ms: 20000,
                 end_ms: 36000,
                 type: 'code',
-                badge: '1 VARIABLE CADA 4 SEGUNDOS',
-                title: 'Construyendo a Aria *paso a paso*',
-                sub: 'Cada variable transforma en vivo la tarjeta central del personaje.',
+                badge: 'LOS 4 TIPOS DE DATOS BÁSICOS',
+                title: 'El ADN de tu héroe: *4 tipos de datos*',
+                sub: 'Cada tipo de dato le indica a Python qué puede hacer con esa información sobre Aria.',
                 codeSnippet: {
-                    file: 'hero_live.py ~ 4_tipos',
+                    file: 'adn_heroe.py ~ tipos_basicos',
                     lines: [
-                        'heroe = "Aria"      # 1. str -> Placa de nombre',
-                        'vida = 100          # 2. int -> Barra sube 0 a 100 HP',
-                        'critico = 1.75      # 3. float -> Espada brilla x1.75',
-                        'esta_viva = True    # 4. bool -> Interruptor OFF a ON'
+                        'heroe = "Aria"      # 1. str: Texto entre comillas',
+                        'vida = 100          # 2. int: Número entero sin decimales',
+                        'critico = 1.75      # 3. float: Decimal con punto',
+                        'esta_viva = True    # 4. bool: Interruptor (True o False)'
                     ]
                 },
-                vo: 'Agregamos una variable cada cuatro segundos y vemos cómo transforma a Aria en vivo.'
+                vo: 'Python usa cuatro tipos básicos para darle vida a tu héroe: String entre comillas para textos y nombres; Integer para números enteros como cien de vida; Float con punto decimal para multiplicadores de daño; y Booleano, un interruptor lógico que solo puede ser True o False.'
             },
             {
                 id: 4,
-                name: 'Pinzas Borran las Comillas',
+                name: 'Resolviendo el Bug sin Comillas',
                 start_ms: 36000,
                 end_ms: 46000,
                 type: 'compare',
-                badge: 'CIRUGÍA DE CÓDIGO',
-                title: 'De "100" a 100: *80 HP reales*',
-                sub: 'Arrancamos las comillas y el cálculo 100 - 20 fluye por el cable hacia Aria.',
+                badge: 'SOLUCIÓN EN VIVO',
+                title: 'De texto a entero: *operación válida*',
+                sub: 'Al quitar las comillas, Python reconoce que 100 es un número entero y ejecuta 100 - 20 = 80 HP.',
                 compareData: {
                     bad: {
-                        title: 'vida = "100" (Bloqueado)',
-                        desc: 'Las comillas convierten el número en letras y congelan el combate.'
+                        title: 'vida = "100" (Texto)',
+                        desc: 'No se puede hacer una resta matemática entre una palabra y un número.'
                     },
                     good: {
-                        title: 'vida = 100 (Entero Limpio)',
-                        desc: '100 - 20 fluye por el cable y baja la barra suavemente a 80 / 100 HP.'
+                        title: 'vida = 100 (Entero)',
+                        desc: 'Ahora sí es un número entero: la resta funciona y la barra de Aria baja a 80 HP.'
                     }
                 },
-                vo: 'Quitamos las comillas y el cálculo cien menos veinte baja su barra a ochenta de vida.'
+                vo: 'Al quitar las comillas, Python detecta automáticamente que es un número entero. Ahora la resta cien menos veinte sí es válida, y la vida de Aria baja correctamente a ochenta puntos.'
             },
             {
                 id: 5,
-                name: 'Cliffhanger (-20 HP) y CTA',
+                name: 'Cliffhanger: ¿Por qué -20 HP? y CTA',
                 start_ms: 46000,
                 end_ms: 53000,
                 type: 'cta',
-                badge: 'PRÓXIMO CAPÍTULO',
-                title: '¿Vida en *-20 HP*? Episodio 3',
-                sub: 'Usaremos condicionales if / elif / else para impedir héroes zombis.',
+                badge: 'EL LÍMITE DE LOS NÚMEROS',
+                title: '¿Vida en *-20 HP*? Falta lógica',
+                sub: 'Los números no tienen sentido común. Necesitamos condicionales para tomar decisiones.',
                 ctaData: {
-                    keyword: 'PYQUEST',
-                    line: 'Comenta PYQUEST para el código fuente y sígueme para el Episodio 3.',
+                    keyword: 'CONDICIONALES',
+                    line: 'Comenta CONDICIONALES para la guía y sígueme para el Episodio 3.',
                     handle: '@santi.dev'
                 },
-                vo: 'Comenta PYQUEST para el código y sígueme para el episodio tres.'
+                vo: 'Pero si recibe cien de daño, su vida baja a menos veinte y sigue de pie. ¿Cómo enseñamos al código a tomar decisiones? Sígueme para el Episodio tres.'
             }
         ]
     },
@@ -372,11 +376,11 @@ En este Episodio 2 de PyQuest vemos qué hace la computadora por dentro paso a p
         slug: 'pyquest_ep03_condicionales_y_combate',
         theme: 'stack1',
         title: 'PyQuest Ep. 3: Condicionales y Combate',
-        subtitle: 'El bug del héroe zombi (-20 HP), indentación visual y escáner if/elif/else',
+        subtitle: 'Cómo hacer que tu código tome decisiones con if, elif, else y la regla de los 4 espacios',
         duration_ms: 54000,
         duration: 54.0,
         fps: 60,
-        kicker: 'PYQUEST · EPISODIO 3 (INTERACTIVO)',
+        kicker: 'PYQUEST · EPISODIO 3 (PEDAGOGÍA VISUAL)',
         brandIcon: 'fa-shield-halved',
         accentColor: '#10B981',
         secondaryColor: '#4F46E5',
@@ -395,86 +399,89 @@ En este Episodio 2 de PyQuest vemos qué hace la computadora por dentro paso a p
                 start_ms: 0,
                 end_ms: 9000,
                 type: 'hero',
-                badge: 'BUG LÓGICO EN VIVO',
+                badge: 'EL CÓDIGO SIN DECISIONES',
                 title: '¿Por qué pelea con *-20 de vida*?',
-                sub: 'Aria tiene 10 HP, recibe -30, la barra se rompe hacia la izquierda y sigue atacando como zombi.',
+                sub: 'Sin condicionales, el programa ejecuta líneas de arriba hacia abajo sin comprobar si Aria perdió.',
                 kicker: 'EPISODIO 3 · PYQUEST',
-                vo: 'Aria recibe treinta de daño, su barra se rompe hasta menos veinte, pero sigue atacando como un zombi.'
+                vo: 'Aria recibió treinta de daño y su vida cayó a menos veinte, pero sigue atacando como un zombi. ¿Por qué? Porque sin condicionales, tu código ejecuta las líneas de arriba hacia abajo sin evaluar ninguna regla.'
             },
             {
                 id: 2,
-                name: 'Visualizador de Indentación [·][·][·][·]',
+                name: 'Sintaxis en Python: Dos Puntos y 4 Espacios',
                 start_ms: 9000,
                 end_ms: 21000,
                 type: 'code',
-                badge: 'LOS DOS PUNTOS Y 4 ESPACIOS',
-                title: 'La jurisdicción *del bloque if*',
-                sub: 'Los dos puntos : brillan y empujan print("GAME OVER") 4 bloques hacia la derecha.',
+                badge: 'LA REGLA DE ORO EN PYTHON',
+                title: 'Los dos puntos y los *4 espacios*',
+                sub: 'if evalúa si algo es verdadero. Los dos puntos : abren el bloque y 4 espacios indican qué va adentro.',
                 codeSnippet: {
-                    file: 'combate.py ~ indentacion_4_espacios',
+                    file: 'combate.py ~ bloques_if',
                     lines: [
-                        'if vida <= 0:                 # : abre jurisdicción',
+                        'if vida <= 0:                 # Condición + dos puntos :',
                         '    print("GAME OVER")        # [·][·][·][·] 4 espacios',
-                        '    fin_del_juego()           # Conectado al bloque if'
+                        '    heroe_activo = False      # Solo corre si es True'
                     ]
                 },
-                vo: 'Los dos puntos empujan la línea cuatro espacios para meterla dentro de la jurisdicción del if.'
+                vo: 'Para que el programa tome decisiones usamos if seguido de una condición. La regla clave en Python es esta: los dos puntos abren el bloque y los cuatro espacios de sangría indican qué instrucciones pertenecen a esa decisión.'
             },
             {
                 id: 3,
-                name: 'Escáner Línea por Línea (if / elif / else)',
+                name: 'El Embudo Lógico (if / elif / else)',
                 start_ms: 21000,
                 end_ms: 39000,
                 type: 'code',
-                badge: '3 PRUEBAS EN VIVO (85, 25 Y 0 HP)',
-                title: 'El embudo *de arriba hacia abajo*',
-                sub: 'En cuanto una condición da True, Python ejecuta esa rama y tacha todas las demás.',
+                badge: 'EL EMBUDO IF · ELIF · ELSE',
+                title: 'Decisiones en orden: *if, elif, else*',
+                sub: 'Python evalúa las condiciones en orden de arriba a abajo y se detiene en la primera que sea verdadera.',
                 codeSnippet: {
-                    file: 'combate.py ~ escaner_embudo',
+                    file: 'combate.py ~ embudo_decision',
                     lines: [
-                        '# Prueba 1 (85 HP) -> cae hasta else ("Listo para luchar")',
-                        '# Prueba 2 (25 HP) -> entra en elif < 30 y TACHA el else',
-                        '# Prueba 3 (0 HP)  -> entra en if <= 0 y detiene todo'
+                        'if vida <= 0:         # 1. ¿Se quedó sin vida?',
+                        '    fin_del_juego()   # Termina la partida',
+                        'elif vida < 30:       # 2. Si no, ¿está en peligro?',
+                        '    alerta_roja()     # Activa alerta crítica',
+                        'else:                 # 3. Si nada anterior se cumplió',
+                        '    atacar_normal()   # Sigue peleando con normalidad'
                     ]
                 },
-                vo: 'El escáner evalúa de arriba hacia abajo: en cuanto una condición se cumple, tacha e ignora las demás.'
+                vo: 'Con if, elif y else creamos un embudo de decisiones. Primero, if comprueba si la vida llegó a cero. Si no, elif revisa si está en peligro por debajo de treinta. Y si nada se cumple, else ejecuta el turno normal. Python solo ejecuta la primera opción verdadera.'
             },
             {
                 id: 4,
-                name: 'Combate Final Coherente vs Boss Goblin',
+                name: 'Combate en Tiempo Real',
                 start_ms: 39000,
                 end_ms: 47000,
                 type: 'compare',
-                badge: 'TURNO FINAL SINCRONIZADO',
-                title: 'Golpe crítico y *victoria real*',
-                sub: 'Aria baja a 70 HP, contraataca por -35 DMG, el Goblin cae a 0 HP y recién se activa VICTORIA.',
+                badge: 'COMBATE EN TIEMPO REAL',
+                title: 'Golpe final y *condición cumplida*',
+                sub: 'Mientras hp_goblin sea mayor a 0 la condición es falsa; al llegar a 0 cambia a True y ganas.',
                 compareData: {
                     bad: {
-                        title: 'Mientras hp_goblin > 0 (35 HP)',
-                        desc: 'if hp_goblin <= 0 da False: el combate continúa sin mostrar victoria prematura.'
+                        title: 'hp_goblin > 0 (False)',
+                        desc: 'if hp_goblin <= 0 es falso: el combate continúa sin activar la victoria antes de tiempo.'
                     },
                     good: {
-                        title: 'Cuando hp_goblin llega a 0 HP',
-                        desc: 'if hp_goblin <= 0 cambia a True en tiempo real y desbloquea el cofre de victoria.'
+                        title: 'hp_goblin <= 0 (True)',
+                        desc: 'El golpe final hace verdadera la condición: detiene al Goblin y abre el cofre.'
                     }
                 },
-                vo: 'Cuando el golpe crítico deja al Goblin en cero de vida, el condicional activa la victoria y suelta el cofre.'
+                vo: 'Ahora el combate tiene reglas reales: mientras la vida del Goblin sea mayor a cero, la condición de victoria es falsa. Pero con el golpe final cambia a True, detiene al enemigo y suelta el cofre.'
             },
             {
                 id: 5,
-                name: 'Cliffhanger de Botín y CTA',
+                name: 'El Reto de los 50 Ítems y CTA',
                 start_ms: 47000,
                 end_ms: 54000,
                 type: 'cta',
-                badge: 'PRÓXIMO CAPÍTULO',
-                title: '¿50 ítems = *50 variables*?',
-                sub: 'Episodio 4: Programaremos la mochila de Aria con Listas y Diccionarios.',
+                badge: 'EL RETO DEL INVENTARIO',
+                title: '¿50 tesoros = *50 variables*?',
+                sub: 'Al ganar la batalla el cofre suelta 50 objetos. Crear variables sueltas arruinaría el código.',
                 ctaData: {
                     keyword: 'INVENTARIO',
-                    line: 'Guarda este video y sígueme para el Episodio 4: Inventario RPG.',
+                    line: 'Comenta INVENTARIO para el código fuente y sígueme para el Episodio 4.',
                     handle: '@santi.dev'
                 },
-                vo: 'Guarda este video y sígueme para programar el inventario en el episodio cuatro.'
+                vo: 'El cofre suelta cincuenta tesoros. ¿Vas a crear cincuenta variables sueltas en tu código? Guarda este video y sígueme para el Episodio cuatro: Listas y Diccionarios.'
             }
         ]
     },
@@ -487,11 +494,11 @@ En este Episodio 2 de PyQuest vemos qué hace la computadora por dentro paso a p
         slug: 'pyquest_ep04_listas_y_diccionarios',
         theme: 'stack1',
         title: 'PyQuest Ep. 4: Listas y Diccionarios',
-        subtitle: 'El inventario del héroe y cómo evitar 100 variables sueltas',
+        subtitle: 'Cómo organizar el inventario y las estadísticas de tu personaje sin crear 100 variables',
         duration_ms: 74000,
         duration: 74.0,
         fps: 60,
-        kicker: 'PYQUEST · EPISODIO 4',
+        kicker: 'PYQUEST · EPISODIO 4 (PEDAGOGÍA VISUAL)',
         brandIcon: 'fa-boxes-stacked',
         accentColor: '#8B5CF6',
         secondaryColor: '#10B981',
@@ -506,92 +513,92 @@ En este Episodio 2 de PyQuest vemos qué hace la computadora por dentro paso a p
         beats: [
             {
                 id: 1,
-                name: 'El Caos de Variables Sueltas',
+                name: 'El Caos de las Variables Sueltas',
                 start_ms: 0,
                 end_ms: 8000,
                 type: 'hero',
-                badge: 'ERROR DE ARQUITECTURA',
-                title: '¿10 variables para *10 objetos*?',
-                sub: 'Crear item1, item2, item3 hace tu juego totalmente inmantenible.',
+                badge: 'ERROR DE ORGANIZACIÓN',
+                title: '¿Crear variables para *cada objeto*?',
+                sub: 'Crear item1, item2, item3 hace tu código imposible de mantener o recorrer.',
                 kicker: 'EPISODIO 4 · PYQUEST',
-                vo: 'Crear una variable para cada objeto es la forma más rápida de arruinar tu proyecto.'
+                vo: 'Si en tu juego tienes variables llamadas item uno, item dos e item tres, estás complicando tu código sin necesidad. Para agrupar datos relacionados existen las colecciones.'
             },
             {
                 id: 2,
-                name: 'La Lista y los Corchetes',
+                name: 'Listas e Índices desde Cero',
                 start_ms: 8000,
                 end_ms: 26000,
                 type: 'code',
-                badge: 'ESTRUCTURA LIST',
-                title: 'Una sola variable, *todo agrupado*',
-                sub: 'inventario = ["Poción", "Espada", "Escudo"]. Indexación en base cero [0].',
+                badge: 'LISTAS E ÍNDICES DESDE CERO',
+                title: 'Colecciones ordenadas: *entre corchetes []*',
+                sub: 'inventario = ["Poción", "Espada", "Escudo"]. El índice [0] indica el primer espacio desde el inicio.',
                 codeSnippet: {
                     file: 'inventario.py ~ lista_ordenada',
                     lines: [
-                        '# Colección ordenada entre corchetes []',
+                        '# Agrupa elementos ordenados entre corchetes []',
                         'inventario = ["Poción", "Espada", "Escudo"]',
-                        'print(inventario[0])  # Imprime: Poción (base cero)',
-                        'print(len(inventario))  # Cantidad: 3 objetos'
+                        'print(inventario[0])     # -> "Poción" (Posición 0)',
+                        'print(len(inventario))   # -> 3 objetos en total'
                     ]
                 },
-                vo: 'Una lista agrupa múltiples elementos en una sola variable ordenada entre corchetes.'
+                vo: 'Una lista agrupa varios elementos en una sola variable usando corchetes. Y un detalle clave que debes recordar: en programación contamos desde cero. El índice cero representa el inicio de la lista, sin ningún salto. Por eso inventario cero es siempre tu primer objeto.'
             },
             {
                 id: 3,
-                name: 'Método .append() Dinámico',
+                name: 'Listas Dinámicas con .append()',
                 start_ms: 26000,
                 end_ms: 46000,
                 type: 'code',
-                badge: 'MÉTODO .APPEND()',
-                title: 'Nuevos tesoros *al final*',
-                sub: 'inventario.append("Amuleto"). Crece dinámicamente cuando encuentras botín.',
+                badge: 'LISTAS DINÁMICAS CON .APPEND()',
+                title: 'Modificando en vivo: *método .append()*',
+                sub: 'Puedes agregar objetos nuevos al final con .append() y consultar el último con [-1].',
                 codeSnippet: {
-                    file: 'inventario.py ~ nuevo_loot',
+                    file: 'inventario.py ~ nuevo_botin',
                     lines: [
-                        '# Aria abre un cofre en la mazmorra',
+                        '# Aria encuentra un cofre y suma un objeto al final',
                         'inventario.append("Amuleto Mágico")',
-                        '# Ahora inventario tiene 4 elementos listos',
-                        'print(inventario[-1])  # Imprime: Amuleto Mágico'
+                        'print(inventario[-1])    # -> "Amuleto Mágico" (Último)',
+                        'pocion = inventario.pop(0)  # Usa y retira el primero'
                     ]
                 },
-                vo: 'Con el método append agregas nuevos tesoros al final de la lista al instante.'
+                vo: 'Las listas en Python pueden crecer en cualquier momento. Cuando Aria abre un cofre, usamos el método append para añadir el nuevo tesoro al final de la lista. Además, puedes usar el índice menos uno para obtener directamente el último objeto guardado sin contar cuántos hay.'
             },
             {
                 id: 4,
-                name: 'Diccionarios Clave-Valor',
+                name: 'Diccionarios con Clave y Valor',
                 start_ms: 46000,
                 end_ms: 64000,
                 type: 'compare',
-                badge: 'DICCIONARIOS {}',
-                title: 'Datos con *nombre real*',
-                sub: 'heroe = {"nombre": "Aria", "vida": 80}. Acceso directo por etiqueta.',
+                badge: 'DICCIONARIOS CON CLAVE Y VALOR',
+                title: 'Atributos con nombre: *diccionarios {}*',
+                sub: 'heroe = {"nombre": "Aria", "vida": 80, "clase": "Mago"}. Accedes a cada dato por su nombre.',
                 compareData: {
                     bad: {
-                        title: 'Por Número de Índice',
-                        desc: 'inventario[3] no te dice qué representa el dato y te obliga a memorizar posiciones.'
+                        title: 'Lista sin etiquetas',
+                        desc: 'stats = [80, "Aria", "Mago"] te obliga a memorizar qué significa cada posición.'
                     },
                     good: {
-                        title: 'Por Clave en Diccionario',
-                        desc: 'heroe["vida"] es legible, seguro y claro para cualquier programador de tu equipo.'
+                        title: 'Diccionario con nombre',
+                        desc: 'heroe["vida"] es claro y directo: sabes exactamente qué dato estás leyendo.'
                     }
                 },
-                vo: 'Con diccionarios accedes a los datos por su nombre en vez de su número de orden.'
+                vo: 'Pero una lista no es ideal para los atributos de un personaje, porque te obliga a recordar qué significa cada posición. Ahí entran los diccionarios: usan llaves y pares de clave y valor para que accedas a cada dato por su nombre real, como héroe vida o héroe clase.'
             },
             {
                 id: 5,
-                name: 'Cliffhanger Bucles y CTA',
+                name: 'Cliffhanger a Bucles y CTA',
                 start_ms: 64000,
                 end_ms: 74000,
                 type: 'cta',
-                badge: 'PRÓXIMO CAPÍTULO',
-                title: '¿Y si tienes 100 objetos? *Episodio 5*',
-                sub: 'Aprenderemos a recorrer listas completas con Bucles For y While.',
+                badge: 'AUTOMATIZACIÓN CON BUCLES',
+                title: '¿100 objetos en el morral? *Episodio 5*',
+                sub: 'No vas a escribir 100 líneas para revisar el inventario. Necesitamos bucles for y while.',
                 ctaData: {
                     keyword: 'BUCLES',
-                    line: 'Comenta BUCLES y sígueme para aprender Bucles en el Episodio 5.',
+                    line: 'Comenta BUCLES para el resumen y sígueme para el Episodio 5: Bucles For y While.',
                     handle: '@santi.dev'
                 },
-                vo: '¿Y si tienes cien objetos? No vas a escribir cien líneas. Sígueme para el episodio 5: Bucles.'
+                vo: 'Ya tenemos inventario y estadísticas. Pero si tienes cien objetos en la mochila y quieres revisarlos todos, ¿vas a escribir cien líneas? Sígueme para el Episodio cinco: Bucles For y While.'
             }
         ]
     },

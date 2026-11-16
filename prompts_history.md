@@ -529,5 +529,16 @@ Haz un archivo en el que esten todos y cada uno de los prompts
 
 ---
 
-*Total de prompts registrados:* **22**
+## 🔹 Prompt #23
+
+- **Paso / Step Index:** `1966`
+- **Fecha y Hora Local:** `2026-11-15T23:20:46-04:00`
+
+### 📝 Instrucción del Usuario:
+
+Quiero que mejores el guion de las partes 2,3 y 4 de pyquest ya que no explican nada realmente, el video debe ser educativo.
+
+---
+
+*Total de prompts registrados:* **23**
 
