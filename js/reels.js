@@ -386,6 +386,26 @@ En este Episodio 2 de PyQuest (nuestra serie donde programamos un juego RPG desd
         secondaryColor: '#4F46E5',
         videoUrl: 'videos/pyquest_ep03_condicionales_y_combate.mp4?v=2',
         soundUrl: 'bgm/tech_ambient_bed.mp3',
+        post: {
+            hook: '¿Por qué tu personaje sigue peleando con -20 de vida? 🧟‍♂️⚔️👇',
+            caption: `Sin condicionales, tu programa ejecuta las líneas de arriba hacia abajo sin comprobar si tu héroe sigue vivo o ya perdió.
+
+En este Episodio 3 de PyQuest (nuestra serie donde programamos un juego RPG desde cero) enseñamos al código a tomar decisiones reales:
+
+1️⃣ El código sin reglas: Por qué Aria seguía atacando como un zombi al llegar a -20 HP.
+2️⃣ La regla de oro de Python: Los dos puntos (:) abren el bloque de decisión y los 4 espacios de sangría indican qué instrucciones pertenecen a ese bloque.
+3️⃣ El embudo if / elif / else:
+   • if vida <= 0: Comprueba primero si la partida terminó.
+   • elif vida < 30: Activa la alerta crítica si sigue con vida pero en peligro.
+   • else: Ejecuta el turno normal si nada de lo anterior se cumplió.
+4️⃣ Combate en tiempo real: Cómo hp_goblin <= 0 cambia de False a True en el golpe final para detener al enemigo y soltar el cofre.
+
+💾 Guarda este video para dominar la lógica condicional en Python.
+👉 Sígueme para el Episodio 4: Listas y Diccionarios (El Inventario RPG).`,
+            hashtags: ['#python', '#condicionales', '#pyquest', '#programacion', '#logica', '#aprenderaprogramar', '#gamedev', '#rpg'],
+            bestTime: '18:00 - 21:00',
+            sound: 'Ambient Tech Bed · PyQuest S3'
+        },
         tags: ['Python', 'Condicionales', 'PyQuest', 'RPG', 'GameDev', 'AprenderAProgramar'],
         sound: {
             title: 'Ambient Tech Bed · PyQuest S3',
@@ -504,6 +524,23 @@ En este Episodio 2 de PyQuest (nuestra serie donde programamos un juego RPG desd
         secondaryColor: '#10B981',
         videoUrl: 'videos/pyquest_ep04_listas_y_diccionarios.mp4',
         soundUrl: 'bgm/tech_ambient_bed.mp3',
+        post: {
+            hook: 'El error que comete el 90% de los principiantes al programar su inventario 🎒👇',
+            caption: `Crear item1, item2 e item3 hace tu código imposible de mantener o recorrer. Para agrupar datos relacionados existen las colecciones.
+
+En este Episodio 4 de PyQuest (nuestra serie donde programamos un juego RPG desde cero) organizamos el inventario y las estadísticas de Aria:
+
+1️⃣ Listas []: Agrupan múltiples objetos en una sola variable ordenada entre corchetes.
+2️⃣ Por qué contamos desde cero: El índice [0] representa el inicio de la lista sin ningún salto.
+3️⃣ Listas dinámicas: Agrega nuevos tesoros al final con .append() y consulta el último objeto guardado con el índice [-1].
+4️⃣ Diccionarios {}: Usan llaves y pares de clave y valor para acceder a los atributos de Aria por su nombre real (heroe["vida"]) en vez de memorizar posiciones.
+
+💾 Guarda este video para organizar tus datos como un profesional.
+👉 Sígueme para el Episodio 5: Bucles For y While.`,
+            hashtags: ['#python', '#listas', '#diccionarios', '#estructurasdedatos', '#pyquest', '#aprenderaprogramar', '#gamedev'],
+            bestTime: '18:00 - 21:00',
+            sound: 'Ambient Tech Bed · PyQuest S4'
+        },
         tags: ['Python', 'Listas', 'Diccionarios', 'PyQuest', 'EstructurasDeDatos', 'GameDev'],
         sound: {
             title: 'Ambient Tech Bed · PyQuest S4',
