@@ -15,6 +15,22 @@ import { PyQuestEp04 } from "./pyquest/episodes/ep04/Ep04";
 import { TrilogiaStack1Reel } from "./trilogia/TrilogiaStack1";
 import { TrilogiaStack2Reel } from "./trilogia/TrilogiaStack2";
 import { TrilogiaStack3Reel } from "./trilogia/TrilogiaStack3";
+import { TrilogiaStack1V4Reel } from "./trilogia/TrilogiaStack1V4";
+import { TrilogiaStack2V4Reel } from "./trilogia/TrilogiaStack2V4";
+import { TrilogiaStack3V4Reel } from "./trilogia/TrilogiaStack3V4";
+import {
+  SIMADI_APERTURA_DURATION_FRAMES,
+  SIMADI_APERTURA_FPS,
+  SIMADI_DURATION_FRAMES,
+  SIMADI_FPS,
+  SIMADI_GUIAS_DURATION_FRAMES,
+  SimadiApertura,
+  SimadiAperturaIG,
+  SimadiGuiasPromo,
+  SimadiGuiasPromoIG,
+  SimadiPromo,
+  SimadiPromoIG,
+} from "./compositions/SimadiPromo";
 import { ReelPropsSchema, type ReelProps } from "./lib/schema";
 import { buildTimeline, totalDuration } from "./lib/timeline";
 
@@ -189,6 +205,86 @@ export const RemotionRoot = () => {
         fps={60}
         width={1080}
         height={1920}
+      />
+      {/* ===================================================================== */}
+      {/* TRILOGÍA V4 CINE HD · FLUJO ELÁSTICO, RACK-FOCUS Y RENDER PNG+CRF16   */}
+      {/* Versiones separadas para comparar sin sobrescribir las originales     */}
+      {/* ===================================================================== */}
+      <Composition
+        id="TrilogiaStack1V4Reel"
+        component={TrilogiaStack1V4Reel}
+        durationInFrames={1440}
+        fps={60}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="TrilogiaStack2V4Reel"
+        component={TrilogiaStack2V4Reel}
+        durationInFrames={1440}
+        fps={60}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="TrilogiaStack3V4Reel"
+        component={TrilogiaStack3V4Reel}
+        durationInFrames={1500}
+        fps={60}
+        width={1080}
+        height={1920}
+      />
+      {/* ===================================================================== */}
+      {/* WEB PROMO DIRECTOR · SIMULACIÓN SIMADI (V2: 2 Videos Dual 9:16/4:5)   */}
+      {/* ===================================================================== */}
+      <Composition
+        id="SimadiPromo"
+        component={SimadiPromo}
+        durationInFrames={SIMADI_DURATION_FRAMES}
+        fps={SIMADI_FPS}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="SimadiPromoIG"
+        component={SimadiPromoIG}
+        durationInFrames={SIMADI_DURATION_FRAMES}
+        fps={SIMADI_FPS}
+        width={1080}
+        height={1350}
+      />
+      <Composition
+        id="SimadiGuiasPromo"
+        component={SimadiGuiasPromo}
+        durationInFrames={SIMADI_GUIAS_DURATION_FRAMES}
+        fps={SIMADI_FPS}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="SimadiGuiasPromoIG"
+        component={SimadiGuiasPromoIG}
+        durationInFrames={SIMADI_GUIAS_DURATION_FRAMES}
+        fps={SIMADI_FPS}
+        width={1080}
+        height={1350}
+      />
+      {/* Video 0 · Apertura Educativa SIMADI UCV (V3 Editorial Daylight, 65s @ 60 FPS) */}
+      <Composition
+        id="SimadiApertura"
+        component={SimadiApertura}
+        durationInFrames={SIMADI_APERTURA_DURATION_FRAMES}
+        fps={SIMADI_APERTURA_FPS}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="SimadiAperturaIG"
+        component={SimadiAperturaIG}
+        durationInFrames={SIMADI_APERTURA_DURATION_FRAMES}
+        fps={SIMADI_APERTURA_FPS}
+        width={1080}
+        height={1350}
       />
     </>
   );

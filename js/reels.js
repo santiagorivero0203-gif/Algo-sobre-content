@@ -994,6 +994,279 @@ En la parte final de la trilogía "De la Idea al Código", te muestro la técnic
     },
 
     // =====================================================================
+    // TRILOGÍA V4 CINE HD · VERSIONES SEPARADAS (PNG + CRF 16 + RACK-FOCUS)
+    // =====================================================================
+    {
+        id: 'reel_stack1_v4',
+        accountId: 'santidev',
+        slug: 'trilogia_stack1_v4_hd',
+        theme: 'stack1',
+        title: 'Parte 1: Stack Secreto (V4 Cine HD)',
+        subtitle: 'Edición V4 Cine HD: Rack-focus, empuje elástico y render PNG + CRF 16',
+        duration_ms: 24000,
+        duration: 24.0,
+        fps: 60,
+        kicker: 'SANTI.DEV · TRILOGÍA V4 CINE HD',
+        brandIcon: 'fa-film',
+        accentColor: '#34D399',
+        secondaryColor: '#38BDF8',
+        videoUrl: 'videos/trilogia_stack1_v4_hd.mp4?v=1',
+        post: {
+            hook: '¿Juegos y webs sin programar? Te enseño mi stack secreto (Edición V4 HD) 👇',
+            caption: `¿Te imaginas crear tus propios videojuegos y aplicaciones web sin pasar meses atascado en la sintaxis?
+En esta Edición V4 Cine HD de la Parte 1 te revelo el stack técnico exacto:
+
+1️⃣ Inspiración: Roba como un artista y extrae tokens visuales en Figma.
+2️⃣ Lógica: Google Antigravity para levantar el 85% base + Opencode para podar contexto (-1,200 tokens).
+3️⃣ Arte: Nano Banana para generar sprites con IA y Remove BG para dejarlos en PNG transparente en 1 clic.
+
+💾 Guarda este video para tu próximo proyecto.
+👉 Comenta "STACK" para enviarte la plantilla completa.`,
+            hashtags: ['#programacion', '#desarrolloweb', '#gamedev', '#antigravity', '#opencode', '#ia', '#indiedev'],
+            bestTime: '18:00 - 21:00',
+            sound: 'Tech Ambient Bed'
+        },
+        beats: [
+            {
+                id: 1,
+                name: 'Hook Inicial',
+                start_ms: 0,
+                end_ms: 4000,
+                type: 'hero',
+                badge: 'TRILOGÍA · PARTE 1 DE 3',
+                title: '¿Juegos y webs *sin programar*?',
+                sub: 'El stack exacto con IA para pasar de una idea a un proyecto vivo.',
+                kicker: 'DE LA IDEA AL CÓDIGO · V4 HD',
+                vo: '¿Juegos y webs sin saber programar? Te enseño mi stack secreto.'
+            },
+            {
+                id: 2,
+                name: 'Inspiración',
+                start_ms: 4000,
+                end_ms: 8000,
+                type: 'points',
+                badge: 'PASO 1 · INSPIRACIÓN',
+                title: 'Roba como un *artista*',
+                sub: 'Analiza referencias reales y extrae tus tokens visuales en Figma.',
+                vo: 'Paso 1: Roba como un artista. Analiza juegos y webs que amas y diseña las bases en Figma.'
+            },
+            {
+                id: 3,
+                name: 'Lógica & Código',
+                start_ms: 8000,
+                end_ms: 14000,
+                type: 'code',
+                badge: 'PASO 2 · MOTOR DE LÓGICA',
+                title: 'Antigravity + *Opencode*',
+                sub: 'Antigravity levanta el 85% base y Opencode pule detalles ahorrando tokens.',
+                vo: 'Paso 2: Antigravity construye el ochenta y cinco por ciento del código y Opencode pule los detalles.'
+            },
+            {
+                id: 4,
+                name: 'Arte & Sprites',
+                start_ms: 14000,
+                end_ms: 19000,
+                type: 'points',
+                badge: 'PASO 3 · ARTE & SPRITES',
+                title: 'Nano Banana + *Remove BG*',
+                sub: 'Genera sprites con IA y deja el fondo transparente en un solo clic.',
+                vo: 'Paso 3: Nano Banana genera sprites y arte con IA, y Remove BG los limpia en un clic.'
+            },
+            {
+                id: 5,
+                name: 'CTA Comunidad',
+                start_ms: 19000,
+                end_ms: 24000,
+                type: 'cta',
+                badge: 'PARTE 2 DISPONIBLE · MCP',
+                title: 'Guarda *este video*',
+                sub: 'En la Parte 2: cómo automatizo bases de datos y GitHub con MCP.',
+                ctaData: { keyword: 'STACK', line: 'Comenta "STACK" para recibir la plantilla completa.', handle: '@santi.dev' },
+                vo: 'Guarda este video y comenta STACK para enviarte la plantilla completa.'
+            }
+        ]
+    },
+    {
+        id: 'reel_stack2_v4',
+        accountId: 'santidev',
+        slug: 'trilogia_stack2_v4_hd',
+        theme: 'stack2',
+        title: 'Parte 2: Automatización (V4 Cine HD)',
+        subtitle: 'Edición V4 Cine HD: Constelación MCP, flujo SQL y render PNG + CRF 16',
+        duration_ms: 24000,
+        duration: 24.0,
+        fps: 60,
+        kicker: 'SANTI.DEV · TRILOGÍA V4 CINE HD',
+        brandIcon: 'fa-film',
+        accentColor: '#FBBF24',
+        secondaryColor: '#FB923C',
+        videoUrl: 'videos/trilogia_stack2_v4_hd.mp4?v=1',
+        post: {
+            hook: 'Deja de subir archivos a mano. Así automatizo todo con MCP (Edición V4 HD) 👇',
+            caption: `Programar en 2026 no se trata de repetir tareas a mano, sino de conectar herramientas inteligentes con MCP:
+
+⚙️ Stitch MCP: Figma directo a componentes React sin copiar y pegar.
+🗄️ Supabase MCP: Tablas PostgreSQL, migraciones y RLS en segundos.
+🐙 Git MCP: Checkpoints en GitHub y despliegue automático en Vercel.
+
+💾 Guarda este video y compártelo con tu equipo.
+👉 Comenta "MCP" para recibir mi mcp_config.json listo para usar.`,
+            hashtags: ['#mcp', '#antigravity', '#automatizacion', '#supabase', '#stitchmcp', '#developer', '#github'],
+            bestTime: '12:00 - 15:00 o 19:00 - 22:00',
+            sound: 'Tech Ambient Bed'
+        },
+        beats: [
+            {
+                id: 1,
+                name: 'Hook Inicial',
+                start_ms: 0,
+                end_ms: 4000,
+                type: 'hero',
+                badge: 'TRILOGÍA · PARTE 2 DE 3',
+                title: 'Automatiza tu código *con MCP*',
+                sub: 'Deja de hacer tareas repetitivas a mano. Conecta tus apps directo a la IA.',
+                kicker: 'MODEL CONTEXT PROTOCOL · V4 HD',
+                vo: 'Deja de programar tareas repetitivas a mano. Te enseño a automatizar con MCP.'
+            },
+            {
+                id: 2,
+                name: 'Stitch MCP',
+                start_ms: 4000,
+                end_ms: 9000,
+                type: 'points',
+                badge: 'HERRAMIENTA 1 · DISEÑO A CÓDIGO',
+                title: 'Stitch MCP: *Figma directo*',
+                sub: 'Extrae pantallas y tokens directo a componentes limpios sin copiar y pegar.',
+                vo: 'Stitch MCP conecta Figma con tu editor y convierte componentes en código limpio.'
+            },
+            {
+                id: 3,
+                name: 'Supabase MCP',
+                start_ms: 9000,
+                end_ms: 14000,
+                type: 'code',
+                badge: 'HERRAMIENTA 2 · BACKEND SQL',
+                title: 'Supabase MCP: *SQL en vivo*',
+                sub: 'Pide tus tablas en español y levanta tu backend en la nube al instante.',
+                vo: 'Supabase MCP crea tus tablas de base de datos y autenticación con solo pedírselo.'
+            },
+            {
+                id: 4,
+                name: 'Git MCP',
+                start_ms: 14000,
+                end_ms: 19000,
+                type: 'points',
+                badge: 'HERRAMIENTA 3 · VERSIONADO',
+                title: 'Git MCP: *Cero conflictos*',
+                sub: 'Checkpoints automáticos en GitHub y despliegue instantáneo en Vercel.',
+                vo: 'Y Git MCP sincroniza tus ramas con GitHub y despliega en Vercel automáticamente.'
+            },
+            {
+                id: 5,
+                name: 'CTA Comunidad',
+                start_ms: 19000,
+                end_ms: 24000,
+                type: 'cta',
+                badge: 'PARTE 3 DISPONIBLE · PROMPTS',
+                title: 'Automatiza *tu stack*',
+                sub: 'Te paso la configuración exacta de mis 3 servidores MCP listos para usar.',
+                ctaData: { keyword: 'MCP', line: 'Comenta "MCP" y te mando mi mcp_config.json.', handle: '@santi.dev' },
+                vo: 'Comenta MCP para enviarte mi archivo de configuración listo para conectar.'
+            }
+        ]
+    },
+    {
+        id: 'reel_stack3_v4',
+        accountId: 'santidev',
+        slug: 'trilogia_stack3_v4_hd',
+        theme: 'stack3',
+        title: 'Parte 3: El Arte del Prompt (V4 Cine HD)',
+        subtitle: 'Edición V4 Cine HD: Atmósfera reactiva, contratos TS y render PNG + CRF 16',
+        duration_ms: 25000,
+        duration: 25.0,
+        fps: 60,
+        kicker: 'SANTI.DEV · TRILOGÍA V4 CINE HD',
+        brandIcon: 'fa-film',
+        accentColor: '#38BDF8',
+        secondaryColor: '#A78BFA',
+        videoUrl: 'videos/trilogia_stack3_v4_hd.mp4?v=1',
+        post: {
+            hook: '¿La IA te genera código roto? Deja el prompt monolítico y usa contratos (Edición V4 HD) 👇',
+            caption: `El 90% falla usando IA porque pide toda la app en un solo prompt vago.
+En la Edición V4 Cine HD de la Parte 3 ves cómo evitar alucinaciones:
+
+❌ Prompt monolítico: Satura la atención e inventa librerías.
+🧠 Google AI Studio + Context Cache: 1.2M tokens cacheados y 85% menos latencia.
+📐 Contratos Modulares: Interfaces TypeScript estrictas antes de escribir lógica.
+
+💾 Guarda esta trilogía completa.
+👉 Comenta "PROMPT" para enviarte el kit de contratos y system prompts.`,
+            hashtags: ['#promptengineering', '#ai', '#antigravity', '#googleaistudio', '#typescript', '#desarrolloweb', '#programacion'],
+            bestTime: '18:00 - 21:00',
+            sound: 'Tech Ambient Bed'
+        },
+        beats: [
+            {
+                id: 1,
+                name: 'Hook Inicial',
+                start_ms: 0,
+                end_ms: 4000,
+                type: 'hero',
+                badge: 'TRILOGÍA · PARTE 3 DE 3',
+                title: '¿La IA te da *código roto*?',
+                sub: 'El problema casi nunca es el modelo: es cómo estructuras tu prompt.',
+                kicker: 'INGENIERÍA DE PROMPTS · V4 HD',
+                vo: '¿La IA te entrega código lleno de bugs? El problema no es el modelo, es tu prompt.'
+            },
+            {
+                id: 2,
+                name: 'El Antipatrón',
+                start_ms: 4000,
+                end_ms: 9000,
+                type: 'points',
+                badge: 'EL ERROR COMÚN · ANTIPATRÓN',
+                title: 'El prompt *monolítico*',
+                sub: 'Pedir una app completa en un solo mensaje satura la atención del modelo.',
+                vo: 'Pedir una app completa en un solo mensaje satura la IA y genera alucinaciones.'
+            },
+            {
+                id: 3,
+                name: 'Google AI Studio',
+                start_ms: 9000,
+                end_ms: 14500,
+                type: 'code',
+                badge: 'ESTRATEGIA 1 · SYSTEM PROMPT',
+                title: 'AI Studio + *Context Cache*',
+                sub: 'Bloquea tus reglas de arquitectura una vez y elimina la re-evaluación.',
+                vo: 'En Google AI Studio bloqueamos las reglas del sistema y cacheamos el contexto.'
+            },
+            {
+                id: 4,
+                name: 'Contratos Modulares',
+                start_ms: 14500,
+                end_ms: 20000,
+                type: 'points',
+                badge: 'ESTRATEGIA 2 · ARQUITECTURA',
+                title: 'Contratos *modulares*',
+                sub: 'Exige interfaces TypeScript estrictas antes de escribir lógica.',
+                vo: 'Exige contratos modulares con interfaces TypeScript antes de generar el código.'
+            },
+            {
+                id: 5,
+                name: 'CTA Comunidad',
+                start_ms: 20000,
+                end_ms: 25000,
+                type: 'cta',
+                badge: 'TRILOGÍA COMPLETA · 3 DE 3',
+                title: 'Domina el *Prompting*',
+                sub: 'Te envío el kit completo de contratos modulares y system prompts.',
+                ctaData: { keyword: 'PROMPT', line: 'Comenta "PROMPT" para recibir contracts-kit.ts.', handle: '@santi.dev' },
+                vo: 'Comenta PROMPT y te envío la plantilla maestra para crear tus propias apps.'
+            }
+        ]
+    },
+
+    // =====================================================================
     // REEL 3: MOVA · ROMPIENDO EL SILENCIO (ACCESIBILIDAD 21D EN TIEMPO REAL)
     // =====================================================================
     {
