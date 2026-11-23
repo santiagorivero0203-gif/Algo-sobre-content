@@ -1,0 +1,106 @@
+{
+  "examName": "SIMADI · Test Diagnóstico Integral (T.D.I.)",
+  "institution": "Universidad Central de Venezuela (UCV)",
+  "indexWeights": {
+    "gradesLabel": "Notas 1.º a 4.º año",
+    "gradesPercent": 60,
+    "examLabel": "Test Diagnóstico Integral",
+    "examPercent": 40
+  },
+  "format": {
+    "totalQuestions": 90,
+    "durationMinutes": 150,
+    "durationLabel": "2 h 30 min",
+    "modality": "En línea",
+    "blocksCount": 3,
+    "questionsPerBlock": 30,
+    "consecutiveBlocks": true,
+    "noBacktrack": true,
+    "blankCountsAsWrong": true,
+    "ruleSummary": "Sin retroceso · Vacías cuentan mal"
+  },
+  "sections": [
+    {
+      "id": "logico-matematico",
+      "index": "01",
+      "title": "Lógico-Matemático",
+      "questions": 30,
+      "topics": [
+        "Series",
+        "Patrones",
+        "Porcentajes",
+        "Regla de tres",
+        "Ecuaciones",
+        "Lógica",
+        "Gráficos"
+      ],
+      "microExample": {
+        "kind": "number-series",
+        "sequence": [2, 6, 12, 20],
+        "diffs": ["+4", "+6", "+8", "+10"],
+        "answer": 30
+      }
+    },
+    {
+      "id": "razonamiento-verbal",
+      "index": "02",
+      "title": "Razonamiento Verbal",
+      "questions": 30,
+      "topics": [
+        "Comprensión lectora",
+        "Inferencias",
+        "Sinónimos y antónimos",
+        "Analogías",
+        "Conectores"
+      ],
+      "microExample": {
+        "kind": "connector-highlight",
+        "sentenceBefore": "El estudio constante rinde frutos; ",
+        "connector": "sin embargo,",
+        "sentenceAfter": " sin práctica con reloj el tiempo juega en contra.",
+        "tag": "Conector de contraste → cambia la conclusión"
+      }
+    },
+    {
+      "id": "area-especifica",
+      "index": "03",
+      "title": "Área Específica",
+      "questions": 30,
+      "note": "Cambia según tu facultad",
+      "faculties": [
+        { "id": "ciencia", "label": "Ciencia y Tecnología" },
+        { "id": "salud", "label": "Salud · Agro y Mar" },
+        { "id": "sociales", "label": "Ciencias Sociales" }
+      ]
+    }
+  ],
+  "techniques": {
+    "budgetPerBlockMinutes": 45,
+    "marginMinutes": 15,
+    "secondsPerQuestion": 90,
+    "clockLabel": "01:30",
+    "eliminationExample": {
+      "prompt": "Si 3 equipos imprimen 180 hojas en 2 h, ¿cuánto imprimen 5 equipos en 2 h?",
+      "options": [
+        { "key": "A", "text": "210 hojas", "eliminate": true },
+        { "key": "B", "text": "300 hojas", "eliminate": false },
+        { "key": "C", "text": "150 hojas", "eliminate": true },
+        { "key": "D", "text": "270 hojas", "eliminate": false }
+      ]
+    },
+    "tips": [
+      { "id": "paper", "title": "Papel y lápiz en mano", "detail": "Evita calcular todo de memoria" },
+      { "id": "verbal-scan", "title": "Idea principal + conectores", "detail": "Filtra distractores en Verbal" }
+    ]
+  },
+  "bridgeApp": {
+    "name": "Simulación Simadi",
+    "badge": "FASE BETA",
+    "modules": ["Lógico-Numérico", "Verbal", "Ciencia y Tecnología"],
+    "benefits": ["Cronómetro en vivo", "Corrección al instante"],
+    "disclaimer": "Herramienta complementaria en fase Beta · No reemplaza un centro preuniversitario",
+    "ctaTitle": "¿Tienes dudas? *Escríbeme al DM*",
+    "ctaAction": "Link en la bio para practicar hoy"
+  }
+}
+

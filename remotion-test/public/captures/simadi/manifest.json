@@ -1,0 +1,300 @@
+{
+  "project": "Simulación Simadi",
+  "generatedAt": "2026-11-21T23:11:50.837Z",
+  "viewport": {
+    "width": 1000,
+    "height": 740
+  },
+  "deviceScaleFactor": 2,
+  "privacyVerified": true,
+  "hiddenSelectors": [
+    "#header-admin-btn",
+    "#nav-admin",
+    "#auth-user-info",
+    "#auth-user-name",
+    "#auth-logout-btn",
+    "#admin-screen",
+    "#gatekeeper-screen",
+    "#auth-modal"
+  ],
+  "stills": {
+    "config": {
+      "file": "simadi_config.webp",
+      "width": 2000,
+      "height": 1480
+    },
+    "exam": {
+      "file": "simadi_exam.webp",
+      "width": 2000,
+      "height": 1480
+    },
+    "results": {
+      "file": "simadi_resultados.webp",
+      "width": 2000,
+      "height": 1480
+    },
+    "guides": {
+      "file": "simadi_guias.webp",
+      "width": 2000,
+      "height": 1480
+    },
+    "guidesCiencia": {
+      "file": "simadi_guias_ciencia.webp",
+      "width": 2000,
+      "height": 1480
+    }
+  },
+  "clips": {
+    "config": {
+      "file": "simadi_config_clip.webm",
+      "startRawMs": 10730,
+      "endRawMs": 15719,
+      "durationMs": 4989,
+      "durationFrames60": 299
+    },
+    "exam": {
+      "file": "simadi_exam_clip.webm",
+      "startRawMs": 16114,
+      "endRawMs": 22921,
+      "durationMs": 6807,
+      "durationFrames60": 408
+    },
+    "guides": {
+      "file": "simadi_guias_clip.webm",
+      "startRawMs": 12527,
+      "endRawMs": 20004,
+      "durationMs": 7477,
+      "durationFrames60": 449
+    }
+  },
+  "elements": {
+    "config": {
+      "#area": {
+        "x": 0.143,
+        "y": 0.518,
+        "width": 0.714,
+        "height": 0.0649,
+        "centerX": 0.5,
+        "centerY": 0.5504
+      },
+      "#num-questions": {
+        "x": 0.143,
+        "y": 0.7316,
+        "width": 0.345,
+        "height": 0.0622,
+        "centerX": 0.3155,
+        "centerY": 0.7627
+      },
+      "#time-limit": {
+        "x": 0.512,
+        "y": 0.7316,
+        "width": 0.345,
+        "height": 0.0622,
+        "centerX": 0.6845,
+        "centerY": 0.7627
+      },
+      "#start-btn": {
+        "x": 0.143,
+        "y": 0.8382,
+        "width": 0.714,
+        "height": 0.0581,
+        "centerX": 0.5,
+        "centerY": 0.8672
+      }
+    },
+    "exam": {
+      "#timer": {
+        "x": 0.8245,
+        "y": 0.3054,
+        "width": 0.0525,
+        "height": 0.0398,
+        "centerX": 0.8507,
+        "centerY": 0.3253
+      },
+      ".question-card": {
+        "x": 0.106,
+        "y": 0.399,
+        "width": 0.788,
+        "height": 0.601,
+        "centerX": 0.5,
+        "centerY": 0.6995
+      },
+      ".option-btn": {
+        "x": 0.143,
+        "y": 0.6425,
+        "width": 0.714,
+        "height": 0.0716,
+        "centerX": 0.5,
+        "centerY": 0.6783
+      },
+      "#next-btn": {
+        "x": 0.7768,
+        "y": 1,
+        "width": 0.1172,
+        "height": 0.01,
+        "centerX": 0.8354,
+        "centerY": 1.005
+      }
+    },
+    "guides": {
+      ".tab-btn": {
+        "x": 0.3512,
+        "y": 0.476,
+        "width": 0.2735,
+        "height": 0.0622,
+        "centerX": 0.4879,
+        "centerY": 0.5071
+      },
+      ".guide-topic-card": {
+        "x": 0.143,
+        "y": 0.5828,
+        "width": 0.714,
+        "height": 0.1735,
+        "centerX": 0.5,
+        "centerY": 0.6696
+      },
+      "tab-verbal": {
+        "x": 0.143,
+        "y": 0.476,
+        "width": 0.1962,
+        "height": 0.0622,
+        "centerX": 0.2411,
+        "centerY": 0.5071
+      },
+      "tab-math": {
+        "x": 0.3512,
+        "y": 0.476,
+        "width": 0.2735,
+        "height": 0.0622,
+        "centerX": 0.4879,
+        "centerY": 0.5071
+      },
+      "tab-science": {
+        "x": 0.6367,
+        "y": 0.476,
+        "width": 0.1923,
+        "height": 0.0622,
+        "centerX": 0.7328,
+        "centerY": 0.5071
+      }
+    },
+    "results": {
+      "#report-screen .card": {
+        "x": 0.106,
+        "y": 0.284,
+        "width": 0.788,
+        "height": 0.716,
+        "centerX": 0.5,
+        "centerY": 0.642
+      },
+      "score-header": {
+        "x": 0.143,
+        "y": 0.4378,
+        "width": 0.714,
+        "height": 0.2027,
+        "centerX": 0.5,
+        "centerY": 0.5391
+      },
+      "breakdown": {
+        "x": 0.143,
+        "y": 0.6891,
+        "width": 0.714,
+        "height": 0.3109,
+        "centerX": 0.5,
+        "centerY": 0.8446
+      }
+    }
+  },
+  "interactions": [
+    {
+      "id": "click_start_exam",
+      "screen": "config",
+      "clipId": "simadi_config_clip.webm",
+      "selector": "#start-btn",
+      "label": "Iniciar Prueba",
+      "rawMs": 15309,
+      "clipTimestampMs": 4579,
+      "clipFrame60": 275,
+      "box": {
+        "x": 0.143,
+        "y": 0.8382,
+        "width": 0.714,
+        "height": 0.0581,
+        "centerX": 0.5,
+        "centerY": 0.8672
+      }
+    },
+    {
+      "id": "click_select_option",
+      "screen": "exam",
+      "clipId": "simadi_exam_clip.webm",
+      "selector": ".option-btn",
+      "label": "Seleccionar respuesta",
+      "rawMs": 19608,
+      "clipTimestampMs": 3494,
+      "clipFrame60": 210,
+      "box": {
+        "x": 0.143,
+        "y": 0.6425,
+        "width": 0.714,
+        "height": 0.0716,
+        "centerX": 0.5,
+        "centerY": 0.6783
+      }
+    },
+    {
+      "id": "click_next_question",
+      "screen": "exam",
+      "clipId": "simadi_exam_clip.webm",
+      "selector": "#next-btn",
+      "label": "Siguiente pregunta",
+      "rawMs": 22133,
+      "clipTimestampMs": 6019,
+      "clipFrame60": 361,
+      "box": {
+        "x": 0.7768,
+        "y": 0.8871,
+        "width": 0.1172,
+        "height": 0.0584,
+        "centerX": 0.8354,
+        "centerY": 0.9162
+      }
+    },
+    {
+      "id": "click_guides_math",
+      "screen": "guides",
+      "clipId": "simadi_guias_clip.webm",
+      "selector": ".tab-btn",
+      "label": "Razonamiento Lógico Numérico",
+      "rawMs": 14926,
+      "clipTimestampMs": 2399,
+      "clipFrame60": 144,
+      "box": {
+        "x": 0.3512,
+        "y": 0.476,
+        "width": 0.2735,
+        "height": 0.0622,
+        "centerX": 0.4879,
+        "centerY": 0.5071
+      }
+    },
+    {
+      "id": "click_guides_science",
+      "screen": "guides",
+      "clipId": "simadi_guias_clip.webm",
+      "selector": ".tab-btn",
+      "label": "Ciencia y Tecnología",
+      "rawMs": 17315,
+      "clipTimestampMs": 4788,
+      "clipFrame60": 287,
+      "box": {
+        "x": 0.6367,
+        "y": 0.476,
+        "width": 0.1923,
+        "height": 0.0622,
+        "centerX": 0.7328,
+        "centerY": 0.5071
+      }
+    }
+  ]
+}

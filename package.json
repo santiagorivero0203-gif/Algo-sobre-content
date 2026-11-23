@@ -1,5 +1,6 @@
 {
   "devDependencies": {
-    "hyperframes": "^0.8.145"
+    "hyperframes": "^0.8.145",
+    "playwright": "^1.65.1"
   }
 }

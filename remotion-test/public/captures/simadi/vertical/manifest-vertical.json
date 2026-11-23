@@ -1,0 +1,124 @@
+{
+  "project": "Simulación Simadi · Vertical HD",
+  "generatedAt": "2026-11-23T03:23:38.269Z",
+  "viewport": {
+    "width": 1080,
+    "height": 1620
+  },
+  "deviceScaleFactor": 1,
+  "cssZoom": 2,
+  "outputSize": {
+    "width": 1080,
+    "height": 1620
+  },
+  "privacyVerified": true,
+  "stills": {
+    "exam": {
+      "file": "simadi_vertical_exam.png",
+      "width": 1080,
+      "height": 1620
+    },
+    "results": {
+      "file": "simadi_vertical_results.png",
+      "width": 1080,
+      "height": 1620
+    }
+  },
+  "clip": {
+    "file": "simadi_vertical_exam_clip.mp4",
+    "startRawMs": 11025,
+    "endRawMs": 19810,
+    "durationMs": 8785,
+    "durationFrames60": 527
+  },
+  "elements": {
+    "exam": {
+      "#timer": {
+        "x": 0.8416,
+        "y": 0.2765,
+        "width": 0.0973,
+        "height": 0.0363,
+        "centerX": 0.8903,
+        "centerY": 0.2947
+      },
+      ".question-card": {
+        "x": 0.0296,
+        "y": 0.3621,
+        "width": 0.9407,
+        "height": 0.4983,
+        "centerX": 0.5,
+        "centerY": 0.6112
+      },
+      ".option-btn": {
+        "x": 0.0981,
+        "y": 0.5134,
+        "width": 0.8037,
+        "height": 0.0642,
+        "centerX": 0.5,
+        "centerY": 0.5455
+      },
+      "#next-btn": {
+        "x": 0.7534,
+        "y": 0.8999,
+        "width": 0.2169,
+        "height": 0.0527,
+        "centerX": 0.8619,
+        "centerY": 0.9262
+      }
+    },
+    "results": {
+      "#report-screen .card": {
+        "x": 0.0296,
+        "y": 0.257,
+        "width": 0.9407,
+        "height": 0.743,
+        "centerX": 0.5,
+        "centerY": 0.6285
+      },
+      "score-header": {
+        "x": 0.0981,
+        "y": 0.3975,
+        "width": 0.8037,
+        "height": 0.1852,
+        "centerX": 0.5,
+        "centerY": 0.4901
+      }
+    }
+  },
+  "interactions": [
+    {
+      "id": "vertical_select_option",
+      "screen": "exam",
+      "clipId": "simadi_vertical_exam_clip.mp4",
+      "selector": ".option-btn",
+      "label": "Respuesta elegida",
+      "clipTimestampMs": 3982,
+      "clipFrame60": 239,
+      "box": {
+        "x": 0.0981,
+        "y": 0.5134,
+        "width": 0.8037,
+        "height": 0.0642,
+        "centerX": 0.5,
+        "centerY": 0.5455
+      }
+    },
+    {
+      "id": "vertical_next_question",
+      "screen": "exam",
+      "clipId": "simadi_vertical_exam_clip.mp4",
+      "selector": "#next-btn",
+      "label": "Siguiente pregunta",
+      "clipTimestampMs": 7065,
+      "clipFrame60": 424,
+      "box": {
+        "x": 0.7534,
+        "y": 0.8999,
+        "width": 0.2169,
+        "height": 0.0527,
+        "centerX": 0.8619,
+        "centerY": 0.9262
+      }
+    }
+  ]
+}

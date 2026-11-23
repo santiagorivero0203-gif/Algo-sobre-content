@@ -16,3 +16,7 @@ scratch/
 remotion-test/build/
 remotion-test/out/
 .remotion/
+
+# Local web promo capture credentials (NEVER commit)
+.env.capture
+.env.*.capture

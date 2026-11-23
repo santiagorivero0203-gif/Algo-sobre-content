@@ -1,0 +1,31 @@
+{
+  "sourceUrl": "https://simulacion-simadi.vercel.app/",
+  "extractedAt": "2026-11-21T22:30:58.840Z",
+  "isDark": false,
+  "colors": {
+    "background": "rgb(244, 247, 249)",
+    "headerBackground": "rgb(255, 255, 255)",
+    "surface": "rgb(255, 255, 255)",
+    "surfaceAlt": "rgb(241, 245, 249)",
+    "primary": "rgb(15, 82, 186)",
+    "primaryText": "rgb(255, 255, 255)",
+    "accent": "rgb(15, 82, 186)",
+    "textPrimary": "rgb(30, 41, 59)",
+    "textSecondary": "rgb(71, 85, 105)",
+    "border": "rgb(226, 232, 240)",
+    "success": "rgb(16, 185, 129)",
+    "warning": "rgb(245, 158, 11)",
+    "danger": "rgb(239, 68, 68)"
+  },
+  "typography": {
+    "fontSans": "Inter, system-ui, -apple-system, sans-serif",
+    "fontMono": "JetBrains Mono, monospace",
+    "h1Size": "24px",
+    "bodySize": "16px"
+  },
+  "shape": {
+    "cardRadius": "16px",
+    "buttonRadius": "8px",
+    "cardShadow": "rgba(0, 0, 0, 0.05) 0px 10px 30px 0px"
+  }
+}

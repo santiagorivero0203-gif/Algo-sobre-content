@@ -1,0 +1,110 @@
+{
+  "slug": "simadi-apertura",
+  "fps": 60,
+  "totalSeconds": 65,
+  "totalFrames": 3900,
+  "bgm": "captures/simadi/audio/bgm_daylight_minimal.mp3",
+  "blocks": [
+    {
+      "id": "b1_gancho_peso",
+      "label": "1. Gancho y peso real",
+      "startSec": 0,
+      "endSec": 10,
+      "startFrame": 0,
+      "endFrame": 600,
+      "cues": [
+        {
+          "id": "b1_peso_60_40",
+          "startFrame": 0,
+          "endFrame": 270,
+          "vo": "Si vas a presentar el SIMADI de la UCV, así se calcula tu índice: 60% tus notas de primero a cuarto año y 40% el Test Diagnóstico Integral."
+        },
+        {
+          "id": "b1_reglas_90_atras",
+          "startFrame": 270,
+          "endFrame": 600,
+          "vo": "Son 90 preguntas en dos horas y media, en línea, y con una regla clave: una vez respondes, no puedes volver atrás."
+        }
+      ]
+    },
+    {
+      "id": "b2_estructura_temas",
+      "label": "2. Estructura y temas",
+      "startSec": 10,
+      "endSec": 32,
+      "startFrame": 600,
+      "endFrame": 1920,
+      "cues": [
+        {
+          "id": "b2_logico",
+          "startFrame": 600,
+          "endFrame": 1080,
+          "vo": "Se divide en tres bloques consecutivos de 30 preguntas. Primero, Lógico-Matemático: series, patrones, porcentajes, regla de tres, ecuaciones, lógica y lectura de gráficos."
+        },
+        {
+          "id": "b2_verbal",
+          "startFrame": 1080,
+          "endFrame": 1530,
+          "vo": "Después pasas a Razonamiento Verbal: comprensión lectora, inferencias, sinónimos, antónimos, analogías y conectores."
+        },
+        {
+          "id": "b2_especifica",
+          "startFrame": 1530,
+          "endFrame": 1920,
+          "vo": "Y el tercer bloque es el área específica según tu facultad: Ciencia y Tecnología, Salud, Agro y Mar o Ciencias Sociales."
+        }
+      ]
+    },
+    {
+      "id": "b3_tecnicas_clave",
+      "label": "3. Técnicas clave",
+      "startSec": 32,
+      "endSec": 48,
+      "startFrame": 1920,
+      "endFrame": 2880,
+      "cues": [
+        {
+          "id": "b3_tiempo_45",
+          "startFrame": 1920,
+          "endFrame": 2250,
+          "vo": "Para no quemarte, maneja un presupuesto de 45 minutos por bloque: unos 90 segundos por pregunta y 15 minutos de margen."
+        },
+        {
+          "id": "b3_descarte",
+          "startFrame": 2250,
+          "endFrame": 2580,
+          "vo": "Como no hay retroceso ni conviene dejar respuestas vacías porque cuentan mal, descarta dos opciones rápido cuando dudes."
+        },
+        {
+          "id": "b3_papel_verbal",
+          "startFrame": 2580,
+          "endFrame": 2880,
+          "vo": "Ten papel y lápiz en mano para matemáticas, y en verbal ubica la idea principal y los conectores antes de caer en distractores."
+        }
+      ]
+    },
+    {
+      "id": "b4_puente_simadi_cta",
+      "label": "4. Puente a Simadi y CTA",
+      "startSec": 48,
+      "endSec": 65,
+      "startFrame": 2880,
+      "endFrame": 3900,
+      "cues": [
+        {
+          "id": "b4_transicion_web",
+          "startFrame": 2880,
+          "endFrame": 3510,
+          "vo": "Saber las reglas no sirve si el día del examen el reloj te paraliza. En Simulación Simadi practicas con módulos reales, cronómetro en vivo y diagnóstico al instante para detectar exactamente qué temas reforzar."
+        },
+        {
+          "id": "b4_cta_dm",
+          "startFrame": 3510,
+          "endFrame": 3900,
+          "vo": "Es una herramienta complementaria en fase Beta que no reemplaza un centro preuniversitario. Pruébala en el link de la bio y cualquier duda te leo al DM."
+        }
+      ]
+    }
+  ]
+}
+

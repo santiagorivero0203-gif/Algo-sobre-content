@@ -1,0 +1,150 @@
+{
+  "project": "Simulación Simadi · Simulacro Cronometrado",
+  "slug": "simadi",
+  "version": "2.0.0",
+  "fps": 60,
+  "totalDurationFrames": 2040,
+  "durationSeconds": 34,
+  "disclaimer": "Herramienta complementaria en fase Beta · No reemplaza un centro preuniversitario",
+  "ucvLogoRef": "captures/simadi/ucv_logo.svg",
+  "formats": {
+    "tiktok": {
+      "compositionId": "SimadiPromo",
+      "width": 1080,
+      "height": 1920
+    },
+    "instagram": {
+      "compositionId": "SimadiPromoIG",
+      "width": 1080,
+      "height": 1350
+    }
+  },
+  "assets": {
+    "themeRef": "captures/simadi/theme.json",
+    "manifestRef": "captures/simadi/manifest.json",
+    "bgm": "bgm/tech_ambient_bed.mp3"
+  },
+  "scenes": [
+    {
+      "id": "s1_hook",
+      "phase": "Hook",
+      "fromFrame": 0,
+      "durationFrames": 225,
+      "badge": "EXAMEN SIMADI · UCV",
+      "title": "¿Estudias mucho y *el reloj te bloquea?*",
+      "copy": "Presentar la prueba sin entrenar bajo presión de tiempo cuesta puntos clave.",
+      "icon": "clock-alert",
+      "diagram": "pressure-vs-control",
+      "captureId": null,
+      "focusTarget": null,
+      "transition": "spring-slam",
+      "sfx": [
+        { "name": "impact-bass-1", "localFrame": 0, "volume": 0.42 },
+        { "name": "whoosh-short", "localFrame": 10, "volume": 0.34 },
+        { "name": "key-press", "localFrame": 45, "volume": 0.14 },
+        { "name": "key-press", "localFrame": 75, "volume": 0.14 },
+        { "name": "key-press", "localFrame": 105, "volume": 0.14 }
+      ]
+    },
+    {
+      "id": "s2_estrategia",
+      "phase": "Estrategia",
+      "fromFrame": 225,
+      "durationFrames": 285,
+      "badge": "TU COMPLEMENTO UCV",
+      "title": "Entrena el examen *antes del día clave*",
+      "copy": "Una herramienta en fase Beta para reforzar lo que estudias en tu preuniversitario.",
+      "icon": "layers",
+      "diagram": "three-pillars-flow",
+      "captureId": null,
+      "focusTarget": null,
+      "transition": "slide-up-spring",
+      "sfx": [
+        { "name": "whoosh-short", "localFrame": 0, "volume": 0.34 },
+        { "name": "pop", "localFrame": 35, "volume": 0.30 },
+        { "name": "pop", "localFrame": 70, "volume": 0.30 },
+        { "name": "ping", "localFrame": 105, "volume": 0.32 }
+      ]
+    },
+    {
+      "id": "s3_demo_config",
+      "phase": "Táctica/Demo",
+      "fromFrame": 510,
+      "durationFrames": 300,
+      "badge": "1 · A TU RITMO",
+      "title": "Elige tu área y *ajusta el tiempo*",
+      "copy": "Configura materia, cantidad de preguntas y minutos según tus metas de repaso.",
+      "icon": "sliders",
+      "diagram": "config-step-pills",
+      "captureId": "simadi_config.webp",
+      "videoClip": "simadi_config_clip.webm",
+      "focusTarget": "#num-questions",
+      "secondaryTarget": "#start-btn",
+      "transition": "perspective-25d",
+      "sfx": [
+        { "name": "whoosh-short", "localFrame": 0, "volume": 0.34 },
+        { "name": "click-soft", "localFrame": 95, "volume": 0.36 }
+      ]
+    },
+    {
+      "id": "s4_demo_simulacro",
+      "phase": "Táctica/Demo",
+      "fromFrame": 810,
+      "durationFrames": 420,
+      "badge": "2 · TIEMPO REAL",
+      "title": "Practica con *cronómetro en vivo*",
+      "copy": "Resuelve ejercicios tipo prueba con tiempo oficial para controlar los nervios.",
+      "icon": "timer",
+      "diagram": "live-timer-pulse",
+      "captureId": "simadi_exam.webp",
+      "videoClip": "simadi_exam_clip.webm",
+      "focusTarget": "#timer",
+      "secondaryTarget": ".option-btn",
+      "transition": "zoom-pan-manifest",
+      "sfx": [
+        { "name": "ping", "localFrame": 32, "volume": 0.34 },
+        { "name": "key-press", "localFrame": 90, "volume": 0.13 },
+        { "name": "key-press", "localFrame": 120, "volume": 0.13 },
+        { "name": "pop", "localFrame": 225, "volume": 0.32 }
+      ]
+    },
+    {
+      "id": "s5_demo_diagnostico",
+      "phase": "Táctica/Demo",
+      "fromFrame": 1230,
+      "durationFrames": 390,
+      "badge": "3 · DIAGNÓSTICO CLARO",
+      "title": "Detecta qué *reforzar al instante*",
+      "copy": "Al entregar ves aciertos, errores y la explicación paso a paso de cada pregunta.",
+      "icon": "chart-bar",
+      "diagram": "score-breakdown",
+      "captureId": "simadi_resultados.webp",
+      "focusTarget": "score-header",
+      "secondaryTarget": "breakdown",
+      "transition": "zoom-pan-manifest",
+      "sfx": [
+        { "name": "chime", "localFrame": 20, "volume": 0.38 },
+        { "name": "sparkle", "localFrame": 160, "volume": 0.34 }
+      ]
+    },
+    {
+      "id": "s6_cta",
+      "phase": "CTA",
+      "fromFrame": 1620,
+      "durationFrames": 420,
+      "badge": "SIMULACIÓN SIMADI · BETA",
+      "title": "¿Tienes dudas? *Escríbeme al DM*",
+      "copy": "Pruébalo en el link de la bio y cuéntame al DM qué te gustaría sumar en esta Beta.",
+      "icon": "message-dm",
+      "diagram": "dm-cta-showcase",
+      "captureId": null,
+      "focusTarget": null,
+      "transition": "spring-pop",
+      "sfx": [
+        { "name": "whoosh-cinematic", "localFrame": 0, "volume": 0.24 },
+        { "name": "sparkle", "localFrame": 55, "volume": 0.38 },
+        { "name": "chime", "localFrame": 120, "volume": 0.36 }
+      ]
+    }
+  ]
+}

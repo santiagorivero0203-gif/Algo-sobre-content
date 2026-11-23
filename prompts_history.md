@@ -551,5 +551,16 @@ La tercera parte de pyquest no tiene kit de publicacion,arreglalo
 
 ---
 
-*Total de prompts registrados:* **24**
+## 🔹 Prompt #25
+
+- **Paso / Step Index:** `1968`
+- **Fecha y Hora Local:** `2026-11-21T17:19:02-04:00`
+
+### 📝 Instrucción del Usuario:
+
+Haz un archivo md de contexto del proyecto.
+
+---
+
+*Total de prompts registrados:* **25**
 
