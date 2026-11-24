@@ -2018,6 +2018,746 @@ Resultado: 80% menos tokens quemados y cero alucinaciones en producción.
                 vo: 'Conecta tus herramientas. Comenta SISTEMAS y te paso la plantilla.'
             }
         ]
+    },
+
+    // =====================================================================
+    // SIMULACIÓN SIMADI · VIDEO 0 (APERTURA EDUCATIVA V3 EDITORIAL DAYLIGHT)
+    // Versiones Master Quality: TikTok/Reels/Shorts (9:16) e Instagram (4:5)
+    // =====================================================================
+    {
+        id: 'reel_simadi_apertura_tt',
+        accountId: 'santidev',
+        slug: 'simadi-apertura-tiktok',
+        theme: 'stack1',
+        title: 'Simadi Video 0: Cómo Funciona el SIMADI UCV (TikTok 9:16)',
+        subtitle: 'Edición V3 Editorial Daylight Master · Índice 60/40, 90 preguntas, 3 bloques y técnicas (1080×1920 @ 60 FPS)',
+        duration_ms: 65000,
+        duration: 65.0,
+        fps: 60,
+        kicker: 'SIMULACIÓN SIMADI · UCV (FASE BETA)',
+        brandIcon: 'fa-graduation-cap',
+        accentColor: '#0F52BA',
+        secondaryColor: '#38BDF8',
+        videoUrl: 'videos/simadi-apertura-tiktok.mp4?v=1',
+        post: {
+            hook: 'Así funciona el SIMADI UCV (60% / 40%) · Reglas, bloques y técnicas clave 👇',
+            caption: `¿Vas a presentar la prueba diagnóstica SIMADI de la UCV? Antes de ponerte a estudiar a ciegas, entiende las reglas reales del juego:
+
+• Índice real: 60% tus notas de 1.º a 4.º año + 40% Test Diagnóstico Integral (T.D.I.).
+• Formato: 90 preguntas en 2 h 30 min (3 bloques de 30), en línea y sin poder retroceder entre preguntas.
+• Táctica clave: maneja ~45 min por bloque (~90 seg por pregunta), no dejes respuestas en blanco (cuentan como incorrectas) y descarta 2 distractores rápido cuando dudes.
+
+Para entrenar bajo ese reloj real armé Simulación Simadi: prácticas cronometradas por área (Lógico-Numérico, Verbal y Ciencia y Tecnología), guías organizadas y diagnóstico inmediato para detectar qué reforzar.
+
+(Nota: es una herramienta de apoyo complementaria en fase Beta; no reemplaza un centro de estudio preuniversitario).
+
+🔗 Pruébala en el link de la bio.
+💬 ¿Tienes dudas sobre el simulacro o la Beta? Escríbeme directo al DM.`,
+            hashtags: ['#UCV', '#SIMADI', '#AdmisionUCV', '#TDIUCV', '#Preuniversitario', '#EstudiantesVenezuela', '#ExamenDeAdmision', '#TecnicasDeEstudio', '#IngenieriaUCV', '#SantiDev'],
+            bestTime: '18:00 - 21:00',
+            sound: 'Editorial Daylight Minimal Bed'
+        },
+        beats: [
+            {
+                id: 1,
+                name: '1. Índice Real 60% / 40%',
+                start_ms: 0,
+                end_ms: 4500,
+                type: 'hero',
+                badge: 'UCV · PESO REAL DEL ÍNDICE',
+                title: 'Así funciona el *SIMADI UCV.*',
+                sub: '60% Notas de 1.º a 4.º año · 40% Test Diagnóstico Integral (T.D.I.).',
+                kicker: 'REGLAS OFICIALES',
+                vo: 'Si vas a presentar el SIMADI de la UCV, así se calcula tu índice: 60% tus notas de primero a cuarto año y 40% el Test Diagnóstico Integral.'
+            },
+            {
+                id: 2,
+                name: '2. 90 Preguntas Sin Retroceso',
+                start_ms: 4500,
+                end_ms: 10000,
+                type: 'points',
+                badge: '2 H 30 MIN · EN LÍNEA',
+                title: 'Una vez respondes, *no vuelves atrás.*',
+                sub: '90 preguntas en línea con el botón Atrás bloqueado.',
+                vo: 'Son 90 preguntas en dos horas y media, en línea, y con una regla clave: una vez respondes, no puedes volver atrás.'
+            },
+            {
+                id: 3,
+                name: '3. Bloque 01 · Lógico-Matemático',
+                start_ms: 10000,
+                end_ms: 18000,
+                type: 'points',
+                badge: 'BLOQUE 01 · 30 PREGUNTAS',
+                title: '*Lógico-Matemático* (30 preg.)',
+                sub: 'Series (2, 6, 12, 20 → 30), patrones, porcentajes, regla de tres, ecuaciones, lógica y gráficos.',
+                vo: 'Se divide en tres bloques consecutivos de 30 preguntas. Primero, Lógico-Matemático: series, patrones, porcentajes, regla de tres, ecuaciones, lógica y lectura de gráficos.'
+            },
+            {
+                id: 4,
+                name: '4. Bloque 02 · Razonamiento Verbal',
+                start_ms: 18000,
+                end_ms: 25500,
+                type: 'points',
+                badge: 'BLOQUE 02 · 30 PREGUNTAS',
+                title: '*Razonamiento Verbal* (30 preg.)',
+                sub: 'Comprensión lectora, inferencias, sinónimos, antónimos, analogías y conectores.',
+                vo: 'Después pasas a Razonamiento Verbal: comprensión lectora, inferencias, sinónimos, antónimos, analogías y conectores.'
+            },
+            {
+                id: 5,
+                name: '5. Bloque 03 · Área Específica',
+                start_ms: 25500,
+                end_ms: 32000,
+                type: 'points',
+                badge: 'BLOQUE 03 · 30 PREGUNTAS',
+                title: '*Área Específica* por facultad',
+                sub: 'Ciencia y Tecnología · Salud, Agro y Mar · Ciencias Sociales.',
+                vo: 'Y el tercer bloque es el área específica según tu facultad: Ciencia y Tecnología, Salud, Agro y Mar o Ciencias Sociales.'
+            },
+            {
+                id: 6,
+                name: '6. Presupuesto de Tiempo Real',
+                start_ms: 32000,
+                end_ms: 37500,
+                type: 'points',
+                badge: '01:30 POR PREGUNTA',
+                title: 'Presupuesto de *tiempo real*',
+                sub: '45m Lógico · 45m Verbal · 45m Área + 15m de margen.',
+                vo: 'Para no quemarte, maneja un presupuesto de 45 minutos por bloque: unos 90 segundos por pregunta y 15 minutos de margen.'
+            },
+            {
+                id: 7,
+                name: '7. Técnica de Descarte Rápido',
+                start_ms: 37500,
+                end_ms: 43000,
+                type: 'compare',
+                badge: 'VACÍAS CUENTAN MAL',
+                title: 'Descarta dos *al vuelo*',
+                sub: 'Elimina 2 distractores en menos de 3 segundos cuando dudes.',
+                vo: 'Como no hay retroceso ni conviene dejar respuestas vacías porque cuentan mal, descarta dos opciones rápido cuando dudes.'
+            },
+            {
+                id: 8,
+                name: '8. Papel y Lápiz + Conectores',
+                start_ms: 43000,
+                end_ms: 48000,
+                type: 'points',
+                badge: 'DOS HÁBITOS CLAVE',
+                title: 'Dos hábitos *que suman*',
+                sub: 'Papel y lápiz en mano para cálculo + idea principal y conectores en verbal.',
+                vo: 'Ten papel y lápiz en mano para matemáticas, y en verbal ubica la idea principal y los conectores antes de caer en distractores.'
+            },
+            {
+                id: 9,
+                name: '9. Puente a Simulación Simadi',
+                start_ms: 48000,
+                end_ms: 58500,
+                type: 'code',
+                badge: 'PRÁCTICA CRONOMETRADA EN VIVO',
+                title: 'No dejes que el reloj *te paralice.*',
+                sub: 'Simulador real con cronómetro en vivo y diagnóstico inmediato por pregunta.',
+                vo: 'Saber las reglas no sirve si el día del examen el reloj te paraliza. En Simulación Simadi practicas con módulos reales, cronómetro en vivo y diagnóstico al instante para detectar exactamente qué temas reforzar.'
+            },
+            {
+                id: 10,
+                name: '10. Fase Beta & CTA al DM',
+                start_ms: 58500,
+                end_ms: 65000,
+                type: 'cta',
+                badge: 'FASE BETA · COMPLEMENTARIO',
+                title: '¿Tienes dudas? *Escríbeme al DM*',
+                sub: 'Herramienta complementaria en fase Beta · No reemplaza un centro preuniversitario.',
+                ctaData: {
+                    keyword: 'SIMADI',
+                    line: 'Pruébala en el link de la bio y cualquier duda te leo al DM.',
+                    handle: '@santi.dev'
+                },
+                vo: 'Es una herramienta complementaria en fase Beta que no reemplaza un centro preuniversitario. Pruébala en el link de la bio y cualquier duda te leo al DM.'
+            }
+        ]
+    },
+    {
+        id: 'reel_simadi_apertura_ig',
+        accountId: 'santidev',
+        slug: 'simadi-apertura-ig',
+        theme: 'stack1',
+        title: 'Simadi Video 0: Cómo Funciona el SIMADI UCV (Instagram 4:5)',
+        subtitle: 'Edición V3 Editorial Daylight Master · Formato Feed 4:5 (1080×1350 @ 60 FPS)',
+        duration_ms: 65000,
+        duration: 65.0,
+        fps: 60,
+        kicker: 'SIMULACIÓN SIMADI · UCV (IG 4:5)',
+        brandIcon: 'fa-graduation-cap',
+        accentColor: '#0F52BA',
+        secondaryColor: '#38BDF8',
+        videoUrl: 'videos/simadi-apertura-ig.mp4?v=1',
+        post: {
+            hook: 'Así funciona el SIMADI UCV (60% / 40%) · Guía visual completa para Instagram Feed (4:5) 👇',
+            caption: `¿Vas a presentar la prueba diagnóstica SIMADI de la UCV? Antes de ponerte a estudiar a ciegas, entiende las reglas reales del juego:
+
+• Índice real: 60% tus notas de 1.º a 4.º año + 40% Test Diagnóstico Integral (T.D.I.).
+• Formato: 90 preguntas en 2 h 30 min (3 bloques de 30), en línea y sin poder retroceder entre preguntas.
+• Táctica clave: maneja ~45 min por bloque (~90 seg por pregunta), no dejes respuestas en blanco (cuentan como incorrectas) y descarta 2 distractores rápido cuando dudes.
+
+Para entrenar bajo ese reloj real armé Simulación Simadi: prácticas cronometradas por área (Lógico-Numérico, Verbal y Ciencia y Tecnología), guías organizadas y diagnóstico inmediato para detectar qué reforzar.
+
+(Nota: es una herramienta de apoyo complementaria en fase Beta; no reemplaza un centro de estudio preuniversitario).
+
+🔗 Pruébala en el link de la bio.
+💬 ¿Tienes dudas sobre el simulacro o la Beta? Escríbeme directo al DM.`,
+            hashtags: ['#UCV', '#SIMADI', '#AdmisionUCV', '#TDIUCV', '#Preuniversitario', '#EstudiantesVenezuela', '#ExamenDeAdmision', '#TecnicasDeEstudio', '#IngenieriaUCV', '#SantiDev'],
+            bestTime: '18:00 - 21:00',
+            sound: 'Editorial Daylight Minimal Bed'
+        },
+        beats: [
+            {
+                id: 1,
+                name: '1. Índice Real 60% / 40%',
+                start_ms: 0,
+                end_ms: 4500,
+                type: 'hero',
+                badge: 'UCV · PESO REAL DEL ÍNDICE',
+                title: 'Así funciona el *SIMADI UCV.*',
+                sub: '60% Notas de 1.º a 4.º año · 40% Test Diagnóstico Integral (T.D.I.).',
+                vo: 'Si vas a presentar el SIMADI de la UCV, así se calcula tu índice: 60% tus notas de primero a cuarto año y 40% el Test Diagnóstico Integral.'
+            },
+            {
+                id: 2,
+                name: '2. 90 Preguntas Sin Retroceso',
+                start_ms: 4500,
+                end_ms: 10000,
+                type: 'points',
+                badge: '2 H 30 MIN · EN LÍNEA',
+                title: 'Una vez respondes, *no vuelves atrás.*',
+                sub: '90 preguntas en línea con el botón Atrás bloqueado.',
+                vo: 'Son 90 preguntas en dos horas y media, en línea, y con una regla clave: una vez respondes, no puedes volver atrás.'
+            },
+            {
+                id: 3,
+                name: '3. Bloque 01 · Lógico-Matemático',
+                start_ms: 10000,
+                end_ms: 18000,
+                type: 'points',
+                badge: 'BLOQUE 01 · 30 PREGUNTAS',
+                title: '*Lógico-Matemático* (30 preg.)',
+                sub: 'Series (2, 6, 12, 20 → 30), patrones, porcentajes, regla de tres, ecuaciones, lógica y gráficos.',
+                vo: 'Se divide en tres bloques consecutivos de 30 preguntas. Primero, Lógico-Matemático: series, patrones, porcentajes, regla de tres, ecuaciones, lógica y lectura de gráficos.'
+            },
+            {
+                id: 4,
+                name: '4. Bloque 02 · Razonamiento Verbal',
+                start_ms: 18000,
+                end_ms: 25500,
+                type: 'points',
+                badge: 'BLOQUE 02 · 30 PREGUNTAS',
+                title: '*Razonamiento Verbal* (30 preg.)',
+                sub: 'Comprensión lectora, inferencias, sinónimos, antónimos, analogías y conectores.',
+                vo: 'Después pasas a Razonamiento Verbal: comprensión lectora, inferencias, sinónimos, antónimos, analogías y conectores.'
+            },
+            {
+                id: 5,
+                name: '5. Bloque 03 · Área Específica',
+                start_ms: 25500,
+                end_ms: 32000,
+                type: 'points',
+                badge: 'BLOQUE 03 · 30 PREGUNTAS',
+                title: '*Área Específica* por facultad',
+                sub: 'Ciencia y Tecnología · Salud, Agro y Mar · Ciencias Sociales.',
+                vo: 'Y el tercer bloque es el área específica según tu facultad: Ciencia y Tecnología, Salud, Agro y Mar o Ciencias Sociales.'
+            },
+            {
+                id: 6,
+                name: '6. Presupuesto de Tiempo Real',
+                start_ms: 32000,
+                end_ms: 37500,
+                type: 'points',
+                badge: '01:30 POR PREGUNTA',
+                title: 'Presupuesto de *tiempo real*',
+                sub: '45m Lógico · 45m Verbal · 45m Área + 15m de margen.',
+                vo: 'Para no quemarte, maneja un presupuesto de 45 minutos por bloque: unos 90 segundos por pregunta y 15 minutos de margen.'
+            },
+            {
+                id: 7,
+                name: '7. Técnica de Descarte Rápido',
+                start_ms: 37500,
+                end_ms: 43000,
+                type: 'compare',
+                badge: 'VACÍAS CUENTAN MAL',
+                title: 'Descarta dos *al vuelo*',
+                sub: 'Elimina 2 distractores en menos de 3 segundos cuando dudes.',
+                vo: 'Como no hay retroceso ni conviene dejar respuestas vacías porque cuentan mal, descarta dos opciones rápido cuando dudes.'
+            },
+            {
+                id: 8,
+                name: '8. Papel y Lápiz + Conectores',
+                start_ms: 43000,
+                end_ms: 48000,
+                type: 'points',
+                badge: 'DOS HÁBITOS CLAVE',
+                title: 'Dos hábitos *que suman*',
+                sub: 'Papel y lápiz en mano para cálculo + idea principal y conectores en verbal.',
+                vo: 'Ten papel y lápiz en mano para matemáticas, y en verbal ubica la idea principal y los conectores antes de caer en distractores.'
+            },
+            {
+                id: 9,
+                name: '9. Puente a Simulación Simadi',
+                start_ms: 48000,
+                end_ms: 58500,
+                type: 'code',
+                badge: 'PRÁCTICA CRONOMETRADA EN VIVO',
+                title: 'No dejes que el reloj *te paralice.*',
+                sub: 'Simulador real con cronómetro en vivo y diagnóstico inmediato por pregunta.',
+                vo: 'Saber las reglas no sirve si el día del examen el reloj te paraliza. En Simulación Simadi practicas con módulos reales, cronómetro en vivo y diagnóstico al instante para detectar exactamente qué temas reforzar.'
+            },
+            {
+                id: 10,
+                name: '10. Fase Beta & CTA al DM',
+                start_ms: 58500,
+                end_ms: 65000,
+                type: 'cta',
+                badge: 'FASE BETA · COMPLEMENTARIO',
+                title: '¿Tienes dudas? *Escríbeme al DM*',
+                sub: 'Herramienta complementaria en fase Beta · No reemplaza un centro preuniversitario.',
+                ctaData: {
+                    keyword: 'SIMADI',
+                    line: 'Pruébala en el link de la bio y cualquier duda te leo al DM.',
+                    handle: '@santi.dev'
+                },
+                vo: 'Es una herramienta complementaria en fase Beta que no reemplaza un centro preuniversitario. Pruébala en el link de la bio y cualquier duda te leo al DM.'
+            }
+        ]
+    },
+
+    // =====================================================================
+    // SIMULACIÓN SIMADI · VIDEO 1 (SIMULACRO CRONOMETRADO 9:16 Y 4:5)
+    // =====================================================================
+    {
+        id: 'reel_simadi_simulacro_tt',
+        accountId: 'santidev',
+        slug: 'simadi-simulacro-tiktok',
+        theme: 'stack1',
+        title: 'Simadi Video 1: Simulacro Cronometrado (TikTok 9:16)',
+        subtitle: 'Práctica bajo presión de tiempo con diagnóstico al instante · Fase Beta (1080×1920 @ 60 FPS)',
+        duration_ms: 34000,
+        duration: 34.0,
+        fps: 60,
+        kicker: 'SIMULACIÓN SIMADI · SIMULACRO UCV',
+        brandIcon: 'fa-stopwatch',
+        accentColor: '#0F52BA',
+        secondaryColor: '#38BDF8',
+        videoUrl: 'videos/simadi-simulacro-tiktok.mp4?v=1',
+        post: {
+            hook: '¿Estudias mucho para el SIMADI UCV pero el reloj te bloquea el día de la prueba? 👇',
+            caption: `Presentar el Test Diagnóstico Integral sin entrenar bajo presión de tiempo cuesta puntos clave.
+
+En Simulación Simadi puedes entrenar antes del día clave:
+1️⃣ Configura tu área (Lógico-Numérico, Verbal o Ciencia y Tecnología), cantidad de preguntas y tiempo.
+2️⃣ Practica con cronómetro en vivo tal como en la prueba real.
+3️⃣ Recibe diagnóstico claro al instante: aciertos, errores y justificación paso a paso.
+
+(Nota: herramienta complementaria en fase Beta · No reemplaza un centro de estudio preuniversitario).
+
+🔗 Pruébala en el link de la bio.
+💬 ¿Tienes dudas o sugerencias para la Beta? Escríbeme al DM.`,
+            hashtags: ['#UCV', '#SIMADI', '#SimulacroUCV', '#AdmisionUCV', '#EstudiantesVenezuela', '#Preuniversitario', '#SantiDev'],
+            bestTime: '18:00 - 21:00',
+            sound: 'Tech Ambient Bed'
+        },
+        beats: [
+            {
+                id: 1,
+                name: 'Hook · Presión del Reloj',
+                start_ms: 0,
+                end_ms: 3750,
+                type: 'hero',
+                badge: 'EXAMEN SIMADI · UCV',
+                title: '¿Estudias mucho y *el reloj te bloquea?*',
+                sub: 'Presentar la prueba sin entrenar bajo presión de tiempo cuesta puntos clave.',
+                vo: '¿Estudias mucho para la UCV y el reloj te bloquea? Presentar sin entrenar bajo presión de tiempo cuesta puntos clave.'
+            },
+            {
+                id: 2,
+                name: 'Estrategia · Complemento UCV',
+                start_ms: 3750,
+                end_ms: 8500,
+                type: 'points',
+                badge: 'TU COMPLEMENTO UCV',
+                title: 'Entrena el examen *antes del día clave*',
+                sub: 'Una herramienta en fase Beta para reforzar lo que estudias en tu preuniversitario.',
+                vo: 'Entrena el examen antes del día clave con una herramienta en fase Beta pensada para complementar tu preuniversitario.'
+            },
+            {
+                id: 3,
+                name: 'Demo 1 · Configura a tu Ritmo',
+                start_ms: 8500,
+                end_ms: 13500,
+                type: 'code',
+                badge: '1 · A TU RITMO',
+                title: 'Elige tu área y *ajusta el tiempo*',
+                sub: 'Configura materia, cantidad de preguntas y minutos según tus metas de repaso.',
+                vo: 'Elige tu área, ajusta la cantidad de preguntas y configura el tiempo según tus metas de repaso.'
+            },
+            {
+                id: 4,
+                name: 'Demo 2 · Cronómetro en Vivo',
+                start_ms: 13500,
+                end_ms: 20500,
+                type: 'code',
+                badge: '2 · TIEMPO REAL',
+                title: 'Practica con *cronómetro en vivo*',
+                sub: 'Resuelve ejercicios tipo prueba con tiempo oficial para controlar los nervios.',
+                vo: 'Practica con cronómetro en vivo resolviendo ejercicios tipo prueba para controlar los nervios.'
+            },
+            {
+                id: 5,
+                name: 'Demo 3 · Diagnóstico al Instante',
+                start_ms: 20500,
+                end_ms: 27000,
+                type: 'points',
+                badge: '3 · DIAGNÓSTICO CLARO',
+                title: 'Detecta qué *reforzar al instante*',
+                sub: 'Al entregar ves aciertos, errores y la explicación paso a paso de cada pregunta.',
+                vo: 'Al entregar detectas qué reforzar al instante con el desglose de aciertos, errores y la explicación lógica.'
+            },
+            {
+                id: 6,
+                name: 'CTA · Dudas al DM',
+                start_ms: 27000,
+                end_ms: 34000,
+                type: 'cta',
+                badge: 'SIMULACIÓN SIMADI · BETA',
+                title: '¿Tienes dudas? *Escríbeme al DM*',
+                sub: 'Pruébalo en el link de la bio y cuéntame al DM qué te gustaría sumar en esta Beta.',
+                ctaData: {
+                    keyword: 'SIMADI',
+                    line: 'Pruébalo en el link de la bio y escríbeme cualquier duda al DM.',
+                    handle: '@santi.dev'
+                },
+                vo: 'Pruébalo en el link de la bio y si tienes cualquier duda sobre esta fase Beta, escríbeme directo al DM.'
+            }
+        ]
+    },
+    {
+        id: 'reel_simadi_simulacro_ig',
+        accountId: 'santidev',
+        slug: 'simadi-simulacro-ig',
+        theme: 'stack1',
+        title: 'Simadi Video 1: Simulacro Cronometrado (Instagram 4:5)',
+        subtitle: 'Práctica bajo presión de tiempo con diagnóstico al instante · Formato Feed 4:5 (1080×1350 @ 60 FPS)',
+        duration_ms: 34000,
+        duration: 34.0,
+        fps: 60,
+        kicker: 'SIMULACIÓN SIMADI · SIMULACRO (IG 4:5)',
+        brandIcon: 'fa-stopwatch',
+        accentColor: '#0F52BA',
+        secondaryColor: '#38BDF8',
+        videoUrl: 'videos/simadi-simulacro-ig.mp4?v=1',
+        post: {
+            hook: '¿Estudias mucho para el SIMADI UCV pero el reloj te bloquea el día de la prueba? (Formato 4:5) 👇',
+            caption: `Presentar el Test Diagnóstico Integral sin entrenar bajo presión de tiempo cuesta puntos clave.
+
+En Simulación Simadi puedes entrenar antes del día clave:
+1️⃣ Configura tu área (Lógico-Numérico, Verbal o Ciencia y Tecnología), cantidad de preguntas y tiempo.
+2️⃣ Practica con cronómetro en vivo tal como en la prueba real.
+3️⃣ Recibe diagnóstico claro al instante: aciertos, errores y justificación paso a paso.
+
+(Nota: herramienta complementaria en fase Beta · No reemplaza un centro de estudio preuniversitario).
+
+🔗 Pruébala en el link de la bio.
+💬 ¿Tienes dudas o sugerencias para la Beta? Escríbeme al DM.`,
+            hashtags: ['#UCV', '#SIMADI', '#SimulacroUCV', '#AdmisionUCV', '#EstudiantesVenezuela', '#Preuniversitario', '#SantiDev'],
+            bestTime: '18:00 - 21:00',
+            sound: 'Tech Ambient Bed'
+        },
+        beats: [
+            {
+                id: 1,
+                name: 'Hook · Presión del Reloj',
+                start_ms: 0,
+                end_ms: 3750,
+                type: 'hero',
+                badge: 'EXAMEN SIMADI · UCV',
+                title: '¿Estudias mucho y *el reloj te bloquea?*',
+                sub: 'Presentar la prueba sin entrenar bajo presión de tiempo cuesta puntos clave.',
+                vo: '¿Estudias mucho para la UCV y el reloj te bloquea? Presentar sin entrenar bajo presión de tiempo cuesta puntos clave.'
+            },
+            {
+                id: 2,
+                name: 'Estrategia · Complemento UCV',
+                start_ms: 3750,
+                end_ms: 8500,
+                type: 'points',
+                badge: 'TU COMPLEMENTO UCV',
+                title: 'Entrena el examen *antes del día clave*',
+                sub: 'Una herramienta en fase Beta para reforzar lo que estudias en tu preuniversitario.',
+                vo: 'Entrena el examen antes del día clave con una herramienta en fase Beta pensada para complementar tu preuniversitario.'
+            },
+            {
+                id: 3,
+                name: 'Demo 1 · Configura a tu Ritmo',
+                start_ms: 8500,
+                end_ms: 13500,
+                type: 'code',
+                badge: '1 · A TU RITMO',
+                title: 'Elige tu área y *ajusta el tiempo*',
+                sub: 'Configura materia, cantidad de preguntas y minutos según tus metas de repaso.',
+                vo: 'Elige tu área, ajusta la cantidad de preguntas y configura el tiempo según tus metas de repaso.'
+            },
+            {
+                id: 4,
+                name: 'Demo 2 · Cronómetro en Vivo',
+                start_ms: 13500,
+                end_ms: 20500,
+                type: 'code',
+                badge: '2 · TIEMPO REAL',
+                title: 'Practica con *cronómetro en vivo*',
+                sub: 'Resuelve ejercicios tipo prueba con tiempo oficial para controlar los nervios.',
+                vo: 'Practica con cronómetro en vivo resolviendo ejercicios tipo prueba para controlar los nervios.'
+            },
+            {
+                id: 5,
+                name: 'Demo 3 · Diagnóstico al Instante',
+                start_ms: 20500,
+                end_ms: 27000,
+                type: 'points',
+                badge: '3 · DIAGNÓSTICO CLARO',
+                title: 'Detecta qué *reforzar al instante*',
+                sub: 'Al entregar ves aciertos, errores y la explicación paso a paso de cada pregunta.',
+                vo: 'Al entregar detectas qué reforzar al instante con el desglose de aciertos, errores y la explicación lógica.'
+            },
+            {
+                id: 6,
+                name: 'CTA · Dudas al DM',
+                start_ms: 27000,
+                end_ms: 34000,
+                type: 'cta',
+                badge: 'SIMULACIÓN SIMADI · BETA',
+                title: '¿Tienes dudas? *Escríbeme al DM*',
+                sub: 'Pruébalo en el link de la bio y cuéntame al DM qué te gustaría sumar en esta Beta.',
+                ctaData: {
+                    keyword: 'SIMADI',
+                    line: 'Pruébalo en el link de la bio y escríbeme cualquier duda al DM.',
+                    handle: '@santi.dev'
+                },
+                vo: 'Pruébalo en el link de la bio y si tienes cualquier duda sobre esta fase Beta, escríbeme directo al DM.'
+            }
+        ]
+    },
+
+    // =====================================================================
+    // SIMULACIÓN SIMADI · VIDEO 2 (GUÍAS Y TEMARIO UCV 9:16 Y 4:5)
+    // =====================================================================
+    {
+        id: 'reel_simadi_guias_tt',
+        accountId: 'santidev',
+        slug: 'simadi-guias-tiktok',
+        theme: 'stack1',
+        title: 'Simadi Video 2: Guías y Temario UCV (TikTok 9:16)',
+        subtitle: 'Temario organizado por área (Lógico, Verbal y Ciencia) · Fase Beta (1080×1920 @ 60 FPS)',
+        duration_ms: 30000,
+        duration: 30.0,
+        fps: 60,
+        kicker: 'SIMULACIÓN SIMADI · GUÍAS UCV',
+        brandIcon: 'fa-book-open',
+        accentColor: '#0F52BA',
+        secondaryColor: '#38BDF8',
+        videoUrl: 'videos/simadi-guias-tiktok.mp4?v=1',
+        post: {
+            hook: '¿Tienes los apuntes del SIMADI UCV regados por todos lados? 👇',
+            caption: `Estudiar sin orden te quita horas antes de presentar el diagnóstico universitario.
+
+En la sección de Guías de Simulación Simadi tienes:
+1️⃣ Todo el temario organizado por área: Razonamiento Verbal, Lógico-Numérico y Ciencia y Tecnología.
+2️⃣ Sesiones a medida: activa solo los temas específicos que más te cuestan.
+3️⃣ Progreso medible con explicación lógica en cada respuesta.
+
+(Nota: es un apoyo complementario en fase Beta que no reemplaza tu centro de estudio preuniversitario).
+
+🔗 Pruébalo en el link de la bio.
+💬 ¿Dudas sobre la Beta? Te leo al DM.`,
+            hashtags: ['#UCV', '#SIMADI', '#TemarioUCV', '#GuiasDeEstudio', '#AdmisionUCV', '#Preuniversitario', '#SantiDev'],
+            bestTime: '18:00 - 21:00',
+            sound: 'Tech Ambient Bed'
+        },
+        beats: [
+            {
+                id: 1,
+                name: 'Hook · Apuntes Regados',
+                start_ms: 0,
+                end_ms: 3750,
+                type: 'hero',
+                badge: 'TEMARIO UCV · T.D.I.',
+                title: '¿Apuntes regados *por todos lados?*',
+                sub: 'Estudiar sin orden te quita horas antes de presentar el diagnóstico universitario.',
+                vo: '¿Tienes los apuntes regados por todos lados? Estudiar sin orden te quita horas antes del diagnóstico universitario.'
+            },
+            {
+                id: 2,
+                name: 'Estrategia · Aliado del Preuniversitario',
+                start_ms: 3750,
+                end_ms: 8250,
+                type: 'points',
+                badge: 'APOYO COMPLEMENTARIO',
+                title: 'El aliado ideal *de tu preuniversitario*',
+                sub: 'No reemplaza tu academia: organiza tus prácticas en fase Beta a tu propio ritmo.',
+                vo: 'Simulación Simadi es el aliado ideal de tu preuniversitario: no reemplaza tu academia y organiza tus prácticas en fase Beta.'
+            },
+            {
+                id: 3,
+                name: 'Demo 1 · Guías por Área',
+                start_ms: 8250,
+                end_ms: 15750,
+                type: 'code',
+                badge: '1 · GUÍAS POR ÁREA',
+                title: 'Todo el temario *en un solo lugar*',
+                sub: 'Repasa Verbal, Lógico Numérico y Ciencia sin perder tiempo buscando guías sueltas.',
+                vo: 'Encuentra todo el temario en un solo lugar: repasa Verbal, Lógico-Numérico y Ciencia y Tecnología sin perder tiempo.'
+            },
+            {
+                id: 4,
+                name: 'Demo 2 · Sesiones a Medida',
+                start_ms: 15750,
+                end_ms: 21000,
+                type: 'code',
+                badge: '2 · SESIONES A MEDIDA',
+                title: 'Practica solo *lo que necesitas*',
+                sub: 'Activa temas específicos para reforzar justo las materias que más te cuestan.',
+                vo: 'Configura sesiones a medida activando temas específicos para reforzar justo las materias que más te cuestan.'
+            },
+            {
+                id: 5,
+                name: 'Demo 3 · Progreso Medible',
+                start_ms: 21000,
+                end_ms: 25000,
+                type: 'points',
+                badge: '3 · PROGRESO MEDIBLE',
+                title: 'Aprende de *cada respuesta*',
+                sub: 'Mide tu avance real con aciertos, errores y explicación lógica al instante.',
+                vo: 'Aprende de cada respuesta midiendo tu avance real con explicación lógica al instante.'
+            },
+            {
+                id: 6,
+                name: 'CTA · Dudas al DM',
+                start_ms: 25000,
+                end_ms: 30000,
+                type: 'cta',
+                badge: 'SIMULACIÓN SIMADI · BETA',
+                title: '¿Dudas sobre la Beta? *Te leo al DM*',
+                sub: 'Prueba el simulador en el link de la bio y escríbeme al DM si tienes preguntas.',
+                ctaData: {
+                    keyword: 'GUIAS',
+                    line: 'Prueba el simulador en el link de la bio y escríbeme al DM si tienes preguntas.',
+                    handle: '@santi.dev'
+                },
+                vo: 'Prueba el simulador en el link de la bio y si tienes dudas sobre la Beta, te leo directo al DM.'
+            }
+        ]
+    },
+    {
+        id: 'reel_simadi_guias_ig',
+        accountId: 'santidev',
+        slug: 'simadi-guias-ig',
+        theme: 'stack1',
+        title: 'Simadi Video 2: Guías y Temario UCV (Instagram 4:5)',
+        subtitle: 'Temario organizado por área (Lógico, Verbal y Ciencia) · Formato Feed 4:5 (1080×1350 @ 60 FPS)',
+        duration_ms: 30000,
+        duration: 30.0,
+        fps: 60,
+        kicker: 'SIMULACIÓN SIMADI · GUÍAS (IG 4:5)',
+        brandIcon: 'fa-book-open',
+        accentColor: '#0F52BA',
+        secondaryColor: '#38BDF8',
+        videoUrl: 'videos/simadi-guias-ig.mp4?v=1',
+        post: {
+            hook: '¿Tienes los apuntes del SIMADI UCV regados por todos lados? (Formato 4:5) 👇',
+            caption: `Estudiar sin orden te quita horas antes de presentar el diagnóstico universitario.
+
+En la sección de Guías de Simulación Simadi tienes:
+1️⃣ Todo el temario organizado por área: Razonamiento Verbal, Lógico-Numérico y Ciencia y Tecnología.
+2️⃣ Sesiones a medida: activa solo los temas específicos que más te cuestan.
+3️⃣ Progreso medible con explicación lógica en cada respuesta.
+
+(Nota: es un apoyo complementario en fase Beta que no reemplaza tu centro de estudio preuniversitario).
+
+🔗 Pruébalo en el link de la bio.
+💬 ¿Dudas sobre la Beta? Te leo al DM.`,
+            hashtags: ['#UCV', '#SIMADI', '#TemarioUCV', '#GuiasDeEstudio', '#AdmisionUCV', '#Preuniversitario', '#SantiDev'],
+            bestTime: '18:00 - 21:00',
+            sound: 'Tech Ambient Bed'
+        },
+        beats: [
+            {
+                id: 1,
+                name: 'Hook · Apuntes Regados',
+                start_ms: 0,
+                end_ms: 3750,
+                type: 'hero',
+                badge: 'TEMARIO UCV · T.D.I.',
+                title: '¿Apuntes regados *por todos lados?*',
+                sub: 'Estudiar sin orden te quita horas antes de presentar el diagnóstico universitario.',
+                vo: '¿Tienes los apuntes regados por todos lados? Estudiar sin orden te quita horas antes del diagnóstico universitario.'
+            },
+            {
+                id: 2,
+                name: 'Estrategia · Aliado del Preuniversitario',
+                start_ms: 3750,
+                end_ms: 8250,
+                type: 'points',
+                badge: 'APOYO COMPLEMENTARIO',
+                title: 'El aliado ideal *de tu preuniversitario*',
+                sub: 'No reemplaza tu academia: organiza tus prácticas en fase Beta a tu propio ritmo.',
+                vo: 'Simulación Simadi es el aliado ideal de tu preuniversitario: no reemplaza tu academia y organiza tus prácticas en fase Beta.'
+            },
+            {
+                id: 3,
+                name: 'Demo 1 · Guías por Área',
+                start_ms: 8250,
+                end_ms: 15750,
+                type: 'code',
+                badge: '1 · GUÍAS POR ÁREA',
+                title: 'Todo el temario *en un solo lugar*',
+                sub: 'Repasa Verbal, Lógico Numérico y Ciencia sin perder tiempo buscando guías sueltas.',
+                vo: 'Encuentra todo el temario en un solo lugar: repasa Verbal, Lógico-Numérico y Ciencia y Tecnología sin perder tiempo.'
+            },
+            {
+                id: 4,
+                name: 'Demo 2 · Sesiones a Medida',
+                start_ms: 15750,
+                end_ms: 21000,
+                type: 'code',
+                badge: '2 · SESIONES A MEDIDA',
+                title: 'Practica solo *lo que necesitas*',
+                sub: 'Activa temas específicos para reforzar justo las materias que más te cuestan.',
+                vo: 'Configura sesiones a medida activando temas específicos para reforzar justo las materias que más te cuestan.'
+            },
+            {
+                id: 5,
+                name: 'Demo 3 · Progreso Medible',
+                start_ms: 21000,
+                end_ms: 25000,
+                type: 'points',
+                badge: '3 · PROGRESO MEDIBLE',
+                title: 'Aprende de *cada respuesta*',
+                sub: 'Mide tu avance real con aciertos, errores y explicación lógica al instante.',
+                vo: 'Aprende de cada respuesta midiendo tu avance real con explicación lógica al instante.'
+            },
+            {
+                id: 6,
+                name: 'CTA · Dudas al DM',
+                start_ms: 25000,
+                end_ms: 30000,
+                type: 'cta',
+                badge: 'SIMULACIÓN SIMADI · BETA',
+                title: '¿Dudas sobre la Beta? *Te leo al DM*',
+                sub: 'Prueba el simulador en el link de la bio y escríbeme al DM si tienes preguntas.',
+                ctaData: {
+                    keyword: 'GUIAS',
+                    line: 'Prueba el simulador en el link de la bio y escríbeme al DM si tienes preguntas.',
+                    handle: '@santi.dev'
+                },
+                vo: 'Prueba el simulador en el link de la bio y si tienes dudas sobre la Beta, te leo directo al DM.'
+            }
+        ]
     }
 ];
 

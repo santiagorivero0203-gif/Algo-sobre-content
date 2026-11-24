@@ -263,6 +263,9 @@ const App = () => {
                     !list.some(r => r.id === 'reel_stack1_v4') ||
                     !list.some(r => r.id === 'reel_stack2_v4') ||
                     !list.some(r => r.id === 'reel_stack3_v4') ||
+                    !list.some(r => r.id === 'reel_simadi_apertura_tt') ||
+                    !list.some(r => r.id === 'reel_simadi_simulacro_tt') ||
+                    !list.some(r => r.id === 'reel_simadi_guias_tt') ||
                     list.some(r => r.id === 'reel_ag_terminal')
                 );
                 if (isOutdated) {
